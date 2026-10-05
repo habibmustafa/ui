@@ -1,2 +1,9 @@
 name = "ui-playground"
-pages_build_output_dir = "playground-dist"
+compatibility_date = "2026-10-05"
+
+[build]
+command = "npm run build:playground"
+
+[assets]
+directory = "./playground-dist"
+not_found_handling = "single-page-application"
