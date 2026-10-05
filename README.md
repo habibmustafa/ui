@@ -112,7 +112,7 @@ npm install
 npm run dev
 ```
 
-Lokal playground: http://localhost:3000 (canlı versiya: [ui.habibmustafa.me](https://ui.habibmustafa.me)).
+Playground: http://localhost:3000.
 
 ```sh
 npm run verify     # build, tip, lint, class və canlı token yoxlaması
