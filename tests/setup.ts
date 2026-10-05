@@ -1,6 +1,12 @@
 import { cleanup } from "@testing-library/react";
 import { afterEach, beforeEach, vi } from "vitest";
 
+// Deterministic timezone: components that format a timestamp for display (TimestampInfo)
+// render it in the local zone. Without pinning this, the same frozen instant renders
+// different wall-clock text depending on which machine runs the suite (e.g. UTC+4 locally
+// vs CI's UTC), producing a false golden-snapshot mismatch.
+process.env.TZ = "UTC";
+
 // Deterministic clock: date-dependent examples (calendar-demo selects `new Date()` and
 // renders a `data-today` cell) would otherwise produce a new snapshot every day. Fixed to
 // the documented project date so the baseline stays stable.
