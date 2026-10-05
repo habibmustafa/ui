@@ -105,21 +105,6 @@ Rəng palitrini dəyişmək üçün CSS-i yenidən yazmaq lazım deyil — giri�
 }
 ```
 
-## Lokal işə salma
-
-```sh
-npm install
-npm run dev
-```
-
-Playground: http://localhost:3000.
-
-```sh
-npm run verify     # build, tip, lint, class və canlı token yoxlaması
-npm run build:lib  # dist/index.js, index.cjs, styles.css və index.d.ts
-npm run test       # vitest
-```
-
 ## Sənədlər
 
 - [Hibrid API](docs/hybrid-api-migration.md)
