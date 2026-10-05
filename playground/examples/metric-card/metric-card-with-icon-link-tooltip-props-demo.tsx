@@ -32,7 +32,7 @@ export default function MetricCardWithIconLinkTooltipPropsDemo() {
         iconPlacement="header"
         label="Active Users"
         tooltip="The number of active users over the last 24 hours"
-        value={averageValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+        value={averageValue.toLocaleString('en-US', { maximumFractionDigits: 0 })}
         differential={`${diffPercentage > 0 ? '+' : '-'}${Math.abs(diffPercentage).toFixed(1)}%`}
         differentialVariant={diffPercentage > 0 ? 'positive' : 'negative'}
         sparklineData={data}

@@ -28,7 +28,7 @@ export default function MetricCardMinimalHorizontalPropsDemo() {
         isLoading={!data.length}
         label="Active Users"
         orientation="horizontal"
-        value={averageValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+        value={averageValue.toLocaleString('en-US', { maximumFractionDigits: 0 })}
         differential={`${diffPercentage > 0 ? '+' : '-'}${Math.abs(diffPercentage).toFixed(1)}%`}
         differentialVariant={diffPercentage > 0 ? 'positive' : 'negative'}
       />

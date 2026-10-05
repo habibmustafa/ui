@@ -29,7 +29,7 @@ export default function MetricsCardDemo() {
         </MetricCard.Header>
         <MetricCard.Content orientation="horizontal">
           <MetricCard.Value>
-            {averageValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+            {averageValue.toLocaleString('en-US', { maximumFractionDigits: 0 })}
           </MetricCard.Value>
           <MetricCard.Differential variant={diffPercentage > 0 ? 'positive' : 'negative'}>
             {diffPercentage > 0 ? '+' : '-'}
