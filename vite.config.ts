@@ -17,6 +17,9 @@ export default defineConfig({
     dts({ include: ["src"], bundleTypes: true, tsconfigPath: "./tsconfig.app.json" }),
   ],
   build: {
+    // The playground's public/ assets (favicon, logo) have nothing to do with the
+    // library build and shouldn't leak into the published dist/ output.
+    copyPublicDir: false,
     lib: {
       entry: "src/index.ts",
       formats: ["es", "cjs"],
@@ -25,30 +28,32 @@ export default defineConfig({
     },
     rollupOptions: {
       // Everything in dependencies + peerDependencies stays external so consumers
-      // resolve a single copy of Radix, React and the class utilities.
-      external: [
-        "react",
-        "react-dom",
-        "react/jsx-runtime",
-        "class-variance-authority",
-        "clsx",
-        "cmdk",
-        "dayjs",
-        "dayjs/plugin/customParseFormat",
-        "framer-motion",
-        "highlightjs-curl",
-        "input-otp",
-        "lucide-react",
-        "radix-ui",
-        "react-day-picker",
-        "react-hook-form",
-        "react-resizable-panels",
-        "react-syntax-highlighter",
-        "recharts",
-        "sonner",
-        "tailwind-merge",
-        "vaul",
-      ],
+      // resolve a single copy of Radix, React and the class utilities. Matched by
+      // prefix, not exact string, so deep imports (react/compiler-runtime,
+      // react-syntax-highlighter/dist/esm/languages/*, dayjs/plugin/*) stay external
+      // too instead of getting bundled into dist/node_modules.
+      external: (id) =>
+        [
+          "react",
+          "react-dom",
+          "class-variance-authority",
+          "clsx",
+          "cmdk",
+          "dayjs",
+          "framer-motion",
+          "highlightjs-curl",
+          "input-otp",
+          "lucide-react",
+          "radix-ui",
+          "react-day-picker",
+          "react-hook-form",
+          "react-resizable-panels",
+          "react-syntax-highlighter",
+          "recharts",
+          "sonner",
+          "tailwind-merge",
+          "vaul",
+        ].some((pkg) => id === pkg || id.startsWith(`${pkg}/`)),
       // One output file per source module instead of one merged bundle. Without this
       // the whole library collapses into a single chunk and consumers can't shake it:
       // importing just `Button` pulled ~367KB of a ~415KB bundle, because rollup has

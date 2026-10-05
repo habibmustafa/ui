@@ -64,7 +64,11 @@ test('Preview shows the props variant while source tabs stay separate', async ()
   const propsTab = screen.getByRole('tab', { name: 'Props-driven' })
   const compoundTab = screen.getByRole('tab', { name: 'Compound' })
   expect(previewTab.getAttribute('aria-selected')).toBe('true')
-  expect(within(screen.getByRole('tabpanel')).getAllByRole('button', { name: 'Show Alert Dialog' })).toHaveLength(1)
+  // The demo component loads lazily (Suspense) now, so the first render still shows
+  // the fallback — wait for the lazy chunk to resolve before asserting on it.
+  await waitFor(() =>
+    expect(within(screen.getByRole('tabpanel')).getAllByRole('button', { name: 'Show Alert Dialog' })).toHaveLength(1)
+  )
 
   await user.click(propsTab)
   expect(propsTab.getAttribute('aria-selected')).toBe('true')
@@ -73,5 +77,7 @@ test('Preview shows the props variant while source tabs stay separate', async ()
   expect(compoundTab.getAttribute('aria-selected')).toBe('true')
   await waitFor(() => expect(screen.getByRole('tabpanel').textContent).toContain('<AlertDialog.Root'))
   await user.click(previewTab)
-  expect(within(screen.getByRole('tabpanel')).getAllByRole('button', { name: 'Show Alert Dialog' })).toHaveLength(1)
+  await waitFor(() =>
+    expect(within(screen.getByRole('tabpanel')).getAllByRole('button', { name: 'Show Alert Dialog' })).toHaveLength(1)
+  )
 })

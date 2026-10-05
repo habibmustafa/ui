@@ -1,9 +1,8 @@
 import { Check, Copy } from 'lucide-react'
-import { codeToHtml } from 'shiki'
-import { useEffect, useState, type ComponentType } from 'react'
+import { Suspense, lazy, useEffect, useState, type ComponentType, type LazyExoticComponent } from 'react'
 
 import { Tabs } from '../src'
-import { uiCodeTheme } from './shiki-theme'
+import { getHighlighter } from './shiki-highlighter'
 
 // Examples live one folder per component (./examples/<component>/<name>.tsx), so the
 // glob is recursive; call sites still address a demo by its bare file name.
@@ -20,16 +19,26 @@ function byBasename<T>(modules: Record<string, T>) {
   return Object.fromEntries(Object.entries(modules).map(([path, mod]) => [basename(path), mod]))
 }
 
-const demos = byBasename(
-  import.meta.glob<{ default: ComponentType }>('./examples/**/*.tsx', { eager: true })
+// Loader functions, not eagerly-imported modules: a `/components/<id>` route only
+// pulls in that component's own demos (and whatever they import — recharts, the
+// syntax highlighter, …) instead of every example in the registry landing in the
+// one chunk every page loads first.
+const demoLoaders = byBasename(
+  import.meta.glob<{ default: ComponentType }>('./examples/**/*.tsx')
 )
-const sources = byBasename(
-  import.meta.glob<string>('./examples/**/*.tsx', {
-    query: '?raw',
-    import: 'default',
-    eager: true,
-  })
+const sourceLoaders = byBasename(
+  import.meta.glob<string>('./examples/**/*.tsx', { query: '?raw', import: 'default' })
 )
+
+const lazyDemos = new Map<string, LazyExoticComponent<ComponentType>>()
+function getDemo(name: string) {
+  let Demo = lazyDemos.get(name)
+  if (!Demo) {
+    Demo = lazy(demoLoaders[name] as () => Promise<{ default: ComponentType }>)
+    lazyDemos.set(name, Demo)
+  }
+  return Demo
+}
 
 // The examples import from the library source; show the package name instead so
 // the snippet reads the way a consumer would write it.
@@ -37,33 +46,39 @@ function presentSource(source: string) {
   return source.replace(/(['"])(?:\.\.\/)+src\1/g, "'@habibmustafa/ui'").trim()
 }
 
-function useHighlighted(source: string) {
-  const [html, setHtml] = useState('')
+function useHighlightedSource(name: string) {
+  const [state, setState] = useState<{ source: string; html: string } | null>(null)
 
   useEffect(() => {
     let active = true
+    setState(null)
 
-    codeToHtml(source, { lang: 'tsx', theme: uiCodeTheme }).then((result) => {
-      if (active) setHtml(result)
+    const loadSource = sourceLoaders[name]
+    if (!loadSource) return
+
+    Promise.all([loadSource(), getHighlighter()]).then(([raw, highlighter]) => {
+      if (!active) return
+      const source = presentSource(raw)
+      setState({ source, html: highlighter.codeToHtml(source, { lang: 'tsx', theme: 'ui' }) })
     })
 
     return () => {
       active = false
     }
-  }, [source])
+  }, [name])
 
-  return html
+  return state
 }
 
-function CodeTab({ source }: { source: string }) {
-  const html = useHighlighted(source)
+function CodeTab({ name }: { name: string }) {
+  const state = useHighlightedSource(name)
 
   return (
     <div className="relative w-full overflow-hidden rounded-md border bg-surface-75/75">
-      <CopyButton value={source} />
+      <CopyButton value={state?.source ?? ''} />
       <div
         className="code-content max-h-[650px] overflow-x-auto px-4 py-4 font-mono text-sm [&_pre]:my-0 [&_pre]:bg-transparent!"
-        dangerouslySetInnerHTML={{ __html: html }}
+        dangerouslySetInnerHTML={{ __html: state?.html ?? '' }}
       />
     </div>
   )
@@ -122,16 +137,17 @@ export function ComponentPreview({
   /** Paired examples show the props-driven preview and separate source tabs. */
   codeVariants?: ComponentPreviewCodeVariant[]
 }) {
-  const Demo = demos[name]?.default
   const variants = codeVariants ?? [{ id: 'code', label: 'Code', name }]
 
-  if (!Demo) {
+  if (!demoLoaders[name]) {
     return (
       <p className="text-sm text-destructive">
         Missing example: <code className="font-mono">{name}.tsx</code>
       </p>
     )
   }
+
+  const Demo = getDemo(name)
 
   // Anchor for the page-contents nav, which derives the same id from the same label.
   const slug = label ? previewAnchor(label) : undefined
@@ -154,12 +170,14 @@ export function ComponentPreview({
         </Tabs.List>
 
         <Tabs.Content value="preview">
-          <PreviewPane Demo={Demo} />
+          <Suspense fallback={<div className="min-h-64" />}>
+            <PreviewPane Demo={Demo} />
+          </Suspense>
         </Tabs.Content>
 
         {variants.map((variant) => (
           <Tabs.Content key={variant.id} value={variant.id}>
-            <CodeTab source={presentSource(sources[variant.name] ?? '')} />
+            <CodeTab name={variant.name} />
           </Tabs.Content>
         ))}
       </Tabs.Root>

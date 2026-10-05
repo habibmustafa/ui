@@ -1,6 +1,6 @@
 {
   "name": "@habibmustafa/ui",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "React component library built on React 19, Tailwind CSS v4 and Radix, with hybrid props-driven and compound APIs.",
   "keywords": [
     "react",
@@ -25,6 +25,9 @@
     "access": "public"
   },
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
   "sideEffects": [
     "**/*.css"
   ],
@@ -43,11 +46,13 @@
   "files": [
     "dist",
     "LICENSE",
+    "CHANGELOG.md",
     "THIRD-PARTY-NOTICES.md"
   ],
   "scripts": {
     "dev": "vite",
     "build:lib": "tsc -b && vite build",
+    "build:playground": "vite build --config vite.playground.config.ts",
     "lint": "oxlint",
     "preview": "vite preview",
     "check:classes": "node scripts/check-classes.mjs",

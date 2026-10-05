@@ -1,7 +1,6 @@
 # Hibrid API — cari texniki qaydalar
 
-Bu sənəd hibrid komponenti dəyişəndə istifadə olunur. Ümumi qaydalar `CONTRIBUTING.md`-də, cari
-Mövcud
+Bu sənəd hibrid komponenti dəyişəndə istifadə olunur. Mövcud
 `dialog.tsx`/`dialog-parts.tsx` və
 `dialog-demo.tsx`/`dialog-props-demo.tsx` cütü işlək istinaddır.
 
