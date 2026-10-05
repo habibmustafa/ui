@@ -12,6 +12,8 @@ React 19, TypeScript, Tailwind CSS v4 və Radix üzərində qurulmuş komponent 
 və 18 fragment, OKLCH token sistemi və seçilmiş komponentlərdə həm **props-driven**, həm də
 **compound** API.
 
+**[Canlı playground →](https://ui.habibmustafa.me)**
+
 ```sh
 npm i @habibmustafa/ui
 ```
@@ -110,7 +112,7 @@ npm install
 npm run dev
 ```
 
-Playground: http://localhost:3000.
+Lokal playground: http://localhost:3000 (canlı versiya: [ui.habibmustafa.me](https://ui.habibmustafa.me)).
 
 ```sh
 npm run verify     # build, tip, lint, class və canlı token yoxlaması
