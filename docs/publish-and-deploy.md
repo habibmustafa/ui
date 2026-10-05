@@ -181,15 +181,22 @@ kök-səbəbli problemlər idi. Əgər gələcəkdə oxşar xəta görsən, əvv
 
 4. **Publish workflow `npm error code ENEEDAUTH / need auth` ilə uğursuz olur**
    → `NODE_AUTH_TOKEN`/`NPM_TOKEN` boş və ya yanlışdır. Yoxla:
-   - npmjs.com-dakı token-in **tipi** "Automation" (və ya Granular Access Token-dirsə,
-     bu paket üçün "Read and write" icazəsi) olmalıdır — "Read-only" ilə publish olmaz.
    - GitHub-da secret-in adı dəqiq **`NPM_TOKEN`** (böyük-kiçik hərf fərqlidir) və
      **Repository secrets**-də olmalıdır, "Environment secrets" yox (workflow-da
      `environment:` təyin olunmayıb).
    - Token vaxtı keçməyib/silinməyib.
-   Həll: npmjs.com-da yeni "Automation" token yarat → GitHub-da `NPM_TOKEN`
-   secret-ini **Update** et → release-i yenidən tetiklə (§2-dəki "tag-i sil,
-   yenidən yarat" addımı).
+   - Token tipi düzgündür (bax aşağıda, item 5) — növbəti xəta elə budur.
+
+5. **Publish workflow `npm error code EOTP — one-time password` ilə uğursuz olur**
+   → Token "Automation" tipli deyil. npmjs.com indi defolt olaraq **Granular
+   Access Token** təklif edir — bu, "Read and write" icazəsi versən belə, hesabın
+   2FA-"writes üçün də tələb olunur" ayarını BYPASS ETMİR, ona görə CI-də OTP
+   istəyir (CI-də kod daxil etmək mümkün deyil, publish sınır).
+   Yalnız **Classic token, "Automation" tipi** CI-dən OTP-siz publish üçün
+   nəzərdə tutulub. Həll: npmjs.com → profil → Access Tokens →
+   "Generate New Token" → **Classic Token** (Granular Access Token YOX) →
+   **Automation** seç → GitHub-da `NPM_TOKEN` secret-ini yenilə → release-i
+   yenidən tetiklə (§2-dəki "tag-i sil, yenidən yarat" addımı).
 
    **Ümumi dərs**: istənilən kod `toLocaleString`, `localeCompare`,
    `Intl.*`, saat zonası və ya locale-dən asılı nəticə verirsə, lokal maşın
