@@ -6,4 +6,11 @@ command = "npm run build:playground"
 
 [assets]
 directory = "./playground-dist"
-not_found_handling = "single-page-application"
+# "single-page-application" triggers a false-positive "infinite loop" rejection
+# from Cloudflare's _redirects validator for this project (code 100324) even
+# with no _redirects file in the upload -- it seems to come from Cloudflare's
+# own internal translation of that setting, not anything we control. "404-page"
+# sidesteps it: build:playground copies index.html to 404.html, so any
+# unmatched path still serves the app shell (client router takes over from
+# window.location.pathname), just with a 404 status instead of 200.
+not_found_handling = "404-page"
