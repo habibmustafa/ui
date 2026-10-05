@@ -24,10 +24,19 @@ Bu fayl `docs/` qovluğundadır — npm paketinin içinə girmir (`package.json`
 
 ### Bir dəfəlik qurulmuş şeylər (artıq hazırdır, təkrar etməyə ehtiyac yoxdur)
 
-- **`NPM_TOKEN` GitHub secret-i** — npmjs.com-da "Automation" tipli token yaradılıb,
-  GitHub-da `Settings → Secrets and variables → Actions` bölməsinə əlavə edilib.
-  Token-i itirsən/dəyişsən: npmjs.com → Access Tokens → yeni yarat → GitHub-da
-  həmin secret-i yenilə.
+- **Trusted Publishing (OIDC)** — `NPM_TOKEN` secret-i YOXDUR, lazım da deyil.
+  npmjs.com-da paketin **Settings → Trusted Publisher** bölməsində GitHub
+  provayderi əlavə edilib: repo `habibmustafa/ui`, workflow faylı
+  `.github/workflows/publish.yml`. GitHub Actions hər run-da OIDC vasitəsilə
+  öz kimliyini sübut edir, npm bunu həmin qeydlə tutuşdurur — token saxlamağa,
+  rotasiya etməyə, "hansı tip token?" sualına ehtiyac qalmır.
+  - Əgər bunu YENİDƏN qurmaq lazım olsa (məs. repo adı dəyişsə): npmjs.com →
+    `npmjs.com/package/@habibmustafa/ui` → Settings → Trusted Publisher →
+    GitHub → Repository: `habibmustafa/ui`, Workflow filename: `publish.yml`.
+  - `publish.yml`-də `permissions.id-token: write` olmalıdır (bu, OIDC üçün
+    tələb olunur) və `npm install -g npm@latest` addımı saxlanmalıdır (OIDC
+    trusted publishing npm CLI ≥11.5.1 tələb edir, `setup-node`-un
+    bağladığı npm adətən köhnədir).
 - **`.github/workflows/publish.yml`** — GitHub Release yaradılanda avtomatik işə düşür:
   ```yaml
   on:
@@ -179,31 +188,21 @@ kök-səbəbli problemlər idi. Əgər gələcəkdə oxşar xəta görsən, əvv
      `metric-card-parts.tsx`) YOX, çünki o, real kitabxana davranışıdır,
      test artefaktı deyil.
 
-4. **Publish workflow `npm error code ENEEDAUTH / need auth` ilə uğursuz olur**
-   → `NODE_AUTH_TOKEN`/`NPM_TOKEN` boş və ya yanlışdır. Yoxla:
-   - GitHub-da secret-in adı dəqiq **`NPM_TOKEN`** (böyük-kiçik hərf fərqlidir) və
-     **Repository secrets**-də olmalıdır, "Environment secrets" yox (workflow-da
-     `environment:` təyin olunmayıb).
-   - Token vaxtı keçməyib/silinməyib.
-   - Token tipi düzgündür (bax aşağıda, item 5) — növbəti xəta elə budur.
-
-5. **Publish workflow `npm error code EOTP — one-time password` ilə uğursuz olur**
-   → Token "Automation" tipli deyil. npmjs.com indi defolt olaraq **Granular
-   Access Token** təklif edir — bu, "Read and write" icazəsi versən belə, hesabın
-   2FA-"writes üçün də tələb olunur" ayarını BYPASS ETMİR, ona görə CI-də OTP
-   istəyir (CI-də kod daxil etmək mümkün deyil, publish sınır).
-   Yalnız **Classic token, "Automation" tipi** CI-dən OTP-siz publish üçün
-   nəzərdə tutulub. Həll: npmjs.com → profil → Access Tokens →
-   "Generate New Token" → **Classic Token** (Granular Access Token YOX) →
-   **Automation** seç → GitHub-da `NPM_TOKEN` secret-ini yenilə → release-i
-   yenidən tetiklə (§2-dəki "tag-i sil, yenidən yarat" addımı).
-
    **Ümumi dərs**: istənilən kod `toLocaleString`, `localeCompare`,
    `Intl.*`, saat zonası və ya locale-dən asılı nəticə verirsə, lokal maşın
    (Windows) və CI (Linux, UTC, en-US-vari locale) arasında FƏRQLİ nəticə verə
    bilər — hətta eyni `package-lock.json`, eyni Node versiyası olsa belə.
    Test/golden-snapshot kodunda bunları ya tamam sil (atribut sırası kimi mənasız
    yerdə), ya da aydın şəkildə pin et (TZ, locale).
+
+4. **Publish workflow `npm error code ENEEDAUTH` və ya `EOTP` ilə uğursuz olur**
+   → Bu, `NPM_TOKEN` secret-dən istifadə edəndə rastlaşdığımız problem idi
+   (token tipi "Granular Access Token" idi, 2FA-writes ayarını bypass etmirdi,
+   CI-də OTP istəyirdi). Həlli token-i düzəltmək YOX, bütün token sistemindən
+   **Trusted Publishing**-ə keçmək oldu (yuxarıda §2-dəki "Bir dəfəlik qurulmuş
+   şeylər"). İndi `publish.yml`-də `NODE_AUTH_TOKEN`/`NPM_TOKEN` heç yoxdur —
+   bu xətaları YENİDƏN görsən, deməli kimsə workflow-u token-based formaya
+   geri qaytarıb, ya da npmjs.com-dakı Trusted Publisher qeydini silib/dəyişib.
 
 ---
 
