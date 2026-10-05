@@ -8,6 +8,10 @@
 // - `data-slot` is allowed to grow freely during the hybrid migration (see
 //   docs/hybrid-api-migration.md §2) and is not part of the fidelity contract.
 // - Attribute order is not meaningful; sorting it removes noise unrelated to markup shape.
+// - `xmlns` on inline SVGs (lucide icons, mostly) is dropped rather than just sorted:
+//   jsdom doesn't consistently preserve its position across platforms even after a
+//   remove+re-add round-trip (observed matching on Windows, reordered on Linux CI),
+//   and the attribute carries no information a snapshot diff should care about here.
 const RADIX_ID_PATTERN = /(?:radix-)?_r_[a-z0-9]+_|(?:radix-)?:r[a-z0-9]+:/gi;
 
 function sortAttributes(root: Element) {
@@ -27,6 +31,9 @@ export function normalizeMarkup(container: Element): string {
 
   for (const el of Array.from(clone.querySelectorAll("[data-slot]"))) {
     el.removeAttribute("data-slot");
+  }
+  for (const el of Array.from(clone.querySelectorAll("[xmlns]"))) {
+    el.removeAttribute("xmlns");
   }
 
   sortAttributes(clone);
