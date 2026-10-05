@@ -2,6 +2,12 @@ name: Publish
 
 # Runs when a GitHub Release is published. Tag/release version must match package.json
 # ("npm publish" refuses a mismatched or already-published version on its own).
+#
+# Uses npm Trusted Publishing (OIDC) instead of an NPM_TOKEN secret: npmjs.com is
+# configured (package settings -> Trusted Publisher) to trust this exact repo +
+# workflow file, so there's no long-lived token to leak, rotate, or get the type
+# wrong on. Requires npm CLI >= 11.5.1, hence the explicit upgrade step -- the
+# version bundled with actions/setup-node's node-version is usually older.
 on:
   release:
     types: [published]
@@ -10,7 +16,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
-      id-token: write # required for npm provenance
+      id-token: write # required for OIDC trusted publishing + provenance
       contents: read
     steps:
       - uses: actions/checkout@v4
@@ -18,8 +24,7 @@ jobs:
         with:
           node-version: 22
           registry-url: https://registry.npmjs.org
+      - run: npm install -g npm@latest
       - run: npm ci
       - run: npm run verify
       - run: npm publish --provenance
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
