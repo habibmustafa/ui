@@ -20,11 +20,11 @@ import {
 const FormSchema = z.object({
   username: z.string().min(2, { message: 'Username must be at least 2 characters.' }),
   bio: z.string().max(160).optional(),
-  role: z.string({ required_error: 'Pick a role.' }),
-  plan: z.enum(['free', 'pro', 'team'], { required_error: 'Pick a plan.' }),
-  renewalDate: z.date({ required_error: 'Pick a renewal date.' }),
+  role: z.string({ error: 'Pick a role.' }),
+  plan: z.enum(['free', 'pro', 'team'], { error: 'Pick a plan.' }),
+  renewalDate: z.date({ error: 'Pick a renewal date.' }),
   notifications: z.boolean(),
-  terms: z.literal(true, { errorMap: () => ({ message: 'You must accept the terms.' }) }),
+  terms: z.literal(true, { error: 'You must accept the terms.' }),
 })
 
 export default function FormFieldsDemo() {

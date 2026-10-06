@@ -14,7 +14,7 @@ import { Button, Calendar, DatePicker, Form, FormControl, FormDescription, FormF
 
 const FormSchema = z.object({
   dob: z.date({
-    required_error: 'A date of birth is required.',
+    error: 'A date of birth is required.',
   }),
 })
 
