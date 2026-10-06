@@ -36,7 +36,7 @@ export default function DatePickerWithRange({ className }: React.HTMLAttributes<
         </DatePicker.Trigger>
         <DatePicker.Content>
           <Calendar
-            initialFocus
+            autoFocus
             mode="range"
             defaultMonth={date?.from}
             selected={date}

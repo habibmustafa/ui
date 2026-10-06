@@ -9,6 +9,9 @@
   `ChartLegendContent` keep their props; their `payload`/`label` types now come from
   Recharts 3 (`TooltipContentProps`, `LegendPayload`). Custom chart code written against
   Recharts 2 may need the [Recharts 3 migration](https://github.com/recharts/recharts/wiki/3.x-migration-guide).
+- **Breaking (dependencies):** `react-day-picker` 9 → 10. `Calendar` (and
+  `DatePicker`'s `calendarProps`) no longer accept the long-deprecated `initialFocus`;
+  use `autoFocus` instead.
 - `Select` (props mode with `options`/`groups`) now forwards `id`, `aria-label`,
   `aria-labelledby`, `aria-describedby` and `aria-invalid` to its trigger. Previously
   they went to Radix's Root, which renders no element, so a `<label htmlFor>` — and

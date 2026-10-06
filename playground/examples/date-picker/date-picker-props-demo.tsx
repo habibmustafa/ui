@@ -13,7 +13,7 @@ export default function DatePickerPropsDemo() {
     <DatePicker
       triggerLabel={date ? dayjs(date).format('MMMM D, YYYY') : undefined}
       buttonProps={{ className: 'w-[280px]' }}
-      calendarProps={{ mode: 'single', selected: date, onSelect: setDate, initialFocus: true }}
+      calendarProps={{ mode: 'single', selected: date, onSelect: setDate, autoFocus: true }}
     />
   )
 }
