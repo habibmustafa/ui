@@ -35,6 +35,7 @@ import {
   Link as LinkIcon,
   ListChecks,
   ListFilter,
+  ListOrdered,
   Loader,
   Loader2,
   Menu,
@@ -659,6 +660,17 @@ const atoms: ComponentEntry[] = [
     ],
   },
   {
+    id: 'number-input',
+    title: 'Number Input',
+    icon: Hash,
+    description:
+      'Numeric spinbutton with − / + buttons, min/max/step clamping, ↑/↓, PageUp/PageDown and Home/End.',
+    previews: [
+      { name: 'number-input-demo', label: 'Default' },
+      { name: 'number-input-formatted', label: 'Formatting & states' },
+    ],
+  },
+  {
     id: 'pagination',
     title: 'Pagination',
     icon: ChevronsLeftRight,
@@ -931,6 +943,16 @@ const atoms: ComponentEntry[] = [
       { name: 'sonner-demo', label: 'Default' },
       { name: 'sonner-types', label: 'Types' },
       { name: 'sonner-upload', label: 'Upload' },
+    ],
+  },
+  {
+    id: 'stepper',
+    title: 'Stepper',
+    icon: ListOrdered,
+    description: 'Progress through a fixed sequence of steps; completed steps can be made clickable.',
+    previews: [
+      { name: 'stepper-demo', label: 'Horizontal' },
+      { name: 'stepper-vertical', label: 'Vertical' },
     ],
   },
   {
@@ -1319,6 +1341,17 @@ const fragments: ComponentEntry[] = [
           { id: 'compound', label: 'Compound', name: 'multi-select-without-icon' },
         ],
       },
+    ],
+  },
+  {
+    id: 'combobox',
+    title: 'Combobox',
+    icon: ChevronsUpDown,
+    description:
+      'Searchable single-value select: Select-styled trigger, Popover + Command list, options or groups.',
+    previews: [
+      { name: 'combobox-demo', label: 'Default' },
+      { name: 'combobox-groups', label: 'Groups' },
     ],
   },
   {
