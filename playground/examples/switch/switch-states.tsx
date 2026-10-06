@@ -3,10 +3,10 @@ import { Switch } from '../../../src'
 export default function SwitchStates() {
   return (
     <>
-      <Switch />
-      <Switch defaultChecked />
-      <Switch disabled />
-      <Switch disabled defaultChecked />
+      <Switch aria-label="Off" />
+      <Switch defaultChecked aria-label="On" />
+      <Switch disabled aria-label="Disabled, off" />
+      <Switch disabled defaultChecked aria-label="Disabled, on" />
     </>
   )
 }

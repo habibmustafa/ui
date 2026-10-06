@@ -4,6 +4,7 @@ export default function SelectScrollablePropsDemo() {
   return (
     <Select
       className="w-[280px]"
+      aria-label="Timezone"
       placeholder="Select a timezone"
       groups={[
         {

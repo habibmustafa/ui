@@ -9,14 +9,14 @@ export default function MultiSelectDemo() {
   return (
     <div className="flex flex-col items-center gap-4">
       <div className="flex items-center gap-2">
-        <Button size="tiny" onClick={() => setLimit(limit - 1)} disabled={limit < 1}>
-          <Minus size={12} />
+        <Button size="tiny" onClick={() => setLimit(limit - 1)} disabled={limit < 1} aria-label="Decrease limit">
+          <Minus size={12} aria-hidden="true" />
         </Button>
         <span className="text-sm text-foreground/90 peer-checked:line-through font-semibold hover:cursor-pointer">
           Limit: {limit}
         </span>
-        <Button size="tiny" onClick={() => setLimit(limit + 1)}>
-          <Plus size={12} />
+        <Button size="tiny" onClick={() => setLimit(limit + 1)} aria-label="Increase limit">
+          <Plus size={12} aria-hidden="true" />
         </Button>
       </div>
       <MultiSelector.Root values={selectedValues} onValuesChange={setSelectedValues}>

@@ -9,6 +9,7 @@ export default function SelectSizesPropsDemo() {
           size={size}
           placeholder={size}
           className="max-w-xs"
+          aria-label={`${size} select`}
           options={[
             { value: 'a', label: 'Option A' },
             { value: 'b', label: 'Option B' },

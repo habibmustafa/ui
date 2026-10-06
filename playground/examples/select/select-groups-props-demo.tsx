@@ -5,6 +5,7 @@ export default function SelectGroupsPropsDemo() {
     <Select
       defaultValue="postgres"
       className="max-w-xs"
+      aria-label="Database"
       placeholder="Pick a database"
       groups={[
         {

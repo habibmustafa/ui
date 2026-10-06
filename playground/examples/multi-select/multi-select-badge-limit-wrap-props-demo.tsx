@@ -29,12 +29,12 @@ export default function MultiSelectBadgeLimitWrapPropsDemo() {
   return (
     <div className="flex flex-col items-center gap-4">
       <div className="flex items-center gap-2">
-        <Button size="tiny" onClick={() => setLimit((value) => value - 1)} disabled={limit < 1}>
-          <Minus size={12} />
+        <Button size="tiny" onClick={() => setLimit((value) => value - 1)} disabled={limit < 1} aria-label="Decrease limit">
+          <Minus size={12} aria-hidden="true" />
         </Button>
         <span className="text-sm font-semibold text-foreground/90">Limit: {limit}</span>
-        <Button size="tiny" onClick={() => setLimit((value) => value + 1)}>
-          <Plus size={12} />
+        <Button size="tiny" onClick={() => setLimit((value) => value + 1)} aria-label="Increase limit">
+          <Plus size={12} aria-hidden="true" />
         </Button>
       </div>
       <MultiSelector
