@@ -49,6 +49,10 @@ export const CLICK_TO_OPEN = new Set([
   "dropdown-menu-checkboxes-props-demo",
   "dropdown-menu-radio-group-demo",
   "dropdown-menu-radio-group-props-demo",
+  "menubar-demo",
+  "menubar-props-demo",
+  "navigation-menu-demo",
+  "navigation-menu-props-demo",
 ]);
 export const HOVER_TO_OPEN = new Set([
   "tooltip-demo",

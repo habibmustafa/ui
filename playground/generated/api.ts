@@ -3306,6 +3306,415 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       }
     ]
   },
+  "menubar": {
+    "source": "src/components/atoms/navigation/menubar",
+    "components": [
+      {
+        "name": "Menubar",
+        "props": [
+          {
+            "name": "menus",
+            "type": "readonly MenubarMenuData[]"
+          },
+          {
+            "name": "classNames",
+            "type": "MenubarClassNames"
+          }
+        ],
+        "extends": [
+          {
+            "name": "MenubarProps",
+            "package": "@radix-ui/react-menubar"
+          },
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "MenubarRoot",
+        "alias": "Menubar.Root",
+        "props": [],
+        "extends": [
+          {
+            "name": "MenubarProps",
+            "package": "@radix-ui/react-menubar"
+          },
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "MenubarTrigger",
+        "alias": "Menubar.Trigger",
+        "props": [],
+        "extends": [
+          {
+            "name": "ButtonHTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "MenubarContent",
+        "alias": "Menubar.Content",
+        "props": [],
+        "extends": [
+          {
+            "name": "MenuContentProps",
+            "package": "@radix-ui/react-menu"
+          },
+          {
+            "name": "PopperContentProps",
+            "package": "@radix-ui/react-popper"
+          },
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "MenubarItem",
+        "alias": "Menubar.Item",
+        "props": [
+          {
+            "name": "inset",
+            "type": "boolean"
+          }
+        ],
+        "extends": [
+          {
+            "name": "MenuItemProps",
+            "package": "@radix-ui/react-menu"
+          },
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "MenubarCheckboxItem",
+        "alias": "Menubar.CheckboxItem",
+        "props": [],
+        "extends": [
+          {
+            "name": "MenuCheckboxItemProps",
+            "package": "@radix-ui/react-menu"
+          },
+          {
+            "name": "MenuItemProps",
+            "package": "@radix-ui/react-menu"
+          },
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "MenubarRadioGroup",
+        "alias": "Menubar.RadioGroup",
+        "props": [],
+        "extends": [
+          {
+            "name": "MenuRadioGroupProps",
+            "package": "@radix-ui/react-menu"
+          },
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "MenubarRadioItem",
+        "alias": "Menubar.RadioItem",
+        "props": [],
+        "extends": [
+          {
+            "name": "MenuItemProps",
+            "package": "@radix-ui/react-menu"
+          },
+          {
+            "name": "MenuRadioItemProps",
+            "package": "@radix-ui/react-menu"
+          },
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "MenubarLabel",
+        "alias": "Menubar.Label",
+        "props": [
+          {
+            "name": "inset",
+            "type": "boolean"
+          }
+        ],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "MenubarSeparator",
+        "alias": "Menubar.Separator",
+        "props": [],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "MenubarShortcut",
+        "alias": "Menubar.Shortcut",
+        "props": [],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "MenubarGroup",
+        "alias": "Menubar.Group",
+        "props": [],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "MenubarPortal",
+        "alias": "Menubar.Portal",
+        "props": [],
+        "extends": [
+          {
+            "name": "MenuPortalProps",
+            "package": "@radix-ui/react-menu"
+          }
+        ]
+      },
+      {
+        "name": "MenubarSub",
+        "alias": "Menubar.Sub",
+        "props": [],
+        "extends": [
+          {
+            "name": "MenubarSubProps",
+            "package": "@radix-ui/react-menubar"
+          }
+        ]
+      },
+      {
+        "name": "MenubarSubTrigger",
+        "alias": "Menubar.SubTrigger",
+        "props": [
+          {
+            "name": "inset",
+            "type": "boolean"
+          }
+        ],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "MenubarSubContent",
+        "alias": "Menubar.SubContent",
+        "props": [],
+        "extends": [
+          {
+            "name": "MenuSubContentProps",
+            "package": "@radix-ui/react-menu"
+          },
+          {
+            "name": "PopperContentProps",
+            "package": "@radix-ui/react-popper"
+          },
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      }
+    ]
+  },
+  "navigation-menu": {
+    "source": "src/components/atoms/navigation/navigation-menu",
+    "components": [
+      {
+        "name": "NavigationMenu",
+        "props": [
+          {
+            "name": "viewport",
+            "type": "boolean",
+            "default": "true",
+            "description": "Render the shared, resizing Viewport."
+          },
+          {
+            "name": "items",
+            "type": "readonly NavigationMenuItemData[]"
+          },
+          {
+            "name": "classNames",
+            "type": "NavigationMenuClassNames"
+          }
+        ],
+        "extends": [
+          {
+            "name": "NavigationMenuProps",
+            "package": "@radix-ui/react-navigation-menu"
+          },
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "NavigationMenuRoot",
+        "alias": "NavigationMenu.Root",
+        "props": [
+          {
+            "name": "viewport",
+            "type": "boolean",
+            "default": "true",
+            "description": "Render the shared, resizing Viewport."
+          }
+        ],
+        "extends": [
+          {
+            "name": "NavigationMenuProps",
+            "package": "@radix-ui/react-navigation-menu"
+          },
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "NavigationMenuList",
+        "alias": "NavigationMenu.List",
+        "props": [],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "NavigationMenuItem",
+        "alias": "NavigationMenu.Item",
+        "props": [],
+        "extends": [
+          {
+            "name": "NavigationMenuItemProps",
+            "package": "@radix-ui/react-navigation-menu"
+          },
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "NavigationMenuTrigger",
+        "alias": "NavigationMenu.Trigger",
+        "props": [],
+        "extends": [
+          {
+            "name": "ButtonHTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "NavigationMenuContent",
+        "alias": "NavigationMenu.Content",
+        "props": [],
+        "extends": [
+          {
+            "name": "DismissableLayerProps",
+            "package": "@radix-ui/react-dismissable-layer"
+          },
+          {
+            "name": "NavigationMenuContentProps",
+            "package": "@radix-ui/react-navigation-menu"
+          },
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "NavigationMenuLink",
+        "alias": "NavigationMenu.Link",
+        "props": [],
+        "extends": [
+          {
+            "name": "NavigationMenuLinkProps",
+            "package": "@radix-ui/react-navigation-menu"
+          },
+          {
+            "name": "AnchorHTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "NavigationMenuIndicator",
+        "alias": "NavigationMenu.Indicator",
+        "props": [],
+        "extends": [
+          {
+            "name": "NavigationMenuIndicatorProps",
+            "package": "@radix-ui/react-navigation-menu"
+          },
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "NavigationMenuViewport",
+        "alias": "NavigationMenu.Viewport",
+        "props": [],
+        "extends": [
+          {
+            "name": "NavigationMenuViewportProps",
+            "package": "@radix-ui/react-navigation-menu"
+          },
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      }
+    ]
+  },
   "pagination": {
     "source": "src/components/atoms/navigation/pagination",
     "components": [

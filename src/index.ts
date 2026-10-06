@@ -47,6 +47,8 @@ export * from './components/atoms/layout/stack'
 
 export * from './components/atoms/navigation/breadcrumb'
 export * from './components/atoms/navigation/command'
+export * from './components/atoms/navigation/menubar'
+export * from './components/atoms/navigation/navigation-menu'
 export * from './components/atoms/navigation/pagination'
 export * from './components/atoms/navigation/sidebar'
 export * from './components/atoms/navigation/stepper'

@@ -15,6 +15,7 @@ import {
   ChevronsUpDown,
   CircleDot,
   CircleUser,
+  Compass,
   Clock,
   Code,
   Columns3,
@@ -657,6 +658,38 @@ const atoms: ComponentEntry[] = [
     description: 'Radix label bound to a control; dims when its peer is disabled.',
     previews: [
       { name: 'label-demo' },
+    ],
+  },
+  {
+    id: 'menubar',
+    title: 'Menubar',
+    icon: Menu,
+    description:
+      'Desktop-app style menu bar (Radix Menubar) with DropdownMenu styling; `menus` takes the same MenuItem[] as DropdownMenu.',
+    previews: [
+      {
+        name: 'menubar-props-demo',
+        codeVariants: [
+          { id: 'props', label: 'Props-driven', name: 'menubar-props-demo' },
+          { id: 'compound', label: 'Compound', name: 'menubar-demo' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'navigation-menu',
+    title: 'Navigation Menu',
+    icon: Compass,
+    description:
+      'Site navigation (Radix NavigationMenu): links and panels of links sharing one resizing viewport.',
+    previews: [
+      {
+        name: 'navigation-menu-props-demo',
+        codeVariants: [
+          { id: 'props', label: 'Props-driven', name: 'navigation-menu-props-demo' },
+          { id: 'compound', label: 'Compound', name: 'navigation-menu-demo' },
+        ],
+      },
     ],
   },
   {
