@@ -20,6 +20,8 @@
 - **Breaking (dependencies):** `react-day-picker` 9 → 10. `Calendar` (and
   `DatePicker`'s `calendarProps`) no longer accept the long-deprecated `initialFocus`;
   use `autoFocus` instead.
+- `framer-motion` 11 → 14 (used internally for `FormMessage` and the DatePicker view
+  cross-fade; no API change).
 - `Select` (props mode with `options`/`groups`) now forwards `id`, `aria-label`,
   `aria-labelledby`, `aria-describedby` and `aria-invalid` to its trigger. Previously
   they went to Radix's Root, which renders no element, so a `<label htmlFor>` — and
