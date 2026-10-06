@@ -5,71 +5,24 @@
 // component is split into -parts.tsx + hybrid file, its existing snapshot here
 // must stay byte-identical — that's what proves the compound API rendered the
 // same DOM before and after the refactor.
+//
+// Intentional baseline changes (not hybrid refactors), recorded here per the rule above:
+// - multi-select-*: the trigger gained aria-label/aria-haspopup/aria-expanded (and
+//   aria-controls while open) — it was a role="combobox" with no name or state.
+// - form-fields-demo: FormSelect's trigger now carries FormControl's id/aria-describedby/
+//   aria-invalid, so its <label> actually labels it (Select's props mode used to drop them).
 import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import type { ComponentType } from "react";
 import { describe, expect, test } from "vitest";
 import { normalizeMarkup } from "./normalize";
-import { ThemeProvider } from "../../src/providers";
-
-// Playground examples normally render under main.tsx's <ThemeProvider>. Most don't need it,
-// but a fragment can call useTheme() directly (CodeBlock does, matching upstream's own
-// next-themes usage) — wrapping here keeps every example renderable in isolation.
-function withTheme(Example: ComponentType) {
-  return (
-    <ThemeProvider>
-      <Example />
-    </ThemeProvider>
-  );
-}
-
-const modules = import.meta.glob<{ default: ComponentType }>(
-  "../../playground/examples/**/*.tsx",
-  { eager: true },
-);
-
-// True overlay/portal examples get an additional open-state snapshot, per §8.1.
-// Everything else (forms, static display, non-portal composites) only needs the
-// closed/default-render snapshot below.
-const CLICK_TO_OPEN = new Set([
-  "alert-dialog-demo",
-  "alert-dialog-props-demo",
-  "alert-dialog-destructive",
-  "alert-dialog-destructive-props-demo",
-  "alert-dialog-warning",
-  "alert-dialog-warning-props-demo",
-  "alert-dialog-close-only",
-  "alert-dialog-close-only-props-demo",
-  "alert-dialog-async",
-  "alert-dialog-async-props-demo",
-  "alert-dialog-async-error",
-  "alert-dialog-async-error-props-demo",
-  "dialog-demo",
-  "dialog-props-demo",
-  "sheet-demo",
-  "sheet-props-demo",
-  "drawer-demo",
-  "drawer-props-demo",
-  "popover-demo",
-  "popover-props-demo",
-  "dropdown-menu-demo",
-  "dropdown-menu-props-demo",
-  "dropdown-menu-checkboxes-demo",
-  "dropdown-menu-checkboxes-props-demo",
-  "dropdown-menu-radio-group-demo",
-  "dropdown-menu-radio-group-props-demo",
-]);
-const HOVER_TO_OPEN = new Set([
-  "tooltip-demo",
-  "tooltip-props-demo",
-  "hover-card-demo",
-  "hover-card-props-demo",
-]);
-const OPEN_ROLE_SELECTOR = '[role="dialog"], [role="menu"], [role="tooltip"], [data-state="open"]';
-
-function exampleName(path: string) {
-  return path.split("/").pop()!.replace(/\.tsx$/, "");
-}
+import {
+  CLICK_TO_OPEN,
+  HOVER_TO_OPEN,
+  OPEN_ROLE_SELECTOR,
+  exampleName,
+  exampleModules as modules,
+  withTheme,
+} from "../examples";
 
 describe("golden markup", () => {
   for (const [path, mod] of Object.entries(modules)) {
