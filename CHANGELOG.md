@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+- `Select` (props mode with `options`/`groups`) now forwards `id`, `aria-label`,
+  `aria-labelledby`, `aria-describedby` and `aria-invalid` to its trigger. Previously
+  they went to Radix's Root, which renders no element, so a `<label htmlFor>` — and
+  `FormSelect`'s own label, description and error state — never reached the control.
+- `MultiSelector.Trigger` is now a complete combobox: `aria-label` from `label`,
+  `aria-haspopup="listbox"`, `aria-expanded`, and `aria-controls` pointing at the open
+  content.
+
 ## 0.2.0
 
 - Fixed a build bug: `vite.config.ts`'s `external` list only matched bare package

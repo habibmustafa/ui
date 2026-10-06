@@ -1737,6 +1737,27 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "classNames",
             "type": "SelectClassNames"
+          },
+          {
+            "name": "id",
+            "type": "string",
+            "description": "Forwarded to the trigger — the focusable combobox — so a `<label htmlFor>` or\nFormControl can name and describe it. Radix's Root renders no element of its own."
+          },
+          {
+            "name": "aria-label",
+            "type": "string"
+          },
+          {
+            "name": "aria-labelledby",
+            "type": "string"
+          },
+          {
+            "name": "aria-describedby",
+            "type": "string"
+          },
+          {
+            "name": "aria-invalid",
+            "type": "boolean | \"true\" | \"false\" | \"grammar\" | \"spelling\""
           }
         ],
         "extends": [

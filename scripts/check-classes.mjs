@@ -38,6 +38,7 @@ const NOT_CLASSES = new Set([
   'aria-invalid',
   'aria-label',
   'aria-label=',
+  'aria-labelledby',
   // DropdownMenu checkbox demo: MenuItem `key` values, not classes.
   'activity-bar',
   'status-bar',

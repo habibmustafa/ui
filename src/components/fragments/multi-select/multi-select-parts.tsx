@@ -338,7 +338,7 @@ const MultiSelectorTrigger = React.forwardRef<HTMLButtonElement, MultiSelectorTr
     },
     ref
   ) => {
-    const { activeIndex, values, setInputValue, toggleValue, disabled, open, setOpen, size } =
+    const { id, activeIndex, values, setInputValue, toggleValue, disabled, open, setOpen, size } =
       useMultiSelect()
 
     const inputRef = React.useRef<HTMLButtonElement>(null)
@@ -403,6 +403,12 @@ const MultiSelectorTrigger = React.forwardRef<HTMLButtonElement, MultiSelectorTr
           disabled={disabled}
           type="button"
           role="combobox"
+          // A combobox doesn't take its name from its content (the chips), so the
+          // label has to be given explicitly; consumers can still override it.
+          aria-label={label}
+          aria-haspopup="listbox"
+          aria-expanded={open}
+          aria-controls={open ? getContentId(id) : undefined}
           className={cn(
             'flex w-full min-w-50 justify-between rounded-md border',
             'border-strong',
@@ -514,6 +520,7 @@ const MultiSelectorInputVariants = cva('', {
 })
 
 const getInputId = (id: string) => `${id}-input`
+const getContentId = (id: string) => `${id}-content`
 
 const MultiSelectorInput = React.forwardRef<
   React.ElementRef<typeof CommandInput>,
@@ -596,6 +603,7 @@ const MultiSelectorContent = React.forwardRef<HTMLDivElement, PopoverContentProp
     const { id } = useMultiSelect()
     return (
       <PopoverContent
+        id={getContentId(id)}
         align="start"
         collisionPadding={DROPDOWN_GAP}
         ref={ref}
