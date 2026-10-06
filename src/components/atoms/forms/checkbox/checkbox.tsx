@@ -18,6 +18,9 @@ const Checkbox = React.forwardRef<
       ref={ref}
       className={cn(
         'peer flex cursor-pointer items-center justify-center h-4 w-4 shrink-0 rounded-sm border border-control bg-control/25 ring-offset-background',
+        // 16px box, 24px hit area (WCAG 2.5.8): an invisible ::after extends the clickable
+        // target 4px on each side without changing the box or the layout.
+        'relative after:absolute after:-inset-1',
         'transition-colors duration-150 ease-in-out',
         'hover:border-strong',
         'focus-ring',
