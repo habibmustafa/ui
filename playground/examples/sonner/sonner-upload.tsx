@@ -72,7 +72,7 @@ export default function SonnerUpload() {
               duration: 2000,
               id: toastId,
             })
-          } catch (error) {}
+          } catch {}
         }}
       >
         Start upload

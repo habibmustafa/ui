@@ -39,7 +39,7 @@ const portalVariants = cva('fixed inset-0 z-50 flex', {
 interface SheetPortalProps
   extends SheetPrimitive.DialogPortalProps, VariantProps<typeof portalVariants> {}
 
-const SheetPortal = ({ side, children, ...props }: SheetPortalProps) => (
+const SheetPortal = ({ side: _side, children, ...props }: SheetPortalProps) => (
   <SheetPrimitive.Portal {...props}>{children}</SheetPrimitive.Portal>
 )
 SheetPortal.displayName = SheetPrimitive.Portal.displayName
@@ -47,7 +47,7 @@ SheetPortal.displayName = SheetPrimitive.Portal.displayName
 const SheetOverlay = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Overlay>,
   React.ComponentPropsWithoutRef<typeof SheetPrimitive.Overlay>
->(({ className, children, ...props }, ref) => (
+>(({ className, children: _children, ...props }, ref) => (
   <SheetPrimitive.Overlay
     className={cn(
       'fixed inset-0 z-50 bg-alternative/90 backdrop-blur-xs transition-all duration-100 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:fade-in',

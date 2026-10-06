@@ -137,7 +137,7 @@ export const CodeBlock = ({
 
   const onSelectCopy = (value?: string) => {
     if (value) {
-      if (!!handleCopy) {
+      if (handleCopy) {
         handleCopy(value)
       } else {
         copyToClipboard(value)

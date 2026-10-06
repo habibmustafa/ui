@@ -57,6 +57,8 @@ const RadioGroupCardItem = React.forwardRef<
         className
       )}
     >
+      {/* `image` was accepted but never rendered; it previews above the label. */}
+      {image}
       {children}
       <div className="flex gap-2 w-full" id={`${id}-label`}>
         {showIndicator && (

@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { useEffect, useRef, useState, type ComponentProps, type ReactNode } from 'react'
+import { useRef, useState, type ComponentProps, type ReactNode } from 'react'
 
 import { cn } from '../../../lib/utils'
 import { buttonVariants } from '../../atoms/actions/button/shadcn-button'
@@ -63,10 +63,14 @@ export function DatePickerCalendar({
   // Typing a date into the field (or any other external change to `selected`) should
   // still bring the calendar to that month — this replaces the old one-shot
   // `defaultMonth` injection now that `month` is fully controlled here.
+  // Adjusted during render (not in an effect) so the grid never shows the old month
+  // for a frame after the date changes.
   const selectedTime = calendarProps.selected?.getTime()
-  useEffect(() => {
+  const [prevSelectedTime, setPrevSelectedTime] = useState(selectedTime)
+  if (selectedTime !== prevSelectedTime) {
+    setPrevSelectedTime(selectedTime)
     if (calendarProps.selected) setDisplayMonth(calendarProps.selected)
-  }, [selectedTime])
+  }
 
   const content =
     view === 'year' ? (

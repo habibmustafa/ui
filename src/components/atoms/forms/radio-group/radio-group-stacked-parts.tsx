@@ -104,6 +104,8 @@ const RadioGroupStackedItem = React.forwardRef<
           )}
           {props.children}
         </div>
+        {/* `image` was accepted but never rendered; it sits at the trailing edge. */}
+        {image != null && <div className="ml-auto shrink-0">{image}</div>}
       </div>
     </RadioGroupPrimitive.Item>
   )
