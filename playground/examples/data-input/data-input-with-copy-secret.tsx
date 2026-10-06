@@ -6,6 +6,7 @@ export default function DataInputWithCopySecret() {
 
   return (
     <DataInput
+      aria-label="Secret key"
       containerClassName="w-full max-w-sm"
       readOnly
       copy

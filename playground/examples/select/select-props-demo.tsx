@@ -5,6 +5,7 @@ export default function SelectPropsDemo() {
     <Select
       defaultValue="postgres"
       className="max-w-xs"
+      aria-label="Database"
       placeholder="Pick a database"
       options={[
         { value: 'postgres', label: 'Postgres' },

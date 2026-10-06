@@ -25,56 +25,13 @@ const AXE_OPTIONS: axe.RunOptions = {
 };
 
 /*
- * Violations accepted on purpose, by example name → axe rule id. Each group says why.
+ * Violations accepted on purpose, by example name → axe rule id, each with the reason.
+ * Only cmdk internals remain: every demo labels its controls, so any new unlabeled
+ * control in a demo fails here.
  * Anything not listed here fails the suite, and an entry that no longer reproduces
  * fails too (see the last test) — so this list can only shrink by fixing things.
  */
-const DEMO_LEAVES_LABELLING_TO_CONSUMER =
-  "the component renders whatever accessible name it is given; this demo shows the bare control without one";
 const KNOWN: Record<string, Record<string, string>> = {
-  // Upstream demos that render an unlabeled form control.
-  ...Object.fromEntries(
-    [
-      "select-demo",
-      "select-props-demo",
-      "select-form-props-demo",
-      "select-groups",
-      "select-groups-props-demo",
-      "select-scrollable",
-      "select-scrollable-props-demo",
-      "select-sizes",
-      "select-sizes-props-demo",
-      "switch-sizes",
-      "switch-states",
-      // The +/- limit steppers are icon-only Buttons without aria-label.
-      "multi-select-badge-limit",
-      "multi-select-badge-limit-props-demo",
-      "multi-select-badge-limit-wrap",
-      "multi-select-badge-limit-wrap-props-demo",
-    ].map((name) => [name, { "button-name": DEMO_LEAVES_LABELLING_TO_CONSUMER }]),
-  ),
-  ...Object.fromEntries(
-    [
-      "data-input-demo",
-      "data-input-with-copy",
-      "data-input-with-copy-secret",
-      "data-input-with-reveal-copy-editable",
-      "data-input-with-reveal-copy-editable-empty",
-      "input-otp-demo",
-      "input-otp-props-demo",
-      "input-otp-controlled",
-      "input-otp-controlled-props-demo",
-      "input-otp-separator",
-      "input-otp-separator-props-demo",
-      "input-states",
-      "textarea-states",
-    ].map((name) => [name, { label: DEMO_LEAVES_LABELLING_TO_CONSUMER }]),
-  ),
-  "progress-demo": { "aria-progressbar-name": DEMO_LEAVES_LABELLING_TO_CONSUMER },
-  // Popover content is a role="dialog"; naming it (aria-label/-labelledby) is up to the
-  // consumer, and these demos don't.
-  "popover-demo": { "aria-dialog-name": DEMO_LEAVES_LABELLING_TO_CONSUMER },
-  "popover-props-demo": { "aria-dialog-name": DEMO_LEAVES_LABELLING_TO_CONSUMER },
   // cmdk hard-codes role="separator" (after the prop spread, so it can't be overridden)
   // inside its role="listbox" list, which ARIA doesn't allow as a listbox child.
   "command-demo": { "aria-required-children": "cmdk renders role=separator inside the listbox" },

@@ -20,6 +20,10 @@
 // - multi-select-*: the pointer-only chip × is aria-hidden, the trigger is described by a
 //   "← → then Backspace" hint (when chips are deletable), plus a polite live region that
 //   announces the picked chip.
+// - select-*, switch-*, input-states, textarea-states, input-otp-*, data-input-*,
+//   progress-demo, popover-*, multi-select-badge-limit*: the demos now label their
+//   controls (aria-label / FormControl), so the a11y suite's KNOWN list could shrink to
+//   the cmdk-only entries.
 // - chart-*, metric-card-*, drawer-*.open: Recharts 3's ResponsiveContainer adds an inner
 //   sizing <div> (jsdom never measures a size, so no chart SVG renders here either way).
 import { render, waitFor } from "@testing-library/react";
