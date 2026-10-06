@@ -61,7 +61,10 @@
     "check:api": "node scripts/generate-api.mjs --check",
     "test": "vitest run",
     "prepublishOnly": "npm run build:lib",
-    "verify": "npm run build:lib && npm run lint && npm run check:classes && npm run check:tokens && npm run check:api && npm run test"
+    "verify": "npm run build:lib && npm run lint && npm run check:classes && npm run check:tokens && npm run check:api && npm run test",
+    "changeset": "changeset",
+    "version-packages": "changeset version && npm install --package-lock-only",
+    "release": "npm run verify && changeset publish"
   },
   "peerDependencies": {
     "react": "^19.0.0",
@@ -88,6 +91,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",
+    "@changesets/cli": "^3.0.3",
     "@hookform/resolvers": "^5.9.1",
     "@microsoft/api-extractor": "^7.59.4",
     "@rolldown/plugin-babel": "^0.2.4",
