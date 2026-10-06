@@ -1473,6 +1473,88 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       }
     ]
   },
+  "number-input": {
+    "source": "src/components/atoms/forms/number-input",
+    "components": [
+      {
+        "name": "NumberInput",
+        "props": [
+          {
+            "name": "value",
+            "type": "number | null",
+            "description": "Controlled value; `null` is an empty field."
+          },
+          {
+            "name": "defaultValue",
+            "type": "number | null",
+            "default": "null"
+          },
+          {
+            "name": "onValueChange",
+            "type": "((value: number | null) => void)"
+          },
+          {
+            "name": "min",
+            "type": "number",
+            "default": "Number.NEGATIVE_INFINITY"
+          },
+          {
+            "name": "max",
+            "type": "number",
+            "default": "Number.POSITIVE_INFINITY"
+          },
+          {
+            "name": "step",
+            "type": "number",
+            "default": "1"
+          },
+          {
+            "name": "largeStep",
+            "type": "number",
+            "default": "step * 10",
+            "description": "Step for PageUp/PageDown and Shift+↑/↓."
+          },
+          {
+            "name": "format",
+            "type": "((value: number) => string)",
+            "description": "Formats the committed value for display, e.g. `(v) => v.toFixed(2)`."
+          },
+          {
+            "name": "hideControls",
+            "type": "boolean",
+            "default": "false",
+            "description": "Hide the − / + buttons."
+          },
+          {
+            "name": "prefix",
+            "type": "ReactNode",
+            "description": "Rendered before the value, inside the field (e.g. \"$\")."
+          },
+          {
+            "name": "decrementLabel",
+            "type": "string",
+            "default": "Decrease",
+            "description": "Accessible names of the buttons."
+          },
+          {
+            "name": "incrementLabel",
+            "type": "string",
+            "default": "Increase"
+          },
+          {
+            "name": "size",
+            "type": "\"tiny\" | \"small\" | \"medium\" | \"large\" | \"xlarge\" | null"
+          }
+        ],
+        "extends": [
+          {
+            "name": "InputHTMLAttributes",
+            "package": "react"
+          }
+        ]
+      }
+    ]
+  },
   "radio-group": {
     "source": "src/components/atoms/forms/radio-group",
     "components": [
@@ -3851,6 +3933,52 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       }
     ]
   },
+  "stepper": {
+    "source": "src/components/atoms/navigation/stepper",
+    "components": [
+      {
+        "name": "Stepper",
+        "props": [
+          {
+            "name": "steps",
+            "type": "readonly StepperStep[]",
+            "required": true
+          },
+          {
+            "name": "activeStep",
+            "type": "number",
+            "default": "0",
+            "description": "Index of the current step (0-based). Steps before it are completed. Pass\n`steps.length` to show every step completed."
+          },
+          {
+            "name": "orientation",
+            "type": "\"horizontal\" | \"vertical\"",
+            "default": "horizontal"
+          },
+          {
+            "name": "onStepClick",
+            "type": "((index: number) => void)",
+            "description": "Makes completed steps clickable (e.g. to go back in a wizard)."
+          },
+          {
+            "name": "stateLabels",
+            "type": "Partial<Record<StepState, string>>",
+            "description": "Screen-reader text for step states."
+          },
+          {
+            "name": "classNames",
+            "type": "StepperClassNames"
+          }
+        ],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      }
+    ]
+  },
   "tabs": {
     "source": "src/components/atoms/navigation/tabs",
     "components": [
@@ -5918,6 +6046,116 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "package": "typescript"
           }
         ]
+      }
+    ]
+  },
+  "combobox": {
+    "source": "src/components/fragments/combobox",
+    "components": [
+      {
+        "name": "Combobox",
+        "props": [
+          {
+            "name": "options",
+            "type": "readonly ComboboxOption[]"
+          },
+          {
+            "name": "groups",
+            "type": "readonly ComboboxOptionGroup[]",
+            "description": "Grouped options; used instead of `options` when both are given."
+          },
+          {
+            "name": "value",
+            "type": "string | null",
+            "description": "Selected value, controlled; `null` for none."
+          },
+          {
+            "name": "defaultValue",
+            "type": "string | null",
+            "default": "null"
+          },
+          {
+            "name": "onValueChange",
+            "type": "((value: string | null) => void)"
+          },
+          {
+            "name": "open",
+            "type": "boolean"
+          },
+          {
+            "name": "defaultOpen",
+            "type": "boolean",
+            "default": "false"
+          },
+          {
+            "name": "onOpenChange",
+            "type": "((open: boolean) => void)"
+          },
+          {
+            "name": "placeholder",
+            "type": "ReactNode",
+            "default": "Select…",
+            "description": "Trigger text when nothing is selected."
+          },
+          {
+            "name": "searchPlaceholder",
+            "type": "string",
+            "default": "Search…"
+          },
+          {
+            "name": "emptyText",
+            "type": "ReactNode",
+            "default": "No results found.",
+            "description": "Shown when the search matches nothing."
+          },
+          {
+            "name": "clearable",
+            "type": "boolean",
+            "default": "false",
+            "description": "Picking the selected option again clears it."
+          },
+          {
+            "name": "disabled",
+            "type": "boolean"
+          },
+          {
+            "name": "size",
+            "type": "\"large\" | \"medium\" | \"small\" | \"tiny\" | \"xlarge\""
+          },
+          {
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "aria-label",
+            "type": "string"
+          },
+          {
+            "name": "aria-labelledby",
+            "type": "string"
+          },
+          {
+            "name": "aria-describedby",
+            "type": "string"
+          },
+          {
+            "name": "aria-invalid",
+            "type": "boolean | \"true\" | \"false\" | \"grammar\" | \"spelling\""
+          },
+          {
+            "name": "className",
+            "type": "string"
+          },
+          {
+            "name": "classNames",
+            "type": "ComboboxClassNames"
+          }
+        ],
+        "extends": []
       }
     ]
   },
