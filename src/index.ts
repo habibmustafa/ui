@@ -10,6 +10,7 @@ export * from './components/atoms/data-display/accordion'
 export * from './components/atoms/data-display/avatar'
 export * from './components/atoms/data-display/chart'
 export * from './components/atoms/data-display/collapsible'
+export * from './components/atoms/data-display/kbd'
 export * from './components/atoms/data-display/table'
 
 export * from './components/atoms/feedback/alert'
@@ -27,6 +28,7 @@ export * from './components/atoms/forms/input-otp'
 export * from './components/atoms/forms/label'
 export * from './components/atoms/forms/radio-group'
 export * from './components/atoms/forms/select'
+export * from './components/atoms/forms/slider'
 export * from './components/atoms/forms/switch'
 export * from './components/atoms/forms/textarea'
 
@@ -44,6 +46,7 @@ export * from './components/atoms/layout/stack'
 
 export * from './components/atoms/navigation/breadcrumb'
 export * from './components/atoms/navigation/command'
+export * from './components/atoms/navigation/pagination'
 export * from './components/atoms/navigation/sidebar'
 export * from './components/atoms/navigation/tabs'
 
