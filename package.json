@@ -57,9 +57,11 @@
     "preview": "vite preview",
     "check:classes": "node scripts/check-classes.mjs",
     "check:tokens": "node scripts/check-tokens.mjs",
+    "api:generate": "node scripts/generate-api.mjs",
+    "check:api": "node scripts/generate-api.mjs --check",
     "test": "vitest run",
     "prepublishOnly": "npm run build:lib",
-    "verify": "npm run build:lib && npm run lint && npm run check:classes && npm run check:tokens && npm run test"
+    "verify": "npm run build:lib && npm run lint && npm run check:classes && npm run check:tokens && npm run check:api && npm run test"
   },
   "peerDependencies": {
     "react": "^19.0.0",
@@ -103,6 +105,7 @@
     "jsdom": "^29.1.1",
     "oxlint": "^1.81.0",
     "react": "^19.2.8",
+    "react-docgen-typescript": "^2.4.0",
     "react-dom": "^19.2.8",
     "shiki": "^4.4.3",
     "tailwind-scrollbar": "^4.0.2",
