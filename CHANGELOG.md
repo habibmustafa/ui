@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- **Breaking (dependencies):** `sonner` 1 → 2. `SonnerToaster` renders sonner 2's
+  `<Toaster>`; if your app calls `toast()` from its own `sonner` install, upgrade it to
+  2.x too so both share one toast store (otherwise toasts are never shown).
 - `Select` (props mode with `options`/`groups`) now forwards `id`, `aria-label`,
   `aria-labelledby`, `aria-describedby` and `aria-invalid` to its trigger. Previously
   they went to Radix's Root, which renders no element, so a `<label htmlFor>` — and
