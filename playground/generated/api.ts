@@ -7006,6 +7006,131 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       }
     ]
   },
+  "file-upload": {
+    "source": "src/components/fragments/file-upload",
+    "components": [
+      {
+        "name": "FileUpload",
+        "props": [
+          {
+            "name": "value",
+            "type": "File[]",
+            "description": "Selected files, controlled."
+          },
+          {
+            "name": "defaultValue",
+            "type": "File[]",
+            "default": "[]"
+          },
+          {
+            "name": "onValueChange",
+            "type": "((files: File[]) => void)"
+          },
+          {
+            "name": "onReject",
+            "type": "((rejections: FileRejection[]) => void)",
+            "description": "Called with every rejected file and why (type / size / count)."
+          },
+          {
+            "name": "accept",
+            "type": "string",
+            "description": "Same syntax as <input accept>: \".pdf,image/*\"."
+          },
+          {
+            "name": "maxSize",
+            "type": "number",
+            "description": "Bytes."
+          },
+          {
+            "name": "maxFiles",
+            "type": "number"
+          },
+          {
+            "name": "multiple",
+            "type": "boolean",
+            "default": "true"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "default": "false"
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "description": "Submitted with forms via the underlying file input."
+          },
+          {
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "name": "label",
+            "type": "ReactNode",
+            "default": "Drag and drop files here",
+            "description": "Heading inside the drop zone."
+          },
+          {
+            "name": "description",
+            "type": "ReactNode",
+            "description": "Smaller text under the label, e.g. accepted types and limits."
+          },
+          {
+            "name": "browseText",
+            "type": "ReactNode",
+            "default": "Browse files"
+          },
+          {
+            "name": "showFileList",
+            "type": "boolean",
+            "default": "true",
+            "description": "Render the list of selected files below the zone."
+          },
+          {
+            "name": "rejectionMessages",
+            "type": "Partial<Record<FileRejectionReason, string>>",
+            "description": "Messages for rejected files."
+          },
+          {
+            "name": "aria-describedby",
+            "type": "string"
+          },
+          {
+            "name": "className",
+            "type": "string"
+          },
+          {
+            "name": "classNames",
+            "type": "FileUploadClassNames"
+          }
+        ],
+        "extends": []
+      },
+      {
+        "name": "formatFileSize",
+        "description": "1536 -> \"1.5 KB\". Binary units, one decimal under 10.",
+        "props": [],
+        "extends": [
+          {
+            "name": "Number",
+            "package": "typescript"
+          }
+        ]
+      },
+      {
+        "name": "fileMatchesAccept",
+        "description": "Whether `file` matches an `accept` string the way <input type=\"file\" accept> reads it:\ncomma-separated extensions (\".pdf\"), exact MIME types (\"image/png\") and wildcards\n(\"image/*\"). An empty/undefined accept takes everything.",
+        "props": [],
+        "extends": []
+      },
+      {
+        "name": "validateFiles",
+        "description": "Splits incoming files into accepted and rejected ones. `current` is how many files are\nalready selected, for the `maxFiles` count check (files beyond the limit are rejected\nin arrival order).",
+        "props": [],
+        "extends": []
+      }
+    ]
+  },
   "form-fields": {
     "source": "src/components/fragments/form-fields",
     "components": [
