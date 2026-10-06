@@ -223,7 +223,7 @@ DialogSection.displayName = 'DialogSection'
 const DialogSectionSeparator = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
->(({ className, children, ...props }, ref) => (
+>(({ className, children: _children, ...props }, ref) => (
   <div ref={ref} {...props} className={cn('w-full h-px bg-border', className)} />
 ))
 DialogSectionSeparator.displayName = 'DialogSectionSeparator'

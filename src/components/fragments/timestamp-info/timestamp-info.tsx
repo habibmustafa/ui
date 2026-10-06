@@ -59,6 +59,51 @@ const timestampRelativeFormatter = ({ utcTimestamp }: TimestampFormatter) => {
   return dayjs.utc(timestamp).fromNow()
 }
 
+// Module-level so it isn't re-created on every TimestampInfo render, which remounted
+// each row and dropped its "copied" state.
+function TooltipRow({ label, value }: { label: string; value: string }) {
+  const [copied, setCopied] = useState(false)
+
+  return (
+    <div
+      onPointerDown={(e) => {
+        e.stopPropagation()
+      }}
+      onMouseDown={(e) => {
+        e.stopPropagation()
+      }}
+      onClick={(e) => {
+        e.stopPropagation()
+        e.preventDefault()
+        copyToClipboard(value, () => {
+          setCopied(true)
+          setTimeout(() => {
+            setCopied(false)
+          }, 1000)
+        })
+      }}
+      className={cn(
+        'relative cursor-pointer flex gap-y-2 gap-x-0.5 hover:bg-surface-100 px-2 py-1 group',
+        { 'bg-surface-100': copied }
+      )}
+    >
+      <div className="flex items-center gap-x-2 text-left truncate">
+        <p>{label}</p>
+        <div className="border-t w-full border-dashed" />
+      </div>
+      <div className="relative flex items-center gap-x-2 grow">
+        <div className="border-t w-full border-dashed z-10" />
+        {copied && (
+          <span className="flex items-center justify-end w-full absolute inset-0 flex items-right text-brand-600 bg-surface-100">
+            Copied!
+          </span>
+        )}
+        <span className="flex items-center gap-x-2 justify-end whitespace-nowrap">{value}</span>
+      </div>
+    </div>
+  )
+}
+
 /**
  * TimestampInfo component displays a timestamp with a tooltip showing various time formats.
  * @param {string|number} props.utcTimestamp - UTC timestamp value. Can be either:
@@ -124,49 +169,6 @@ export const TimestampInfo = ({
       window.removeEventListener('resize', updateAlignment)
     }
   }, [])
-
-  const TooltipRow = ({ label, value }: { label: string; value: string }) => {
-    const [copied, setCopied] = useState(false)
-
-    return (
-      <div
-        onPointerDown={(e) => {
-          e.stopPropagation()
-        }}
-        onMouseDown={(e) => {
-          e.stopPropagation()
-        }}
-        onClick={(e) => {
-          e.stopPropagation()
-          e.preventDefault()
-          copyToClipboard(value, () => {
-            setCopied(true)
-            setTimeout(() => {
-              setCopied(false)
-            }, 1000)
-          })
-        }}
-        className={cn(
-          'relative cursor-pointer flex gap-y-2 gap-x-0.5 hover:bg-surface-100 px-2 py-1 group',
-          { 'bg-surface-100': copied }
-        )}
-      >
-        <div className="flex items-center gap-x-2 text-left truncate">
-          <p>{label}</p>
-          <div className="border-t w-full border-dashed" />
-        </div>
-        <div className="relative flex items-center gap-x-2 grow">
-          <div className="border-t w-full border-dashed z-10" />
-          {copied && (
-            <span className="flex items-center justify-end w-full absolute inset-0 flex items-right text-brand-600 bg-surface-100">
-              Copied!
-            </span>
-          )}
-          <span className="flex items-center gap-x-2 justify-end whitespace-nowrap">{value}</span>
-        </div>
-      </div>
-    )
-  }
 
   return (
     <TooltipProvider>

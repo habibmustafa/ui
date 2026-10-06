@@ -34,9 +34,11 @@ interface InputGroupProps extends React.ComponentProps<'div'> {
  */
 function InputGroup({
   className,
-  id,
-  'aria-invalid': ariaInvalid,
-  'aria-describedby': ariaDescribedby,
+  // Dropped on purpose: FormControl passes these, but they belong on the input itself
+  // (see the prop docs above), not on this wrapper.
+  id: _id,
+  'aria-invalid': _ariaInvalid,
+  'aria-describedby': _ariaDescribedby,
   ...props
 }: InputGroupProps) {
   return (

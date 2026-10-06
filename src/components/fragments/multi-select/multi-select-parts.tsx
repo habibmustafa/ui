@@ -2,8 +2,6 @@
 
 import { cva, type VariantProps } from 'class-variance-authority'
 import { Check, ChevronDown, X as RemoveIcon } from 'lucide-react'
-// @ts-ignore Required to avoid TS error: The inferred type of MultiSelectorContent cannot be named without a reference to @radix-ui
-import type { Popover as PopoverPrimitive } from 'radix-ui'
 import React, { Children, useEffect } from 'react'
 
 import { cn } from '../../../lib/utils'
@@ -171,10 +169,11 @@ export function MultiSelectorRoot({
           }
           break
         case 'Escape':
-          activeIndex !== -1 ? setActiveIndex(-1) : handleOpenChange(false)
+          if (activeIndex !== -1) setActiveIndex(-1)
+          else handleOpenChange(false)
           if (ref.current) {
             const button = (ref.current as HTMLDivElement).querySelector('button[role="combobox"]')
-            button && (button as HTMLButtonElement).focus()
+            if (button) (button as HTMLButtonElement).focus()
           }
           break
         case 'Enter':
@@ -182,7 +181,7 @@ export function MultiSelectorRoot({
           break
       }
     },
-    [values, inputValue, activeIndex, handleOpenChange]
+    [values, inputValue, activeIndex, handleOpenChange, onValuesChange]
   )
 
   return (
@@ -333,7 +332,8 @@ const MultiSelectorTrigger = React.forwardRef<HTMLButtonElement, MultiSelectorTr
       showIcon = true,
       mode = 'combobox',
       renderValue,
-      children,
+      // The trigger renders its own chips/label; children aren't part of its API.
+      children: _children,
       ...props
     },
     ref
@@ -348,8 +348,6 @@ const MultiSelectorTrigger = React.forwardRef<HTMLButtonElement, MultiSelectorTr
     const inlineInputRef = React.useRef<HTMLInputElement>(null)
     const badgesRef = React.useRef<HTMLDivElement>(null)
 
-    const [visibleBadges, setVisibleBadges] = React.useState<string[]>([])
-    const [extraBadgesCount, setExtraBadgesCount] = React.useState(0)
     const [isDeleteHovered, setIsDeleteHovered] = React.useState(false)
 
     const SHOULD_WRAP_BADGES = wrapBadges || badgeLimit === 'wrap'
@@ -357,17 +355,10 @@ const MultiSelectorTrigger = React.forwardRef<HTMLButtonElement, MultiSelectorTr
     const IS_INLINE_MODE = mode === 'inline-combobox'
     const HAS_TINY_PLACEHOLDER = size === 'tiny' && values.length === 0
 
-    React.useEffect(() => {
-      if (!inputRef?.current || !badgesRef.current) return
-
-      if (IS_NUMERIC_LIMIT) {
-        setVisibleBadges(values.slice(0, badgeLimit))
-        setExtraBadgesCount(Math.max(0, values.length - badgeLimit))
-      } else {
-        setVisibleBadges(values)
-        setExtraBadgesCount(0)
-      }
-    }, [values, badgeLimit])
+    // Derived during render: no effect + state round-trip, so the chips never lag a
+    // render behind `values`/`badgeLimit`.
+    const visibleBadges = IS_NUMERIC_LIMIT ? values.slice(0, badgeLimit) : values
+    const extraBadgesCount = IS_NUMERIC_LIMIT ? Math.max(0, values.length - badgeLimit) : 0
 
     const badgeClasses = MultiSelectorBadgeVariants({ size })
 
@@ -563,11 +554,13 @@ const MultiSelectorInput = React.forwardRef<
   }
 
   useEffect(() => {
-    setInputFocus()
-
     if (!open) {
       inputRef.current?.blur()
+      return
     }
+    // Focus once the popover has rendered.
+    const timer = setTimeout(() => inputRef.current?.focus(), 100)
+    return () => clearTimeout(timer)
   }, [open])
 
   return (
@@ -690,7 +683,7 @@ const MultiSelectorList = React.forwardRef<
               <CommandItem
                 role="option"
                 onSelect={() => {
-                  open && toggleValue(inputValue)
+                  if (open) toggleValue(inputValue)
                   setInputValue('')
                 }}
                 className={commandItemClass}
@@ -728,7 +721,7 @@ const MultiSelectorItem = React.forwardRef<
       tabIndex={open ? 0 : -1}
       role="option"
       onSelect={() => {
-        open && toggleValue(value)
+        if (open) toggleValue(value)
         setInputValue('')
       }}
       className={cn(commandItemClass, className)}

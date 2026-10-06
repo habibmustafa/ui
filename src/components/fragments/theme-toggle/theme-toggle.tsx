@@ -1,7 +1,7 @@
 'use client'
 
 import { ChevronDown, Monitor, Moon, Sun } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useState, useSyncExternalStore } from 'react'
 
 import { cn } from '../../../lib/utils'
 import { singleThemes, useTheme, type Theme } from '../../../providers'
@@ -27,6 +27,8 @@ const ICONS: Record<Theme, typeof Sun> = {
   light: Sun,
 }
 
+const noopSubscribe = () => () => {}
+
 export const ThemeToggle = ({
   forceDark = false,
   triggerClassName,
@@ -34,11 +36,14 @@ export const ThemeToggle = ({
 }: ThemeToggleProps) => {
   const { theme, setTheme, resolvedTheme } = useTheme()
   const [open, setOpen] = useState(false)
-  const [isMounted, setIsMounted] = useState(false)
-
-  useEffect(() => {
-    setIsMounted(true)
-  }, [])
+  // The stored theme is only known on the client, so render nothing during SSR and
+  // hydration (server snapshot false) and the real control once on the client — without
+  // the effect + state round-trip this used to take.
+  const isMounted = useSyncExternalStore(
+    noopSubscribe,
+    () => true,
+    () => false
+  )
 
   const currentTheme = forceDark ? 'dark' : theme
 

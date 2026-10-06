@@ -302,10 +302,11 @@ const AlertDialogAction = React.forwardRef<
     const isDisabled = disabled || loading || dialogLoading
 
     React.useEffect(() => {
-      setActionLoading?.(actionId.current, loading)
+      const id = actionId.current
+      setActionLoading?.(id, loading)
 
       return () => {
-        setActionLoading?.(actionId.current, false)
+        setActionLoading?.(id, false)
       }
     }, [loading, setActionLoading])
 
