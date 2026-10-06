@@ -24,6 +24,10 @@
 //   progress-demo, popover-*, multi-select-badge-limit*: the demos now label their
 //   controls (aria-label / FormControl), so the a11y suite's KNOWN list could shrink to
 //   the cmdk-only entries.
+// - checkbox-*, form-*, data-table-demo: Checkbox gained `relative after:absolute
+//   after:-inset-1` (24px hit area around the 16px box).
+// - code-block-demo, error-display-*, status-code-demo: contrast fixes — darker light-theme
+//   syntax colours, neutral text on warning backgrounds, destructive-600 status text.
 // - chart-*, metric-card-*, drawer-*.open: Recharts 3's ResponsiveContainer adds an inner
 //   sizing <div> (jsdom never measures a size, so no chart SVG renders here either way).
 import { render, waitFor } from "@testing-library/react";
