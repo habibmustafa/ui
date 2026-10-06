@@ -13,80 +13,86 @@ Bu fayl `docs/` qovluğundadır — npm paketinin içinə girmir (`package.json`
 
 | | Nə | Harada | Necə tetiklənir |
 |---|---|---|---|
-| **npm publish** | `@habibmustafa/ui` kitabxanasının özü | npmjs.com | GitHub Release yaradanda |
+| **npm publish** | `@habibmustafa/ui` kitabxanasının özü | npmjs.com | "Version Packages" PR-ı `main`-ə merge olunanda (Changesets) |
 | **Playground deploy** | Demo sayt (bütün komponentləri göstərən) | Cloudflare Workers, `ui.habibmustafa.me` | `main`-ə hər push-da avtomatik |
 
 İkisi tamam ayrı sistemlərdir, ayrı tetiklənir, ayrı fayllardan asılıdır.
 
 ---
 
-## 2. npm-ə yeni versiya çıxarmaq
+## 2. npm-ə yeni versiya çıxarmaq (Changesets)
 
-### Bir dəfəlik qurulmuş şeylər (artıq hazırdır, təkrar etməyə ehtiyac yoxdur)
+Versiya, CHANGELOG, tag və GitHub Release artıq əl ilə edilmir —
+[Changesets](https://github.com/changesets/changesets) edir. Fikir belədir: hər PR öz
+dəyişikliyini `.changeset/*.md` faylı kimi qeyd edir, bu fayllar yığılır, sonra bir
+"Version Packages" PR-ı hamısını bir versiyaya çevirir.
+
+### Bir dəfəlik qurulmuş şeylər
 
 - **Trusted Publishing (OIDC)** — `NPM_TOKEN` secret-i YOXDUR, lazım da deyil.
   npmjs.com-da paketin **Settings → Trusted Publisher** bölməsində GitHub
   provayderi əlavə edilib: repo `habibmustafa/ui`, workflow faylı
   `.github/workflows/publish.yml`. GitHub Actions hər run-da OIDC vasitəsilə
-  öz kimliyini sübut edir, npm bunu həmin qeydlə tutuşdurur — token saxlamağa,
-  rotasiya etməyə, "hansı tip token?" sualına ehtiyac qalmır.
+  öz kimliyini sübut edir, npm bunu həmin qeydlə tutuşdurur.
+  - **Workflow faylının adı `publish.yml` qalmalıdır** — npm məhz bu adı yoxlayır.
   - Əgər bunu YENİDƏN qurmaq lazım olsa (məs. repo adı dəyişsə): npmjs.com →
     `npmjs.com/package/@habibmustafa/ui` → Settings → Trusted Publisher →
     GitHub → Repository: `habibmustafa/ui`, Workflow filename: `publish.yml`.
-  - `publish.yml`-də `permissions.id-token: write` olmalıdır (bu, OIDC üçün
-    tələb olunur) və `npm install -g npm@latest` addımı saxlanmalıdır (OIDC
-    trusted publishing npm CLI ≥11.5.1 tələb edir, `setup-node`-un
-    bağladığı npm adətən köhnədir).
-- **`.github/workflows/publish.yml`** — GitHub Release yaradılanda avtomatik işə düşür:
-  ```yaml
-  on:
-    release:
-      types: [published]
-  ```
-  Addımlar: `npm ci` → `npm run verify` (build+lint+check:classes+check:tokens+test)
-  → `npm publish --provenance` (NPM_TOKEN ilə).
+  - `publish.yml`-də `permissions.id-token: write` və `npm install -g npm@latest`
+    addımı saxlanmalıdır (OIDC npm CLI ≥11.5.1 tələb edir).
+- **GitHub repo ayarı (bir dəfə, əl ilə):** Settings → Actions → General →
+  **"Allow GitHub Actions to create and approve pull requests"** aktiv olmalıdır,
+  yoxsa workflow "Version Packages" PR-ını aça bilməz.
+- **`.changeset/config.json`** — `access: "public"`, `baseBranch: "main"`.
+- **`.github/workflows/publish.yml`** — `main`-ə hər push-da `changesets/action` işləyir:
+  - `.changeset/`-də gözləyən fayl varsa → "Version Packages" PR-ını açır/yeniləyir
+    (`npm run version-packages`: `package.json` versiyası, `CHANGELOG.md`,
+    `package-lock.json`, istifadə olunmuş changeset faylları silinir).
+  - Gözləyən fayl yoxdursa və `package.json`-dakı versiya npm-də hələ yoxdursa (yəni
+    həmin PR indicə merge olunub) → `npm run release`: `npm run verify` +
+    `changeset publish` (`npm publish --provenance`), sonra `vX.Y.Z` tag-i və GitHub
+    Release yaradılır.
 
-### Hər dəfə versiya çıxaranda ediləcəklər
+### Hər dəyişiklikdə (PR-da)
 
-1. **Versiyanı artır** — `package.json`-da `"version"` sahəsini əl ilə dəyiş
-   (məs. `0.2.0` → `0.3.0`). Semver qaydası: breaking change → major, yeni
-   feature → minor, bug fix → patch.
-2. **`package-lock.json`-u sinxronlaşdır**:
-   ```sh
-   npm install --package-lock-only
-   ```
-3. **`CHANGELOG.md`-ə yeni bölmə əlavə et** — nə dəyişib, qısa bullet-lər.
-4. **Commit + push** `main`-ə.
-5. **GitHub Release yarat** — bax aşağıda, bu npm publish-i tetikləyən yeganə yoldur:
-   - `https://github.com/habibmustafa/ui/releases/new`
-   - **Tag**: `v<versiya>` (məs. `v0.3.0`) — **`package.json`-dakı versiya ilə
-     HƏRFİ EYNİ olmalıdır**, yoxsa `npm publish` rədd edəcək.
-   - Tag seçimi "Create new tag: vX.Y.Z on publish" kimi görünməlidir (yəni yeni
-     tag, mövcud `main`-ə bağlanır).
-   - Title: versiya nömrəsi, Description: CHANGELOG-dan həmin bölmə.
-   - **Publish release** bas.
-6. **Yoxla**: `github.com/habibmustafa/ui/actions` → "Publish" workflow-u yaşıl ✓
-   olana qədər gözlə (adətən 1-2 dəqiqə). Sonra `npmjs.com/package/@habibmustafa/ui`
-   yeni versiyanı göstərməlidir.
+Kitabxananı istifadə edənlərin görəcəyi dəyişiklik (fix, yeni komponent, breaking
+change) edirsənsə, eyni PR-a changeset əlavə et:
 
-### ⚠️ Vacib qayda: tag-i YALNIZ bir dəfə istifadə et
+```sh
+npx changeset      # paketi seç, bump növünü seç, qısa təsvir yaz
+```
 
-Əgər release/publish uğursuz olub yenidən cəhd etmək lazımdırsa:
+Bu `.changeset/<təsadüfi-ad>.md` yaradır — onu da commit et. Əl ilə də yazmaq olar:
 
-- **SƏHV YOL**: GitHub-da yalnız "Release"-i silib eyni tag adı ilə yeni release
-  yaratmaq. Bu, köhnə tag-i YENİD�ən İSTİFADƏ EDİR (əgər tag git-də qalıbsa) —
-  yəni yeni commit-lərin heç biri daxil olmur, köhnə (xətalı) kod push olunur.
-- **DÜZGÜN YOL**: tag-in özünü də sil:
-  ```sh
-  git push origin :refs/tags/v0.3.0
-  ```
-  (GitHub UI-dan da olar: `github.com/habibmustafa/ui/tags` → tag → Delete)
-  Sonra YENİ release yarat — bu dəfə tag əsl `main`-in son commit-inə bağlanacaq.
-
-  Yoxlama: `git ls-remote --tags origin | grep v0.3.0` — çıxan commit SHA-sı
-  `git log -1 --format=%H` (lokal `main`) ilə eyni olmalıdır.
-
+```md
 ---
+"@habibmustafa/ui": minor
+---
+
+`Pagination` komponenti əlavə olundu.
+```
+
+**Bump növü (0.x mərhələsində):** breaking change və yeni komponent/feature → `minor`,
+bug fix → `patch`. `major` seçmə — o, paketi 1.0.0-a çıxarır.
+
+Yalnız playground, sənəd, test, CI dəyişiklikləri üçün changeset lazım deyil.
+
+### Versiya çıxarmaq
+
+1. Changeset-li PR-lar `main`-ə merge olunur.
+2. Workflow avtomatik **"Version Packages"** PR-ı açır (sonrakı merge-lərdə onu
+   yeniləyir). PR-da yeni versiyanı və CHANGELOG-u yoxla.
+3. Hazır olanda həmin PR-ı **merge et** — workflow npm-ə publish edir, tag və GitHub
+   Release yaradır. Başqa heç nə etmə: versiyanı əl ilə dəyişmə, Release-i əl ilə yaratma.
+4. **Yoxla**: `github.com/habibmustafa/ui/actions` → "Publish" yaşıl ✓,
+   `npmjs.com/package/@habibmustafa/ui` yeni versiyanı göstərməlidir.
+
+### Publish uğursuz olarsa
+
+Versiya commit-i `main`-də artıq var, amma npm-də yoxdur — workflow-u yenidən
+işlətmək kifayətdir (Actions → Publish → **Re-run jobs**): `changeset publish` yalnız
+npm-də olmayan versiyanı publish edir, ikinci dəfə cəhd təhlükəsizdir. Səbəb kodda idisə,
+düzəlişi `main`-ə push et — həmin push-un run-ı da eyni şəkildə publish edəcək.
 
 ## 3. Playground-u Cloudflare-də deploy etmək
 
@@ -142,7 +148,7 @@ npx wrangler deploy --dry-run  # yalnız yoxlama, deploy etmir
 | Fayl | Tetiklənmə | Nə edir |
 |---|---|---|
 | `.github/workflows/ci.yml` | hər `push` (main) və hər PR | `build:lib`, `lint`, `check:classes`, `check:api`, `test`, `build:playground` — hamısı keçməlidir. `check:api` playground-un API cədvəllərinin (`playground/generated/api.ts`) tiplərlə sinxron olduğunu yoxlayır; komponentin props-unu dəyişəndə `npm run api:generate` işlət və nəticəni commit et. `check:tokens` ayrıca job, şəbəkə asılı olduğu üçün uğursuz olsa belə PR-u bloklamır (`continue-on-error: true`). |
-| `.github/workflows/publish.yml` | GitHub Release `published` | `npm run verify` + `npm publish --provenance`. |
+| `.github/workflows/publish.yml` | hər `push` (main) | Changesets: gözləyən changeset varsa "Version Packages" PR-ı açır/yeniləyir; yoxdursa və versiya npm-də yoxdursa `npm run verify` + `changeset publish` + tag + GitHub Release. |
 | Cloudflare Workers Builds | hər push (main) | `wrangler.toml`-dan oxuyur, playground-u build edib deploy edir. Bu, GitHub Actions-un hissəsi DEYİL — Cloudflare-in öz sistemidir, repo-ya qoşulub. |
 
 **Node versiyası: 22** (həm CI-də, həm `package.json`-un `engines`-ində).
@@ -206,28 +212,23 @@ kök-səbəbli problemlər idi. Əgər gələcəkdə oxşar xəta görsən, əvv
 
 ---
 
-## 6. Tez-sürətli xülasə ("0.3.0 çıxarmaq istəyirəm, nə edim?")
+## 6. Tez-sürətli xülasə ("yeni versiya çıxarmaq istəyirəm, nə edim?")
 
 ```sh
-# 1. Versiya
-#    package.json-da "version": "0.3.0" et
-npm install --package-lock-only
+# 1. Dəyişikliyi edən PR-da changeset əlavə et
+npx changeset          # minor / patch seç, təsvir yaz
+git add .changeset && git commit -m "Add changeset"
 
-# 2. CHANGELOG.md-ə yeni bölmə yaz
+# 2. PR-ı main-ə merge et
+#    -> workflow "Version Packages" PR-ı açır
 
-# 3. Commit + push
-git add -A
-git commit -m "Release 0.3.0"
-git push origin main
+# 3. "Version Packages" PR-ını yoxla və merge et
+#    -> workflow npm-ə publish edir, vX.Y.Z tag-i və GitHub Release yaradır
 
-# 4. GitHub-da release yarat (UI-dan):
-#    github.com/habibmustafa/ui/releases/new
-#    tag: v0.3.0, Publish release
-
-# 5. Yoxla:
+# 4. Yoxla:
 #    github.com/habibmustafa/ui/actions  (Publish workflow yaşıl olmalı)
 #    npmjs.com/package/@habibmustafa/ui  (yeni versiya görünməli)
 
-# Playground (ui.habibmustafa.me) - əlavə iş lazım deyil, 3-cü addımdakı
-# push onu da avtomatik deploy edir.
+# Playground (ui.habibmustafa.me) - əlavə iş lazım deyil, main-ə hər push onu
+# avtomatik deploy edir.
 ```
