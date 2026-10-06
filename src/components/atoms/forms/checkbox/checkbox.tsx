@@ -1,6 +1,6 @@
 'use client'
 
-import { Check } from 'lucide-react'
+import { Check, Minus } from 'lucide-react'
 import { Checkbox as CheckboxPrimitive } from 'radix-ui'
 import * as React from 'react'
 
@@ -22,6 +22,7 @@ const Checkbox = React.forwardRef<
         'hover:border-strong',
         'focus-ring',
         'disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-foreground data-[state=checked]:text-background',
+        'data-[state=indeterminate]:bg-foreground data-[state=indeterminate]:text-background',
         className
       )}
       {...props}
@@ -29,7 +30,11 @@ const Checkbox = React.forwardRef<
       tabIndex={computedTabIndex}
     >
       <CheckboxPrimitive.Indicator className={cn('flex items-center justify-center text-current')}>
-        <Check className="h-3 w-3 text-background" strokeWidth={4} />
+        {props.checked === 'indeterminate' ? (
+          <Minus className="h-3 w-3 text-background" strokeWidth={4} />
+        ) : (
+          <Check className="h-3 w-3 text-background" strokeWidth={4} />
+        )}
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
   )

@@ -1,0 +1,327 @@
+<div>
+<div class="w-full">
+<div class="flex w-full flex-col gap-3">
+<div class="flex flex-wrap items-center gap-2">
+<div class="rounded-md border border-control hover:border-control-hover read-only:border-button bg-field file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-foreground-muted read-only:text-foreground-light focus:border-control-hover focus-ring disabled:cursor-not-allowed disabled:text-foreground-muted transition-colors duration-200 aria-[invalid=true]:bg-destructive-200 aria-[invalid=true]:border-destructive-400 aria-[invalid=true]:hover:border-destructive aria-[invalid=true]:focus:border-destructive aria-[invalid=true]:focus-visible:border-destructive text-xs px-2.5 py-1 h-[26px] flex cursor-text items-center gap-2 has-[:focus-visible]:outline-hidden has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring has-[:focus-visible]:ring-offset-2 has-[:focus-visible]:ring-offset-background has-[:focus-visible]:border-control-hover has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-50 has-[:read-only]:border-button has-[[aria-invalid=true]]:bg-destructive-200 has-[[aria-invalid=true]]:border-destructive-400 has-[[aria-invalid=true]]:hover:border-destructive w-full max-w-64">
+<span class="flex shrink-0 items-center text-foreground-lighter [&amp;_svg]:size-4">
+<svg aria-hidden="true" class="lucide lucide-search" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24">
+<path d="m21 21-4.34-4.34">
+</path>
+<circle cx="11" cy="11" r="8">
+</circle>
+</svg>
+</span>
+<input aria-label="Search members" class="h-full min-w-0 flex-1 appearance-none border-0 bg-transparent p-0 text-inherit [font-size:inherit] outline-none [box-shadow:none] placeholder:text-foreground-muted disabled:cursor-not-allowed" placeholder="Search members…" type="search" value="">
+</div>
+<div class="ml-auto flex items-center gap-2">
+<button class="relative inline-flex items-center justify-center space-x-2 text-center font-regular ease-out duration-200 rounded-md transition-[background-color,border-color,color,scale] [&amp;:not([aria-haspopup])]:motion-safe:active:scale-[0.97] focus-ring border text-foreground bg-background dark:bg-card hover:bg-popover border-strong hover:border-control-hover data-[state=open]:bg-popover data-[state=open]:border-control-hover text-xs px-2.5 py-1 h-[26px] opacity-50 cursor-not-allowed pointer-events-none" data-size="tiny" disabled="" tabindex="-1" type="button"> <span class="truncate">Clear selection</span> </button>
+</div>
+</div>
+<div class="overflow-x-auto rounded-md border border-default">
+<div class="relative">
+<div class="absolute inset-0 pointer-events-none z-38 before:absolute before:top-0 before:right-0 before:bottom-0 before:w-6 before:bg-linear-to-l before:from-black/5 dark:before:from-black/20 before:to-transparent before:opacity-0 before:transition-all before:duration-400 before:easing-[0.24, 0.25, 0.05, 1] after:absolute after:top-0 after:left-0 after:bottom-0 after:w-6 after:bg-linear-to-r after:from-black/5 dark:after:from-black/20 after:to-transparent after:opacity-0 after:transition-all after:duration-400 after:easing-[0.24, 0.25, 0.05, 1]">
+</div>
+<div class="w-full overflow-auto">
+<table class="group/table w-full caption-bottom text-sm">
+<thead class="[&amp;_tr]:border-b [&amp;>tr]:bg-200">
+<tr class="border-b group data-[state=selected]:bg-muted hover:bg-surface-200">
+<th class="h-10 px-4 text-left align-middle heading-meta whitespace-nowrap text-foreground-lighter [&amp;:has([role=checkbox])]:pr-0 transition-colors w-10">
+<button aria-checked="false" aria-label="Select all rows on this page" class="peer flex cursor-pointer items-center justify-center h-4 w-4 shrink-0 rounded-sm border border-control bg-control/25 ring-offset-background transition-colors duration-150 ease-in-out hover:border-strong focus-ring disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-foreground data-[state=checked]:text-background data-[state=indeterminate]:bg-foreground data-[state=indeterminate]:text-background" data-state="unchecked" role="checkbox" tabindex="0" type="button" value="on">
+</button>
+</th>
+<th aria-sort="ascending" class="h-10 px-4 text-left align-middle heading-meta whitespace-nowrap text-foreground-lighter [&amp;:has([role=checkbox])]:pr-0 transition-colors">
+<button class="group/table-head-sort heading-meta whitespace-nowrap flex items-center gap-1 cursor-pointer select-none bg-transparent! border-none p-0 w-full text-left" tabindex="0" type="button">Name<div class="w-3 h-3 relative overflow-hidden">
+<svg aria-hidden="true" class="lucide lucide-arrow-up w-3 h-3 absolute inset-0 transition-transform translate-y-0" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24">
+<path d="m5 12 7-7 7 7">
+</path>
+<path d="M12 19V5">
+</path>
+</svg>
+<svg aria-hidden="true" class="lucide lucide-arrow-down w-3 h-3 absolute inset-0 transition-transform -translate-y-full" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24">
+<path d="M12 5v14">
+</path>
+<path d="m19 12-7 7-7-7">
+</path>
+</svg>
+<svg aria-hidden="true" class="lucide lucide-chevrons-up-down w-3 h-3 absolute inset-0 transition-opacity opacity-80 md:opacity-40 opacity-0!" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24">
+<path d="m7 15 5 5 5-5">
+</path>
+<path d="m7 9 5-5 5 5">
+</path>
+</svg>
+</div>
+</button>
+</th>
+<th aria-sort="none" class="h-10 px-4 text-left align-middle heading-meta whitespace-nowrap text-foreground-lighter [&amp;:has([role=checkbox])]:pr-0 transition-colors">
+<button class="group/table-head-sort heading-meta whitespace-nowrap flex items-center gap-1 cursor-pointer select-none bg-transparent! border-none p-0 w-full text-left" tabindex="0" type="button">Role<div class="w-3 h-3 relative overflow-hidden">
+<svg aria-hidden="true" class="lucide lucide-arrow-up w-3 h-3 absolute inset-0 transition-transform translate-y-full" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24">
+<path d="m5 12 7-7 7 7">
+</path>
+<path d="M12 19V5">
+</path>
+</svg>
+<svg aria-hidden="true" class="lucide lucide-arrow-down w-3 h-3 absolute inset-0 transition-transform -translate-y-full" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24">
+<path d="M12 5v14">
+</path>
+<path d="m19 12-7 7-7-7">
+</path>
+</svg>
+<svg aria-hidden="true" class="lucide lucide-chevrons-up-down w-3 h-3 absolute inset-0 transition-opacity opacity-80 md:opacity-40 group-hover/table-head-sort:opacity-80" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24">
+<path d="m7 15 5 5 5-5">
+</path>
+<path d="m7 9 5-5 5 5">
+</path>
+</svg>
+</div>
+</button>
+</th>
+<th aria-sort="none" class="h-10 px-4 align-middle heading-meta whitespace-nowrap text-foreground-lighter [&amp;:has([role=checkbox])]:pr-0 transition-colors text-right">
+<button class="group/table-head-sort heading-meta whitespace-nowrap flex items-center gap-1 cursor-pointer select-none bg-transparent! border-none p-0 w-full text-left justify-end" tabindex="0" type="button">Projects<div class="w-3 h-3 relative overflow-hidden">
+<svg aria-hidden="true" class="lucide lucide-arrow-up w-3 h-3 absolute inset-0 transition-transform translate-y-full" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24">
+<path d="m5 12 7-7 7 7">
+</path>
+<path d="M12 19V5">
+</path>
+</svg>
+<svg aria-hidden="true" class="lucide lucide-arrow-down w-3 h-3 absolute inset-0 transition-transform -translate-y-full" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24">
+<path d="M12 5v14">
+</path>
+<path d="m19 12-7 7-7-7">
+</path>
+</svg>
+<svg aria-hidden="true" class="lucide lucide-chevrons-up-down w-3 h-3 absolute inset-0 transition-opacity opacity-80 md:opacity-40 group-hover/table-head-sort:opacity-80" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24">
+<path d="m7 15 5 5 5-5">
+</path>
+<path d="m7 9 5-5 5 5">
+</path>
+</svg>
+</div>
+</button>
+</th>
+<th aria-sort="none" class="h-10 px-4 text-left align-middle heading-meta whitespace-nowrap text-foreground-lighter [&amp;:has([role=checkbox])]:pr-0 transition-colors">
+<button class="group/table-head-sort heading-meta whitespace-nowrap flex items-center gap-1 cursor-pointer select-none bg-transparent! border-none p-0 w-full text-left" tabindex="0" type="button">Joined<div class="w-3 h-3 relative overflow-hidden">
+<svg aria-hidden="true" class="lucide lucide-arrow-up w-3 h-3 absolute inset-0 transition-transform translate-y-full" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24">
+<path d="m5 12 7-7 7 7">
+</path>
+<path d="M12 19V5">
+</path>
+</svg>
+<svg aria-hidden="true" class="lucide lucide-arrow-down w-3 h-3 absolute inset-0 transition-transform -translate-y-full" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24">
+<path d="M12 5v14">
+</path>
+<path d="m19 12-7 7-7-7">
+</path>
+</svg>
+<svg aria-hidden="true" class="lucide lucide-chevrons-up-down w-3 h-3 absolute inset-0 transition-opacity opacity-80 md:opacity-40 group-hover/table-head-sort:opacity-80" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24">
+<path d="m7 15 5 5 5-5">
+</path>
+<path d="m7 9 5-5 5 5">
+</path>
+</svg>
+</div>
+</button>
+</th>
+</tr>
+</thead>
+<tbody class="[&amp;_tr:last-child]:border-0">
+<tr class="border-b group data-[state=selected]:bg-muted hover:bg-surface-200">
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 w-10">
+<button aria-checked="false" aria-label="Select Ada Hamilton" class="peer flex cursor-pointer items-center justify-center h-4 w-4 shrink-0 rounded-sm border border-control bg-control/25 ring-offset-background transition-colors duration-150 ease-in-out hover:border-strong focus-ring disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-foreground data-[state=checked]:text-background data-[state=indeterminate]:bg-foreground data-[state=indeterminate]:text-background" data-state="unchecked" role="checkbox" tabindex="0" type="button" value="on">
+</button>
+</td>
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+<div class="flex flex-col">
+<span class="text-foreground">Ada Hamilton</span>
+<span class="text-xs text-foreground-lighter">ada.hamilton12@example.com</span>
+</div>
+</td>
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+<div class="inline-flex items-center gap-1 justify-center rounded-full whitespace-nowrap tracking-[0.07em] uppercase font-medium text-[9px] leading-none px-[5.5px] py-[3px] bg-surface-75 text-foreground-light border border-strong">Admin</div>
+</td>
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 text-right">
+<span class="tabular-nums">3</span>
+</td>
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">2024-01-07</td>
+</tr>
+<tr class="border-b group data-[state=selected]:bg-muted hover:bg-surface-200">
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 w-10">
+<button aria-checked="false" aria-label="Select Ada Lovelace" class="peer flex cursor-pointer items-center justify-center h-4 w-4 shrink-0 rounded-sm border border-control bg-control/25 ring-offset-background transition-colors duration-150 ease-in-out hover:border-strong focus-ring disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-foreground data-[state=checked]:text-background data-[state=indeterminate]:bg-foreground data-[state=indeterminate]:text-background" data-state="unchecked" role="checkbox" tabindex="0" type="button" value="on">
+</button>
+</td>
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+<div class="flex flex-col">
+<span class="text-foreground">Ada Lovelace</span>
+<span class="text-xs text-foreground-lighter">ada.lovelace0@example.com</span>
+</div>
+</td>
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+<div class="inline-flex items-center gap-1 justify-center rounded-full whitespace-nowrap tracking-[0.07em] uppercase font-medium text-[9px] leading-none px-[5.5px] py-[3px] bg-brand-default/10 text-brand-600 border border-brand-500">Owner</div>
+</td>
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 text-right">
+<span class="tabular-nums">0</span>
+</td>
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">2024-01-01</td>
+</tr>
+<tr class="border-b group data-[state=selected]:bg-muted hover:bg-surface-200">
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 w-10">
+<button aria-checked="false" aria-label="Select Ada Perlman" class="peer flex cursor-pointer items-center justify-center h-4 w-4 shrink-0 rounded-sm border border-control bg-control/25 ring-offset-background transition-colors duration-150 ease-in-out hover:border-strong focus-ring disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-foreground data-[state=checked]:text-background data-[state=indeterminate]:bg-foreground data-[state=indeterminate]:text-background" data-state="unchecked" role="checkbox" tabindex="0" type="button" value="on">
+</button>
+</td>
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+<div class="flex flex-col">
+<span class="text-foreground">Ada Perlman</span>
+<span class="text-xs text-foreground-lighter">ada.perlman24@example.com</span>
+</div>
+</td>
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+<div class="inline-flex items-center gap-1 justify-center rounded-full whitespace-nowrap tracking-[0.07em] uppercase font-medium text-[9px] leading-none px-[5.5px] py-[3px] bg-surface-75 text-foreground-light border border-strong">Developer</div>
+</td>
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 text-right">
+<span class="tabular-nums">6</span>
+</td>
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">2024-01-13</td>
+</tr>
+<tr class="border-b group data-[state=selected]:bg-muted hover:bg-surface-200">
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 w-10">
+<button aria-checked="false" aria-label="Select Ada Turing" class="peer flex cursor-pointer items-center justify-center h-4 w-4 shrink-0 rounded-sm border border-control bg-control/25 ring-offset-background transition-colors duration-150 ease-in-out hover:border-strong focus-ring disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-foreground data-[state=checked]:text-background data-[state=indeterminate]:bg-foreground data-[state=indeterminate]:text-background" data-state="unchecked" role="checkbox" tabindex="0" type="button" value="on">
+</button>
+</td>
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+<div class="flex flex-col">
+<span class="text-foreground">Ada Turing</span>
+<span class="text-xs text-foreground-lighter">ada.turing36@example.com</span>
+</div>
+</td>
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+<div class="inline-flex items-center gap-1 justify-center rounded-full whitespace-nowrap tracking-[0.07em] uppercase font-medium text-[9px] leading-none px-[5.5px] py-[3px] bg-surface-75 text-foreground-light border border-strong">Developer</div>
+</td>
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 text-right">
+<span class="tabular-nums">9</span>
+</td>
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">2024-01-19</td>
+</tr>
+<tr class="border-b group data-[state=selected]:bg-muted hover:bg-surface-200">
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 w-10">
+<button aria-checked="false" aria-label="Select Alan Hamilton" class="peer flex cursor-pointer items-center justify-center h-4 w-4 shrink-0 rounded-sm border border-control bg-control/25 ring-offset-background transition-colors duration-150 ease-in-out hover:border-strong focus-ring disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-foreground data-[state=checked]:text-background data-[state=indeterminate]:bg-foreground data-[state=indeterminate]:text-background" data-state="unchecked" role="checkbox" tabindex="0" type="button" value="on">
+</button>
+</td>
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+<div class="flex flex-col">
+<span class="text-foreground">Alan Hamilton</span>
+<span class="text-xs text-foreground-lighter">alan.hamilton2@example.com</span>
+</div>
+</td>
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+<div class="inline-flex items-center gap-1 justify-center rounded-full whitespace-nowrap tracking-[0.07em] uppercase font-medium text-[9px] leading-none px-[5.5px] py-[3px] bg-surface-75 text-foreground-light border border-strong">Admin</div>
+</td>
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 text-right">
+<span class="tabular-nums">9</span>
+</td>
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">2024-03-11</td>
+</tr>
+<tr class="border-b group data-[state=selected]:bg-muted hover:bg-surface-200">
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 w-10">
+<button aria-checked="false" aria-label="Select Alan Liskov" class="peer flex cursor-pointer items-center justify-center h-4 w-4 shrink-0 rounded-sm border border-control bg-control/25 ring-offset-background transition-colors duration-150 ease-in-out hover:border-strong focus-ring disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-foreground data-[state=checked]:text-background data-[state=indeterminate]:bg-foreground data-[state=indeterminate]:text-background" data-state="unchecked" role="checkbox" tabindex="0" type="button" value="on">
+</button>
+</td>
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+<div class="flex flex-col">
+<span class="text-foreground">Alan Liskov</span>
+<span class="text-xs text-foreground-lighter">alan.liskov38@example.com</span>
+</div>
+</td>
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+<div class="inline-flex items-center gap-1 justify-center rounded-full whitespace-nowrap tracking-[0.07em] uppercase font-medium text-[9px] leading-none px-[5.5px] py-[3px] bg-surface-75 text-foreground-light border border-strong">Read-only</div>
+</td>
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 text-right">
+<span class="tabular-nums">1</span>
+</td>
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">2024-03-02</td>
+</tr>
+<tr class="border-b group data-[state=selected]:bg-muted hover:bg-surface-200">
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 w-10">
+<button aria-checked="false" aria-label="Select Alan Perlman" class="peer flex cursor-pointer items-center justify-center h-4 w-4 shrink-0 rounded-sm border border-control bg-control/25 ring-offset-background transition-colors duration-150 ease-in-out hover:border-strong focus-ring disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-foreground data-[state=checked]:text-background data-[state=indeterminate]:bg-foreground data-[state=indeterminate]:text-background" data-state="unchecked" role="checkbox" tabindex="0" type="button" value="on">
+</button>
+</td>
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+<div class="flex flex-col">
+<span class="text-foreground">Alan Perlman</span>
+<span class="text-xs text-foreground-lighter">alan.perlman14@example.com</span>
+</div>
+</td>
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+<div class="inline-flex items-center gap-1 justify-center rounded-full whitespace-nowrap tracking-[0.07em] uppercase font-medium text-[9px] leading-none px-[5.5px] py-[3px] bg-surface-75 text-foreground-light border border-strong">Developer</div>
+</td>
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 text-right">
+<span class="tabular-nums">12</span>
+</td>
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">2024-03-17</td>
+</tr>
+<tr class="border-b group data-[state=selected]:bg-muted hover:bg-surface-200">
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 w-10">
+<button aria-checked="false" aria-label="Select Alan Turing" class="peer flex cursor-pointer items-center justify-center h-4 w-4 shrink-0 rounded-sm border border-control bg-control/25 ring-offset-background transition-colors duration-150 ease-in-out hover:border-strong focus-ring disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-foreground data-[state=checked]:text-background data-[state=indeterminate]:bg-foreground data-[state=indeterminate]:text-background" data-state="unchecked" role="checkbox" tabindex="0" type="button" value="on">
+</button>
+</td>
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+<div class="flex flex-col">
+<span class="text-foreground">Alan Turing</span>
+<span class="text-xs text-foreground-lighter">alan.turing26@example.com</span>
+</div>
+</td>
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+<div class="inline-flex items-center gap-1 justify-center rounded-full whitespace-nowrap tracking-[0.07em] uppercase font-medium text-[9px] leading-none px-[5.5px] py-[3px] bg-surface-75 text-foreground-light border border-strong">Developer</div>
+</td>
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 text-right">
+<span class="tabular-nums">15</span>
+</td>
+<td class="transition-colors p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">2024-03-23</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="flex flex-wrap items-center justify-between gap-3 text-xs text-foreground-lighter">
+<p aria-live="polite" class="tabular-nums">1–8 of 42</p>
+<nav aria-label="pagination" class="flex justify-center mx-0 w-auto">
+<ul class="flex flex-row items-center gap-1">
+<li>
+<button aria-label="Go to previous page" class="relative inline-flex items-center cursor-pointer space-x-2 text-center font-regular ease-out duration-200 rounded-md transition-[background-color,border-color,color,scale] [&amp;:not([aria-haspopup])]:motion-safe:active:scale-[0.97] focus-ring border text-foreground hover:bg-accent shadow-none data-[state=open]:bg-accent border-transparent text-xs py-1 h-[26px] min-w-[26px] justify-center tabular-nums pointer-events-none opacity-50 gap-1 px-2" disabled="" type="button">
+<svg aria-hidden="true" class="lucide lucide-chevron-left h-4 w-4" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24">
+<path d="m15 18-6-6 6-6">
+</path>
+</svg>
+</button>
+</li>
+<li>
+<button aria-current="page" aria-label="Page 1" class="relative inline-flex items-center cursor-pointer space-x-2 text-center font-regular ease-out duration-200 rounded-md transition-[background-color,border-color,color,scale] [&amp;:not([aria-haspopup])]:motion-safe:active:scale-[0.97] focus-ring border text-foreground bg-background dark:bg-card hover:bg-popover border-strong hover:border-control-hover data-[state=open]:bg-popover data-[state=open]:border-control-hover text-xs py-1 h-[26px] min-w-[26px] px-2 justify-center tabular-nums" data-active="" type="button">1</button>
+</li>
+<li>
+<button aria-label="Page 2" class="relative inline-flex items-center cursor-pointer space-x-2 text-center font-regular ease-out duration-200 rounded-md transition-[background-color,border-color,color,scale] [&amp;:not([aria-haspopup])]:motion-safe:active:scale-[0.97] focus-ring border text-foreground hover:bg-accent shadow-none data-[state=open]:bg-accent border-transparent text-xs py-1 h-[26px] min-w-[26px] px-2 justify-center tabular-nums" type="button">2</button>
+</li>
+<li>
+<button aria-label="Page 3" class="relative inline-flex items-center cursor-pointer space-x-2 text-center font-regular ease-out duration-200 rounded-md transition-[background-color,border-color,color,scale] [&amp;:not([aria-haspopup])]:motion-safe:active:scale-[0.97] focus-ring border text-foreground hover:bg-accent shadow-none data-[state=open]:bg-accent border-transparent text-xs py-1 h-[26px] min-w-[26px] px-2 justify-center tabular-nums" type="button">3</button>
+</li>
+<li>
+<button aria-label="Page 4" class="relative inline-flex items-center cursor-pointer space-x-2 text-center font-regular ease-out duration-200 rounded-md transition-[background-color,border-color,color,scale] [&amp;:not([aria-haspopup])]:motion-safe:active:scale-[0.97] focus-ring border text-foreground hover:bg-accent shadow-none data-[state=open]:bg-accent border-transparent text-xs py-1 h-[26px] min-w-[26px] px-2 justify-center tabular-nums" type="button">4</button>
+</li>
+<li>
+<button aria-label="Page 5" class="relative inline-flex items-center cursor-pointer space-x-2 text-center font-regular ease-out duration-200 rounded-md transition-[background-color,border-color,color,scale] [&amp;:not([aria-haspopup])]:motion-safe:active:scale-[0.97] focus-ring border text-foreground hover:bg-accent shadow-none data-[state=open]:bg-accent border-transparent text-xs py-1 h-[26px] min-w-[26px] px-2 justify-center tabular-nums" type="button">5</button>
+</li>
+<li>
+<button aria-label="Page 6" class="relative inline-flex items-center cursor-pointer space-x-2 text-center font-regular ease-out duration-200 rounded-md transition-[background-color,border-color,color,scale] [&amp;:not([aria-haspopup])]:motion-safe:active:scale-[0.97] focus-ring border text-foreground hover:bg-accent shadow-none data-[state=open]:bg-accent border-transparent text-xs py-1 h-[26px] min-w-[26px] px-2 justify-center tabular-nums" type="button">6</button>
+</li>
+<li>
+<button aria-label="Go to next page" class="relative inline-flex items-center cursor-pointer space-x-2 text-center font-regular ease-out duration-200 rounded-md transition-[background-color,border-color,color,scale] [&amp;:not([aria-haspopup])]:motion-safe:active:scale-[0.97] focus-ring border text-foreground hover:bg-accent shadow-none data-[state=open]:bg-accent border-transparent text-xs py-1 h-[26px] min-w-[26px] justify-center tabular-nums gap-1 px-2" type="button">
+<svg aria-hidden="true" class="lucide lucide-chevron-right h-4 w-4" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24">
+<path d="m9 18 6-6-6-6">
+</path>
+</svg>
+</button>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+</div>

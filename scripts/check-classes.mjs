@@ -39,6 +39,8 @@ const NOT_CLASSES = new Set([
   'aria-label',
   'aria-label=',
   'aria-labelledby',
+  // DataTable demo: a `"<column>:<direction>"` sort string, not a variant-prefixed class.
+  'name:asc',
   // DropdownMenu checkbox demo: MenuItem `key` values, not classes.
   'activity-bar',
   'status-bar',

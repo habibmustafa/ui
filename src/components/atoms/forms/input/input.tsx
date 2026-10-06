@@ -90,8 +90,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           // Tailwind's shadow-none utility only zeroes the --tw-shadow layer of the
           // composite box-shadow, leaving --tw-ring-shadow etc. as whatever they
           // resolved to elsewhere (here, a stray blue ring) — setting the literal
-          // property bypasses that composite entirely.
-          className="h-full min-w-0 flex-1 appearance-none border-0 bg-transparent p-0 text-inherit outline-none [box-shadow:none] placeholder:text-foreground-muted disabled:cursor-not-allowed"
+          // property bypasses that composite entirely. Same for [font-size:inherit]:
+          // `text-inherit` only inherits the colour, and form controls don't inherit
+          // font-size by default, so without it the value rendered at the browser's
+          // 16px instead of the wrapper's size (text-xs for tiny, etc.).
+          className="h-full min-w-0 flex-1 appearance-none border-0 bg-transparent p-0 text-inherit [font-size:inherit] outline-none [box-shadow:none] placeholder:text-foreground-muted disabled:cursor-not-allowed"
         />
         {suffix !== undefined && (
           <span className="flex shrink-0 items-center text-foreground-lighter [&_svg]:size-4">
