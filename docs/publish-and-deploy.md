@@ -141,7 +141,7 @@ npx wrangler deploy --dry-run  # yalnız yoxlama, deploy etmir
 
 | Fayl | Tetiklənmə | Nə edir |
 |---|---|---|
-| `.github/workflows/ci.yml` | hər `push` (main) və hər PR | `build:lib`, `lint`, `check:classes`, `test`, `build:playground` — hamısı keçməlidir. `check:tokens` ayrıca job, şəbəkə asılı olduğu üçün uğursuz olsa belə PR-u bloklamır (`continue-on-error: true`). |
+| `.github/workflows/ci.yml` | hər `push` (main) və hər PR | `build:lib`, `lint`, `check:classes`, `check:api`, `test`, `build:playground` — hamısı keçməlidir. `check:api` playground-un API cədvəllərinin (`playground/generated/api.ts`) tiplərlə sinxron olduğunu yoxlayır; komponentin props-unu dəyişəndə `npm run api:generate` işlət və nəticəni commit et. `check:tokens` ayrıca job, şəbəkə asılı olduğu üçün uğursuz olsa belə PR-u bloklamır (`continue-on-error: true`). |
 | `.github/workflows/publish.yml` | GitHub Release `published` | `npm run verify` + `npm publish --provenance`. |
 | Cloudflare Workers Builds | hər push (main) | `wrangler.toml`-dan oxuyur, playground-u build edib deploy edir. Bu, GitHub Actions-un hissəsi DEYİL — Cloudflare-in öz sistemidir, repo-ya qoşulub. |
 

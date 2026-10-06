@@ -1,5 +1,7 @@
 import { Home, Menu, Palette, Search, Type as TypeIcon } from "lucide-react";
 import {
+  lazy,
+  Suspense,
   useEffect,
   useMemo,
   useState,
@@ -24,6 +26,10 @@ import {
   findComponent,
   type ComponentPreviewSpec,
 } from "./registry";
+
+// The generated props data is ~190KB; keep it out of the main bundle until a
+// component page actually needs it.
+const ApiReference = lazy(() => import("./api-reference"));
 
 /*
  * Route map:
@@ -418,26 +424,33 @@ function TypographyPage() {
   );
 }
 
+const contentsLink =
+  "focus-ring rounded-sm text-foreground-light transition-colors hover:text-foreground";
+
 /**
- * Jumps to the labelled previews on a page (Button's "Variants", "Sizes", …).
- * Anchors match the ids ComponentPreview derives from the same labels, and a page
- * with fewer than two labelled previews renders nothing.
+ * Jumps to the labelled previews on a page (Button's "Variants", "Sizes", …) and to
+ * the API section. Anchors match the ids ComponentPreview derives from the same
+ * labels; previews are only listed when there are at least two labelled ones.
  */
 function PageContents({ previews }: { previews: ComponentPreviewSpec[] }) {
   const labelled = previews.filter((preview) => preview.label);
-  if (labelled.length < 2) return null;
 
   return (
     <nav className="mb-8 flex flex-wrap gap-x-4 gap-y-1 border-b pb-4 text-sm">
-      {labelled.map((preview) => (
-        <a
-          key={preview.name}
-          href={`#${previewAnchor(preview.label!)}`}
-          className="focus-ring rounded-sm text-foreground-light transition-colors hover:text-foreground"
-        >
-          {preview.label}
-        </a>
-      ))}
+      {labelled.length >= 2
+        ? labelled.map((preview) => (
+            <a
+              key={preview.name}
+              href={`#${previewAnchor(preview.label!)}`}
+              className={contentsLink}
+            >
+              {preview.label}
+            </a>
+          ))
+        : null}
+      <a href="#api" className={contentsLink}>
+        API
+      </a>
     </nav>
   );
 }
@@ -456,6 +469,9 @@ function ComponentPage({ id }: { id: string }) {
       {entry.previews.map((preview) => (
         <ComponentPreview key={preview.name} {...preview} />
       ))}
+      <Suspense fallback={null}>
+        <ApiReference id={entry.id} />
+      </Suspense>
     </div>
   );
 }
