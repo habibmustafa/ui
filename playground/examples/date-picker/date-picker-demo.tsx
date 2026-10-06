@@ -22,7 +22,7 @@ export default function DatePickerDemo() {
         </DatePicker.Button>
       </DatePicker.Trigger>
       <DatePicker.Content>
-        <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
+        <Calendar mode="single" selected={date} onSelect={setDate} autoFocus />
       </DatePicker.Content>
     </DatePicker.Root>
   )

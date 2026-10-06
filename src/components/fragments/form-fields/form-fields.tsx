@@ -324,7 +324,7 @@ export function FormDatePicker({
                 selected: field.value,
                 onSelect: field.onChange,
                 disabled,
-                initialFocus: true,
+                autoFocus: true,
               }}
             />
           </FormControl>
