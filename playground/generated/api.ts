@@ -72,10 +72,6 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "type": "\"base\" | \"container\" | null"
           },
           {
-            "name": "defaultVariants",
-            "type": "\"size\" | null"
-          },
-          {
             "name": "loading",
             "type": "boolean | \"default\" | null"
           }
@@ -6935,10 +6931,6 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "overlay",
             "type": "\"base\" | \"container\" | null"
-          },
-          {
-            "name": "defaultVariants",
-            "type": "\"size\" | null"
           },
           {
             "name": "loading",

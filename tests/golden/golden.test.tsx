@@ -17,6 +17,9 @@
 //   gained data-[state=indeterminate] styles (it now draws a dash for "indeterminate").
 // - input-with-prefix-suffix (and the new number-input/data-table baselines): the inner
 //   <input> of a prefixed/suffixed Input gained [font-size:inherit] — it rendered at 16px.
+// - multi-select-*: the pointer-only chip × is aria-hidden, the trigger is described by a
+//   "← → then Backspace" hint (when chips are deletable), plus a polite live region that
+//   announces the picked chip.
 // - chart-*, metric-card-*, drawer-*.open: Recharts 3's ResponsiveContainer adds an inner
 //   sizing <div> (jsdom never measures a size, so no chart SVG renders here either way).
 import { render, waitFor } from "@testing-library/react";

@@ -5,7 +5,7 @@ import { Loader2 } from 'lucide-react'
 import { Slot } from 'radix-ui'
 import { cloneElement, forwardRef, isValidElement, type ReactNode } from 'react'
 
-import { SIZE_VARIANTS, SIZE_VARIANTS_DEFAULT } from '../../../../lib/constants'
+import { SIZE_VARIANTS } from '../../../../lib/constants'
 import { getExplicitTabIndex } from '../../../../lib/get-explicit-tab-index'
 import { cn } from '../../../../lib/utils'
 
@@ -114,12 +114,11 @@ const buttonVariants = cva(
       rounded: {
         true: 'rounded-full',
       },
-      defaultVariants: {
-        size: {
-          SIZE_VARIANTS_DEFAULT,
-        },
-      },
     },
+    // No cva-level defaults: Button itself defaults `size` to "tiny" and `variant` to
+    // "default". (Upstream nested a `defaultVariants` block inside `variants`, which cva
+    // read as a variant *named* defaultVariants — it leaked into ButtonProps as a bogus
+    // `defaultVariants` prop and set no defaults.)
   }
 )
 

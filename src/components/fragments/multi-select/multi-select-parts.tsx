@@ -168,6 +168,19 @@ export function MultiSelectorRoot({
             }
           }
           break
+        case 'ArrowLeft':
+          // Pick a chip to remove: ← from the end, then further left.
+          if (values.length > 0 && inputValue.length === 0) {
+            e.preventDefault()
+            setActiveIndex(activeIndex === -1 ? values.length - 1 : Math.max(0, activeIndex - 1))
+          }
+          break
+        case 'ArrowRight':
+          if (activeIndex !== -1 && inputValue.length === 0) {
+            e.preventDefault()
+            setActiveIndex(activeIndex >= values.length - 1 ? -1 : activeIndex + 1)
+          }
+          break
         case 'Escape':
           if (activeIndex !== -1) setActiveIndex(-1)
           else handleOpenChange(false)
@@ -361,6 +374,8 @@ const MultiSelectorTrigger = React.forwardRef<HTMLButtonElement, MultiSelectorTr
     const extraBadgesCount = IS_NUMERIC_LIMIT ? Math.max(0, values.length - badgeLimit) : 0
 
     const badgeClasses = MultiSelectorBadgeVariants({ size })
+    const showRemoveHint = deletableBadge && values.length > 0 && !disabled
+    const activeValue = activeIndex >= 0 ? values[activeIndex] : undefined
 
     const handleTriggerClick: React.MouseEventHandler<HTMLButtonElement> = React.useCallback(
       (event) => {
@@ -387,112 +402,132 @@ const MultiSelectorTrigger = React.forwardRef<HTMLButtonElement, MultiSelectorTr
     )
 
     return (
-      <PopoverAnchor asChild>
-        <button
-          ref={inputRef}
-          onClick={(e) => !isDeleteHovered && handleTriggerClick(e)}
-          disabled={disabled}
-          type="button"
-          role="combobox"
-          // A combobox doesn't take its name from its content (the chips), so the
-          // label has to be given explicitly; consumers can still override it.
-          aria-label={label}
-          aria-haspopup="listbox"
-          aria-expanded={open}
-          aria-controls={open ? getContentId(id) : undefined}
-          className={cn(
-            'flex w-full min-w-50 justify-between rounded-md border',
-            'border-strong',
-            // Empty: raised plate. Filled: sunk well for chips.
-            values.length > 0 ? 'bg-field' : 'bg-control-raised',
-            'placeholder:text-muted-foreground',
-            'ring-border-control focus-ring',
-            'disabled:cursor-not-allowed disabled:opacity-50',
-            'hover:border-control-hover transition-colors duration-200',
-            open && 'border-control-hover',
-            MultiSelectorTriggerVariants({ size }),
-            className
-          )}
-          {...props}
-        >
-          <div
-            ref={badgesRef}
+      <>
+        <PopoverAnchor asChild>
+          <button
+            ref={inputRef}
+            onClick={(e) => !isDeleteHovered && handleTriggerClick(e)}
+            disabled={disabled}
+            type="button"
+            role="combobox"
+            // A combobox doesn't take its name from its content (the chips), so the
+            // label has to be given explicitly; consumers can still override it.
+            aria-label={label}
+            aria-haspopup="listbox"
+            aria-expanded={open}
+            aria-controls={open ? getContentId(id) : undefined}
+            aria-describedby={
+              [props['aria-describedby'], showRemoveHint ? getRemoveHintId(id) : null]
+                .filter(Boolean)
+                .join(' ') || undefined
+            }
             className={cn(
-              MultiSelectorBadgesVariants({ size }),
-              SHOULD_WRAP_BADGES && 'flex-wrap',
-              !SHOULD_WRAP_BADGES &&
-                'overflow-x-auto scrollbar-thin scrollbar-track-transparent transition-colors scrollbar-thumb-muted-foreground dark:scrollbar-thumb-muted scrollbar-thumb-rounded-lg'
+              'flex w-full min-w-50 justify-between rounded-md border',
+              'border-strong',
+              // Empty: raised plate. Filled: sunk well for chips.
+              values.length > 0 ? 'bg-field' : 'bg-control-raised',
+              'placeholder:text-muted-foreground',
+              'ring-border-control focus-ring',
+              'disabled:cursor-not-allowed disabled:opacity-50',
+              'hover:border-control-hover transition-colors duration-200',
+              open && 'border-control-hover',
+              MultiSelectorTriggerVariants({ size }),
+              className
             )}
+            {...props}
           >
-            {visibleBadges.map((value) => (
-              <Badge
-                key={value}
-                className={cn(
-                  badgeClasses,
-                  deletableBadge && (size === 'tiny' ? 'pr-px' : 'pr-0.5')
-                )}
-              >
-                {renderValue?.(value) ?? value}
-                {deletableBadge && (
-                  <div
-                    onMouseEnter={() => setIsDeleteHovered(true)}
-                    onMouseLeave={() => setIsDeleteHovered(false)}
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      toggleValue(value)
-                      setIsDeleteHovered(false)
-                    }}
-                    className="ml-1 p-0.5 rounded-xs cursor-pointer text-foreground-lighter hover:text-foreground-light hover:bg-surface-400 transition-colors pointer-events-auto"
-                  >
-                    <RemoveIcon size={12} />
-                  </div>
-                )}
-              </Badge>
-            ))}
-            {extraBadgesCount > 0 && (
-              <Badge className={badgeClasses}>
-                {IS_NUMERIC_LIMIT && badgeLimit < 1
-                  ? `${extraBadgesCount} item${extraBadgesCount > 1 ? 's' : ''} selected`
-                  : `+${extraBadgesCount}`}
-              </Badge>
-            )}
-            <span
+            <div
+              ref={badgesRef}
               className={cn(
-                MultiSelectorLabelVariants({ size }),
-                HAS_TINY_PLACEHOLDER && 'ml-2',
-                !IS_INLINE_MODE &&
-                  (persistLabel || values.length === 0) &&
-                  'opacity-100 visible inline'
+                MultiSelectorBadgesVariants({ size }),
+                SHOULD_WRAP_BADGES && 'flex-wrap',
+                !SHOULD_WRAP_BADGES &&
+                  'overflow-x-auto scrollbar-thin scrollbar-track-transparent transition-colors scrollbar-thumb-muted-foreground dark:scrollbar-thumb-muted scrollbar-thumb-rounded-lg'
               )}
             >
-              {label}
-            </span>
-            {IS_INLINE_MODE && (
-              <MultiSelectorInput
-                ref={inlineInputRef}
-                showSearchIcon={false}
-                onValueChange={activeIndex === -1 ? setInputValue : undefined}
-                placeholder={values.length === 0 ? label : undefined}
-                autoFocus={false}
-                wrapperClassName={cn(
-                  MultiSelectorInlineInputWrapperVariants({ size }),
-                  SHOULD_WRAP_BADGES && 'min-w-21.25'
+              {visibleBadges.map((value, index) => (
+                <Badge
+                  key={value}
+                  className={cn(
+                    badgeClasses,
+                    deletableBadge && (size === 'tiny' ? 'pr-px' : 'pr-0.5'),
+                    index === activeIndex && 'ring-1 ring-foreground-light'
+                  )}
+                >
+                  {renderValue?.(value) ?? value}
+                  {deletableBadge && (
+                    // Pointer shortcut only: a <button> can't nest inside the trigger
+                    // button, so keyboard/screen-reader removal goes through ← → and
+                    // Backspace (described via aria-describedby) and this stays hidden.
+                    <div
+                      aria-hidden="true"
+                      onMouseEnter={() => setIsDeleteHovered(true)}
+                      onMouseLeave={() => setIsDeleteHovered(false)}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        toggleValue(value)
+                        setIsDeleteHovered(false)
+                      }}
+                      className="ml-1 p-0.5 rounded-xs cursor-pointer text-foreground-lighter hover:text-foreground-light hover:bg-surface-400 transition-colors pointer-events-auto"
+                    >
+                      <RemoveIcon size={12} />
+                    </div>
+                  )}
+                </Badge>
+              ))}
+              {extraBadgesCount > 0 && (
+                <Badge className={badgeClasses}>
+                  {IS_NUMERIC_LIMIT && badgeLimit < 1
+                    ? `${extraBadgesCount} item${extraBadgesCount > 1 ? 's' : ''} selected`
+                    : `+${extraBadgesCount}`}
+                </Badge>
+              )}
+              <span
+                className={cn(
+                  MultiSelectorLabelVariants({ size }),
+                  HAS_TINY_PLACEHOLDER && 'ml-2',
+                  !IS_INLINE_MODE &&
+                    (persistLabel || values.length === 0) &&
+                    'opacity-100 visible inline'
                 )}
-                className={cn(INLINE_INPUT_CLASSES, HAS_TINY_PLACEHOLDER && 'pl-3')}
+              >
+                {label}
+              </span>
+              {IS_INLINE_MODE && (
+                <MultiSelectorInput
+                  ref={inlineInputRef}
+                  showSearchIcon={false}
+                  onValueChange={activeIndex === -1 ? setInputValue : undefined}
+                  placeholder={values.length === 0 ? label : undefined}
+                  autoFocus={false}
+                  wrapperClassName={cn(
+                    MultiSelectorInlineInputWrapperVariants({ size }),
+                    SHOULD_WRAP_BADGES && 'min-w-21.25'
+                  )}
+                  className={cn(INLINE_INPUT_CLASSES, HAS_TINY_PLACEHOLDER && 'pl-3')}
+                />
+              )}
+            </div>
+
+            {showIcon && (
+              <ChevronDown
+                aria-hidden="true"
+                size={16}
+                strokeWidth={1.5}
+                className="text-foreground-lighter shrink-0 ml-1.5 self-center"
               />
             )}
-          </div>
-
-          {showIcon && (
-            <ChevronDown
-              aria-hidden="true"
-              size={16}
-              strokeWidth={1.5}
-              className="text-foreground-lighter shrink-0 ml-1.5 self-center"
-            />
-          )}
-        </button>
-      </PopoverAnchor>
+          </button>
+        </PopoverAnchor>
+        {showRemoveHint && (
+          <span id={getRemoveHintId(id)} className="sr-only">
+            Use left and right arrow keys to pick a selected item, then Backspace to remove it.
+          </span>
+        )}
+        <span aria-live="polite" className="sr-only">
+          {activeValue !== undefined ? `${activeValue} picked; press Backspace to remove` : ''}
+        </span>
+      </>
     )
   }
 )
@@ -512,6 +547,7 @@ const MultiSelectorInputVariants = cva('', {
 
 const getInputId = (id: string) => `${id}-input`
 const getContentId = (id: string) => `${id}-content`
+const getRemoveHintId = (id: string) => `${id}-remove-hint`
 
 const MultiSelectorInput = React.forwardRef<
   React.ElementRef<typeof CommandInput>,

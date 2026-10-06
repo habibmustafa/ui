@@ -97,3 +97,27 @@ test('the search box filters the list and falls back to the empty label', async 
   expect(screen.queryByRole('option')).toBeNull()
   expect(screen.getByText('No results found')).toBeTruthy()
 })
+
+test('arrow keys pick a chip and Backspace removes that one (keyboard path for deletion)', async () => {
+  const onValuesChange = vi.fn()
+  render(<Host initial={['react', 'vue']} onValuesChange={onValuesChange} />)
+  const combobox = trigger()
+
+  // The pointer-only × is hidden from assistive tech; the trigger describes the keys.
+  const hint = document.getElementById(combobox.getAttribute('aria-describedby')!.split(' ').pop()!)
+  expect(hint?.textContent).toContain('Backspace')
+
+  combobox.focus()
+  fireEvent.keyDown(combobox, { key: 'ArrowLeft' })
+  expect(screen.getByText('vue picked; press Backspace to remove')).toBeTruthy()
+  fireEvent.keyDown(combobox, { key: 'ArrowLeft' })
+  expect(screen.getByText('react picked; press Backspace to remove')).toBeTruthy()
+  fireEvent.keyDown(combobox, { key: 'ArrowRight' })
+  fireEvent.keyDown(combobox, { key: 'ArrowRight' })
+  expect(screen.queryByText(/picked; press Backspace/)).toBeNull()
+
+  fireEvent.keyDown(combobox, { key: 'ArrowLeft' })
+  fireEvent.keyDown(combobox, { key: 'ArrowLeft' })
+  fireEvent.keyDown(combobox, { key: 'Backspace' })
+  expect(onValuesChange).toHaveBeenLastCalledWith(['vue'])
+})
