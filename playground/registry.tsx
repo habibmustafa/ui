@@ -63,6 +63,7 @@ import {
   ToggleLeft,
   TrendingUp,
   Type,
+  Upload,
   type LucideIcon,
 } from 'lucide-react'
 
@@ -1385,6 +1386,17 @@ const fragments: ComponentEntry[] = [
     previews: [
       { name: 'combobox-demo', label: 'Default' },
       { name: 'combobox-groups', label: 'Groups' },
+    ],
+  },
+  {
+    id: 'file-upload',
+    title: 'File Upload',
+    icon: Upload,
+    description:
+      'Drop zone + Browse button with accept / maxSize / maxFiles validation, a removable file list, and a real file input for forms.',
+    previews: [
+      { name: 'file-upload-demo', label: 'Multiple' },
+      { name: 'file-upload-single', label: 'Single file in a form' },
     ],
   },
   {
