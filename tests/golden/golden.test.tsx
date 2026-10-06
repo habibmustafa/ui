@@ -13,6 +13,10 @@
 //   aria-invalid, so its <label> actually labels it (Select's props mode used to drop them).
 // - form-fields-demo: FormCheckbox/FormSwitch are wrapped in a FormItem (plain <div>), so
 //   their ids are real useId values instead of the shared "undefined-form-item".
+// - checkbox-*, form-fields-demo, form-item-layout-with-checkbox*: Checkbox's class list
+//   gained data-[state=indeterminate] styles (it now draws a dash for "indeterminate").
+// - input-with-prefix-suffix (and the new number-input/data-table baselines): the inner
+//   <input> of a prefixed/suffixed Input gained [font-size:inherit] — it rendered at 16px.
 // - chart-*, metric-card-*, drawer-*.open: Recharts 3's ResponsiveContainer adds an inner
 //   sizing <div> (jsdom never measures a size, so no chart SVG renders here either way).
 import { render, waitFor } from "@testing-library/react";

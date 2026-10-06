@@ -6633,6 +6633,186 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       }
     ]
   },
+  "data-table": {
+    "source": "src/components/fragments/data-table",
+    "components": [
+      {
+        "name": "DataTable",
+        "props": [
+          {
+            "name": "columns",
+            "type": "readonly DataTableColumn<TRow>[]",
+            "required": true
+          },
+          {
+            "name": "data",
+            "type": "readonly TRow[]",
+            "required": true
+          },
+          {
+            "name": "rowKey",
+            "type": "(row: TRow) => string",
+            "required": true
+          },
+          {
+            "name": "searchable",
+            "type": "boolean",
+            "default": "true when any column is searchable",
+            "description": "Show the search box (searches columns with `searchValue`)."
+          },
+          {
+            "name": "search",
+            "type": "string"
+          },
+          {
+            "name": "defaultSearch",
+            "type": "string",
+            "default": ""
+          },
+          {
+            "name": "onSearchChange",
+            "type": "((search: string) => void)"
+          },
+          {
+            "name": "searchPlaceholder",
+            "type": "string",
+            "default": "Search…"
+          },
+          {
+            "name": "sort",
+            "type": "string",
+            "description": "`\"<columnKey>:<asc|desc>\"`, or \"\" for unsorted."
+          },
+          {
+            "name": "defaultSort",
+            "type": "string",
+            "default": ""
+          },
+          {
+            "name": "onSortChange",
+            "type": "((sort: string) => void)"
+          },
+          {
+            "name": "pageSize",
+            "type": "number | null",
+            "default": "10",
+            "description": "Rows per page; `null` shows every row."
+          },
+          {
+            "name": "page",
+            "type": "number"
+          },
+          {
+            "name": "defaultPage",
+            "type": "number",
+            "default": "1"
+          },
+          {
+            "name": "onPageChange",
+            "type": "((page: number) => void)"
+          },
+          {
+            "name": "totalRows",
+            "type": "number",
+            "description": "Server-side mode: `data` is already the current page (sorted/filtered by you) and\nthis is the total row count for the pager. Search, sort and paging are then only\nreported through the callbacks, never applied to `data`."
+          },
+          {
+            "name": "selectable",
+            "type": "boolean",
+            "default": "false",
+            "description": "Adds a checkbox column."
+          },
+          {
+            "name": "selectedKeys",
+            "type": "readonly string[]"
+          },
+          {
+            "name": "defaultSelectedKeys",
+            "type": "readonly string[]",
+            "default": "[]"
+          },
+          {
+            "name": "onSelectedKeysChange",
+            "type": "((keys: string[]) => void)"
+          },
+          {
+            "name": "getRowLabel",
+            "type": "((row: TRow) => string)",
+            "default": "\"Select row\"",
+            "description": "Accessible name of a row's checkbox."
+          },
+          {
+            "name": "toolbar",
+            "type": "ReactNode",
+            "description": "Extra controls shown next to the search box (filters, actions, …)."
+          },
+          {
+            "name": "emptyText",
+            "type": "ReactNode",
+            "default": "No results.",
+            "description": "Shown in place of rows when there are none."
+          },
+          {
+            "name": "caption",
+            "type": "ReactNode"
+          },
+          {
+            "name": "onRowClick",
+            "type": "((row: TRow, event: MouseEvent<Element, MouseEvent> | KeyboardEvent<Element>) => void)"
+          },
+          {
+            "name": "className",
+            "type": "string"
+          },
+          {
+            "name": "classNames",
+            "type": "DataTableClassNames"
+          }
+        ],
+        "extends": []
+      },
+      {
+        "name": "compareSortValues",
+        "description": "Compares two sort values; empty values (null/undefined/\"\") always sort last.",
+        "props": [],
+        "extends": []
+      },
+      {
+        "name": "filterRows",
+        "description": "Keeps rows where any of `getTexts(row)` contains every whitespace-separated term.",
+        "props": [],
+        "extends": []
+      },
+      {
+        "name": "nextSort",
+        "description": "Header click cycle: unsorted → ascending → descending → unsorted.",
+        "props": [],
+        "extends": []
+      },
+      {
+        "name": "parseSort",
+        "props": [],
+        "extends": [
+          {
+            "name": "String",
+            "package": "typescript"
+          }
+        ]
+      },
+      {
+        "name": "sortRows",
+        "description": "Stable sort by `getValue`; empty values stay last in both directions.",
+        "props": [],
+        "extends": []
+      },
+      {
+        "name": "SortState",
+        "description": "`\"<columnKey>:<asc|desc>\"`, the same string Table's sortable headers use; \"\" = unsorted.",
+        "props": [],
+        "extends": []
+      }
+    ]
+  },
   "date-picker": {
     "source": "src/components/fragments/date-picker",
     "components": [

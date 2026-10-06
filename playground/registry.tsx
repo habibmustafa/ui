@@ -1400,6 +1400,17 @@ const fragments: ComponentEntry[] = [
     ],
   },
   {
+    id: 'data-table',
+    title: 'Data Table',
+    icon: TableIcon,
+    description:
+      'Table with search, click-to-sort headers, pagination and row selection — in memory, or server-side via controlled state + totalRows.',
+    previews: [
+      { name: 'data-table-demo', label: 'Client-side' },
+      { name: 'data-table-server', label: 'Server-side' },
+    ],
+  },
+  {
     id: 'date-picker',
     title: 'Date Picker',
     icon: CalendarDays,
