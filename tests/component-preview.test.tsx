@@ -16,7 +16,7 @@ const hybridPageIds = new Set([
   'accordion', 'alert', 'alert-dialog', 'avatar', 'breadcrumb', 'card',
   'collapsible', 'command', 'context-menu', 'dialog', 'drawer', 'dropdown-menu',
   'hover-card', 'input-otp', 'popover', 'radio-group', 'resizable', 'select',
-  'sheet', 'table', 'tabs', 'tooltip', 'pagination', 'metric-card', 'multi-select', 'date-picker',
+  'sheet', 'table', 'tabs', 'tooltip', 'pagination', 'menubar', 'navigation-menu', 'metric-card', 'multi-select', 'date-picker',
   // 'toggle-group' deliberately excluded: its "Segmented" preview is compound-only
   // (the tone/size demo-loop + controlled state can't be expressed through the
   // `items` props API without faking it).
@@ -43,7 +43,7 @@ test('every codeVariants preview has both source tabs and a props preview', () =
       }
     }
   }
-  expect(pairedPreviews).toBe(86)
+  expect(pairedPreviews).toBe(88)
 })
 
 test('Preview shows the props variant while source tabs stay separate', async () => {
