@@ -14,7 +14,7 @@
 import * as React from 'react'
 
 import { Checkbox } from '../../atoms/forms/checkbox'
-import { FormControl, FormField, FormLabel } from '../../atoms/forms/form'
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../atoms/forms/form'
 import { Input, type InputProps } from '../../atoms/forms/input'
 import { RadioGroup, type RadioOption } from '../../atoms/forms/radio-group'
 import { Select, type SelectOption, type SelectOptionGroup } from '../../atoms/forms/select'
@@ -171,23 +171,28 @@ export function FormCheckbox({ name, label, description, disabled, className }: 
     <FormField
       name={name}
       render={({ field }) => (
-        <div className="items-top flex space-x-2">
-          <FormControl>
-            <Checkbox
-              checked={field.value}
-              onCheckedChange={field.onChange}
-              onBlur={field.onBlur}
-              disabled={disabled}
-              className={className}
-            />
-          </FormControl>
-          {(label || description) && (
-            <div className="grid gap-1.5 leading-none">
-              {label && <FormLabel className="font-normal">{label}</FormLabel>}
-              {description && <p className="text-sm text-foreground-lighter">{description}</p>}
-            </div>
-          )}
-        </div>
+        // FormItem gives the control/label/message a shared id (without it every
+        // FormCheckbox shared one "undefined-…" id); FormMessage shows the error.
+        <FormItem>
+          <div className="items-top flex space-x-2">
+            <FormControl>
+              <Checkbox
+                checked={field.value}
+                onCheckedChange={field.onChange}
+                onBlur={field.onBlur}
+                disabled={disabled}
+                className={className}
+              />
+            </FormControl>
+            {(label || description) && (
+              <div className="grid gap-1.5 leading-none">
+                {label && <FormLabel className="font-normal">{label}</FormLabel>}
+                {description && <p className="text-sm text-foreground-lighter">{description}</p>}
+              </div>
+            )}
+          </div>
+          <FormMessage />
+        </FormItem>
       )}
     />
   )
@@ -204,22 +209,25 @@ export function FormSwitch({ name, label, description, ...switchProps }: FormSwi
     <FormField
       name={name}
       render={({ field }) => (
-        <div className="flex items-center gap-2">
-          <FormControl>
-            <Switch
-              checked={field.value}
-              onCheckedChange={field.onChange}
-              onBlur={field.onBlur}
-              {...switchProps}
-            />
-          </FormControl>
-          {(label || description) && (
-            <div className="grid gap-1 leading-none">
-              {label && <FormLabel className="font-normal">{label}</FormLabel>}
-              {description && <p className="text-sm text-foreground-lighter">{description}</p>}
-            </div>
-          )}
-        </div>
+        <FormItem>
+          <div className="flex items-center gap-2">
+            <FormControl>
+              <Switch
+                checked={field.value}
+                onCheckedChange={field.onChange}
+                onBlur={field.onBlur}
+                {...switchProps}
+              />
+            </FormControl>
+            {(label || description) && (
+              <div className="grid gap-1 leading-none">
+                {label && <FormLabel className="font-normal">{label}</FormLabel>}
+                {description && <p className="text-sm text-foreground-lighter">{description}</p>}
+              </div>
+            )}
+          </div>
+          <FormMessage />
+        </FormItem>
       )}
     />
   )

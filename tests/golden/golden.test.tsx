@@ -11,6 +11,8 @@
 //   aria-controls while open) — it was a role="combobox" with no name or state.
 // - form-fields-demo: FormSelect's trigger now carries FormControl's id/aria-describedby/
 //   aria-invalid, so its <label> actually labels it (Select's props mode used to drop them).
+// - form-fields-demo: FormCheckbox/FormSwitch are wrapped in a FormItem (plain <div>), so
+//   their ids are real useId values instead of the shared "undefined-form-item".
 // - chart-*, metric-card-*, drawer-*.open: Recharts 3's ResponsiveContainer adds an inner
 //   sizing <div> (jsdom never measures a size, so no chart SVG renders here either way).
 import { render, waitFor } from "@testing-library/react";

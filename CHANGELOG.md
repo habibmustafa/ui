@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Fixed: form validation errors never appeared. `useFormField` read react-hook-form's
+  `formState` proxy straight from context; in the React Compiler build that read was
+  memoised away, so `FormMessage`, `FormLabel`'s error colour and `aria-invalid` never
+  updated. It now subscribes with `useFormState`.
+- Fixed: `FormCheckbox` and `FormSwitch` had no `FormItem`, so every one of them got the
+  id `undefined-form-item` (duplicate ids with more than one on a page) and their
+  validation message was never rendered. Both now render inside a `FormItem` with a
+  `FormMessage`.
 - **Breaking (dependencies):** `sonner` 1 → 2. `SonnerToaster` renders sonner 2's
   `<Toaster>`; if your app calls `toast()` from its own `sonner` install, upgrade it to
   2.x too so both share one toast store (otherwise toasts are never shown).

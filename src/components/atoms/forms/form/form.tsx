@@ -7,6 +7,7 @@ import {
   Controller,
   FormProvider,
   useFormContext,
+  useFormState,
   useWatch,
   type ControllerProps,
   type FieldPath,
@@ -46,8 +47,12 @@ const FormField = <
 const useFormField = () => {
   const fieldContext = React.useContext(FormFieldContext)
   const itemContext = React.useContext(FormItemContext)
-  const { getFieldState, formState } = useFormContext()
-
+  const { getFieldState } = useFormContext()
+  // Subscribe through useFormState rather than reading the context's formState proxy:
+  // that proxy only re-renders subscribers it saw being read during render, and once
+  // the React Compiler memoises this hook the read never happens again — errors never
+  // reached FormLabel/FormControl/FormMessage.
+  const formState = useFormState({ name: fieldContext.name })
   const fieldState = getFieldState(fieldContext.name, formState)
 
   if (!fieldContext) {
