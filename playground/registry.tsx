@@ -11,6 +11,7 @@ import {
   CheckSquare,
   ChevronDown,
   ChevronRight,
+  ChevronsLeftRight,
   ChevronsUpDown,
   CircleDot,
   CircleUser,
@@ -26,6 +27,7 @@ import {
   HelpCircle,
   Inbox,
   Info,
+  Keyboard,
   KeyRound,
   LayoutGrid,
   LayoutPanelTop,
@@ -49,6 +51,7 @@ import {
   Rows,
   Rows3,
   ShieldAlert,
+  SlidersHorizontal,
   Sparkles,
   SunMoon,
   Table as TableIcon,
@@ -638,12 +641,46 @@ const atoms: ComponentEntry[] = [
     ],
   },
   {
+    id: 'kbd',
+    title: 'Kbd',
+    icon: Keyboard,
+    description: 'Keyboard key hint; KbdGroup lays out a multi-key shortcut.',
+    previews: [
+      { name: 'kbd-demo' },
+    ],
+  },
+  {
     id: 'label',
     title: 'Label',
     icon: Type,
     description: 'Radix label bound to a control; dims when its peer is disabled.',
     previews: [
       { name: 'label-demo' },
+    ],
+  },
+  {
+    id: 'pagination',
+    title: 'Pagination',
+    icon: ChevronsLeftRight,
+    description:
+      'Page navigation with first/last, current ± siblings and ellipses — links via getHref, or buttons for client-side paging.',
+    previews: [
+      {
+        name: 'pagination-props-demo',
+        label: 'Default',
+        codeVariants: [
+          { id: 'props', label: 'Props-driven', name: 'pagination-props-demo' },
+          { id: 'compound', label: 'Compound', name: 'pagination-demo' },
+        ],
+      },
+      {
+        name: 'pagination-links-props-demo',
+        label: 'Links',
+        codeVariants: [
+          { id: 'props', label: 'Props-driven', name: 'pagination-links-props-demo' },
+          { id: 'compound', label: 'Compound', name: 'pagination-links' },
+        ],
+      },
     ],
   },
   {
@@ -872,6 +909,17 @@ const atoms: ComponentEntry[] = [
     previews: [
       { name: 'skeleton-demo', label: 'Default' },
       { name: 'skeleton-card', label: 'Card' },
+    ],
+  },
+  {
+    id: 'slider',
+    title: 'Slider',
+    icon: SlidersHorizontal,
+    description: 'Radix slider; pass two values for a range, with a label per thumb.',
+    previews: [
+      { name: 'slider-demo', label: 'Default' },
+      { name: 'slider-range', label: 'Range' },
+      { name: 'slider-sizes', label: 'Sizes' },
     ],
   },
   {

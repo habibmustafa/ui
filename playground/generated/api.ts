@@ -743,6 +743,36 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       }
     ]
   },
+  "kbd": {
+    "source": "src/components/atoms/data-display/kbd",
+    "components": [
+      {
+        "name": "Kbd",
+        "props": [
+          {
+            "name": "size",
+            "type": "\"small\" | \"medium\" | \"large\" | null"
+          }
+        ],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "KbdGroup",
+        "props": [],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      }
+    ]
+  },
   "table": {
     "source": "src/components/atoms/data-display/table",
     "components": [
@@ -1891,6 +1921,35 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "SelectValueProps",
             "package": "@radix-ui/react-select"
+          },
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      }
+    ]
+  },
+  "slider": {
+    "source": "src/components/atoms/forms/slider",
+    "components": [
+      {
+        "name": "Slider",
+        "props": [
+          {
+            "name": "thumbLabels",
+            "type": "readonly string[]",
+            "description": "Accessible name per thumb, e.g. `['Minimum price', 'Maximum price']`. Without it\nevery thumb gets the slider's own `aria-label`/`aria-labelledby` — the thumbs are\nthe focusable `role=\"slider\"` elements, so that's where the name has to live."
+          },
+          {
+            "name": "size",
+            "type": "\"small\" | \"medium\" | \"large\" | null"
+          }
+        ],
+        "extends": [
+          {
+            "name": "SliderProps",
+            "package": "@radix-ui/react-slider"
           },
           {
             "name": "HTMLAttributes",
@@ -3165,6 +3224,247 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       }
     ]
   },
+  "pagination": {
+    "source": "src/components/atoms/navigation/pagination",
+    "components": [
+      {
+        "name": "Pagination",
+        "props": [
+          {
+            "name": "totalPages",
+            "type": "number"
+          },
+          {
+            "name": "page",
+            "type": "number",
+            "description": "Current page (1-based), controlled."
+          },
+          {
+            "name": "defaultPage",
+            "type": "number",
+            "default": "1",
+            "description": "Initial page when uncontrolled."
+          },
+          {
+            "name": "onPageChange",
+            "type": "((page: number) => void)"
+          },
+          {
+            "name": "siblingCount",
+            "type": "number",
+            "default": "1",
+            "description": "Pages shown either side of the current one."
+          },
+          {
+            "name": "getHref",
+            "type": "((page: number) => string)",
+            "description": "Build a URL per page to render real links (crawlable, open-in-new-tab). Omit it to\nrender buttons that only call `onPageChange`."
+          },
+          {
+            "name": "showControls",
+            "type": "boolean",
+            "default": "true",
+            "description": "Hide the Previous/Next controls with `false`."
+          },
+          {
+            "name": "previousLabel",
+            "type": "ReactNode",
+            "description": "Text next to the arrows; `null` for arrow-only controls."
+          },
+          {
+            "name": "nextLabel",
+            "type": "ReactNode"
+          },
+          {
+            "name": "size",
+            "type": "\"medium\" | \"small\" | \"tiny\"",
+            "default": "\"tiny\""
+          },
+          {
+            "name": "classNames",
+            "type": "PaginationClassNames"
+          }
+        ],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "PaginationRoot",
+        "alias": "Pagination.Root",
+        "props": [],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "PaginationContent",
+        "alias": "Pagination.Content",
+        "props": [],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "PaginationItem",
+        "alias": "Pagination.Item",
+        "props": [],
+        "extends": [
+          {
+            "name": "LiHTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "PaginationLink",
+        "alias": "Pagination.Link",
+        "props": [
+          {
+            "name": "isActive",
+            "type": "boolean",
+            "description": "Marks the current page: bordered style and `aria-current=\"page\"`."
+          },
+          {
+            "name": "asChild",
+            "type": "boolean",
+            "description": "Merge onto a child element (e.g. a router `<Link>`) instead of rendering `<a>`."
+          },
+          {
+            "name": "as",
+            "type": "\"a\" | \"button\"",
+            "default": "a",
+            "description": "Render a `<button>` instead of `<a>` — for paging without URLs."
+          },
+          {
+            "name": "size",
+            "type": "\"medium\" | \"small\" | \"tiny\"",
+            "default": "tiny"
+          }
+        ],
+        "extends": [
+          {
+            "name": "AnchorHTMLAttributes",
+            "package": "react"
+          },
+          {
+            "name": "ButtonHTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "PaginationPrevious",
+        "alias": "Pagination.Previous",
+        "props": [
+          {
+            "name": "isActive",
+            "type": "boolean",
+            "description": "Marks the current page: bordered style and `aria-current=\"page\"`."
+          },
+          {
+            "name": "asChild",
+            "type": "boolean",
+            "description": "Merge onto a child element (e.g. a router `<Link>`) instead of rendering `<a>`."
+          },
+          {
+            "name": "as",
+            "type": "\"a\" | \"button\"",
+            "default": "a",
+            "description": "Render a `<button>` instead of `<a>` — for paging without URLs."
+          },
+          {
+            "name": "size",
+            "type": "\"medium\" | \"small\" | \"tiny\"",
+            "default": "tiny"
+          },
+          {
+            "name": "label",
+            "type": "ReactNode",
+            "default": "Next"
+          }
+        ],
+        "extends": [
+          {
+            "name": "AnchorHTMLAttributes",
+            "package": "react"
+          },
+          {
+            "name": "ButtonHTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "PaginationNext",
+        "alias": "Pagination.Next",
+        "props": [
+          {
+            "name": "isActive",
+            "type": "boolean",
+            "description": "Marks the current page: bordered style and `aria-current=\"page\"`."
+          },
+          {
+            "name": "asChild",
+            "type": "boolean",
+            "description": "Merge onto a child element (e.g. a router `<Link>`) instead of rendering `<a>`."
+          },
+          {
+            "name": "as",
+            "type": "\"a\" | \"button\"",
+            "default": "a",
+            "description": "Render a `<button>` instead of `<a>` — for paging without URLs."
+          },
+          {
+            "name": "size",
+            "type": "\"medium\" | \"small\" | \"tiny\"",
+            "default": "tiny"
+          },
+          {
+            "name": "label",
+            "type": "ReactNode",
+            "default": "Next"
+          }
+        ],
+        "extends": [
+          {
+            "name": "AnchorHTMLAttributes",
+            "package": "react"
+          },
+          {
+            "name": "ButtonHTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "PaginationEllipsis",
+        "alias": "Pagination.Ellipsis",
+        "props": [],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "getPaginationRange",
+        "description": "Pages to show for `page` of `totalPages`: always the first and last page, `siblingCount`\npages either side of the current one, and an ellipsis wherever pages are skipped. The\nresult has a constant length (`siblingCount * 2 + 5`, or every page when that's fewer),\nso the control doesn't change width while paging.",
+        "props": [],
+        "extends": []
+      }
+    ]
+  },
   "sidebar": {
     "source": "src/components/atoms/navigation/sidebar",
     "components": [
@@ -3381,17 +3681,17 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "type": "string | (Omit<TooltipContentProps & RefAttributes<HTMLDivElement>, \"ref\"> & RefAttributes<HTMLDivElement>)"
           },
           {
+            "name": "isActive",
+            "type": "boolean",
+            "default": "false"
+          },
+          {
             "name": "hasIcon",
             "type": "boolean",
             "default": "true"
           },
           {
             "name": "isLoading",
-            "type": "boolean",
-            "default": "false"
-          },
-          {
-            "name": "isActive",
             "type": "boolean",
             "default": "false"
           }
