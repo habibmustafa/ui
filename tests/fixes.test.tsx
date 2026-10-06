@@ -27,7 +27,7 @@ test('RadioGroup card and stacked items render their `image`', () => {
 
 test('Row scrollBehavior="auto" drops the sliding transition', () => {
   const { container, rerender } = render(
-    <Row maxColumns={2}>
+    <Row maxColumns={2} minWidth={100}>
       <div>a</div>
       <div>b</div>
     </Row>
@@ -36,7 +36,7 @@ test('Row scrollBehavior="auto" drops the sliding transition', () => {
   expect(track().className).toContain('transition-transform')
 
   rerender(
-    <Row maxColumns={2} scrollBehavior="auto">
+    <Row maxColumns={2} minWidth={100} scrollBehavior="auto">
       <div>a</div>
       <div>b</div>
     </Row>
