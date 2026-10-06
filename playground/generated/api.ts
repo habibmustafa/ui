@@ -544,30 +544,14 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
         ]
       },
       {
-        "name": "Legend",
+        "name": "ChartLegend",
         "props": [],
         "extends": [
           {
-            "name": "SVGAttributes",
-            "package": "react"
-          },
-          {
-            "name": "InternalProps",
+            "name": "DefaultLegendContentProps",
             "package": "recharts"
           }
         ]
-      },
-      {
-        "name": "componentDidMount",
-        "description": "Called immediately after a component is mounted. Setting state here will trigger re-rendering.",
-        "props": [],
-        "extends": []
-      },
-      {
-        "name": "componentDidUpdate",
-        "description": "Called immediately after updating occurs. Not called for the initial render.\n\nThe snapshot is only present if {@link getSnapshotBeforeUpdate} is present and returns non-null.",
-        "props": [],
-        "extends": []
       },
       {
         "name": "ChartLegendContent",
@@ -578,6 +562,10 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "default": "false"
           },
           {
+            "name": "payload",
+            "type": "readonly LegendPayload[]"
+          },
+          {
             "name": "nameKey",
             "type": "string"
           }
@@ -586,10 +574,6 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "HTMLAttributes",
             "package": "react"
-          },
-          {
-            "name": "InternalProps",
-            "package": "recharts"
           }
         ]
       },
@@ -611,6 +595,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       },
       {
         "name": "Tooltip",
+        "description": "The Tooltip component displays a floating box with data values when hovering over or clicking on chart elements.\n\nIt can be configured to show information for individual data points or for all points at a specific axis coordinate.\nThe appearance and content of the tooltip can be customized via props.",
         "props": [],
         "extends": [
           {
