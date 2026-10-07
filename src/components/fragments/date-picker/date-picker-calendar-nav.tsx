@@ -1,8 +1,9 @@
 import dayjs from 'dayjs'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { useRef, useState, type ComponentProps, type ReactNode } from 'react'
+import { useLayoutEffect, useRef, useState, type ComponentProps, type ReactNode } from 'react'
 
+import { EASE_SOFT_IN, EASE_SOFT_OUT } from '../../../lib/motion'
 import { cn } from '../../../lib/utils'
 import { buttonVariants } from '../../atoms/actions/button/shadcn-button'
 import { Calendar } from '../../atoms/forms/calendar'
@@ -20,23 +21,57 @@ type View = 'day' | 'month' | 'year'
 
 const YEAR_PAGE_SIZE = 12
 const gridCell = cn(buttonVariants({ variant: 'ghost' }), 'h-8 w-full rounded-md font-normal')
-const headerButton = cn(buttonVariants({ variant: 'ghost' }), 'h-7 rounded-md px-2 text-sm font-medium')
-const pagerButton = cn(buttonVariants({ variant: 'outline' }), 'h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100')
+const headerButton = cn(
+  buttonVariants({ variant: 'ghost' }),
+  'h-7 rounded-md px-2 text-sm font-medium'
+)
+const pagerButton = cn(
+  buttonVariants({ variant: 'outline' }),
+  'h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100'
+)
 
-/** Cross-fades between day/month/year views instead of an instant swap. */
+/**
+ * Cross-fades between day/month/year views. The old view is popped out of layout
+ * (`popLayout`) so both overlap during the fade instead of the old one fading out, the
+ * popover collapsing for a frame and the new one fading in (`wait`, which read as a
+ * stutter). The wrapper animates its height to the new view's so the popover resizes
+ * smoothly rather than jumping.
+ */
 function GridView({ viewKey, children }: { viewKey: string; children: ReactNode }) {
+  const innerRef = useRef<HTMLDivElement>(null)
+  const [height, setHeight] = useState<number | undefined>(undefined)
+  const reduceMotion = useReducedMotion()
+
+  useLayoutEffect(() => {
+    const el = innerRef.current
+    if (!el || typeof ResizeObserver === 'undefined') return
+    const observer = new ResizeObserver(([entry]) => setHeight(entry.contentRect.height))
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
   return (
-    <AnimatePresence mode="wait" initial={false}>
-      <motion.div
-        key={viewKey}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.12 }}
-      >
-        {children}
-      </motion.div>
-    </AnimatePresence>
+    <div
+      style={{ height }}
+      className="overflow-hidden transition-[height] duration-[260ms] ease-soft-in-out"
+    >
+      <div ref={innerRef} className="relative">
+        <AnimatePresence mode="popLayout" initial={false}>
+          <motion.div
+            key={viewKey}
+            initial={{ opacity: 0, scale: reduceMotion ? 1 : 0.98 }}
+            animate={{ opacity: 1, scale: 1, transition: { duration: 0.24, ease: EASE_SOFT_OUT } }}
+            exit={{
+              opacity: 0,
+              scale: reduceMotion ? 1 : 1.01,
+              transition: { duration: 0.16, ease: EASE_SOFT_IN },
+            }}
+          >
+            {children}
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </div>
   )
 }
 
@@ -222,12 +257,7 @@ function PickerGrid({
   }
 
   return (
-    <div
-      ref={listRef}
-      role="listbox"
-      aria-label={label}
-      className="mt-2 grid grid-cols-3 gap-1"
-    >
+    <div ref={listRef} role="listbox" aria-label={label} className="mt-2 grid grid-cols-3 gap-1">
       {options.map((option, index) => (
         <button
           key={option.key}
@@ -288,7 +318,9 @@ function YearGrid({
   onPick: (year: number) => void
 }) {
   const activeYear = displayMonth.getFullYear()
-  const [pageStart, setPageStart] = useState(() => Math.floor(activeYear / YEAR_PAGE_SIZE) * YEAR_PAGE_SIZE)
+  const [pageStart, setPageStart] = useState(
+    () => Math.floor(activeYear / YEAR_PAGE_SIZE) * YEAR_PAGE_SIZE
+  )
   const years = Array.from({ length: YEAR_PAGE_SIZE }, (_, i) => pageStart + i)
 
   return (

@@ -12,7 +12,7 @@ import { cn } from '../../../../lib/utils'
  */
 
 const contentClasses =
-  'z-50 min-w-48 overflow-hidden rounded-md border border-overlay bg-overlay p-1 text-foreground-light shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2'
+  'z-50 min-w-48 overflow-hidden rounded-md border border-overlay bg-overlay p-1 text-foreground-light shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-97 data-[state=open]:zoom-in-97 data-[side=bottom]:slide-in-from-top-1 data-[side=left]:slide-in-from-right-1 data-[side=right]:slide-in-from-left-1 data-[side=top]:slide-in-from-bottom-1'
 const itemClasses =
   'relative flex cursor-default select-none items-center gap-2 rounded-xs px-2 py-1.5 text-xs outline-hidden transition-colors focus:bg-overlay-hover focus:text-foreground data-disabled:pointer-events-none data-disabled:opacity-50'
 const indicatorItemClasses =

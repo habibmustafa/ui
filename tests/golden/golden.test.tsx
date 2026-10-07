@@ -31,6 +31,11 @@
 // - calendar-*: day buttons are named "Monday, September 7, 2026" (the visible number as
 //   a word) instead of react-day-picker's "…September 7th, 2026" (WCAG 2.5.3); outside
 //   days lost `opacity-50` (contrast 2.1:1 -> 5.4:1).
+// - overlays (dialog, alert-dialog, sheet, popover, menus, select, tooltip, hover-card,
+//   navigation-menu) and calendar-*: motion pass — softer zoom/slide amounts, backdrop
+//   fades, exit animations for tooltip/hover-card, and DayPicker's data-animated-*
+//   hooks for the month slide.
+// - time-picker-*: the clock icon is now a "Choose time" button opening the clock dial.
 // - chart-*, metric-card-*, drawer-*.open: Recharts 3's ResponsiveContainer adds an inner
 //   sizing <div> (jsdom never measures a size, so no chart SVG renders here either way).
 import { render, waitFor } from "@testing-library/react";

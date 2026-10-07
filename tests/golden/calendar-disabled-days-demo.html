@@ -1,7 +1,7 @@
 <div>
 <div class="rdp-root p-3" data-mode="single" data-required="true" lang="en-US">
 <div class="relative flex flex-col sm:flex-row space-y-4 sm:[&amp;>*:not(nav)+*]:ml-4 sm:space-y-0">
-<nav aria-label="Navigation bar" class="rdp-nav">
+<nav aria-label="Navigation bar" class="rdp-nav" data-animated-nav="true">
 <button aria-disabled="true" aria-label="Go to the Previous Month" class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-ring disabled:pointer-events-none disabled:opacity-50 border border-control hover:bg-accent hover:text-accent-foreground h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 z-5 aria-disabled:opacity-25 aria-disabled:hover:opacity-25 aria-disabled:cursor-not-allowed absolute left-0 top-0" tabindex="-1" type="button">
 <svg aria-hidden="true" class="lucide lucide-chevron-left h-4 w-4 pointer-events-none rdp-chevron" disabled="" fill="none" height="24" orientation="left" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24">
 <path d="m15 18-6-6 6-6">
@@ -15,13 +15,13 @@
 </svg>
 </button>
 </nav>
-<div class="space-y-4">
-<div class="flex justify-center pt-1 relative items-center">
+<div class="space-y-4" data-animated-month="true">
+<div class="flex justify-center pt-1 relative items-center" data-animated-caption="true">
 <span aria-live="polite" class="text-sm font-medium" role="status">July 2026</span>
 </div>
 <table aria-label="July 2026" aria-multiselectable="false" class="w-full border-collapse space-y-1" role="grid">
 <thead aria-hidden="true">
-<tr class="flex">
+<tr class="flex" data-animated-weekdays="true">
 <th aria-label="Sunday" class="text-foreground-muted rounded-md w-9 font-normal text-[0.8rem]" scope="col">Su</th>
 <th aria-label="Monday" class="text-foreground-muted rounded-md w-9 font-normal text-[0.8rem]" scope="col">Mo</th>
 <th aria-label="Tuesday" class="text-foreground-muted rounded-md w-9 font-normal text-[0.8rem]" scope="col">Tu</th>
@@ -31,7 +31,7 @@
 <th aria-label="Saturday" class="text-foreground-muted rounded-md w-9 font-normal text-[0.8rem]" scope="col">Sa</th>
 </tr>
 </thead>
-<tbody class="rdp-weeks">
+<tbody class="rdp-weeks" data-animated-weeks="true">
 <tr class="flex w-full mt-2">
 <td class="text-center text-sm p-0 relative first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20 w-9 box-border text-foreground-muted opacity-50 invisible text-foreground-muted has-[[aria-selected]]:text-foreground" data-day="2026-06-28" data-disabled="true" data-hidden="true" data-month="2026-06" data-outside="true" role="gridcell">
 </td>

@@ -24,7 +24,7 @@ const NavigationMenuViewport = React.forwardRef<
       ref={ref}
       className={cn(
         'origin-top relative mt-1.5 h-(--radix-navigation-menu-viewport-height) w-full overflow-hidden rounded-md border border-overlay bg-overlay text-foreground-light shadow-md md:w-(--radix-navigation-menu-viewport-width)',
-        'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-90',
+        'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:zoom-out-97 data-[state=open]:zoom-in-97',
         className
       )}
       {...props}
@@ -101,7 +101,7 @@ const NavigationMenuContent = React.forwardRef<
     ref={ref}
     className={cn(
       'left-0 top-0 w-full p-2 md:absolute md:w-auto',
-      'data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out data-[motion^=from-]:fade-in data-[motion^=to-]:fade-out data-[motion=from-end]:slide-in-from-right-52 data-[motion=from-start]:slide-in-from-left-52 data-[motion=to-end]:slide-out-to-right-52 data-[motion=to-start]:slide-out-to-left-52',
+      'data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out data-[motion^=from-]:fade-in data-[motion^=to-]:fade-out data-[motion=from-end]:slide-in-from-right-10 data-[motion=from-start]:slide-in-from-left-10 data-[motion=to-end]:slide-out-to-right-10 data-[motion=to-start]:slide-out-to-left-10',
       // Without the shared viewport, each panel is its own floating surface.
       'group-data-[viewport=false]/navigation-menu:top-full group-data-[viewport=false]/navigation-menu:mt-1.5 group-data-[viewport=false]/navigation-menu:rounded-md group-data-[viewport=false]/navigation-menu:border group-data-[viewport=false]/navigation-menu:border-overlay group-data-[viewport=false]/navigation-menu:bg-overlay group-data-[viewport=false]/navigation-menu:shadow-md',
       className
