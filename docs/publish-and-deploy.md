@@ -210,6 +210,15 @@ first set up. If you see a similar error in the future, check here first:
    if you see these errors AGAIN, it means someone has reverted the workflow to the token-based form,
    or deleted/changed the Trusted Publisher record on npmjs.com.
 
+5. **The "Version Packages" PR is never opened; `changesets/action` fails with
+   `npm error code EALLOWREMOTE ... Refusing to fetch ... oxide-wasm32-wasi`**
+   → `version-packages` used to run `npm install --package-lock-only` after `changeset version`.
+   That command re-resolves every dependency, and the `npm@latest` the workflow installs (for
+   Trusted Publishing) refuses to fetch the optional `@tailwindcss/oxide-wasm32-wasi` tarball.
+   Only the lockfile's own `version` needs to follow `package.json`, so
+   `scripts/sync-lockfile-version.mjs` now does just that, with no network. Don't put
+   `npm install` back into `version-packages`.
+
 ---
 
 ## 6. Quick summary ("I want to release a new version, what do I do?")
