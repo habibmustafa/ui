@@ -75,11 +75,14 @@ type Step = { l: number; c: number; dh?: number }
    to the scale's reference chroma; `dh` a per-step hue offset where the original
    ramp deliberately drifts (amber → yellow as warning gets lighter). */
 const BRAND_REF_C = 0.155
+/* Lightest a light-mode brand fill may be: ~3:1 against white for a mid-chroma hue
+   (WCAG 1.4.11, non-text contrast for switches, sliders, checked states). */
+const LIGHT_FILL_MAX_L = 0.63
 const BRAND: Record<Mode, Record<string, Step>> = {
   light: {
     '600': { l: 0.518, c: 0.117 },
-    '500': { l: 0.686, c: 0.156 },
-    '400': { l: 0.835, c: 0.13 },
+    '500': { l: 0.6, c: 0.15 },
+    '400': { l: 0.76, c: 0.155 },
     '300': { l: 0.9, c: 0.09 },
     '200': { l: 0.947, c: 0.047 },
   },
@@ -172,13 +175,17 @@ export function createTheme(config: ThemeConfig = {}): ThemeTokens {
   const brand = config.brand ? requireColor(config.brand, 'brand') : null
   if (brand) {
     const factor = chromaFactor(brand, BRAND_REF_C)
-    // The picked colour itself is the bright fill (switches, slider range, dots),
-    // kept inside a lightness band where it still reads as a fill on both modes.
-    const fill = toGamut({ ...brand, l: clamp(brand.l, 0.5, 0.85) })
+    // The picked colour itself is the solid fill (switches, slider range, checked
+    // states), kept in a lightness band where it holds 3:1 against the canvas: on
+    // light surfaces no lighter than 0.63, on dark ones no darker than 0.5.
+    const fills: Record<Mode, Oklch> = {
+      light: toGamut({ ...brand, l: clamp(brand.l, 0.45, LIGHT_FILL_MAX_L) }),
+      dark: toGamut({ ...brand, l: clamp(brand.l, 0.5, 0.85) }),
+    }
     set({ '--hue': String(Math.round(brand.h * 10) / 10), '--primary-hue': String(Math.round(brand.h * 10) / 10) })
     for (const mode of MODES) {
       const vars = modes[mode]
-      vars['--brand-default'] = toHslTriplet(fill)
+      vars['--brand-default'] = toHslTriplet(fills[mode])
       for (const [name, profile] of Object.entries(BRAND[mode])) {
         vars[`--brand-${name}`] = toHslTriplet(step(profile, brand.h, factor))
       }
@@ -214,8 +221,9 @@ export function createTheme(config: ThemeConfig = {}): ThemeTokens {
 
   if (config.contrast !== undefined) {
     const contrast = clamp(config.contrast, 0, 1)
-    // Light runs a touch higher by default (0.53 vs 0.5) to hold contrast on white.
-    modes.light['--contrast'] = String(Math.round(clamp(contrast + 0.03, 0, 1) * 1000) / 1000)
+    // Light runs higher by default (0.6 vs 0.5): borders and secondary text need more
+    // weight to hold up on a near-white canvas.
+    modes.light['--contrast'] = String(Math.round(clamp(contrast + 0.1, 0, 1) * 1000) / 1000)
     modes.dark['--contrast'] = String(contrast)
   }
 
