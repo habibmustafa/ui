@@ -72,7 +72,7 @@ export const EmptyStatePresentational = ({
   )
 
   return (
-    <aside
+    <div
       className={cn(
         'border border-dashed w-full bg-surface-100 rounded-lg px-4 py-10 flex flex-col items-center gap-y-3',
         className
@@ -103,6 +103,6 @@ export const EmptyStatePresentational = ({
 
       {/* Optional children (typically action buttons) */}
       {children}
-    </aside>
+    </div>
   )
 }

@@ -9,6 +9,7 @@ import {
   RadioGroupStackedRoot,
 } from '../src/components/atoms/forms/radio-group'
 import { Row } from '../src/components/fragments/row'
+import { MetricCardHybrid as MetricCard } from '../src/components/fragments/metric-card/metric-card'
 
 test('RadioGroup card and stacked items render their `image`', () => {
   render(
@@ -42,4 +43,12 @@ test('Row scrollBehavior="auto" drops the sliding transition', () => {
     </Row>
   )
   expect(track().className).not.toContain('transition-transform')
+})
+
+test('MetricCardContent does not claim 100% height (keeps the sparkline inside a stretched grid cell)', () => {
+  const { container } = render(
+    <MetricCard label="Revenue" value="$54k" sparklineData={[{ value: 1 }, { value: 2 }]} />
+  )
+  const content = container.querySelector('.p-card.flex-1')!
+  expect(content.className).not.toMatch(/(^|\s)h-full(\s|$)/)
 })

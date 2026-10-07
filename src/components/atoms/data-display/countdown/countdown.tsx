@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 
+import { useLabels } from '../../../../providers/locale-provider'
 import { Statistic, type StatisticProps } from '../statistic'
 
 /*
@@ -57,14 +58,6 @@ export function formatCountdown(remaining: number, format: string) {
 const toTimestamp = (value: CountdownProps['value']) =>
   value instanceof Date ? value.getTime() : new Date(value).getTime()
 
-const defaultLabel = (remaining: number) => {
-  const total = Math.ceil(remaining / 1000)
-  const h = Math.floor(total / 3600)
-  const m = Math.floor((total % 3600) / 60)
-  const s = total % 60
-  return [h && `${h}h`, m && `${m}m`, `${s}s`].filter(Boolean).join(' ') + ' left'
-}
-
 const Countdown = React.forwardRef<HTMLDivElement, CountdownProps>(
   (
     {
@@ -80,6 +73,7 @@ const Countdown = React.forwardRef<HTMLDivElement, CountdownProps>(
     },
     ref
   ) => {
+    const labels = useLabels()
     const deadline = toTimestamp(value)
     const tick = interval ?? (format.includes('S') ? 50 : 1000)
     // `now` is the last tick; the time left is derived from it, so a new deadline shows
@@ -121,8 +115,8 @@ const Countdown = React.forwardRef<HTMLDivElement, CountdownProps>(
           getAccessibleLabel
             ? getAccessibleLabel(remaining)
             : typeof title === 'string'
-              ? `${title}: ${defaultLabel(remaining)}`
-              : defaultLabel(remaining)
+              ? `${title}: ${labels.timeLeft(remaining)}`
+              : labels.timeLeft(remaining)
         }
         title={title}
         {...props}

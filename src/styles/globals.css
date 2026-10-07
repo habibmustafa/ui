@@ -28,6 +28,7 @@
 
 @import './vendor/theme/animations.css';
 @import './motion.css';
+@import './touch.css';
 @import './vendor/theme/utilities.css';
 @import './vendor/theme/hit-area.css';
 @import './vendor/theme/variants.css';

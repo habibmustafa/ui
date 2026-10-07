@@ -4,6 +4,7 @@ import * as React from 'react'
 
 import { useControllableState } from '../../../../lib/use-controllable-state'
 import { cn } from '../../../../lib/utils'
+import { useLabels } from '../../../../providers/locale-provider'
 import { PopoverAnchor, PopoverContent, PopoverRoot } from '../../overlay/popover'
 import { Textarea, type TextareaProps } from '../textarea'
 
@@ -77,7 +78,7 @@ const Mentions = React.forwardRef<HTMLTextAreaElement, MentionsProps>(
       separator = ' ',
       filterOption,
       onSelect,
-      notFoundContent = 'No matches',
+      notFoundContent: notFoundProp,
       containerClassName,
       className,
       onKeyDown,
@@ -90,6 +91,8 @@ const Mentions = React.forwardRef<HTMLTextAreaElement, MentionsProps>(
     },
     ref
   ) => {
+    const labels = useLabels()
+    const notFoundContent = notFoundProp ?? labels.mentionsEmpty
     const [value, setValue] = useControllableState({
       value: valueProp,
       defaultValue,
@@ -238,7 +241,7 @@ const Mentions = React.forwardRef<HTMLTextAreaElement, MentionsProps>(
           // Keeps focus in the textarea when the list is clicked.
           onMouseDown={(event) => event.preventDefault()}
         >
-          <ul id={listId} role="listbox" aria-label="Suggestions">
+          <ul id={listId} role="listbox" aria-label={labels.mentionsList}>
             {matches.length === 0 ? (
               <li role="presentation" className="px-2 py-1.5 text-foreground-lighter">
                 {notFoundContent}

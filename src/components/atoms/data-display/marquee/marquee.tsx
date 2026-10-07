@@ -3,6 +3,7 @@
 import * as React from 'react'
 
 import { cn } from '../../../../lib/utils'
+import { useLabels } from '../../../../providers/locale-provider'
 
 /*
  * An endlessly scrolling strip (logos, quotes, tags). The children are rendered several
@@ -50,6 +51,7 @@ const Marquee = React.forwardRef<HTMLDivElement, MarqueeProps>(
     },
     ref
   ) => {
+    const labels = useLabels()
     const rootRef = React.useRef<HTMLDivElement | null>(null)
     const trackRef = React.useRef<HTMLDivElement | null>(null)
     const [measured, setMeasured] = React.useState(2)
@@ -84,7 +86,7 @@ const Marquee = React.forwardRef<HTMLDivElement, MarqueeProps>(
           else if (ref) ref.current = node
         }}
         role="group"
-        aria-roledescription="marquee"
+        aria-roledescription={labels.marqueeRole}
         className={cn('group flex overflow-hidden', vertical ? 'flex-col' : 'flex-row', className)}
         style={{
           gap,

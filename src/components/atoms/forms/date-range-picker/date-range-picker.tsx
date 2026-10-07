@@ -6,6 +6,7 @@ import type { DateRange } from 'react-day-picker'
 
 import { useControllableState } from '../../../../lib/use-controllable-state'
 import { cn } from '../../../../lib/utils'
+import { useLabels } from '../../../../providers/locale-provider'
 import { Button } from '../../actions/button'
 import { DatePicker } from '../date-picker'
 
@@ -58,7 +59,7 @@ const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePickerProps
       value: valueProp,
       defaultValue,
       onValueChange,
-      placeholder = 'Pick a date range',
+      placeholder: placeholderProp,
       format = 'MMM DD, YYYY',
       numberOfMonths = 2,
       minDate,
@@ -67,7 +68,7 @@ const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePickerProps
       clearable = true,
       closeOnComplete = true,
       contentClassName,
-      clearLabel = 'Clear',
+      clearLabel: clearLabelProp,
       disabled,
       className,
       id: idProp,
@@ -78,6 +79,9 @@ const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePickerProps
     },
     ref
   ) => {
+    const labels = useLabels()
+    const placeholder = placeholderProp ?? labels.dateRangePlaceholder
+    const clearLabel = clearLabelProp ?? labels.dateRangeClear
     const [range, setRange] = useControllableState<DateRange | undefined>({
       value: valueProp,
       defaultValue,

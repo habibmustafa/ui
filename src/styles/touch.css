@@ -1,0 +1,30 @@
+/*
+ * Touch targets: on a coarse pointer (a finger) small controls get a 44px hit area.
+ *
+ * Nothing changes visually and no layout moves: an invisible ::after grows each small
+ * control to 44px in whichever direction it falls short (a control already 44px or
+ * larger gets no extra area). That covers icon buttons, switches, checkboxes, radios,
+ * tabs and stepper buttons without resizing any of them for mouse users.
+ *
+ * It all lives in @layer base behind :where(), so any utility class on a component wins,
+ * and a control that already draws its own ::after (an `after:` utility) is left alone.
+ */
+
+@media (pointer: coarse) {
+  @layer base {
+    :where(button, [role='button'], [role='tab'], [role='switch'], [role='checkbox'], [role='radio']):where(
+        :not([class*='after:'])
+      ) {
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: min(0px, calc((100% - 44px) / 2));
+        right: min(0px, calc((100% - 44px) / 2));
+        bottom: min(0px, calc((100% - 44px) / 2));
+        left: min(0px, calc((100% - 44px) / 2));
+      }
+    }
+  }
+}

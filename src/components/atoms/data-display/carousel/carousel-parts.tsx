@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import * as React from 'react'
 
 import { cn } from '../../../../lib/utils'
+import { useLabels } from '../../../../providers/locale-provider'
 import { useControllableState } from '../../../../lib/use-controllable-state'
 import { Button } from '../../actions/button'
 
@@ -185,12 +186,14 @@ const CarouselRoot = React.forwardRef<HTMLDivElement, CarouselRootProps>(
       [orientation, index, count, perView, maxIndex, gap, loop, scrollTo, scrollPrev, scrollNext, registerCount, syncIndex]
     )
 
+    const labels = useLabels()
+
     return (
       <CarouselContext.Provider value={value}>
         <div
           ref={ref}
           role="region"
-          aria-roledescription="carousel"
+          aria-roledescription={labels.carouselRole}
           data-orientation={orientation}
           className={cn('relative', className)}
           onKeyDown={(event) => {
@@ -299,13 +302,14 @@ export type CarouselItemProps = React.HTMLAttributes<HTMLDivElement>
 const CarouselItem = React.forwardRef<HTMLDivElement, CarouselItemProps>(
   ({ className, style, ...props }, ref) => {
     const { index, count, perView, gap } = useCarousel()
+    const labels = useLabels()
     const position = React.useContext(SlideIndexContext)
     return (
       <div
         ref={ref}
         role="group"
-        aria-roledescription="slide"
-        aria-label={`${position + 1} of ${count}`}
+        aria-roledescription={labels.carouselSlideRole}
+        aria-label={labels.carouselSlide(position + 1, count)}
         data-carousel-item=""
         data-active={(position >= index && position < index + perView) || undefined}
         style={{
@@ -328,12 +332,13 @@ export type CarouselNextProps = ButtonProps
 const CarouselPrevious = React.forwardRef<HTMLButtonElement, CarouselPreviousProps>(
   ({ className, children, ...props }, ref) => {
     const { orientation, canPrev, scrollPrev } = useCarousel()
+    const labels = useLabels()
     return (
       <Button
         ref={ref}
         type="button"
         variant="default"
-        aria-label="Previous slide"
+        aria-label={labels.carouselPrevious}
         disabled={!canPrev}
         onClick={scrollPrev}
         className={cn(
@@ -355,12 +360,13 @@ CarouselPrevious.displayName = 'CarouselPrevious'
 const CarouselNext = React.forwardRef<HTMLButtonElement, CarouselNextProps>(
   ({ className, children, ...props }, ref) => {
     const { orientation, canNext, scrollNext } = useCarousel()
+    const labels = useLabels()
     return (
       <Button
         ref={ref}
         type="button"
         variant="default"
-        aria-label="Next slide"
+        aria-label={labels.carouselNext}
         disabled={!canNext}
         onClick={scrollNext}
         className={cn(
@@ -384,11 +390,12 @@ export type CarouselDotsProps = React.HTMLAttributes<HTMLDivElement>
 const CarouselDots = React.forwardRef<HTMLDivElement, CarouselDotsProps>(
   ({ className, ...props }, ref) => {
     const { orientation, index, maxIndex, scrollTo } = useCarousel()
+    const labels = useLabels()
     return (
       <div
         ref={ref}
         role="group"
-        aria-label="Choose slide"
+        aria-label={labels.carouselDots}
         className={cn(
           'flex items-center justify-center gap-1.5',
           orientation === 'vertical' ? 'absolute right-2 top-1/2 -translate-y-1/2 flex-col' : 'mt-3',
@@ -400,7 +407,7 @@ const CarouselDots = React.forwardRef<HTMLDivElement, CarouselDotsProps>(
           <button
             key={i}
             type="button"
-            aria-label={`Go to slide ${i + 1}`}
+            aria-label={labels.carouselGoTo(i + 1)}
             aria-current={i === index ? 'true' : undefined}
             onClick={() => scrollTo(i)}
             className={cn(

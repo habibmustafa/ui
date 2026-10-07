@@ -125,7 +125,7 @@ const MetricCardContent = React.forwardRef<HTMLDivElement, MetricCardContentProp
     <CardContent
       ref={ref}
       className={cn(
-        'p-card pt-0 flex-1 flex h-full items-start gap-1 overflow-hidden border-b-0',
+        'p-card pt-0 flex-1 flex items-start gap-1 overflow-hidden border-b-0',
         orientation === 'horizontal' ? 'flex-row' : 'flex-col ',
         className
       )}

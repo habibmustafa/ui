@@ -340,9 +340,9 @@ describe('Gauge', () => {
     const { rerender } = render(<Gauge value={10} thresholds={thresholds} aria-label="Load" />)
     expect(screen.getByRole('meter').className).toContain('text-success-600')
     rerender(<Gauge value={70} thresholds={thresholds} aria-label="Load" />)
-    expect(screen.getByRole('meter').className).toContain('text-warning')
+    expect(screen.getByRole('meter').className).toContain('text-warning-600')
     rerender(<Gauge value={95} thresholds={thresholds} aria-label="Load" />)
-    expect(screen.getByRole('meter').className).toContain('text-destructive')
+    expect(screen.getByRole('meter').className).toContain('text-destructive-600')
   })
 
   test('label and range captions render', () => {

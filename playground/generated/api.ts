@@ -1414,7 +1414,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "closeLabel",
             "type": "string",
-            "default": "Close preview",
+            "default": "\"Close preview\"",
             "description": "Label of the lightbox close button."
           }
         ],
@@ -1563,7 +1563,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "label",
             "type": "string",
-            "default": "QR code",
+            "default": "\"QR code\"",
             "description": "Accessible name."
           },
           {
@@ -2254,7 +2254,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "label",
             "type": "string",
-            "default": "Reading progress",
+            "default": "\"Reading progress\"",
             "description": "Accessible name."
           },
           {
@@ -3037,7 +3037,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "placeholder",
             "type": "ReactNode",
-            "default": "Pick a date range",
+            "default": "\"Pick a date range\"",
             "description": "Shown while nothing is selected."
           },
           {
@@ -3090,7 +3090,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "clearLabel",
             "type": "string",
-            "default": "Clear",
+            "default": "\"Clear\"",
             "description": "Label of the Clear button."
           }
         ],
@@ -3532,7 +3532,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "notFoundContent",
             "type": "ReactNode",
-            "default": "No matches",
+            "default": "\"No matches\"",
             "description": "Shown when nothing matches."
           },
           {
@@ -4378,7 +4378,6 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "getValueText",
             "type": "((value: number, max: number) => string)",
-            "default": "(value: number, max: number) =>\n  `${value} ${value === 1 ? 'star' : 'stars'} out of ${max}`",
             "description": "Accessible text for a value, e.g. `(v, max) => v + \" of \" + max`."
           },
           {

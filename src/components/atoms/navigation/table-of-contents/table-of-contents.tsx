@@ -4,6 +4,7 @@ import * as React from 'react'
 
 import { useControllableState } from '../../../../lib/use-controllable-state'
 import { cn } from '../../../../lib/utils'
+import { useLabels } from '../../../../providers/locale-provider'
 
 /*
  * "On this page" navigation with scroll-spy. Each item points at an element id; the
@@ -89,11 +90,13 @@ const TableOfContents = React.forwardRef<HTMLElement, TableOfContentsProps>(
       title,
       className,
       classNames,
-      'aria-label': ariaLabel = 'On this page',
+      'aria-label': ariaLabelProp,
       ...props
     },
     ref
   ) => {
+    const labels = useLabels()
+    const ariaLabel = ariaLabelProp ?? labels.tableOfContents
     const [active, setActive] = useControllableState<string | undefined>({
       value: activeIdProp,
       defaultValue: defaultActiveId ?? items[0]?.id,

@@ -3,6 +3,7 @@
 import * as React from 'react'
 
 import { cn } from '../../../../lib/utils'
+import { useLabels } from '../../../../providers/locale-provider'
 import { encodeQR, qrCapacity, type QRLevel } from './qr-encoder'
 
 /*
@@ -44,7 +45,7 @@ const QRCode = React.forwardRef<SVGSVGElement, QRCodeProps>(
       margin = 4,
       color = '#000',
       background = '#fff',
-      label = 'QR code',
+      label,
       fallback,
       onError,
       className,
@@ -52,6 +53,7 @@ const QRCode = React.forwardRef<SVGSVGElement, QRCodeProps>(
     },
     ref
   ) => {
+    const labels = useLabels()
     const result = React.useMemo(() => {
       try {
         return { matrix: encodeQR(value, level), error: null }
@@ -93,7 +95,7 @@ const QRCode = React.forwardRef<SVGSVGElement, QRCodeProps>(
       <svg
         ref={ref}
         role="img"
-        aria-label={label}
+        aria-label={label ?? labels.qrCode}
         viewBox={`0 0 ${total} ${total}`}
         width={size}
         height={size}

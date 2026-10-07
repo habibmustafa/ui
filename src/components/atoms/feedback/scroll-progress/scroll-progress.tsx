@@ -3,6 +3,7 @@
 import * as React from 'react'
 
 import { cn } from '../../../../lib/utils'
+import { useLabels } from '../../../../providers/locale-provider'
 
 /*
  * A thin bar that fills as the page (or a scrollable element) is scrolled. By default it
@@ -34,7 +35,7 @@ const ScrollProgress = React.forwardRef<HTMLDivElement, ScrollProgressProps>(
       position = 'fixed',
       edge = 'top',
       thickness = 3,
-      label = 'Reading progress',
+      label,
       className,
       classNames,
       style,
@@ -42,6 +43,7 @@ const ScrollProgress = React.forwardRef<HTMLDivElement, ScrollProgressProps>(
     },
     ref
   ) => {
+    const labels = useLabels()
     const [ratio, setRatio] = React.useState(0)
 
     React.useEffect(() => {
@@ -78,7 +80,7 @@ const ScrollProgress = React.forwardRef<HTMLDivElement, ScrollProgressProps>(
       <div
         ref={ref}
         role="progressbar"
-        aria-label={label}
+        aria-label={label ?? labels.scrollProgress}
         aria-valuemin={0}
         aria-valuemax={100}
         aria-valuenow={percent}

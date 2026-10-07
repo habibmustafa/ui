@@ -7,3 +7,5 @@ export type {
 } from './theme-provider'
 export { singleThemes } from './single-themes'
 export type { SingleTheme } from './single-themes'
+export { LocaleProvider, defaultLabels, useLabels } from './locale-provider'
+export type { Labels, LocaleProviderProps } from './locale-provider'

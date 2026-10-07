@@ -5,6 +5,7 @@ import { Star } from 'lucide-react'
 import * as React from 'react'
 
 import { cn } from '../../../../lib/utils'
+import { useLabels } from '../../../../providers/locale-provider'
 import { useControllableState } from '../../../../lib/use-controllable-state'
 
 /*
@@ -54,9 +55,6 @@ export interface RatingProps
   classNames?: { item?: string; icon?: string }
 }
 
-const defaultValueText = (value: number, max: number) =>
-  `${value} ${value === 1 ? 'star' : 'stars'} out of ${max}`
-
 const Rating = React.forwardRef<HTMLDivElement, RatingProps>(
   (
     {
@@ -71,7 +69,7 @@ const Rating = React.forwardRef<HTMLDivElement, RatingProps>(
       name,
       size,
       onBlur,
-      getValueText = defaultValueText,
+      getValueText: getValueTextProp,
       renderIcon,
       className,
       classNames,
@@ -80,6 +78,8 @@ const Rating = React.forwardRef<HTMLDivElement, RatingProps>(
     },
     ref
   ) => {
+    const labels = useLabels()
+    const getValueText = getValueTextProp ?? labels.ratingValue
     const step = allowHalf ? 0.5 : 1
     const clamp = (n: number) => Math.min(max, Math.max(0, n))
     const [value, setValue] = useControllableState({
@@ -122,7 +122,7 @@ const Rating = React.forwardRef<HTMLDivElement, RatingProps>(
     const star = (index: number) => {
       const fill = Math.min(1, Math.max(0, shown - index))
       const base = cn(ratingIconVariants({ size }), 'text-foreground-muted', classNames?.icon)
-      const active = cn(ratingIconVariants({ size }), 'text-warning', classNames?.icon)
+      const active = cn(ratingIconVariants({ size }), 'text-warning-600', classNames?.icon)
       return (
         <span className="relative inline-flex" aria-hidden="true">
           {renderIcon ? (

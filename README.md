@@ -8,7 +8,7 @@
 
 # ui
 
-A component library built on React 19, TypeScript, Tailwind CSS v4 and Radix: 68 atoms and
+A component library built on React 19, TypeScript, Tailwind CSS v4 and Radix: 84 atoms and
 14 fragments, an OKLCH token system, and both a **props-driven** and a **compound** API on
 selected components.
 
@@ -20,9 +20,12 @@ npm i @habibmustafa/ui
 
 ## Features
 
-- **82 components**: 68 atoms (`Button`, `Dialog`, `Select`, `DatePicker`, `MultiSelect`, …)
+- **98 components**: 84 atoms (`Button`, `Dialog`, `Select`, `DatePicker`, `MultiSelect`, …)
   and 14 fragments (`FormFields`, `DataTable`, `CodeBlock`, `MetricCard`, `EmptyState`, …).
   How they are split is described under [Project structure](#project-structure).
+- **Blocks**: 12 whole screens built only from the library (sign in, settings, billing, dashboard,
+  pricing, API keys and more), each shown live and as copyable code at
+  [/blocks](https://ui.habibmustafa.me/blocks).
 - **Hybrid API**: selected components work either with plain `props` or with a Radix-style
   `Component.Root` / `Component.Part` compound composition. Which components are hybrid, and
   why: [docs/hybrid-api-migration.md](docs/hybrid-api-migration.md).

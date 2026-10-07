@@ -6,6 +6,7 @@ import * as React from 'react'
 
 import { modalBackdropClass } from '../../../../lib/modal-backdrop'
 import { cn } from '../../../../lib/utils'
+import { useLabels } from '../../../../providers/locale-provider'
 import { useControllableState } from '../../../../lib/use-controllable-state'
 import { Skeleton } from '../../feedback/skeleton'
 
@@ -73,7 +74,7 @@ const Image = React.forwardRef<HTMLImageElement, ImageProps>(
       radius = 'md',
       className,
       wrapperClassName,
-      closeLabel = 'Close preview',
+      closeLabel,
       style,
       onLoad,
       onError,
@@ -81,6 +82,7 @@ const Image = React.forwardRef<HTMLImageElement, ImageProps>(
     },
     ref
   ) => {
+    const labels = useLabels()
     const [status, setStatus] = React.useState<Status>(src ? 'loading' : 'error')
     const [open, setOpen] = useControllableState({
       value: previewOpen,
@@ -170,7 +172,7 @@ const Image = React.forwardRef<HTMLImageElement, ImageProps>(
             <DialogPrimitive.Trigger asChild>
               <button
                 type="button"
-                aria-label={`Preview image: ${alt}`}
+                aria-label={labels.imagePreview(alt)}
                 className="block h-full w-full cursor-zoom-in focus-ring"
               >
                 {image}
@@ -191,7 +193,7 @@ const Image = React.forwardRef<HTMLImageElement, ImageProps>(
                     className="max-h-[calc(100vh-4rem)] max-w-full rounded-md object-contain shadow-lg"
                   />
                   <DialogPrimitive.Close
-                    aria-label={closeLabel}
+                    aria-label={closeLabel ?? labels.imageClose}
                     className="absolute -top-3 -right-3 flex h-8 w-8 items-center justify-center rounded-full border bg-background text-foreground shadow-md focus-ring"
                   >
                     <X className="h-4 w-4" aria-hidden="true" />

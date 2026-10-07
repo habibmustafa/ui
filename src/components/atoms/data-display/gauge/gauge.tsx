@@ -15,8 +15,8 @@ const toneClass = {
   brand: 'text-brand-default',
   neutral: 'text-foreground',
   success: 'text-success-600',
-  warning: 'text-warning',
-  destructive: 'text-destructive',
+  warning: 'text-warning-600',
+  destructive: 'text-destructive-600',
 } as const
 
 type Tone = keyof typeof toneClass
