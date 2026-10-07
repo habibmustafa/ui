@@ -128,7 +128,9 @@ function Calendar({
         // Plain accent — range/selected fills use ! so they still win when today is in the selection
         today: cn('bg-accent text-accent-foreground', today),
         outside: cn(
-          'text-foreground-muted opacity-50 has-[[aria-selected]]:opacity-100 has-[[aria-selected]]:text-foreground',
+          // Muted colour only (5.4:1+): stacking opacity-50 on top dropped these clickable
+          // days to ~2:1. Disabled days keep their opacity; they're exempt from contrast.
+          'text-foreground-muted has-[[aria-selected]]:text-foreground',
           outside
         ),
         disabled: cn('text-foreground-muted opacity-50', disabled),
