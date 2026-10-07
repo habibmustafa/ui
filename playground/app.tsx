@@ -1,4 +1,4 @@
-import { Home, LayoutGrid, Menu, Paintbrush, Palette, Rocket, Search, Type as TypeIcon } from "lucide-react";
+import { Menu, Search } from "lucide-react";
 import {
   lazy,
   Suspense,
@@ -10,17 +10,14 @@ import {
 
 import {
   Badge,
-  Command,
-  Dialog,
   Sheet,
   SonnerToaster,
   ThemeStyle,
   ThemeToggle,
   useTheme,
-  type CommandGroupData,
 } from "../src";
-import { ComponentPreview, previewAnchor } from "./component-preview";
 import { CATALOG } from "./catalog";
+import { PAGES } from "./site-pages";
 import { Preview, Swatch } from "./docs";
 import { GithubIcon } from "./icons";
 import { PageErrorBoundary } from "./page-error-boundary";
@@ -32,29 +29,55 @@ import {
   toConfig,
   useThemeBuilder,
 } from "./theme-store";
-import { Link, Navigate, useRouter } from "./router";
-import { findComponent, type ComponentPreviewSpec } from "./registry";
+import { Link, Navigate, setPrefetcher, useRouter } from "./router";
+import { findComponent } from "./registry";
+import { PageHeader } from "./page-header";
 
-// The generated props data is ~190KB; keep it out of the main bundle until a
-// component page actually needs it.
-const ApiReference = lazy(() => import("./api-reference"));
+// Component pages carry the example loaders (and, lazily, the props tables); none
+// of that belongs in the first chunk every page loads.
+const loadComponentPage = () => import("./pages/component-page");
+const ComponentPage = lazy(loadComponentPage);
 // Intro pages pull in their live demos (forms, pickers, zod); component pages don't.
-const HomePage = lazy(() => import("./pages/home"));
-const GettingStartedPage = lazy(() => import("./pages/getting-started"));
-const ComponentsIndexPage = lazy(() => import("./pages/components-index"));
-const ThemeBuilderPage = lazy(() => import("./pages/theme-builder"));
+const loadHome = () => import("./pages/home");
+const loadGettingStarted = () => import("./pages/getting-started");
+const loadComponentsIndex = () => import("./pages/components-index");
+const loadThemeBuilder = () => import("./pages/theme-builder");
+const HomePage = lazy(loadHome);
+const GettingStartedPage = lazy(loadGettingStarted);
+const ComponentsIndexPage = lazy(loadComponentsIndex);
+const ThemeBuilderPage = lazy(loadThemeBuilder);
+
+const ROUTE_LOADERS: Record<string, () => Promise<unknown>> = {
+  "/": loadHome,
+  "/getting-started": loadGettingStarted,
+  "/components": loadComponentsIndex,
+  "/theme": loadThemeBuilder,
+};
+
+/**
+ * Warms a route before it is visited: its page chunk and, for a component page, the
+ * first few demos. Called on link hover/focus/touch, so by the click most of the
+ * work is done. Repeat calls are free (the module cache dedupes them).
+ */
+function prefetchRoute(to: string) {
+  const path = to.split("?")[0];
+  if (ROUTE_LOADERS[path]) {
+    void ROUTE_LOADERS[path]();
+    return;
+  }
+  if (path.startsWith("/components/")) {
+    const entry = findComponent(path.slice("/components/".length));
+    if (!entry) return;
+    void loadComponentPage();
+    void import("./component-preview").then(({ prefetchDemo }) =>
+      entry.previews.slice(0, 3).forEach((preview) => prefetchDemo(preview.name))
+    );
+  }
+}
+setPrefetcher(prefetchRoute);
 
 const GITHUB_URL = "https://github.com/habibmustafa/ui";
 
-/** Top-level pages, shared by the sidebar and the search palette. */
-const PAGES = [
-  { to: "/", label: "Home", search: "Home overview", icon: Home },
-  { to: "/getting-started", label: "Getting started", search: "Getting started install setup", icon: Rocket },
-  { to: "/components", label: "Components", search: "Components index", icon: LayoutGrid },
-  { to: "/theme", label: "Theme builder", search: "Theme builder colors palette", icon: Paintbrush },
-  { to: "/colors", label: "Colors", search: "Colors tokens", icon: Palette },
-  { to: "/typography", label: "Typography", search: "Typography type scale", icon: TypeIcon },
-];
 
 /*
  * Route map:
@@ -69,12 +92,6 @@ const PAGES = [
 const navLink =
   "text-sm text-foreground-light transition-colors hover:text-foreground";
 const activeNavLink = "text-sm font-medium text-foreground transition-colors";
-const commandItemIcon = "mr-2 h-4 w-4 shrink-0 text-foreground-muted";
-// The library's CommandDialog is roomy (h-12 input, py-3 items) to match the generic
-// "Type a command…" demo — this header search wants the same compact rows upstream's
-// own site-wide search uses, so it composes the parts directly instead of that wrapper.
-const commandRootClassName =
-  "overflow-hidden rounded-md bg-overlay text-foreground-light [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:font-mono [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:text-foreground-muted [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-4 [&_[cmdk-input-wrapper]_svg]:w-4 [&_[cmdk-input]]:h-10 [&_[cmdk-item]]:rounded-xs [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-1.5 [&_[cmdk-item]]:text-sm [&_[cmdk-item]_svg]:h-4 [&_[cmdk-item]_svg]:w-4";
 
 /**
  * Nav content shared by the desktop sidebar and the mobile drawer, so the two never
@@ -138,14 +155,25 @@ function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
  * primitives directly rather than the library's own CommandDialog, which is sized
  * for its "Type a command…" demo, not a dense, whole-library search list.
  */
+// The palette itself (cmdk, the dialog, every row) loads on first use or when the
+// pointer reaches a trigger; only the triggers and the shortcut live up front.
+const loadCommandPalette = () => import("./command-palette");
+const CommandPalette = lazy(loadCommandPalette);
+
 function CommandMenu() {
-  const { navigate } = useRouter();
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  const show = () => {
+    setMounted(true);
+    setOpen(true);
+  };
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.key.toLowerCase() === "k" && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
+        setMounted(true);
         setOpen((value) => !value);
       }
     }
@@ -153,52 +181,16 @@ function CommandMenu() {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, []);
 
-  const go = (to: string) => {
-    setOpen(false);
-    navigate(to);
-  };
-
-  const groups: CommandGroupData[] = useMemo(
-    () => [
-      {
-        key: "pages",
-        heading: "Pages",
-        items: PAGES.map((page) => {
-          const Icon = page.icon;
-          return {
-            key: page.to,
-            value: page.search,
-            label: page.label,
-            icon: <Icon className={commandItemIcon} />,
-            onSelect: () => go(page.to),
-          };
-        }),
-      },
-      ...CATALOG.map((group) => ({
-        key: group.key,
-        heading: group.title,
-        items: group.entries.map((entry) => {
-          const Icon = entry.icon;
-          return {
-            key: entry.id,
-            value: entry.title,
-            label: entry.title,
-            icon: <Icon className={commandItemIcon} />,
-            onSelect: () => go(`/components/${entry.id}`),
-          };
-        }),
-      })),
-    ],
-    // CATALOG and PAGES are module-level constants — this never actually reruns.
-    []
-  );
+  const warm = () => void loadCommandPalette();
 
   return (
     <>
       {/* Wide trigger, upstream's own breakpoint (`lg:flex hidden`) and classes. */}
       <button
         type="button"
-        onClick={() => setOpen(true)}
+        onClick={show}
+        onMouseEnter={warm}
+        onFocus={warm}
         className="focus-ring relative hidden h-8 items-center justify-start rounded-lg border border-strong bg-background px-2.5 text-sm font-normal text-foreground-muted shadow-none transition-colors hover:border-foreground-muted hover:bg-surface-100 hover:text-foreground-lighter sm:pr-10 lg:flex lg:w-48"
       >
         <span className="truncate">Search components…</span>
@@ -210,40 +202,17 @@ function CommandMenu() {
       <button
         type="button"
         aria-label="Search"
-        onClick={() => setOpen(true)}
+        onClick={show}
+        onTouchStart={warm}
         className="focus-ring inline-flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-md text-foreground-light transition-colors hover:bg-surface-100 hover:text-foreground lg:hidden"
       >
         <Search className="h-4 w-4" />
       </button>
-      <Dialog.Root open={open} onOpenChange={setOpen}>
-        <Dialog.Content className="overflow-hidden p-0 shadow-lg">
-          <Dialog.Title className="sr-only">Search components</Dialog.Title>
-          <Command.Root className={commandRootClassName}>
-            <Command.Input placeholder="Search components…" />
-            {/*
-             * 63 rows would otherwise stretch the dialog to the viewport height (the
-             * shared CommandList defaults to max-h-full, i.e. uncapped) — upstream's own
-             * search dialog caps its list the same way (max-h-[300px] in its live DOM).
-             */}
-            <Command.List className="max-h-[300px]">
-              <Command.Empty>No results found.</Command.Empty>
-              {groups.map((group, index) => (
-                <div key={group.key}>
-                  {index > 0 && <Command.Separator />}
-                  <Command.Group heading={group.heading}>
-                    {group.items.map((item) => (
-                      <Command.Item key={item.key} value={item.value} onSelect={item.onSelect}>
-                        {item.icon}
-                        <span>{item.label}</span>
-                      </Command.Item>
-                    ))}
-                  </Command.Group>
-                </div>
-              ))}
-            </Command.List>
-          </Command.Root>
-        </Dialog.Content>
-      </Dialog.Root>
+      {mounted && (
+        <Suspense fallback={null}>
+          <CommandPalette open={open} onOpenChange={setOpen} />
+        </Suspense>
+      )}
     </>
   );
 }
@@ -339,16 +308,6 @@ function Sidebar() {
   );
 }
 
-/* Shared page anatomy: every route gets an h1 title, a lede and a divider. */
-function PageHeader({ title, description }: { title: string; description: string }) {
-  return (
-    <>
-      <h1 className="scroll-m-20 text-3xl tracking-tight">{title}</h1>
-      <p className="mt-2 text-lg text-foreground-light">{description}</p>
-      <div role="none" className="mt-6 mb-6 h-px w-full shrink-0 bg-border-muted" />
-    </>
-  )
-}
 
 function ColorsPage() {
   return (
@@ -408,58 +367,6 @@ function TypographyPage() {
   );
 }
 
-const contentsLink =
-  "focus-ring rounded-sm text-foreground-light transition-colors hover:text-foreground";
-
-/**
- * Jumps to the labelled previews on a page (Button's "Variants", "Sizes", …) and to
- * the API section. Anchors match the ids ComponentPreview derives from the same
- * labels; previews are only listed when there are at least two labelled ones.
- */
-function PageContents({ previews }: { previews: ComponentPreviewSpec[] }) {
-  const labelled = previews.filter((preview) => preview.label);
-
-  return (
-    <nav className="mb-8 flex flex-wrap gap-x-4 gap-y-1 border-b pb-4 text-sm">
-      {labelled.length >= 2
-        ? labelled.map((preview) => (
-            <a
-              key={preview.name}
-              href={`#${previewAnchor(preview.label!)}`}
-              className={contentsLink}
-            >
-              {preview.label}
-            </a>
-          ))
-        : null}
-      <a href="#api" className={contentsLink}>
-        API
-      </a>
-    </nav>
-  );
-}
-
-function ComponentPage({ id }: { id: string }) {
-  const entry = findComponent(id);
-
-  if (!entry) {
-    return <Navigate to="/" />;
-  }
-
-  return (
-    <div>
-      <PageHeader title={entry.title} description={entry.description} />
-      <PageContents previews={entry.previews} />
-      {entry.previews.map((preview) => (
-        <ComponentPreview key={preview.name} {...preview} />
-      ))}
-      <Suspense fallback={null}>
-        <ApiReference id={entry.id} />
-      </Suspense>
-    </div>
-  );
-}
-
 /**
  * The theme builder's tokens, rendered with the library's own <ThemeStyle>: always on
  * /theme, and on every page once "apply everywhere" is switched on.
@@ -501,6 +408,21 @@ function CustomThemeNotice() {
 export function App() {
   const { path } = useRouter();
   const { resolvedTheme } = useTheme();
+
+  // Once the first page is up, quietly fetch the routes people go to next.
+  useEffect(() => {
+    const warm = () => {
+      void loadComponentPage();
+      void loadComponentsIndex();
+      void loadGettingStarted();
+    };
+    if ("requestIdleCallback" in window) {
+      const id = window.requestIdleCallback(warm, { timeout: 4000 });
+      return () => window.cancelIdleCallback(id);
+    }
+    const timer = setTimeout(warm, 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Route change → scroll to top (the router does this on push, but a back/forward
   // navigation also needs it since the popstate handler just swaps the path).

@@ -2,26 +2,28 @@ import { Check, Copy } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 import { cn } from '../src'
-import { getHighlighter } from './shiki-highlighter'
+import { highlight, highlightedSync } from './highlight'
 
 export type SnippetLang = 'tsx' | 'css' | 'shellscript'
 
-/** Highlights `code` once shiki has loaded; plain text until then (same layout). */
+/** Highlighted HTML once the worker returns it (immediately if cached); plain text until then. */
 function useHighlighted(code: string, lang: SnippetLang) {
-  const [html, setHtml] = useState<string | null>(null)
+  const [state, setState] = useState(() => ({ key: `${lang}:${code}`, html: highlightedSync(code, lang) ?? null }))
+  const key = `${lang}:${code}`
+  if (state.key !== key) setState({ key, html: highlightedSync(code, lang) ?? null })
 
   useEffect(() => {
+    if (!code) return
     let active = true
-    setHtml(null)
-    getHighlighter().then((highlighter) => {
-      if (active) setHtml(highlighter.codeToHtml(code, { lang, theme: 'ui' }))
+    highlight(code, lang).then((html) => {
+      if (active) setState({ key: `${lang}:${code}`, html })
     })
     return () => {
       active = false
     }
   }, [code, lang])
 
-  return html
+  return state.key === key ? state.html : null
 }
 
 export function SnippetCopyButton({ value, className }: { value: string; className?: string }) {
