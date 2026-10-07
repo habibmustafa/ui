@@ -47,10 +47,10 @@ export default function ComponentsIndexPage() {
 
   return (
     <div className="flex flex-col">
-      <h1 className="scroll-m-20 text-3xl tracking-tight">Komponentlər</h1>
+      <h1 className="scroll-m-20 text-3xl tracking-tight">Components</h1>
       <p className="mt-2 text-lg text-foreground-light">
-        {COMPONENT_COUNT} komponent, roluna görə qruplaşdırılıb. Hər səhifədə canlı nümunə, kod və
-        props cədvəli var.
+        {COMPONENT_COUNT} components, grouped by role. Every page has live examples, code and a
+        props table.
       </p>
 
       <div className="mt-6 flex flex-col gap-3">
@@ -63,14 +63,14 @@ export default function ComponentsIndexPage() {
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Ad və ya təsvirə görə süz…"
-            aria-label="Komponentləri süz"
+            placeholder="Filter by name or description…"
+            aria-label="Filter components"
             className="h-9 w-full rounded-md border border-control bg-field pl-8 pr-8 text-sm text-foreground placeholder:text-foreground-muted focus-ring [&::-webkit-search-cancel-button]:hidden"
           />
           {query && (
             <button
               type="button"
-              aria-label="Süzgəci təmizlə"
+              aria-label="Clear filter"
               onClick={() => setQuery('')}
               className="focus-ring absolute right-1.5 top-1/2 inline-flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-sm text-foreground-lighter hover:text-foreground"
             >
@@ -78,8 +78,8 @@ export default function ComponentsIndexPage() {
             </button>
           )}
         </div>
-        <div role="group" aria-label="Rol" className="flex flex-wrap gap-1.5">
-          {[{ key: null, title: 'Hamısı', count: COMPONENT_COUNT }, ...CATALOG.map((g) => ({ key: g.key, title: g.title, count: g.entries.length }))].map(
+        <div role="group" aria-label="Role" className="flex flex-wrap gap-1.5">
+          {[{ key: null, title: 'All', count: COMPONENT_COUNT }, ...CATALOG.map((g) => ({ key: g.key, title: g.title, count: g.entries.length }))].map(
             (item) => {
               const active = item.key === activeGroup
               return (
@@ -105,13 +105,13 @@ export default function ComponentsIndexPage() {
       </div>
 
       <p className="sr-only" aria-live="polite">
-        {shown} komponent göstərilir
+        {shown} components shown
       </p>
       <div role="none" className="mt-6 mb-6 h-px w-full shrink-0 bg-border-muted" />
 
       {groups.length === 0 ? (
         <div className="rounded-md border border-dashed p-10 text-center">
-          <p className="text-sm text-foreground">“{query}” üçün nəticə yoxdur.</p>
+          <p className="text-sm text-foreground">No results for “{query}”.</p>
           <button
             type="button"
             onClick={() => {
@@ -120,7 +120,7 @@ export default function ComponentsIndexPage() {
             }}
             className="focus-ring mt-2 rounded-xs text-sm text-foreground-light underline underline-offset-2 hover:text-foreground"
           >
-            Süzgəcləri təmizlə
+            Clear filters
           </button>
         </div>
       ) : (

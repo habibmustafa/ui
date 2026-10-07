@@ -30,7 +30,7 @@ import { Link } from '../router'
 function UsedComponents({ ids }: { ids: string[] }) {
   return (
     <p className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs text-foreground-lighter">
-      <span>İstifadə olunur:</span>
+      <span>Uses:</span>
       {ids.map((id, index) => (
         <span key={id} className="inline-flex items-center gap-1.5">
           <Link
@@ -71,14 +71,14 @@ function ShowcaseCard({
 }
 
 const inviteSchema = z.object({
-  email: z.string().email('Düzgün e-poçt ünvanı yazın.'),
-  role: z.string({ error: 'Rol seçin.' }),
+  email: z.string().email('Enter a valid email address.'),
+  role: z.string({ error: 'Pick a role.' }),
   notify: z.boolean(),
 })
 
 const ROLES = [
-  { value: 'viewer', label: 'İzləyici' },
-  { value: 'editor', label: 'Redaktor' },
+  { value: 'viewer', label: 'Viewer' },
+  { value: 'editor', label: 'Editor' },
   { value: 'admin', label: 'Admin' },
 ]
 
@@ -90,8 +90,8 @@ function InviteCard() {
 
   return (
     <ShowcaseCard
-      title="Komandaya dəvət"
-      description="Yoxlama, səhv mesajları və fokus react-hook-form ilə."
+      title="Invite a teammate"
+      description="Validation, error messages and focus, via react-hook-form."
       uses={['form-fields', 'input', 'select', 'switch', 'sonner']}
     >
       <Form {...form}>
@@ -99,18 +99,18 @@ function InviteCard() {
           noValidate
           onSubmit={form.handleSubmit(({ email, role, notify }) => {
             const roleLabel = ROLES.find((r) => r.value === role)?.label
-            toast.success(`${email} ${roleLabel?.toLowerCase()} kimi dəvət olundu`, {
-              description: notify ? 'Dəvət e-poçtu göndərildi.' : 'E-poçt göndərilmədi.',
+            toast.success(`${email} invited as ${roleLabel?.toLowerCase()}`, {
+              description: notify ? 'Invitation email sent.' : 'No email sent.',
             })
             form.reset()
           })}
           className="flex flex-col gap-4"
         >
-          <FormInput name="email" label="E-poçt" type="email" placeholder="ad@şirkət.az" />
-          <FormSelect name="role" label="Rol" placeholder="Rol seçin" options={ROLES} />
-          <FormSwitch name="notify" label="Dəvət e-poçtu göndər" />
+          <FormInput name="email" label="Email" type="email" placeholder="name@company.com" />
+          <FormSelect name="role" label="Role" placeholder="Pick a role" options={ROLES} />
+          <FormSwitch name="notify" label="Send invitation email" />
           <Button type="submit" variant="primary" size="small" block>
-            Dəvət et
+            Send invite
           </Button>
         </form>
       </Form>
@@ -119,9 +119,9 @@ function InviteCard() {
 }
 
 const DURATIONS = [
-  { value: '15', label: '15 dəq' },
-  { value: '30', label: '30 dəq' },
-  { value: '60', label: '1 saat' },
+  { value: '15', label: '15 min' },
+  { value: '30', label: '30 min' },
+  { value: '60', label: '1 hour' },
 ]
 
 function MeetingCard() {
@@ -134,22 +134,22 @@ function MeetingCard() {
 
   return (
     <ShowcaseCard
-      title="Görüş planla"
-      description="Təqvim, saat siferblatı və seçim qrupu."
+      title="Schedule a meeting"
+      description="Calendar, clock dial and a segmented choice."
       uses={['date-picker', 'time-picker', 'toggle-group']}
     >
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
-          <Label id={`${id}-date`}>Tarix</Label>
+          <Label id={`${id}-date`}>Date</Label>
           <DatePicker
             minDate={today}
-            triggerLabel={date ? dayjs(date).format('D MMM YYYY') : 'Tarix seçin'}
+            triggerLabel={date ? dayjs(date).format('D MMM YYYY') : 'Pick a date'}
             buttonProps={{ className: 'w-full', 'aria-labelledby': `${id}-date` }}
             calendarProps={{ mode: 'single', selected: date, onSelect: setDate, autoFocus: true }}
           />
         </div>
         <div className="flex flex-col gap-2">
-          <Label id={`${id}-time`}>Saat</Label>
+          <Label id={`${id}-time`}>Time</Label>
           <TimePicker
             aria-labelledby={`${id}-time`}
             value={time}
@@ -159,7 +159,7 @@ function MeetingCard() {
           />
         </div>
         <div className="flex flex-col gap-2">
-          <Label id={`${id}-duration`}>Müddət</Label>
+          <Label id={`${id}-duration`}>Duration</Label>
           <ToggleGroup
             type="single"
             variant="segmented"
@@ -178,12 +178,12 @@ function MeetingCard() {
           disabled={!ready}
           onClick={() => {
             const label = DURATIONS.find((d) => d.value === duration)?.label
-            toast.success('Görüş planlandı', {
+            toast.success('Meeting scheduled', {
               description: `${dayjs(date).format('D MMM YYYY')}, ${time} · ${label}`,
             })
           }}
         >
-          Planla
+          Schedule
         </Button>
       </div>
     </ShowcaseCard>
@@ -202,8 +202,8 @@ function PlanCard() {
 
   return (
     <ShowcaseCard
-      title="Abunə planı"
-      description="Bir-birinə bağlı slider və rəqəm sahəsi, canlı hesablama."
+      title="Subscription"
+      description="A slider and number field kept in sync, with a live total."
       uses={['toggle-group', 'slider', 'number-input']}
     >
       <div className="flex flex-col gap-5">
@@ -212,17 +212,17 @@ function PlanCard() {
           variant="segmented"
           tone="outline"
           allowDeselect={false}
-          aria-label="Ödəniş dövrü"
+          aria-label="Billing period"
           value={billing}
           onValueChange={(value: string) => value && setBilling(value as typeof billing)}
           items={[
-            { value: 'monthly', label: 'Aylıq' },
-            { value: 'yearly', label: 'İllik −20%' },
+            { value: 'monthly', label: 'Monthly' },
+            { value: 'yearly', label: 'Yearly −20%' },
           ]}
         />
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between gap-3">
-            <Label htmlFor={seatsId}>İstifadəçi sayı</Label>
+            <Label htmlFor={seatsId}>Seats</Label>
             <NumberInput
               id={seatsId}
               mode="numeric"
@@ -235,7 +235,7 @@ function PlanCard() {
             />
           </div>
           <Slider
-            aria-label="İstifadəçi sayı"
+            aria-label="Seats"
             min={1}
             max={50}
             value={[seats]}
@@ -244,12 +244,12 @@ function PlanCard() {
         </div>
         <div className="rounded-md border bg-surface-75 px-4 py-3">
           <p className="text-xs text-foreground-lighter">
-            {seats} istifadəçi × {PRICE_PER_SEAT} ₼ / ay
+            {seats} {seats === 1 ? 'seat' : 'seats'} × ${PRICE_PER_SEAT} / month
           </p>
           <p className="mt-1 text-2xl tabular-nums text-foreground" aria-live="polite">
-            {total} ₼{' '}
+            ${total}{' '}
             <span className="text-sm text-foreground-light">
-              / {billing === 'monthly' ? 'ay' : 'il'}
+              / {billing === 'monthly' ? 'month' : 'year'}
             </span>
           </p>
         </div>
@@ -258,12 +258,12 @@ function PlanCard() {
           size="small"
           block
           onClick={() =>
-            toast(`${seats} istifadəçi, ${billing === 'monthly' ? 'aylıq' : 'illik'} plan`, {
-              description: `Ödəniş: ${total} ₼`,
+            toast(`${seats} seats, ${billing} plan`, {
+              description: `Total: $${total}`,
             })
           }
         >
-          Davam et
+          Continue
         </Button>
       </div>
     </ShowcaseCard>

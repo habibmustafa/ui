@@ -7,34 +7,34 @@ import { CodeSnippet } from '../code-snippet'
 import { GithubIcon } from '../icons'
 import { InstallCommand } from '../install-command'
 import { Link } from '../router'
-import { PRESET_LABELS, fromConfig, stateToQuery } from '../theme-store'
+import { fromConfig, stateToQuery } from '../theme-store'
 import { Showcase } from './home-showcase'
 
 const GITHUB_URL = 'https://github.com/habibmustafa/ui'
 
 const PROPS_CODE = `<Dialog
-  trigger={<Button variant="danger">Layihəni sil</Button>}
-  title="Layihə silinsin?"
-  description="Bu əməliyyat geri qaytarılmır."
-  confirmText="Sil"
+  trigger={<Button variant="danger">Delete project</Button>}
+  title="Delete this project?"
+  description="This action cannot be undone."
+  confirmText="Delete"
   confirmType="danger"
   onConfirm={deleteProject}
 />`
 
 const COMPOUND_CODE = `<Dialog.Root>
   <Dialog.Trigger asChild>
-    <Button variant="danger">Layihəni sil</Button>
+    <Button variant="danger">Delete project</Button>
   </Dialog.Trigger>
   <Dialog.Content>
     <Dialog.Header>
-      <Dialog.Title>Layihə silinsin?</Dialog.Title>
-      <Dialog.Description>Bu əməliyyat geri qaytarılmır.</Dialog.Description>
+      <Dialog.Title>Delete this project?</Dialog.Title>
+      <Dialog.Description>This action cannot be undone.</Dialog.Description>
     </Dialog.Header>
     <Dialog.Footer>
       <Dialog.Close asChild>
-        <Button variant="default">Ləğv et</Button>
+        <Button variant="default">Cancel</Button>
       </Dialog.Close>
-      <Button variant="danger" onClick={deleteProject}>Sil</Button>
+      <Button variant="danger" onClick={deleteProject}>Delete</Button>
     </Dialog.Footer>
   </Dialog.Content>
 </Dialog.Root>`
@@ -62,25 +62,25 @@ function Hero() {
         className="focus-ring inline-flex items-center gap-2 rounded-full border bg-surface-100 px-3 py-1 text-xs text-foreground-light transition-colors hover:border-foreground-muted hover:text-foreground"
       >
         <span className="h-1.5 w-1.5 rounded-full bg-brand-default" aria-hidden="true" />
-        v{version} — dəyişikliklər
+        v{version} — changelog
         <ArrowRight className="h-3 w-3" aria-hidden="true" />
       </a>
       <h1 className="mt-5 max-w-3xl text-4xl leading-tight tracking-tight text-foreground sm:text-5xl">
-        React 19 üçün hazır, əlçatan komponentlər
+        Accessible, ready-made components for React 19
       </h1>
       <p className="mt-4 max-w-2xl text-lg text-foreground-light">
-        Radix və Tailwind CSS v4 üzərində {COMPONENT_COUNT} komponent. Hamısı klaviatura və ekran
-        oxuyucu ilə işləyir, açıq və tünd temanı dəstəkləyir, formalar react-hook-form ilə bir
-        sətirdə qoşulur.
+        {COMPONENT_COUNT} components built on Radix and Tailwind CSS v4. Every one works with a
+        keyboard and a screen reader, supports light and dark themes, and form fields connect to
+        react-hook-form in a single line.
       </p>
       <div className="mt-8 flex flex-col gap-6 lg:flex-row lg:items-end">
         <InstallCommand packages="@habibmustafa/ui" className="w-full max-w-md" />
         <div className="flex flex-wrap gap-2">
           <Button asChild variant="primary" size="medium" iconRight={<ArrowRight />}>
-            <Link to="/getting-started">Başlanğıc</Link>
+            <Link to="/getting-started">Get started</Link>
           </Button>
           <Button asChild variant="default" size="medium" icon={<BookOpen />}>
-            <Link to="/components">Komponentlər</Link>
+            <Link to="/components">Components</Link>
           </Button>
           <Button asChild variant="text" size="medium" icon={<GithubIcon />}>
             <a href={GITHUB_URL} target="_blank" rel="noreferrer">
@@ -97,22 +97,22 @@ function HybridApi() {
   return (
     <section className="py-14">
       <SectionHeading
-        title="Bir komponent, iki yazılış"
-        description="Tez-tez işlənən komponentlər props ilə bir sətirdə yazılır. Layout lazım olanda eyni komponent hissələrə bölünür. İkisi də eyni dialoqu açır."
+        title="One component, two ways to write it"
+        description="Common components are a single element driven by props. When you need your own layout, the same component splits into parts. Both open the same dialog."
       />
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)]">
         <div className="flex min-h-48 flex-col items-center justify-center gap-3 rounded-md border bg-surface-75 p-8">
           <Dialog
-            trigger={<Button variant="danger">Layihəni sil</Button>}
-            title="Layihə silinsin?"
-            description="Bu əməliyyat geri qaytarılmır."
-            confirmText="Sil"
-            cancelText="Ləğv et"
+            trigger={<Button variant="danger">Delete project</Button>}
+            title="Delete this project?"
+            description="This action cannot be undone."
+            confirmText="Delete"
+            cancelText="Cancel"
             confirmType="danger"
             onConfirm={() => new Promise((resolve) => setTimeout(resolve, 900))}
           />
           <p className="text-xs text-foreground-lighter">
-            Fokus dialoqun içində qalır, Esc bağlayır.
+            Focus stays inside the dialog; Esc closes it.
           </p>
         </div>
         <Tabs.Root defaultValue="props">
@@ -138,11 +138,11 @@ function ThemeTeaser() {
   return (
     <section className="py-14">
       <SectionHeading
-        title="Öz temanız"
-        description="Bir brend rəngi seçin — açıq və tünd tema üçün bütün şkala, kontrast yoxlaması ilə birlikdə hesablanır. Nəticəni CSS və ya kod kimi götürün."
+        title="Make it yours"
+        description="Pick a brand colour and the full scale for light and dark themes is generated, with contrast checks. Take the result as CSS or code."
       />
       <div className="flex flex-col gap-4 rounded-md border bg-surface-75 p-5 md:flex-row md:items-center md:justify-between">
-        <ul className="flex flex-wrap gap-2" aria-label="Hazır temalar">
+        <ul className="flex flex-wrap gap-2" aria-label="Theme presets">
           {THEME_PRESETS.map((preset) => {
             const query = stateToQuery(fromConfig(preset.config))
             return (
@@ -155,14 +155,14 @@ function ThemeTeaser() {
                     <span className="h-3.5 w-3.5 rounded-full border border-background" style={{ background: preset.config.brand }} />
                     <span className="h-3.5 w-3.5 rounded-full border border-background" style={{ background: preset.config.accent }} />
                   </span>
-                  {PRESET_LABELS[preset.id] ?? preset.name}
+                  {preset.name}
                 </Link>
               </li>
             )
           })}
         </ul>
         <Button asChild variant="default" iconRight={<ArrowRight />} className="shrink-0">
-          <Link to="/theme">Tema yaradıcısını aç</Link>
+          <Link to="/theme">Open the theme builder</Link>
         </Button>
       </div>
     </section>
@@ -173,8 +173,8 @@ function Catalog() {
   return (
     <section className="py-14">
       <SectionHeading
-        title="Nə axtarırsınız?"
-        description="Komponentlər roluna görə qruplaşdırılıb. Hər səhifədə canlı nümunə, kod və props cədvəli var."
+        title="Find what you need"
+        description="Components are grouped by role. Every page has live examples, code and a props table."
       />
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {CATALOG.map((group) => (
@@ -205,8 +205,8 @@ function Footer() {
   const link = 'focus-ring rounded-xs transition-colors hover:text-foreground'
   return (
     <footer className="mt-6 flex flex-col gap-3 border-t py-8 text-sm text-foreground-lighter sm:flex-row sm:items-center sm:justify-between">
-      <p>MIT lisenziyası · @habibmustafa/ui v{version}</p>
-      <nav aria-label="Xarici keçidlər" className="flex gap-4">
+      <p>MIT license · @habibmustafa/ui v{version}</p>
+      <nav aria-label="External links" className="flex gap-4">
         <a className={link} href={GITHUB_URL} target="_blank" rel="noreferrer">
           GitHub
         </a>
@@ -219,7 +219,7 @@ function Footer() {
           npm
         </a>
         <a className={link} href={`${GITHUB_URL}/blob/main/CHANGELOG.md`} target="_blank" rel="noreferrer">
-          Dəyişikliklər
+          Changelog
         </a>
       </nav>
     </footer>
@@ -232,8 +232,8 @@ export default function HomePage() {
       <Hero />
       <section className="pb-14">
         <SectionHeading
-          title="Canlı nümunələr"
-          description="Bu kartlar yalnız kitabxananın öz komponentlərindən qurulub. Doldurub göndərə bilərsiniz."
+          title="Live examples"
+          description="These cards are built only from the library's own components. Fill them in and submit them."
         />
         <Showcase />
       </section>

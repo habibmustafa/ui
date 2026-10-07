@@ -8,36 +8,38 @@
 
 # ui
 
-React 19, TypeScript, Tailwind CSS v4 və Radix üzərində qurulmuş komponent kitabxanası — 68 atom
-və 14 fragment, OKLCH token sistemi və seçilmiş komponentlərdə həm **props-driven**, həm də
-**compound** API.
+A component library built on React 19, TypeScript, Tailwind CSS v4 and Radix: 68 atoms and
+14 fragments, an OKLCH token system, and both a **props-driven** and a **compound** API on
+selected components.
 
-**[Canlı playground →](https://ui.habibmustafa.me)**
+**[Live playground →](https://ui.habibmustafa.me)**
 
 ```sh
 npm i @habibmustafa/ui
 ```
 
-## Xüsusiyyətlər
+## Features
 
-- **82 komponent** — 68 atom (`Button`, `Dialog`, `Select`, `DatePicker`, `MultiSelect`, …) və
-  14 fragment (`FormFields`, `DataTable`, `CodeBlock`, `MetricCard`, `EmptyState`, …).
-  Bölgü qaydası aşağıda: [Layihə strukturu](#layihə-strukturu).
-- **Hibrid API** — seçilmiş komponentlər tək `props` ilə, ya da Radix tərzi
-  `Component.Root`/`Component.Part` compound yazılışı ilə işlədilə bilər. Hansı komponentin
-  hibrid olduğu və niyə: [docs/hybrid-api-migration.md](docs/hybrid-api-migration.md).
-- **Öz temanız** — [Tema yaradıcısı](https://ui.habibmustafa.me/theme) ilə rəngləri, kontrastı,
-  radiusu və şrifti canlı seçin, CSS və ya kod kimi götürün. Eyni generator kitabxanada
-  `createTheme()` kimi var: bir brend rəngindən açıq və tünd tema üçün bütün şkala hesablanır.
-- **Açıq/tünd/sistem tema** — `ThemeProvider` seçimi `localStorage`-a yazır və
-  `prefers-color-scheme` dəyişikliyini canlı izləyir.
-- **Tree-shakeable** — build hər modulu ayrıca fayl kimi çıxarır; tək `Button` import etmək
-  bütün kitabxananı bundle-a çəkmir.
-- React 19 üçün hazırlanıb (`ref` adi prop, React Compiler ilə compile olunub), tam TypeScript tipləri.
+- **82 components**: 68 atoms (`Button`, `Dialog`, `Select`, `DatePicker`, `MultiSelect`, …)
+  and 14 fragments (`FormFields`, `DataTable`, `CodeBlock`, `MetricCard`, `EmptyState`, …).
+  How they are split is described under [Project structure](#project-structure).
+- **Hybrid API**: selected components work either with plain `props` or with a Radix-style
+  `Component.Root` / `Component.Part` compound composition. Which components are hybrid, and
+  why: [docs/hybrid-api-migration.md](docs/hybrid-api-migration.md).
+- **Your own theme**: pick colours, contrast, radius and fonts live in the
+  [theme builder](https://ui.habibmustafa.me/theme) and take the result as CSS or code. The same
+  generator ships as `createTheme()`: one brand colour produces the full scale for light and
+  dark themes.
+- **Light / dark / system themes**: `ThemeProvider` stores the choice in `localStorage` and
+  follows `prefers-color-scheme` live.
+- **Tree-shakeable**: the build emits every module as its own file, so importing a single
+  `Button` doesn't pull in the whole library.
+- Built for React 19 (`ref` as a plain prop, compiled with the React Compiler), with full
+  TypeScript types.
 
-## İstifadə
+## Usage
 
-Paket React 19 tələb edir (peer dependency):
+The package requires React 19 (a peer dependency):
 
 ```tsx
 import { Button, ThemeProvider } from '@habibmustafa/ui'
@@ -46,44 +48,45 @@ import '@habibmustafa/ui/styles.css'
 export function App() {
   return (
     <ThemeProvider defaultTheme="light">
-      <Button>Başla</Button>
+      <Button>Get started</Button>
     </ThemeProvider>
   )
 }
 ```
 
-### Hibrid komponentlər: iki rejim
+### Hybrid components: two modes
 
-Props rejimi — sürətli, az kod:
+Props mode: quick, little code:
 
 ```tsx
 <Dialog
-  trigger={<Button>Sil</Button>}
-  title="Elementi sil"
-  description="Bu geri qaytarıla bilməz."
+  trigger={<Button>Delete</Button>}
+  title="Delete item"
+  description="This can't be undone."
   onConfirm={handleDelete}
 />
 ```
 
-Compound rejimi — tam nəzarət, öz layoutunu qur:
+Compound mode: full control, your own layout:
 
 ```tsx
 <Dialog.Root>
   <Dialog.Trigger asChild>
-    <Button>Sil</Button>
+    <Button>Delete</Button>
   </Dialog.Trigger>
   <Dialog.Content>
     <Dialog.Header>
-      <Dialog.Title>Elementi sil</Dialog.Title>
+      <Dialog.Title>Delete item</Dialog.Title>
     </Dialog.Header>
   </Dialog.Content>
 </Dialog.Root>
 ```
 
-## Temalaşdırma
+## Theming
 
-`ThemeProvider` seçilən temanı `html` elementinə `data-theme` atributu və `.light`/`.dark`
-class-ı kimi yazır (tokenlər class-a, `dark:` utility-ləri isə atributa əsaslanır):
+`ThemeProvider` writes the selected theme to the `html` element as a `data-theme` attribute
+and a `.light` / `.dark` class (the tokens key off the class, the `dark:` utilities off the
+attribute):
 
 ```tsx
 <ThemeProvider defaultTheme="system" storageKey="theme">
@@ -95,25 +98,24 @@ class-ı kimi yazır (tokenlər class-a, `dark:` utility-ləri isə atributa əs
 const { theme, resolvedTheme, setTheme } = useTheme()
 ```
 
-Öz tema idarəetməniz varsa, `ThemeProvider` işlətmədən eyni iki atributu özünüz təyin edə
-bilərsiniz.
+If you manage themes yourself, you can set the same two attributes without `ThemeProvider`.
 
-### Öz temanız
+### Your own theme
 
-Ən rahatı [Tema yaradıcısı](https://ui.habibmustafa.me/theme)dır: seçimlərinizi canlı görün,
-sonra `theme.css` faylı, JSON və ya kod kimi export edin. Kodda eyni generator:
+The easiest way is the [theme builder](https://ui.habibmustafa.me/theme): see your choices
+live, then export them as a `theme.css` file, JSON or code. The same generator in code:
 
 ```tsx
 import { ThemeProvider, createTheme } from '@habibmustafa/ui'
 
 const theme = createTheme({
-  brand: '#6366f1',         // düymələr, keçidlər, fokus — bütün brend şkalası bundan
-  accent: '#ec4899',        // info rəngi, qrafikin 2-ci seriyası
-  neutral: { tint: 0.2 },   // fonun brend tonunda çaları (0 = boz)
-  contrast: 0.6,            // 0–1, standart 0.5
+  brand: '#6366f1',         // buttons, links, focus; the whole brand scale comes from this
+  accent: '#ec4899',        // info colour, second chart series
+  neutral: { tint: 0.2 },   // a brand-hued tint on surfaces (0 = gray)
+  contrast: 0.6,            // 0–1, default 0.5
   status: { warningHue: 70, destructiveHue: 20 },
-  radius: 8,                // rounded-md (px), digər ölçülər mütənasib
-  font: { sans: "'IBM Plex Sans'" }, // şrifti özünüz yükləyin
+  radius: 8,                // rounded-md in px; the other sizes scale with it
+  font: { sans: "'IBM Plex Sans'" }, // load the font yourself
 })
 
 <ThemeProvider tokens={theme}>
@@ -121,14 +123,14 @@ const theme = createTheme({
 </ThemeProvider>
 ```
 
-- `createTheme` yalnız verdiyiniz açarları dəyişir; boş konfiq standart temadır.
-- Hər şkala addımı orijinal palitranın açıq/tünd tema strukturunu (işıqlılıq, nisbi doyğunluq)
-  saxlayır, ona görə düymə mətni və hover addımları istənilən rəngdə oxunaqlı qalır.
-- Statik CSS lazımdırsa (SSR, ayrıca fayl): `themeToCss(config)` — nəticəni `styles.css`-dən
-  sonra yükləyin. Selektorlar `:root` ilə gücləndirilib, yükləmə sırası fərq etmir.
-- `<ThemeStyle tokens={…} />` temanı provider-siz (məsələn, önizləmə üçün) tətbiq edir.
+- `createTheme` only changes the keys you pass; an empty config is the default theme.
+- Every scale step keeps the light/dark structure of the original palette (lightness and
+  relative chroma), so button text and hover steps stay readable in any colour.
+- For static CSS (SSR, a separate file), use `themeToCss(config)` and load the result after
+  `styles.css`. The selectors are `:root`-qualified, so load order doesn't matter.
+- `<ThemeStyle tokens={…} />` applies a theme without a provider (for a preview, say).
 
-## Layihə strukturu
+## Project structure
 
 ```
 src/components/
@@ -143,18 +145,18 @@ src/components/
   fragments/       FormFields, FormItemLayout, DataTable, MetricCard, CodeBlock, …
 ```
 
-- **Atom** — ümumi təyinatlı tikinti bloku: hər bir kontrol, overlay, naviqasiya, layout və
-  feedback komponenti, roluna görə qovluqlanır. Bir komponent bir iş görür, daxildə nə qədər
-  hissədən qurulmasından asılı olmayaraq. Məsələn, `DatePicker` (trigger + `Popover` +
-  `Calendar`) da `TimePicker` kimi bir kontroldur, ona görə hər ikisi `atoms/forms`-dadır.
-- **Fragment** — atomlardan konkret bir iş üçün yığılmış hazır, fikirli kompozisiya: forma
-  sahəsinin layout-u, data cədvəli, metrik kartı, xəta ekranı, kod bloku, tema düyməsi və s.
-- **Asılılıq istiqaməti** — fragment atomları import edə bilər, atom isə fragmenti heç vaxt.
-  Bunu `tests/structure.test.ts` yoxlayır.
+- **Atom**: a general-purpose building block. Every control, overlay, navigation, layout and
+  feedback component, foldered by role. One component does one job, however many parts it is
+  built from: `DatePicker` (trigger + `Popover` + `Calendar`) is one control just like
+  `TimePicker`, so both live in `atoms/forms`.
+- **Fragment**: a ready-made, opinionated composition of atoms for a specific job: a form
+  field's layout, a data table, a metric card, an error screen, a code block, a theme toggle.
+- **Dependency direction**: fragments may import atoms; atoms never import fragments.
+  `tests/structure.test.ts` enforces this.
 
-## Sənədlər
+## Docs
 
-- [Başlanğıc bələdçisi](https://ui.habibmustafa.me/getting-started): quraşdırmadan işləyən formaya qədər
-- [Hibrid API](docs/hybrid-api-migration.md)
-- [Versiya tarixçəsi](CHANGELOG.md)
-- [Üçüncü tərəf mənbə və lisenziya qeydləri](THIRD-PARTY-NOTICES.md)
+- [Getting started](https://ui.habibmustafa.me/getting-started): from install to a working form
+- [Hybrid API](docs/hybrid-api-migration.md)
+- [Changelog](CHANGELOG.md)
+- [Third-party sources and license notes](THIRD-PARTY-NOTICES.md)

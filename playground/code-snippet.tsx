@@ -36,7 +36,7 @@ export function SnippetCopyButton({ value, className }: { value: string; classNa
   return (
     <button
       type="button"
-      aria-label={copied ? 'Kopyalandı' : 'Kodu kopyala'}
+      aria-label={copied ? 'Copied' : 'Copy code'}
       onClick={() => {
         navigator.clipboard.writeText(value).then(() => setCopied(true))
       }}

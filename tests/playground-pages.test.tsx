@@ -63,30 +63,30 @@ test('the components index filters by text and by role', async () => {
   renderPage(ComponentsIndexPage, '/components?group=forms')
 
   const forms = CATALOG.find((g) => g.key === 'forms')!
-  expect(screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent)).toEqual(['Forma'])
-  expect(screen.getByRole('button', { name: /^Forma/ }).getAttribute('aria-pressed')).toBe('true')
-  const section = screen.getByRole('region', { name: 'Forma' })
+  expect(screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent)).toEqual(['Forms'])
+  expect(screen.getByRole('button', { name: /^Forms/ }).getAttribute('aria-pressed')).toBe('true')
+  const section = screen.getByRole('region', { name: 'Forms' })
   expect(within(section).getAllByRole('link')).toHaveLength(forms.entries.length)
 
-  await user.type(screen.getByRole('searchbox', { name: 'Komponentləri süz' }), 'time picker')
+  await user.type(screen.getByRole('searchbox', { name: 'Filter components' }), 'time picker')
   expect(within(section).getAllByRole('link').map((a) => a.textContent)).toEqual([
     expect.stringContaining('Time Picker'),
   ])
 
-  await user.click(screen.getByRole('button', { name: /^Hamısı/ }))
+  await user.click(screen.getByRole('button', { name: /^All/ }))
   expect(window.location.search).toBe('')
 
-  await user.clear(screen.getByRole('searchbox', { name: 'Komponentləri süz' }))
-  await user.type(screen.getByRole('searchbox', { name: 'Komponentləri süz' }), 'zzzz')
-  expect(screen.getByText('“zzzz” üçün nəticə yoxdur.')).toBeTruthy()
-  await user.click(screen.getByRole('button', { name: 'Süzgəcləri təmizlə' }))
+  await user.clear(screen.getByRole('searchbox', { name: 'Filter components' }))
+  await user.type(screen.getByRole('searchbox', { name: 'Filter components' }), 'zzzz')
+  expect(screen.getByText('No results for “zzzz”.')).toBeTruthy()
+  await user.click(screen.getByRole('button', { name: 'Clear filters' }))
   await waitFor(() => expect(screen.getAllByRole('heading', { level: 2 })).toHaveLength(CATALOG.length))
 })
 
 test('the install command follows the chosen package manager on every copy', async () => {
   const user = userEvent.setup()
   renderPage(GettingStartedPage)
-  const [first, second] = screen.getAllByRole('radiogroup', { name: 'Paket meneceri' })
+  const [first, second] = screen.getAllByRole('radiogroup', { name: 'Package manager' })
   await user.click(within(first).getByRole('radio', { name: 'pnpm' }))
   expect(screen.getByText('pnpm add @habibmustafa/ui')).toBeTruthy()
   // The forms step's command switched too: one shared, remembered choice.
@@ -109,9 +109,9 @@ test('a page that throws shows an error in place, and a route change resets it',
 
   rerender(
     <PageErrorBoundary resetKey="/components">
-      <p>Komponentlər</p>
+      <p>Components</p>
     </PageErrorBoundary>
   )
   expect(screen.queryByRole('alert')).toBeNull()
-  expect(screen.getByText('Komponentlər')).toBeTruthy()
+  expect(screen.getByText('Components')).toBeTruthy()
 })

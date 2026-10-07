@@ -38,16 +38,16 @@ export class PageErrorBoundary extends Component<Props, State> {
 
     return (
       <div role="alert" className="mx-auto mt-10 max-w-xl rounded-md border bg-surface-75 p-6">
-        <p className="text-base text-foreground">Bu səhifə yüklənmədi.</p>
+        <p className="text-base text-foreground">This page failed to load.</p>
         <p className="mt-2 text-sm text-foreground-light">
-          Lokal işlədirsinizsə, asılılıqlar köhnə ola bilər: <code className="font-mono">npm install</code>{' '}
-          edib yenidən yoxlayın.
+          Running it locally? Your dependencies may be out of date: run{' '}
+          <code className="font-mono">npm install</code> and try again.
         </p>
         <pre className="mt-4 overflow-x-auto rounded-sm bg-surface-200 p-3 font-mono text-xs text-destructive">
           {error.message}
         </pre>
         <Button className="mt-4" variant="default" onClick={() => window.location.reload()}>
-          Yenidən yüklə
+          Reload
         </Button>
       </div>
     )

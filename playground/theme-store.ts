@@ -34,7 +34,7 @@ export interface FontOption {
 
 export const SANS_FONTS: FontOption[] = [
   { id: 'inter', label: 'Inter', family: 'Inter', google: null },
-  { id: 'system', label: 'Sistem şrifti', family: "system-ui, -apple-system, 'Segoe UI', Roboto", google: null },
+  { id: 'system', label: 'System UI', family: "system-ui, -apple-system, 'Segoe UI', Roboto", google: null },
   { id: 'ibm-plex-sans', label: 'IBM Plex Sans', family: "'IBM Plex Sans'", google: 'IBM Plex Sans:wght@400;500;600' },
   { id: 'manrope', label: 'Manrope', family: 'Manrope', google: 'Manrope:wght@400;500;600' },
   { id: 'nunito-sans', label: 'Nunito Sans', family: "'Nunito Sans'", google: 'Nunito Sans:wght@400;500;600' },
@@ -59,17 +59,6 @@ export const DEFAULT_STATE: BuilderState = {
   radius: DEFAULT_THEME.radius,
   sans: 'inter',
   mono: 'source-code-pro',
-}
-
-/** Azerbaijani display names for the library's THEME_PRESETS ids. */
-export const PRESET_LABELS: Record<string, string> = {
-  default: 'Yaşıl',
-  indigo: 'İndigo',
-  ocean: 'Okean',
-  violet: 'Bənövşəyi',
-  sunset: 'Qürub',
-  rose: 'Qızılgül',
-  mono: 'Monoxrom',
 }
 
 const fontById = (list: FontOption[], id: string) => list.find((f) => f.id === id) ?? list[0]

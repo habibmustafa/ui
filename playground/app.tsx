@@ -48,12 +48,12 @@ const GITHUB_URL = "https://github.com/habibmustafa/ui";
 
 /** Top-level pages, shared by the sidebar and the search palette. */
 const PAGES = [
-  { to: "/", label: "Giriş", search: "Giriş ana səhifə home", icon: Home },
-  { to: "/getting-started", label: "Başlanğıc", search: "Başlanğıc quraşdırma getting started install", icon: Rocket },
-  { to: "/components", label: "Komponentlər", search: "Komponentlər components", icon: LayoutGrid },
-  { to: "/theme", label: "Tema yaradıcısı", search: "Tema yaradıcısı theme builder rəng colors", icon: Paintbrush },
-  { to: "/colors", label: "Rənglər", search: "Rənglər colors tokens", icon: Palette },
-  { to: "/typography", label: "Tipoqrafiya", search: "Tipoqrafiya typography", icon: TypeIcon },
+  { to: "/", label: "Home", search: "Home overview", icon: Home },
+  { to: "/getting-started", label: "Getting started", search: "Getting started install setup", icon: Rocket },
+  { to: "/components", label: "Components", search: "Components index", icon: LayoutGrid },
+  { to: "/theme", label: "Theme builder", search: "Theme builder colors palette", icon: Paintbrush },
+  { to: "/colors", label: "Colors", search: "Colors tokens", icon: Palette },
+  { to: "/typography", label: "Typography", search: "Typography type scale", icon: TypeIcon },
 ];
 
 /*
@@ -89,7 +89,7 @@ function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
     <nav className="flex min-w-[220px] flex-col gap-6 py-6 lg:py-8">
       <div className="flex flex-col gap-2">
         <p className="font-mono text-xs uppercase text-foreground-muted">
-          Sənədlər
+          Docs
         </p>
         {PAGES.map((page) => (
           <Link
@@ -162,7 +162,7 @@ function CommandMenu() {
     () => [
       {
         key: "pages",
-        heading: "Səhifələr",
+        heading: "Pages",
         items: PAGES.map((page) => {
           const Icon = page.icon;
           return {
@@ -201,7 +201,7 @@ function CommandMenu() {
         onClick={() => setOpen(true)}
         className="focus-ring relative hidden h-8 items-center justify-start rounded-lg border border-strong bg-background px-2.5 text-sm font-normal text-foreground-muted shadow-none transition-colors hover:border-foreground-muted hover:bg-surface-100 hover:text-foreground-lighter sm:pr-10 lg:flex lg:w-48"
       >
-        <span className="truncate">Komponent axtar…</span>
+        <span className="truncate">Search components…</span>
         <kbd className="pointer-events-none absolute right-[0.3rem] top-[0.3rem] hidden h-5 select-none items-center gap-1 rounded-sm border bg-surface-200 px-1.5 font-mono text-[10px] font-medium text-foreground-light opacity-100 sm:flex">
           <span className="text-sm">⌘</span>K
         </kbd>
@@ -209,7 +209,7 @@ function CommandMenu() {
       {/* Icon-only trigger below the breakpoint the wide box needs. */}
       <button
         type="button"
-        aria-label="Axtar"
+        aria-label="Search"
         onClick={() => setOpen(true)}
         className="focus-ring inline-flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-md text-foreground-light transition-colors hover:bg-surface-100 hover:text-foreground lg:hidden"
       >
@@ -217,16 +217,16 @@ function CommandMenu() {
       </button>
       <Dialog.Root open={open} onOpenChange={setOpen}>
         <Dialog.Content className="overflow-hidden p-0 shadow-lg">
-          <Dialog.Title className="sr-only">Komponent axtar</Dialog.Title>
+          <Dialog.Title className="sr-only">Search components</Dialog.Title>
           <Command.Root className={commandRootClassName}>
-            <Command.Input placeholder="Komponent axtar…" />
+            <Command.Input placeholder="Search components…" />
             {/*
              * 63 rows would otherwise stretch the dialog to the viewport height (the
              * shared CommandList defaults to max-h-full, i.e. uncapped) — upstream's own
              * search dialog caps its list the same way (max-h-[300px] in its live DOM).
              */}
             <Command.List className="max-h-[300px]">
-              <Command.Empty>Nəticə tapılmadı.</Command.Empty>
+              <Command.Empty>No results found.</Command.Empty>
               {groups.map((group, index) => (
                 <div key={group.key}>
                   {index > 0 && <Command.Separator />}
@@ -270,21 +270,21 @@ function Header() {
             <Sheet.Trigger asChild>
               <button
                 type="button"
-                aria-label="Komponent siyahısını aç"
+                aria-label="Open navigation"
                 className="focus-ring inline-flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-md text-foreground-light transition-colors hover:bg-surface-100 hover:text-foreground md:hidden"
               >
                 <Menu className="h-4.5 w-4.5" />
               </button>
             </Sheet.Trigger>
             <Sheet.Content side="left" className="w-72 overflow-y-auto px-6">
-              <Sheet.Title className="sr-only">Naviqasiya</Sheet.Title>
+              <Sheet.Title className="sr-only">Navigation</Sheet.Title>
               <SidebarNav onNavigate={() => setMobileNavOpen(false)} />
             </Sheet.Content>
           </Sheet.Root>
 
           <Link
             to="/"
-            aria-label="ui — ana səhifə"
+            aria-label="ui — home"
             className="focus-ring shrink-0 rounded-sm"
           >
             <img
@@ -300,7 +300,7 @@ function Header() {
           </Badge>
         </div>
 
-        <nav aria-label="Əsas" className="ml-4 hidden items-center gap-5 md:flex">
+        <nav aria-label="Main" className="ml-4 hidden items-center gap-5 md:flex">
           {PAGES.slice(1, 4).map((page) => (
             <Link
               key={page.to}
@@ -319,7 +319,7 @@ function Header() {
             href={GITHUB_URL}
             target="_blank"
             rel="noreferrer"
-            aria-label="GitHub repozitoriyası"
+            aria-label="GitHub repository"
             className="focus-ring inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-foreground-light transition-colors hover:bg-surface-100 hover:text-foreground"
           >
             <GithubIcon className="h-4 w-4" />
@@ -354,8 +354,8 @@ function ColorsPage() {
   return (
     <div>
       <PageHeader
-        title="Rənglər"
-        description="Semantik tokenlər — OKLCH-də ton, səth və kontrast girişlərindən törəyir."
+        title="Colors"
+        description="Semantic tokens, derived in OKLCH from hue, surface and contrast inputs."
       />
       <Preview label="Surfaces" align="start">
         <Swatch token="bg-background" className="bg-background" />
@@ -386,8 +386,8 @@ function TypographyPage() {
   return (
     <div>
       <PageHeader
-        title="Tipoqrafiya"
-        description="Inter üçün tənzimlənmiş şkala: text-sm 13px, text-base 15px, normal qalınlıq 450."
+        title="Typography"
+        description="Inter-tuned scale: text-sm is 13px and text-base 15px, with normal weight at 450."
       />
       <Preview label="Scale" align="start">
         <div className="flex flex-col gap-2">
@@ -483,16 +483,16 @@ function CustomThemeNotice() {
   if (!everywhere || path.split("?")[0] === "/theme") return null;
   return (
     <div className="flex items-center justify-center gap-3 border-b bg-surface-100 px-6 py-1.5 text-xs text-foreground-light">
-      <span>Tema yaradıcısındakı tema tətbiq olunub.</span>
+      <span>Your theme from the theme builder is applied.</span>
       <Link to="/theme" className="focus-ring rounded-xs text-foreground underline underline-offset-2">
-        Redaktə et
+        Edit
       </Link>
       <button
         type="button"
         onClick={() => setApplyEverywhere(false)}
         className="focus-ring cursor-pointer rounded-xs text-foreground underline underline-offset-2"
       >
-        Söndür
+        Turn off
       </button>
     </div>
   );
@@ -515,19 +515,19 @@ export function App() {
     page = <HomePage />;
   } else if (pathname === "/getting-started") {
     page = <GettingStartedPage />;
-    title = "Başlanğıc";
+    title = "Getting started";
   } else if (pathname === "/theme") {
     page = <ThemeBuilderPage />;
-    title = "Tema yaradıcısı";
+    title = "Theme builder";
   } else if (pathname === "/components") {
     page = <ComponentsIndexPage />;
-    title = "Komponentlər";
+    title = "Components";
   } else if (pathname === "/colors") {
     page = <ColorsPage />;
-    title = "Rənglər";
+    title = "Colors";
   } else if (pathname === "/typography") {
     page = <TypographyPage />;
-    title = "Tipoqrafiya";
+    title = "Typography";
   } else if (pathname.startsWith("/components/")) {
     const id = pathname.slice("/components/".length);
     page = <ComponentPage id={id} />;
@@ -537,7 +537,7 @@ export function App() {
   }
 
   useEffect(() => {
-    document.title = title ? `${title} — ui` : "ui — React 19 komponent kitabxanası";
+    document.title = title ? `${title} — ui` : "ui — React 19 component library";
   }, [title]);
 
   // The landing page runs full width; every other page reads next to the sidebar.

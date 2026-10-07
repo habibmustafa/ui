@@ -36,75 +36,75 @@ import {
  */
 
 const chartData = [
-  { month: 'Yan', plan: 186, actual: 120 },
-  { month: 'Fev', plan: 305, actual: 260 },
+  { month: 'Jan', plan: 186, actual: 120 },
+  { month: 'Feb', plan: 305, actual: 260 },
   { month: 'Mar', plan: 237, actual: 250 },
   { month: 'Apr', plan: 273, actual: 190 },
   { month: 'May', plan: 209, actual: 230 },
-  { month: 'İyn', plan: 314, actual: 280 },
+  { month: 'Jun', plan: 314, actual: 280 },
 ]
 
 const chartConfig = {
   plan: { label: 'Plan', color: 'var(--chart-1)' },
-  actual: { label: 'Faktiki', color: 'var(--chart-2)' },
+  actual: { label: 'Actual', color: 'var(--chart-2)' },
 } satisfies ChartConfig
 
 const invoices = [
-  { id: 'INV-1042', customer: 'Aysel Məmmədova', status: 'paid', amount: '1 240 ₼' },
-  { id: 'INV-1041', customer: 'Kamran Əliyev', status: 'pending', amount: '860 ₼' },
-  { id: 'INV-1040', customer: 'Nigar Həsənli', status: 'overdue', amount: '2 115 ₼' },
+  { id: 'INV-1042', customer: 'Habib Mustafa', status: 'paid', amount: '$1,240' },
+  { id: 'INV-1041', customer: 'Olivia Martin', status: 'pending', amount: '$860' },
+  { id: 'INV-1040', customer: 'Liam Chen', status: 'overdue', amount: '$2,115' },
 ] as const
 
 const STATUS = {
-  paid: { label: 'Ödənilib', variant: 'success' },
-  pending: { label: 'Gözləyir', variant: 'warning' },
-  overdue: { label: 'Gecikib', variant: 'destructive' },
+  paid: { label: 'Paid', variant: 'success' },
+  pending: { label: 'Pending', variant: 'warning' },
+  overdue: { label: 'Overdue', variant: 'destructive' },
 } as const
 
 function AccountCard() {
   const id = useId()
   return (
-    <Card title="Hesab" description="Forma elementləri və düymələr.">
+    <Card title="Account" description="Form controls and buttons.">
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
-          <Label htmlFor={`${id}-name`}>Ad</Label>
-          <Input id={`${id}-name`} defaultValue="Aysel Məmmədova" />
+          <Label htmlFor={`${id}-name`}>Name</Label>
+          <Input id={`${id}-name`} defaultValue="Habib Mustafa" />
         </div>
         <div className="flex flex-col gap-2">
-          <Label id={`${id}-role`}>Rol</Label>
+          <Label id={`${id}-role`}>Role</Label>
           <Select
             aria-labelledby={`${id}-role`}
             defaultValue="editor"
             options={[
-              { value: 'viewer', label: 'İzləyici' },
-              { value: 'editor', label: 'Redaktor' },
+              { value: 'viewer', label: 'Viewer' },
+              { value: 'editor', label: 'Editor' },
               { value: 'admin', label: 'Admin' },
             ]}
           />
         </div>
         <RadioGroup
-          aria-label="Bildiriş tezliyi"
+          aria-label="Notification frequency"
           defaultValue="daily"
           options={[
-            { value: 'instant', label: 'Dərhal' },
-            { value: 'daily', label: 'Gündəlik xülasə' },
+            { value: 'instant', label: 'Instantly' },
+            { value: 'daily', label: 'Daily digest' },
           ]}
         />
         <div className="flex items-center gap-2">
           <Checkbox id={`${id}-terms`} defaultChecked />
-          <Label htmlFor={`${id}-terms`}>Yeniliklər haqqında e-poçt al</Label>
+          <Label htmlFor={`${id}-terms`}>Email me about product updates</Label>
         </div>
         <div className="flex items-center gap-2">
           <Switch id={`${id}-2fa`} defaultChecked />
-          <Label htmlFor={`${id}-2fa`}>İki mərhələli giriş</Label>
+          <Label htmlFor={`${id}-2fa`}>Two-factor sign-in</Label>
         </div>
         <div className="flex flex-wrap gap-2 pt-1">
           <Button variant="primary" data-contrast="button">
-            Yadda saxla
+            Save changes
           </Button>
-          <Button variant="default">Ləğv et</Button>
-          <Button variant="outline">Önizlə</Button>
-          <Button variant="danger">Sil</Button>
+          <Button variant="default">Cancel</Button>
+          <Button variant="outline">Preview</Button>
+          <Button variant="danger">Delete</Button>
         </div>
       </div>
     </Card>
@@ -113,12 +113,12 @@ function AccountCard() {
 
 function RevenueCard() {
   return (
-    <Card title="Gəlir" description="Brend və vurğu rəngləri qrafikdə.">
+    <Card title="Revenue" description="Brand and accent colours in a chart.">
       <div className="flex flex-col gap-4">
         <div className="flex items-end justify-between gap-4">
           <div>
-            <p className="text-xs text-foreground-lighter">Bu ay</p>
-            <p className="text-2xl tabular-nums text-foreground">48 290 ₼</p>
+            <p className="text-xs text-foreground-lighter">This month</p>
+            <p className="text-2xl tabular-nums text-foreground">$48,290</p>
           </div>
           <Badge variant="success">+12,4%</Badge>
         </div>
@@ -134,10 +134,10 @@ function RevenueCard() {
         </ChartContainer>
         <div className="flex flex-col gap-1.5">
           <div className="flex justify-between text-xs text-foreground-light">
-            <span>İllik hədəf</span>
+            <span>Yearly target</span>
             <span className="tabular-nums">68%</span>
           </div>
-          <Progress value={68} aria-label="İllik hədəf" />
+          <Progress value={68} aria-label="Yearly target" />
         </div>
       </div>
     </Card>
@@ -146,33 +146,33 @@ function RevenueCard() {
 
 function TypographyCard() {
   return (
-    <Card title="Mətn" description="Şriftlər və mətn rəngləri.">
+    <Card title="Text" description="Fonts and text colours.">
       <div className="flex flex-col gap-2">
-        <h3 className="text-xl tracking-tight text-foreground">Hesabat hazırdır</h3>
+        <h3 className="text-xl tracking-tight text-foreground">Your report is ready</h3>
         <p className="text-sm text-foreground" data-contrast="text">
-          Əsas mətn: rüblük nəticələr komanda ilə paylaşıldı.
+          Body text: quarterly results were shared with the team.
         </p>
         <p className="text-sm text-foreground-light" data-contrast="text-light">
-          İkinci dərəcəli mətn: son yeniləmə 5 dəqiqə əvvəl.
+          Secondary text: last updated 5 minutes ago.
         </p>
         <p className="text-xs text-foreground-lighter" data-contrast="text-lighter">
-          Köməkçi mətn: yalnız sizə görünür.
+          Helper text: only visible to you.
         </p>
         <p className="text-sm">
           <a href="#theme-preview" className="text-primary underline underline-offset-2" data-contrast="primary">
-            Hesabata keçid
+            Open the report
           </a>
           <span className="text-foreground-light"> · </span>
           <span className="text-destructive" data-contrast="destructive">
-            2 xəta
+            2 errors
           </span>
           <span className="text-foreground-light"> · </span>
           <span className="text-warning" data-contrast="warning">
-            1 xəbərdarlıq
+            1 warning
           </span>
         </p>
         <p className="text-sm text-foreground-light">
-          Axtarış <Kbd>⌘</Kbd> <Kbd>K</Kbd>, kod: <code className="font-mono text-foreground">createTheme()</code>
+          Search <Kbd>⌘</Kbd> <Kbd>K</Kbd>, code: <code className="font-mono text-foreground">createTheme()</code>
         </p>
       </div>
     </Card>
@@ -181,24 +181,24 @@ function TypographyCard() {
 
 function StatusCard() {
   return (
-    <Card title="Bildirişlər" description="Status rəngləri, toast və dialoq.">
+    <Card title="Notifications" description="Status colours, toast and dialog.">
       <div className="flex flex-col gap-3">
-        <Admonition type="note" title="Yeni versiya" description="2.4 buraxılışı istifadəyə hazırdır." />
-        <Admonition type="warning" title="Limitə yaxınsınız" description="Planın 90%-i istifadə olunub." />
-        <Admonition type="destructive" title="Ödəniş alınmadı" description="Kart məlumatlarını yeniləyin." />
+        <Admonition type="note" title="New version" description="Release 2.4 is ready to use." />
+        <Admonition type="warning" title="Approaching your limit" description="You have used 90% of your plan." />
+        <Admonition type="destructive" title="Payment failed" description="Update your card details." />
         <div className="flex flex-wrap gap-2 pt-1">
           <Button
             variant="default"
-            onClick={() => toast.success('Dəyişikliklər yadda saxlanıldı', { description: 'Tema hər yerdə tətbiq olunur.' })}
+            onClick={() => toast.success('Changes saved', { description: 'The theme now applies everywhere.' })}
           >
-            Toast göstər
+            Show toast
           </Button>
           <Dialog
-            trigger={<Button variant="outline">Dialoq aç</Button>}
-            title="Planı yenilə"
-            description="Yeni plan növbəti ödəniş dövründən başlayır."
-            confirmText="Yenilə"
-            cancelText="Ləğv et"
+            trigger={<Button variant="outline">Open dialog</Button>}
+            title="Upgrade plan"
+            description="The new plan starts with your next billing period."
+            confirmText="Upgrade"
+            cancelText="Cancel"
             onConfirm={() => new Promise((resolve) => setTimeout(resolve, 700))}
           />
         </div>
@@ -209,11 +209,11 @@ function StatusCard() {
 
 function InvoicesCard() {
   return (
-    <Card title="Fakturalar" description="Tab, cədvəl və badge.">
+    <Card title="Invoices" description="Tabs, table and badges.">
       <Tabs.Root defaultValue="all">
         <Tabs.List className="gap-5">
-          <Tabs.Trigger value="all">Hamısı</Tabs.Trigger>
-          <Tabs.Trigger value="open">Açıq</Tabs.Trigger>
+          <Tabs.Trigger value="all">All</Tabs.Trigger>
+          <Tabs.Trigger value="open">Open</Tabs.Trigger>
           <Tabs.Indicator />
         </Tabs.List>
         {(['all', 'open'] as const).map((tab) => (
@@ -221,10 +221,10 @@ function InvoicesCard() {
             <Table.Root>
               <Table.Header>
                 <Table.Row>
-                  <Table.Head>Faktura</Table.Head>
-                  <Table.Head>Müştəri</Table.Head>
+                  <Table.Head>Invoice</Table.Head>
+                  <Table.Head>Customer</Table.Head>
                   <Table.Head>Status</Table.Head>
-                  <Table.Head className="text-right">Məbləğ</Table.Head>
+                  <Table.Head className="text-right">Amount</Table.Head>
                 </Table.Row>
               </Table.Header>
               <Table.Body>
@@ -253,30 +253,30 @@ function ControlsCard() {
   const [volume, setVolume] = useState([60])
   const [view, setView] = useState('week')
   return (
-    <Card title="İdarəetmə" description="Slider, seçim qrupu, giriş sahəsi.">
+    <Card title="Controls" description="Slider, segmented choice and input.">
       <div className="flex flex-col gap-5">
         <ToggleGroup
           type="single"
           variant="segmented"
           tone="outline"
           allowDeselect={false}
-          aria-label="Dövr"
+          aria-label="Period"
           value={view}
           onValueChange={(value: string) => value && setView(value)}
           items={[
-            { value: 'day', label: 'Gün' },
-            { value: 'week', label: 'Həftə' },
-            { value: 'month', label: 'Ay' },
+            { value: 'day', label: 'Day' },
+            { value: 'week', label: 'Week' },
+            { value: 'month', label: 'Month' },
           ]}
         />
         <div className="flex flex-col gap-2">
           <div className="flex justify-between text-sm">
-            <span className="text-foreground">Səs</span>
+            <span className="text-foreground">Volume</span>
             <span className="tabular-nums text-foreground-light">{volume[0]}%</span>
           </div>
-          <Slider aria-label="Səs" value={volume} onValueChange={setVolume} />
+          <Slider aria-label="Volume" value={volume} onValueChange={setVolume} />
         </div>
-        <Input aria-label="Axtarış" placeholder="Axtar…" />
+        <Input aria-label="Search" placeholder="Search…" />
       </div>
     </Card>
   )

@@ -1,4 +1,4 @@
-// Keeps the component tree consistent (README → "Layihə strukturu"):
+// Keeps the component tree consistent (README → "Project structure"):
 // - atoms live in atoms/<role>/<component>, fragments in fragments/<component>;
 // - atoms never import fragments (dependencies only point from fragments to atoms);
 // - every component folder is exported from src/index.ts;
