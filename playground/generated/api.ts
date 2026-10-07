@@ -1742,6 +1742,70 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       }
     ]
   },
+  "password-input": {
+    "source": "src/components/atoms/forms/password-input",
+    "components": [
+      {
+        "name": "PasswordInput",
+        "props": [
+          {
+            "name": "showStrength",
+            "type": "boolean",
+            "default": "false",
+            "description": "Show a strength meter under the field."
+          },
+          {
+            "name": "getStrength",
+            "type": "((password: string) => PasswordStrength)",
+            "description": "Custom scoring; defaults to `estimatePasswordStrength`."
+          },
+          {
+            "name": "strengthLabels",
+            "type": "Partial<Record<PasswordStrength, string>>",
+            "description": "Override the meter's labels (\"Weak\", \"Fair\", …)."
+          },
+          {
+            "name": "showLabel",
+            "type": "string",
+            "default": "Show password",
+            "description": "Accessible name of the toggle."
+          },
+          {
+            "name": "defaultVisible",
+            "type": "boolean",
+            "default": "false",
+            "description": "Whether the password starts visible."
+          },
+          {
+            "name": "size",
+            "type": "\"tiny\" | \"small\" | \"medium\" | \"large\" | \"xlarge\" | null"
+          },
+          {
+            "name": "prefix",
+            "type": "ReactNode",
+            "description": "Rendered inside the field's own border, before the value (e.g. an icon or \"$\")."
+          }
+        ],
+        "extends": [
+          {
+            "name": "InputHTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "estimatePasswordStrength",
+        "description": "A small heuristic, not a security guarantee: length plus character variety, capped by\nlength. Pass your own `getStrength` (e.g. zxcvbn) for real policies.",
+        "props": [],
+        "extends": [
+          {
+            "name": "String",
+            "package": "typescript"
+          }
+        ]
+      }
+    ]
+  },
   "radio-group": {
     "source": "src/components/atoms/forms/radio-group",
     "components": [
@@ -2264,6 +2328,89 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "package": "react"
           }
         ]
+      }
+    ]
+  },
+  "time-picker": {
+    "source": "src/components/atoms/forms/time-picker",
+    "components": [
+      {
+        "name": "TimePicker",
+        "props": [
+          {
+            "name": "value",
+            "type": "string | null",
+            "description": "\"HH:mm\" or \"HH:mm:ss\" (24-hour), or null when empty."
+          },
+          {
+            "name": "defaultValue",
+            "type": "string | null",
+            "default": "null"
+          },
+          {
+            "name": "onValueChange",
+            "type": "((value: string | null) => void)"
+          },
+          {
+            "name": "hourCycle",
+            "type": "12 | 24",
+            "default": "24",
+            "description": "Display 12-hour with AM/PM, or 24-hour."
+          },
+          {
+            "name": "showSeconds",
+            "type": "boolean",
+            "default": "false",
+            "description": "Add a seconds segment."
+          },
+          {
+            "name": "minuteStep",
+            "type": "number",
+            "default": "1",
+            "description": "Arrow-key step for minutes."
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "default": "false"
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "description": "Name for a hidden input carrying the value in forms."
+          },
+          {
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "name": "aria-label",
+            "type": "string",
+            "default": "Time"
+          },
+          {
+            "name": "aria-labelledby",
+            "type": "string"
+          },
+          {
+            "name": "aria-describedby",
+            "type": "string"
+          },
+          {
+            "name": "aria-invalid",
+            "type": "boolean | \"true\" | \"false\" | \"grammar\" | \"spelling\""
+          },
+          {
+            "name": "size",
+            "type": "\"large\" | \"medium\" | \"small\" | \"tiny\"",
+            "default": "small"
+          },
+          {
+            "name": "className",
+            "type": "string"
+          }
+        ],
+        "extends": []
       }
     ]
   },
@@ -4965,6 +5112,83 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "package": "react"
           }
         ]
+      }
+    ]
+  },
+  "confirm-popover": {
+    "source": "src/components/atoms/overlay/confirm-popover",
+    "components": [
+      {
+        "name": "ConfirmPopover",
+        "props": [
+          {
+            "name": "trigger",
+            "type": "ReactElement<unknown, string | JSXElementConstructor<any>>",
+            "required": true,
+            "description": "The element that opens the confirmation, rendered via PopoverTrigger asChild."
+          },
+          {
+            "name": "title",
+            "type": "ReactNode",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "ReactNode"
+          },
+          {
+            "name": "onConfirm",
+            "type": "() => void | Promise<void>",
+            "required": true
+          },
+          {
+            "name": "onCancel",
+            "type": "(() => void)"
+          },
+          {
+            "name": "confirmText",
+            "type": "ReactNode",
+            "default": "Confirm"
+          },
+          {
+            "name": "cancelText",
+            "type": "ReactNode",
+            "default": "Cancel"
+          },
+          {
+            "name": "destructive",
+            "type": "boolean",
+            "default": "false",
+            "description": "Style the confirm button as destructive."
+          },
+          {
+            "name": "open",
+            "type": "boolean"
+          },
+          {
+            "name": "defaultOpen",
+            "type": "boolean",
+            "default": "false"
+          },
+          {
+            "name": "onOpenChange",
+            "type": "((open: boolean) => void)"
+          },
+          {
+            "name": "side",
+            "type": "\"bottom\" | \"left\" | \"right\" | \"top\""
+          },
+          {
+            "name": "align",
+            "type": "\"center\" | \"end\" | \"start\"",
+            "default": "start"
+          },
+          {
+            "name": "className",
+            "type": "string"
+          }
+        ],
+        "extends": []
       }
     ]
   },

@@ -49,6 +49,7 @@ export const CLICK_TO_OPEN = new Set([
   "dropdown-menu-checkboxes-props-demo",
   "dropdown-menu-radio-group-demo",
   "dropdown-menu-radio-group-props-demo",
+  "confirm-popover-demo",
   "menubar-demo",
   "menubar-props-demo",
   "navigation-menu-demo",

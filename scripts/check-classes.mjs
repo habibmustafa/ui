@@ -41,6 +41,9 @@ const NOT_CLASSES = new Set([
   'aria-labelledby',
   // DataTable demo: a `"<column>:<direction>"` sort string, not a variant-prefixed class.
   'name:asc',
+  // PasswordInput: autocomplete tokens, not classes.
+  'current-password',
+  'new-password',
   // DropdownMenu checkbox demo: MenuItem `key` values, not classes.
   'activity-bar',
   'status-bar',

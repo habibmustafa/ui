@@ -8,7 +8,7 @@
 
 # ui
 
-React 19, TypeScript, Tailwind CSS v4 və Radix üzərində qurulmuş komponent kitabxanası — 57 atom
+React 19, TypeScript, Tailwind CSS v4 və Radix üzərində qurulmuş komponent kitabxanası — 60 atom
 və 21 fragment, OKLCH token sistemi və seçilmiş komponentlərdə həm **props-driven**, həm də
 **compound** API.
 
@@ -20,7 +20,7 @@ npm i @habibmustafa/ui
 
 ## Xüsusiyyətlər
 
-- **78 komponent** — 57 atom (`Button`, `Dialog`, `Select`, `Table`, `Sidebar`, …) və 21 fragment
+- **81 komponent** — 60 atom (`Button`, `Dialog`, `Select`, `Table`, `Sidebar`, …) və 21 fragment
   (`DatePicker`, `MultiSelect`, `CodeBlock`, `MetricCard`, `EmptyState`, …).
 - **Hibrid API** — seçilmiş komponentlər tək `props` ilə, ya da Radix tərzi
   `Component.Root`/`Component.Part` compound yazılışı ilə işlədilə bilər. Hansı komponentin

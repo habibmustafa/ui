@@ -53,6 +53,7 @@ import {
   Rows,
   Rows3,
   ShieldAlert,
+  ShieldQuestion,
   SlidersHorizontal,
   Sparkles,
   SunMoon,
@@ -448,6 +449,14 @@ const atoms: ComponentEntry[] = [
     ],
   },
   {
+    id: 'confirm-popover',
+    title: 'Confirm Popover',
+    icon: ShieldQuestion,
+    description:
+      'Lightweight "Are you sure?" next to the trigger: focus starts on Cancel, async confirm shows loading.',
+    previews: [{ name: 'confirm-popover-demo' }],
+  },
+  {
     id: 'context-menu',
     title: 'Context Menu',
     icon: MousePointerClick,
@@ -720,6 +729,13 @@ const atoms: ComponentEntry[] = [
       { name: 'number-input-demo', label: 'Default' },
       { name: 'number-input-formatted', label: 'Formatting & states' },
     ],
+  },
+  {
+    id: 'password-input',
+    title: 'Password Input',
+    icon: KeyRound,
+    description: 'Password field with a show/hide toggle and an optional strength meter (text + colour).',
+    previews: [{ name: 'password-input-demo' }],
   },
   {
     id: 'pagination',
@@ -1128,6 +1144,17 @@ const atoms: ComponentEntry[] = [
       { name: 'textarea-with-button', label: 'With button' },
       { name: 'textarea-with-label', label: 'With label' },
       { name: 'textarea-with-text', label: 'With text' },
+    ],
+  },
+  {
+    id: 'time-picker',
+    title: 'Time Picker',
+    icon: Clock,
+    description:
+      'Segmented time field (24h or 12h + AM/PM, optional seconds) with an "HH:mm[:ss]" value like <input type="time">.',
+    previews: [
+      { name: 'time-picker-demo', label: 'Default' },
+      { name: 'time-picker-variants', label: 'Variants' },
     ],
   },
   {
