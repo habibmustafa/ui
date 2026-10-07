@@ -24,7 +24,7 @@ import {
 
 const FormSchema = z.object({
   dob: z.date({
-    required_error: 'A date of birth is required.',
+    error: 'A date of birth is required.',
   }),
 })
 
@@ -62,7 +62,7 @@ export default function DatePickerFormPropsDemo() {
                   selected: field.value,
                   onSelect: field.onChange,
                   disabled: (date) => date > new Date() || date < new Date('1900-01-01'),
-                  initialFocus: true,
+                  autoFocus: true,
                 }}
               />
               <FormDescription>Your date of birth is used to calculate your age.</FormDescription>

@@ -43,6 +43,15 @@ type SelectContentModeProps = Omit<RootProps, 'children'> & {
   size?: SelectTriggerSize
   className?: string
   classNames?: SelectClassNames
+  /**
+   * Forwarded to the trigger — the focusable combobox — so a `<label htmlFor>` or
+   * FormControl can name and describe it. Radix's Root renders no element of its own.
+   */
+  id?: string
+  'aria-label'?: string
+  'aria-labelledby'?: string
+  'aria-describedby'?: string
+  'aria-invalid'?: React.AriaAttributes['aria-invalid']
   children?: never
 }
 
@@ -64,11 +73,32 @@ export function SelectHybrid(props: SelectProps) {
     return <SelectRoot {...(props as SelectCompoundProps)} />
   }
 
-  const { options, groups, placeholder, size, className, classNames, ...rootProps } = props
+  const {
+    options,
+    groups,
+    placeholder,
+    size,
+    className,
+    classNames,
+    id,
+    'aria-label': ariaLabel,
+    'aria-labelledby': ariaLabelledby,
+    'aria-describedby': ariaDescribedby,
+    'aria-invalid': ariaInvalid,
+    ...rootProps
+  } = props as SelectContentModeProps
 
   return (
     <SelectRoot {...rootProps}>
-      <SelectTrigger size={size} className={cn(className, classNames?.trigger)}>
+      <SelectTrigger
+        id={id}
+        aria-label={ariaLabel}
+        aria-labelledby={ariaLabelledby}
+        aria-describedby={ariaDescribedby}
+        aria-invalid={ariaInvalid}
+        size={size}
+        className={cn(className, classNames?.trigger)}
+      >
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent className={classNames?.content}>

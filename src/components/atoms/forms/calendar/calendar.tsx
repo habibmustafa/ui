@@ -1,14 +1,50 @@
 'use client'
 
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { DayPicker } from 'react-day-picker'
+import { DayPicker, type DateLib, type Modifiers } from 'react-day-picker'
 
 import { cn } from '../../../../lib/utils'
 import { buttonVariants } from '../../actions/button/shadcn-button'
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>
 
-function Calendar({ className, classNames, showOutsideDays = true, ...props }: CalendarProps) {
+const escapeRegExp = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+
+/**
+ * Day-button names that contain the day as shown (WCAG 2.5.3 "label in name"). The
+ * default `PPPP` format writes "September 7th" in English, so the visible "7" isn't in
+ * the name as a word and voice-control users can't say "click 7". Locales whose full
+ * date already contains the plain number keep their own format.
+ */
+function createDayButtonLabel(
+  formatDay?: (date: Date, options?: DateLib['options'], dateLib?: DateLib) => string
+) {
+  return (date: Date, modifiers: Modifiers, _options?: DateLib['options'], dateLib?: DateLib) => {
+    if (!dateLib) return date.toDateString()
+    const visible = formatDay
+      ? formatDay(date, dateLib.options, dateLib)
+      : dateLib.format(date, 'd')
+    const full = dateLib.format(date, 'PPPP')
+    let label = new RegExp(
+      `(^|[^\\p{L}\\p{N}])${escapeRegExp(visible)}([^\\p{L}\\p{N}]|$)`,
+      'u'
+    ).test(full)
+      ? full
+      : `${dateLib.format(date, 'EEEE')}, ${dateLib.format(date, 'MMMM')} ${visible}, ${dateLib.format(date, 'yyyy')}`
+    if (modifiers.today) label = `Today, ${label}`
+    if (modifiers.selected) label = `${label}, selected`
+    return label
+  }
+}
+
+function Calendar({
+  className,
+  classNames,
+  showOutsideDays = true,
+  labels,
+  animate = true,
+  ...props
+}: CalendarProps) {
   const fullDateRangeSelected =
     props.mode === 'range' && !!props.selected?.from && !!props.selected?.to
 
@@ -39,6 +75,11 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
+      animate={animate}
+      labels={{
+        labelDayButton: createDayButtonLabel(props.formatters?.formatDay),
+        ...labels,
+      }}
       className={cn('p-3', className)}
       classNames={{
         months: cn(
@@ -89,7 +130,9 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
         // Plain accent — range/selected fills use ! so they still win when today is in the selection
         today: cn('bg-accent text-accent-foreground', today),
         outside: cn(
-          'text-foreground-muted opacity-50 has-[[aria-selected]]:opacity-100 has-[[aria-selected]]:text-foreground',
+          // Muted colour only (5.4:1+): stacking opacity-50 on top dropped these clickable
+          // days to ~2:1. Disabled days keep their opacity; they're exempt from contrast.
+          'text-foreground-muted has-[[aria-selected]]:text-foreground',
           outside
         ),
         disabled: cn('text-foreground-muted opacity-50', disabled),
@@ -106,6 +149,17 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
           range_end
         ),
         hidden: cn('invisible', hidden),
+        // Month navigation (react-day-picker `animate`): a short slide + cross-fade of the
+        // weeks and a caption fade, defined in styles/motion.css. DayPicker skips it while
+        // a day has keyboard focus, so arrow-key navigation across months stays instant.
+        weeks_before_enter: 'calendar-weeks-before-enter',
+        weeks_after_enter: 'calendar-weeks-after-enter',
+        weeks_before_exit: 'calendar-weeks-before-exit',
+        weeks_after_exit: 'calendar-weeks-after-exit',
+        caption_before_enter: 'calendar-caption-enter',
+        caption_after_enter: 'calendar-caption-enter',
+        caption_before_exit: 'calendar-caption-exit',
+        caption_after_exit: 'calendar-caption-exit',
         ...restClassNames,
       }}
       components={{

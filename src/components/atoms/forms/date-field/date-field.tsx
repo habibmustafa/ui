@@ -1,5 +1,6 @@
 import * as React from 'react'
 
+import { composeRefs } from '../../../../lib/compose-refs'
 import { cn } from '../../../../lib/utils'
 import { InputVariants } from '../input'
 import { useDateFieldState } from './use-date-field-state'
@@ -25,7 +26,11 @@ export interface DateFieldProps {
   id?: string
   onBlur?: React.FocusEventHandler<HTMLInputElement>
   'aria-label'?: string
+  'aria-labelledby'?: string
+  'aria-describedby'?: string
   'aria-invalid'?: boolean
+  /** The underlying `<input>`. */
+  ref?: React.Ref<HTMLInputElement>
 }
 
 const DIGIT_KEYS = new Set(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'])
@@ -51,6 +56,7 @@ export function DateField({
   className,
   onBlur,
   'aria-invalid': ariaInvalidProp,
+  ref,
   ...props
 }: DateFieldProps) {
   const {
@@ -129,7 +135,7 @@ export function DateField({
 
   return (
     <input
-      ref={inputRef}
+      ref={composeRefs(inputRef, ref)}
       type="text"
       inputMode="numeric"
       autoComplete="off"

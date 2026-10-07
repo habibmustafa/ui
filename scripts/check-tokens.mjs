@@ -18,6 +18,12 @@ const EXPECTED_DIFFERENCES = new Map([
   ['--font-sans', 'we add a fallback to the Next.js font variable so the stack is valid standalone'],
   ['--default-font-family', 'same font stack, written with a fallback'],
   ['--default-mono-font-family', 'same font stack, written with a fallback'],
+  ['--default-transition-duration', 'softer motion system: 200ms instead of 150ms (src/styles/motion.css)'],
+  ['--default-transition-timing-function', 'softer motion system: ease-soft-out instead of the stock ease-in-out'],
+  ['--animate-accordion-down', 'softer motion system: longer, symmetric ease (src/styles/motion.css)'],
+  ['--animate-accordion-up', 'softer motion system: longer, symmetric ease (src/styles/motion.css)'],
+  ['--surface-hue', 'a separate input that defaults to --hue, so the theme builder can tint neutrals independently'],
+  ['--destructive-lightness', 'dark-mode destructive text raised 0.55 -> 0.62: it measured 3.4:1 on cards, now 4.5:1'],
 ])
 
 // Only compare declarations from theme blocks. Variables declared inside ordinary

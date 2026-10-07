@@ -351,7 +351,9 @@ export const FormLayout = React.forwardRef<
         </div>
       ) : null
 
-    const LabelContents = () => (
+    // An element, not an inline component: a component defined here would be a new type
+    // on every render and remount the label contents each time.
+    const labelContents = (
       <>
         {beforeLabel && (
           <span
@@ -402,7 +404,7 @@ export const FormLayout = React.forwardRef<
                   data-formlayout-id="formLabel"
                   htmlFor={id}
                 >
-                  <LabelContents />
+                  {labelContents}
                 </FormLabel>
               ) : (
                 <Label
@@ -410,7 +412,7 @@ export const FormLayout = React.forwardRef<
                   data-formlayout-id="label"
                   htmlFor={props.name || id}
                 >
-                  <LabelContents />
+                  {labelContents}
                 </Label>
               )}
               {labelOptional && (

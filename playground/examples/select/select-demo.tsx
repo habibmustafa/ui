@@ -5,7 +5,7 @@ import {
 export default function SelectDemo() {
   return (
     <Select.Root defaultValue="postgres">
-      <Select.Trigger className="max-w-xs">
+      <Select.Trigger className="max-w-xs" aria-label="Database">
         <Select.Value placeholder="Pick a database" />
       </Select.Trigger>
       <Select.Content>

@@ -1,5 +1,7 @@
-import { Home, Menu, Palette, Search, Type as TypeIcon } from "lucide-react";
+import { Menu, Search } from "lucide-react";
 import {
+  lazy,
+  Suspense,
   useEffect,
   useMemo,
   useState,
@@ -8,26 +10,80 @@ import {
 
 import {
   Badge,
-  Command,
-  Dialog,
   Sheet,
   SonnerToaster,
+  ThemeStyle,
   ThemeToggle,
   useTheme,
-  type CommandGroupData,
 } from "../src";
-import { ComponentPreview, previewAnchor } from "./component-preview";
+import { CATALOG } from "./catalog";
+import { PAGES } from "./site-pages";
 import { Preview, Swatch } from "./docs";
-import { Link, Navigate, useRouter } from "./router";
+import { GithubIcon } from "./icons";
+import { PageErrorBoundary } from "./page-error-boundary";
 import {
-  COMPONENT_GROUPS,
-  findComponent,
-  type ComponentPreviewSpec,
-} from "./registry";
+  ensureFontLoaded,
+  monoFont,
+  sansFont,
+  setApplyEverywhere,
+  toConfig,
+  useThemeBuilder,
+} from "./theme-store";
+import { Link, Navigate, setPrefetcher, useRouter } from "./router";
+import { findComponent } from "./registry";
+import { PageHeader } from "./page-header";
+
+// Component pages carry the example loaders (and, lazily, the props tables); none
+// of that belongs in the first chunk every page loads.
+const loadComponentPage = () => import("./pages/component-page");
+const ComponentPage = lazy(loadComponentPage);
+// Intro pages pull in their live demos (forms, pickers, zod); component pages don't.
+const loadHome = () => import("./pages/home");
+const loadGettingStarted = () => import("./pages/getting-started");
+const loadComponentsIndex = () => import("./pages/components-index");
+const loadThemeBuilder = () => import("./pages/theme-builder");
+const HomePage = lazy(loadHome);
+const GettingStartedPage = lazy(loadGettingStarted);
+const ComponentsIndexPage = lazy(loadComponentsIndex);
+const ThemeBuilderPage = lazy(loadThemeBuilder);
+
+const ROUTE_LOADERS: Record<string, () => Promise<unknown>> = {
+  "/": loadHome,
+  "/getting-started": loadGettingStarted,
+  "/components": loadComponentsIndex,
+  "/theme": loadThemeBuilder,
+};
+
+/**
+ * Warms a route before it is visited: its page chunk and, for a component page, the
+ * first few demos. Called on link hover/focus/touch, so by the click most of the
+ * work is done. Repeat calls are free (the module cache dedupes them).
+ */
+function prefetchRoute(to: string) {
+  const path = to.split("?")[0];
+  if (ROUTE_LOADERS[path]) {
+    void ROUTE_LOADERS[path]();
+    return;
+  }
+  if (path.startsWith("/components/")) {
+    const entry = findComponent(path.slice("/components/".length));
+    if (!entry) return;
+    void loadComponentPage();
+    void import("./component-preview").then(({ prefetchDemo }) =>
+      entry.previews.slice(0, 3).forEach((preview) => prefetchDemo(preview.name))
+    );
+  }
+}
+setPrefetcher(prefetchRoute);
+
+const GITHUB_URL = "https://github.com/habibmustafa/ui";
+
 
 /*
  * Route map:
- *   /                     → overview (tokens + component index)
+ *   /                     → landing (install, live examples, catalog)
+ *   /getting-started      → step-by-step setup
+ *   /components           → filterable component index (?group=<role>)
  *   /colors, /typography  → token pages
  *   /components/<id>      → one page per component (id = registry entry id)
  * Unknown paths redirect to "/" via <Navigate>.
@@ -36,12 +92,6 @@ import {
 const navLink =
   "text-sm text-foreground-light transition-colors hover:text-foreground";
 const activeNavLink = "text-sm font-medium text-foreground transition-colors";
-const commandItemIcon = "mr-2 h-4 w-4 shrink-0 text-foreground-muted";
-// The library's CommandDialog is roomy (h-12 input, py-3 items) to match the generic
-// "Type a command…" demo — this header search wants the same compact rows upstream's
-// own site-wide search uses, so it composes the parts directly instead of that wrapper.
-const commandRootClassName =
-  "overflow-hidden rounded-md bg-overlay text-foreground-light [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:font-mono [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:text-foreground-muted [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-4 [&_[cmdk-input-wrapper]_svg]:w-4 [&_[cmdk-input]]:h-10 [&_[cmdk-item]]:rounded-xs [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-1.5 [&_[cmdk-item]]:text-sm [&_[cmdk-item]_svg]:h-4 [&_[cmdk-item]_svg]:w-4";
 
 /**
  * Nav content shared by the desktop sidebar and the mobile drawer, so the two never
@@ -50,38 +100,29 @@ const commandRootClassName =
  */
 function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
   const { path } = useRouter();
+  const pathname = path.split("?")[0];
 
   return (
     <nav className="flex min-w-[220px] flex-col gap-6 py-6 lg:py-8">
       <div className="flex flex-col gap-2">
         <p className="font-mono text-xs uppercase text-foreground-muted">
-          Overview
+          Docs
         </p>
-        <Link
-          to="/"
-          onClick={onNavigate}
-          className={path === "/" ? activeNavLink : navLink}
-        >
-          Components
-        </Link>
-        <Link
-          to="/colors"
-          onClick={onNavigate}
-          className={path === "/colors" ? activeNavLink : navLink}
-        >
-          Colors
-        </Link>
-        <Link
-          to="/typography"
-          onClick={onNavigate}
-          className={path === "/typography" ? activeNavLink : navLink}
-        >
-          Typography
-        </Link>
+        {PAGES.map((page) => (
+          <Link
+            key={page.to}
+            to={page.to}
+            onClick={onNavigate}
+            aria-current={pathname === page.to ? "page" : undefined}
+            className={pathname === page.to ? activeNavLink : navLink}
+          >
+            {page.label}
+          </Link>
+        ))}
       </div>
 
-      {COMPONENT_GROUPS.map((group) => (
-        <div key={group.title} className="flex flex-col gap-2">
+      {CATALOG.map((group) => (
+        <div key={group.key} className="flex flex-col gap-2">
           <p className="font-mono text-xs uppercase text-foreground-muted">
             {group.title}
           </p>
@@ -92,6 +133,7 @@ function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
                 key={entry.id}
                 to={href}
                 onClick={onNavigate}
+                aria-current={path === href ? "page" : undefined}
                 className={path === href ? activeNavLink : navLink}
               >
                 {entry.title}
@@ -113,14 +155,25 @@ function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
  * primitives directly rather than the library's own CommandDialog, which is sized
  * for its "Type a command…" demo, not a dense, whole-library search list.
  */
+// The palette itself (cmdk, the dialog, every row) loads on first use or when the
+// pointer reaches a trigger; only the triggers and the shortcut live up front.
+const loadCommandPalette = () => import("./command-palette");
+const CommandPalette = lazy(loadCommandPalette);
+
 function CommandMenu() {
-  const { navigate } = useRouter();
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  const show = () => {
+    setMounted(true);
+    setOpen(true);
+  };
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.key.toLowerCase() === "k" && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
+        setMounted(true);
         setOpen((value) => !value);
       }
     }
@@ -128,68 +181,19 @@ function CommandMenu() {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, []);
 
-  const go = (to: string) => {
-    setOpen(false);
-    navigate(to);
-  };
-
-  const groups: CommandGroupData[] = useMemo(
-    () => [
-      {
-        key: "pages",
-        heading: "Pages",
-        items: [
-          {
-            key: "overview",
-            value: "Components overview",
-            label: "Components",
-            icon: <Home className={commandItemIcon} />,
-            onSelect: () => go("/"),
-          },
-          {
-            key: "colors",
-            value: "Colors tokens",
-            label: "Colors",
-            icon: <Palette className={commandItemIcon} />,
-            onSelect: () => go("/colors"),
-          },
-          {
-            key: "typography",
-            value: "Typography tokens",
-            label: "Typography",
-            icon: <TypeIcon className={commandItemIcon} />,
-            onSelect: () => go("/typography"),
-          },
-        ],
-      },
-      ...COMPONENT_GROUPS.map((group) => ({
-        key: group.title,
-        heading: group.title,
-        items: group.entries.map((entry) => {
-          const Icon = entry.icon;
-          return {
-            key: entry.id,
-            value: entry.title,
-            label: entry.title,
-            icon: <Icon className={commandItemIcon} />,
-            onSelect: () => go(`/components/${entry.id}`),
-          };
-        }),
-      })),
-    ],
-    // COMPONENT_GROUPS is a module-level constant — this never actually reruns.
-    []
-  );
+  const warm = () => void loadCommandPalette();
 
   return (
     <>
       {/* Wide trigger, upstream's own breakpoint (`lg:flex hidden`) and classes. */}
       <button
         type="button"
-        onClick={() => setOpen(true)}
+        onClick={show}
+        onMouseEnter={warm}
+        onFocus={warm}
         className="focus-ring relative hidden h-8 items-center justify-start rounded-lg border border-strong bg-background px-2.5 text-sm font-normal text-foreground-muted shadow-none transition-colors hover:border-foreground-muted hover:bg-surface-100 hover:text-foreground-lighter sm:pr-10 lg:flex lg:w-48"
       >
-        <span className="truncate">Komponent axtar…</span>
+        <span className="truncate">Search components…</span>
         <kbd className="pointer-events-none absolute right-[0.3rem] top-[0.3rem] hidden h-5 select-none items-center gap-1 rounded-sm border bg-surface-200 px-1.5 font-mono text-[10px] font-medium text-foreground-light opacity-100 sm:flex">
           <span className="text-sm">⌘</span>K
         </kbd>
@@ -197,41 +201,18 @@ function CommandMenu() {
       {/* Icon-only trigger below the breakpoint the wide box needs. */}
       <button
         type="button"
-        aria-label="Axtar"
-        onClick={() => setOpen(true)}
+        aria-label="Search"
+        onClick={show}
+        onTouchStart={warm}
         className="focus-ring inline-flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-md text-foreground-light transition-colors hover:bg-surface-100 hover:text-foreground lg:hidden"
       >
         <Search className="h-4 w-4" />
       </button>
-      <Dialog.Root open={open} onOpenChange={setOpen}>
-        <Dialog.Content className="overflow-hidden p-0 shadow-lg">
-          <Dialog.Title className="sr-only">Komponent axtar</Dialog.Title>
-          <Command.Root className={commandRootClassName}>
-            <Command.Input placeholder="Komponent axtar…" />
-            {/*
-             * 63 rows would otherwise stretch the dialog to the viewport height (the
-             * shared CommandList defaults to max-h-full, i.e. uncapped) — upstream's own
-             * search dialog caps its list the same way (max-h-[300px] in its live DOM).
-             */}
-            <Command.List className="max-h-[300px]">
-              <Command.Empty>Nəticə tapılmadı.</Command.Empty>
-              {groups.map((group, index) => (
-                <div key={group.key}>
-                  {index > 0 && <Command.Separator />}
-                  <Command.Group heading={group.heading}>
-                    {group.items.map((item) => (
-                      <Command.Item key={item.key} value={item.value} onSelect={item.onSelect}>
-                        {item.icon}
-                        <span>{item.label}</span>
-                      </Command.Item>
-                    ))}
-                  </Command.Group>
-                </div>
-              ))}
-            </Command.List>
-          </Command.Root>
-        </Dialog.Content>
-      </Dialog.Root>
+      {mounted && (
+        <Suspense fallback={null}>
+          <CommandPalette open={open} onOpenChange={setOpen} />
+        </Suspense>
+      )}
     </>
   );
 }
@@ -258,21 +239,21 @@ function Header() {
             <Sheet.Trigger asChild>
               <button
                 type="button"
-                aria-label="Komponent siyahısını aç"
+                aria-label="Open navigation"
                 className="focus-ring inline-flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-md text-foreground-light transition-colors hover:bg-surface-100 hover:text-foreground md:hidden"
               >
                 <Menu className="h-4.5 w-4.5" />
               </button>
             </Sheet.Trigger>
             <Sheet.Content side="left" className="w-72 overflow-y-auto px-6">
-              <Sheet.Title className="sr-only">Naviqasiya</Sheet.Title>
+              <Sheet.Title className="sr-only">Navigation</Sheet.Title>
               <SidebarNav onNavigate={() => setMobileNavOpen(false)} />
             </Sheet.Content>
           </Sheet.Root>
 
           <Link
             to="/"
-            aria-label="ui — ana səhifə"
+            aria-label="ui — home"
             className="focus-ring shrink-0 rounded-sm"
           >
             <img
@@ -288,8 +269,30 @@ function Header() {
           </Badge>
         </div>
 
+        <nav aria-label="Main" className="ml-4 hidden items-center gap-5 md:flex">
+          {PAGES.slice(1, 4).map((page) => (
+            <Link
+              key={page.to}
+              to={page.to}
+              aria-current={path.split("?")[0] === page.to ? "page" : undefined}
+              className={path.split("?")[0] === page.to ? activeNavLink : navLink}
+            >
+              {page.label}
+            </Link>
+          ))}
+        </nav>
+
         <div className="ml-auto flex items-center gap-3">
           <CommandMenu />
+          <a
+            href={GITHUB_URL}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="GitHub repository"
+            className="focus-ring inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-foreground-light transition-colors hover:bg-surface-100 hover:text-foreground"
+          >
+            <GithubIcon className="h-4 w-4" />
+          </a>
           <ThemeToggle />
         </div>
       </div>
@@ -305,67 +308,13 @@ function Sidebar() {
   );
 }
 
-/* Shared page anatomy: every route gets an h1 title, a lede and a divider. */
-function PageHeader({ title, description }: { title: string; description: string }) {
-  return (
-    <>
-      <h1 className="scroll-m-20 text-3xl tracking-tight">{title}</h1>
-      <p className="mt-2 text-lg text-foreground-light">{description}</p>
-      <div role="none" className="mt-6 mb-6 h-px w-full shrink-0 bg-border-muted" />
-    </>
-  )
-}
-
-function Overview() {
-  return (
-    <div className="flex flex-col">
-      <h1 className="scroll-m-20 text-4xl tracking-tight">Components</h1>
-      <p className="mt-2 text-lg text-foreground-light">
-        React components, patterns and design tokens for ui.
-      </p>
-      <div
-        role="none"
-        className="mt-6 mb-6 h-px w-full shrink-0 bg-border-muted"
-      />
-      {COMPONENT_GROUPS.map((group) => (
-        <div key={group.title} className="mb-10">
-          <p className="font-mono text-xs uppercase text-foreground-muted">
-            {group.title}
-          </p>
-          <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {group.entries.map((entry) => {
-              const Icon = entry.icon;
-              return (
-                <Link
-                  key={entry.id}
-                  to={`/components/${entry.id}`}
-                  className="focus-ring group flex gap-3 rounded-md border bg-studio p-4 transition-colors hover:border-foreground-lighter"
-                >
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border bg-surface-100 text-foreground-muted transition-colors group-hover:text-foreground">
-                    <Icon className="h-4 w-4" />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-sm font-medium">{entry.title}</p>
-                    <p className="mt-1 line-clamp-2 text-xs text-foreground-light">
-                      {entry.description}
-                    </p>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
 
 function ColorsPage() {
   return (
     <div>
       <PageHeader
         title="Colors"
-        description="Semantic tokens derived in OKLCH from a single hue, surface and contrast input."
+        description="Semantic tokens, derived in OKLCH from hue, surface and contrast inputs."
       />
       <Preview label="Surfaces" align="start">
         <Swatch token="bg-background" className="bg-background" />
@@ -419,43 +368,39 @@ function TypographyPage() {
 }
 
 /**
- * Jumps to the labelled previews on a page (Button's "Variants", "Sizes", …).
- * Anchors match the ids ComponentPreview derives from the same labels, and a page
- * with fewer than two labelled previews renders nothing.
+ * The theme builder's tokens, rendered with the library's own <ThemeStyle>: always on
+ * /theme, and on every page once "apply everywhere" is switched on.
  */
-function PageContents({ previews }: { previews: ComponentPreviewSpec[] }) {
-  const labelled = previews.filter((preview) => preview.label);
-  if (labelled.length < 2) return null;
+function SiteTheme({ active }: { active: boolean }) {
+  const { state } = useThemeBuilder();
+  const config = useMemo(() => toConfig(state), [state]);
 
-  return (
-    <nav className="mb-8 flex flex-wrap gap-x-4 gap-y-1 border-b pb-4 text-sm">
-      {labelled.map((preview) => (
-        <a
-          key={preview.name}
-          href={`#${previewAnchor(preview.label!)}`}
-          className="focus-ring rounded-sm text-foreground-light transition-colors hover:text-foreground"
-        >
-          {preview.label}
-        </a>
-      ))}
-    </nav>
-  );
+  useEffect(() => {
+    if (!active) return;
+    ensureFontLoaded(sansFont(state));
+    ensureFontLoaded(monoFont(state));
+  }, [active, state]);
+
+  return active ? <ThemeStyle tokens={config} /> : null;
 }
 
-function ComponentPage({ id }: { id: string }) {
-  const entry = findComponent(id);
-
-  if (!entry) {
-    return <Navigate to="/" />;
-  }
-
+function CustomThemeNotice() {
+  const { everywhere } = useThemeBuilder();
+  const { path } = useRouter();
+  if (!everywhere || path.split("?")[0] === "/theme") return null;
   return (
-    <div>
-      <PageHeader title={entry.title} description={entry.description} />
-      <PageContents previews={entry.previews} />
-      {entry.previews.map((preview) => (
-        <ComponentPreview key={preview.name} {...preview} />
-      ))}
+    <div className="flex items-center justify-center gap-3 border-b bg-surface-100 px-6 py-1.5 text-xs text-foreground-light">
+      <span>Your theme from the theme builder is applied.</span>
+      <Link to="/theme" className="focus-ring rounded-xs text-foreground underline underline-offset-2">
+        Edit
+      </Link>
+      <button
+        type="button"
+        onClick={() => setApplyEverywhere(false)}
+        className="focus-ring cursor-pointer rounded-xs text-foreground underline underline-offset-2"
+      >
+        Turn off
+      </button>
     </div>
   );
 }
@@ -464,32 +409,78 @@ export function App() {
   const { path } = useRouter();
   const { resolvedTheme } = useTheme();
 
+  // Once the first page is up, quietly fetch the routes people go to next.
+  useEffect(() => {
+    const warm = () => {
+      void loadComponentPage();
+      void loadComponentsIndex();
+      void loadGettingStarted();
+    };
+    if ("requestIdleCallback" in window) {
+      const id = window.requestIdleCallback(warm, { timeout: 4000 });
+      return () => window.cancelIdleCallback(id);
+    }
+    const timer = setTimeout(warm, 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
   // Route change → scroll to top (the router does this on push, but a back/forward
   // navigation also needs it since the popstate handler just swaps the path).
   useEffect(() => {
     window.scrollTo({ top: 0 });
   }, [path]);
 
+  const pathname = path.split("?")[0];
   let page: ReactNode;
-  if (path === "/") {
-    page = <Overview />;
-  } else if (path === "/colors") {
+  let title: string | undefined;
+  if (pathname === "/") {
+    page = <HomePage />;
+  } else if (pathname === "/getting-started") {
+    page = <GettingStartedPage />;
+    title = "Getting started";
+  } else if (pathname === "/theme") {
+    page = <ThemeBuilderPage />;
+    title = "Theme builder";
+  } else if (pathname === "/components") {
+    page = <ComponentsIndexPage />;
+    title = "Components";
+  } else if (pathname === "/colors") {
     page = <ColorsPage />;
-  } else if (path === "/typography") {
+    title = "Colors";
+  } else if (pathname === "/typography") {
     page = <TypographyPage />;
-  } else if (path.startsWith("/components/")) {
-    page = <ComponentPage id={path.slice("/components/".length)} />;
+    title = "Typography";
+  } else if (pathname.startsWith("/components/")) {
+    const id = pathname.slice("/components/".length);
+    page = <ComponentPage id={id} />;
+    title = findComponent(id)?.title;
   } else {
     page = <Navigate to="/" />;
   }
 
+  useEffect(() => {
+    document.title = title ? `${title} — ui` : "ui — React 19 component library";
+  }, [title]);
+
+  // The landing page runs full width; every other page reads next to the sidebar.
+  const isHome = pathname === "/";
+  // Wide pages run without the sidebar.
+  const isWide = isHome || pathname === "/theme";
+  const { everywhere } = useThemeBuilder();
+
   return (
     <div className="min-h-screen bg-studio text-foreground">
+      <SiteTheme active={pathname === "/theme" || everywhere} />
       <Header />
+      <CustomThemeNotice />
       <div className="flex">
-        <Sidebar />
+        {!isWide && <Sidebar />}
         <main className="min-w-0 flex-1 scroll-mt-14 px-6 py-8 outline-hidden md:px-10">
-          <div className="mx-auto max-w-4xl">{page}</div>
+          <div className={isHome ? "mx-auto max-w-6xl" : isWide ? "mx-auto max-w-7xl" : "mx-auto max-w-4xl"}>
+            <PageErrorBoundary resetKey={pathname}>
+              <Suspense fallback={<div className="min-h-[60vh]" />}>{page}</Suspense>
+            </PageErrorBoundary>
+          </div>
         </main>
       </div>
       <SonnerToaster theme={resolvedTheme} />

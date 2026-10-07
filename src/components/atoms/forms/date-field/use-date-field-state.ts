@@ -111,30 +111,36 @@ export function useDateFieldState({
   const [activeIndex, setActiveIndex] = useState(0)
   const freshEntryRef = useRef(true)
   const inputRef = useRef<HTMLInputElement>(null)
-  const lastEmittedRef = useRef<Date | null>(null)
+  // The last date this hook emitted itself, and the date seen on the previous render.
+  const [lastEmitted, setLastEmitted] = useState<Date | null>(null)
+  const [prevDate, setPrevDate] = useState<Date | null>(null)
 
   // Re-derive segment buffers whenever the controlled/uncontrolled date changes from
-  // outside a keystroke we just committed ourselves (guarded by `lastEmittedRef`).
-  useEffect(() => {
-    if (date === lastEmittedRef.current) return
-    lastEmittedRef.current = date
-    if (date) {
-      const d = dayjs(date)
-      setBuffers({
-        day: String(d.date()).padStart(2, '0'),
-        month: String(d.month() + 1).padStart(2, '0'),
-        year: String(d.year()).padStart(4, '0'),
-      })
-      setInvalid(
-        (minDate !== undefined && date < minDate) ||
-          (maxDate !== undefined && date > maxDate) ||
-          (isDateInvalid?.(date) ?? false)
-      )
-    } else {
-      setBuffers(EMPTY_BUFFERS)
-      setInvalid(false)
+  // outside a keystroke we just committed ourselves (guarded by `lastEmitted`). Done
+  // during render (React's "adjust state when a prop changes" pattern) rather than in
+  // an effect, so the field never paints one frame with stale segments.
+  if (date !== prevDate) {
+    setPrevDate(date)
+    if (date !== lastEmitted) {
+      setLastEmitted(date)
+      if (date) {
+        const d = dayjs(date)
+        setBuffers({
+          day: String(d.date()).padStart(2, '0'),
+          month: String(d.month() + 1).padStart(2, '0'),
+          year: String(d.year()).padStart(4, '0'),
+        })
+        setInvalid(
+          (minDate !== undefined && date < minDate) ||
+            (maxDate !== undefined && date > maxDate) ||
+            (isDateInvalid?.(date) ?? false)
+        )
+      } else {
+        setBuffers(EMPTY_BUFFERS)
+        setInvalid(false)
+      }
     }
-  }, [date, minDate, maxDate, isDateInvalid])
+  }
 
   const commit = useCallback(
     (rawNext: Buffers) => {
@@ -154,7 +160,7 @@ export function useDateFieldState({
             return parsed.isValid() ? parsed.toDate() : null
           })()
         : null
-      lastEmittedRef.current = nextDate
+      setLastEmitted(nextDate)
       setDate(nextDate)
       // A date can be well-formed but still outside the allowed range — flagged for
       // display (aria-invalid), never blocked at typing time (matches MUI's own

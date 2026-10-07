@@ -7,12 +7,14 @@ import {
   Controller,
   FormProvider,
   useFormContext,
+  useFormState,
   useWatch,
   type ControllerProps,
   type FieldPath,
   type FieldValues,
 } from 'react-hook-form'
 
+import { DURATION_ENTER, EASE_SOFT_IN_OUT } from '../../../../lib/motion'
 import { cn } from '../../../../lib/utils'
 import type { InputProps } from '../input'
 import { InputGroupInput, InputGroupTextarea } from './input-group'
@@ -46,8 +48,12 @@ const FormField = <
 const useFormField = () => {
   const fieldContext = React.useContext(FormFieldContext)
   const itemContext = React.useContext(FormItemContext)
-  const { getFieldState, formState } = useFormContext()
-
+  const { getFieldState } = useFormContext()
+  // Subscribe through useFormState rather than reading the context's formState proxy:
+  // that proxy only re-renders subscribers it saw being read during render, and once
+  // the React Compiler memoises this hook the read never happens again — errors never
+  // reached FormLabel/FormControl/FormMessage.
+  const formState = useFormState({ name: fieldContext.name })
   const fieldState = getFieldState(fieldContext.name, formState)
 
   if (!fieldContext) {
@@ -60,6 +66,10 @@ const useFormField = () => {
     id,
     name: fieldContext.name,
     formItemId: `${id}-form-item`,
+    // For controls a <label for> can't name (a role="group" of segments, a slider's
+    // thumbs, a combobox button that is not the FormControl's root): point
+    // aria-labelledby here instead.
+    formLabelId: `${id}-form-item-label`,
     formDescriptionId: `${id}-form-item-description`,
     formMessageId: `${id}-form-item-message`,
     ...fieldState,
@@ -92,13 +102,14 @@ const FormLabel = React.forwardRef<
   React.ElementRef<typeof LabelPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> & { enableSelection?: boolean }
 >(({ className, enableSelection = false, htmlFor, ...props }, ref) => {
-  const { error, formItemId } = useFormField()
+  const { error, formItemId, formLabelId } = useFormField()
 
   const Comp = enableSelection ? 'label' : Label
 
   return (
     <Comp
       ref={ref}
+      id={formLabelId}
       className={cn(
         'text-foreground-light text-sm',
         'transition-colors',
@@ -163,7 +174,7 @@ const FormMessage = React.forwardRef<
           initial={{ opacity: 0, y: -5, height: 0 }} // Start slightly hidden
           animate={{ opacity: 1, y: 0, height: 'auto' }} // Fade in and slide up
           exit={{ opacity: 0, y: -5, height: 0 }} // Fade out and slide back up
-          transition={{ duration: 0.15, ease: 'easeInOut' }} // Smooth transition
+          transition={{ duration: DURATION_ENTER, ease: EASE_SOFT_IN_OUT }}
         >
           <p
             ref={ref}

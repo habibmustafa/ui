@@ -30,7 +30,8 @@ function normalizePath(path: string) {
 }
 
 function currentPath() {
-  return normalizePath(window.location.pathname)
+  // Include the query: pages read state from it (e.g. /components?group=forms).
+  return normalizePath(window.location.pathname + window.location.search)
 }
 
 export function RouterProvider({ children }: { children: ReactNode }) {
@@ -57,9 +58,7 @@ export function RouterProvider({ children }: { children: ReactNode }) {
     setPath(next)
   }, [])
 
-  return (
-    <RouterContext.Provider value={{ path, navigate }}>{children}</RouterContext.Provider>
-  )
+  return <RouterContext.Provider value={{ path, navigate }}>{children}</RouterContext.Provider>
 }
 
 export function useRouter() {
@@ -68,21 +67,52 @@ export function useRouter() {
   return ctx
 }
 
+let prefetcher: ((to: string) => void) | null = null
+
+/**
+ * Registers what to warm up when a link is about to be used (hover, focus, touch):
+ * the app passes a function that starts loading the target route's code.
+ */
+export function setPrefetcher(fn: (to: string) => void) {
+  prefetcher = fn
+}
+
 interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   to: string
   replace?: boolean
 }
 
-export function Link({ to, replace, onClick, ...props }: LinkProps) {
+export function Link({
+  to,
+  replace,
+  onClick,
+  onMouseEnter,
+  onFocus,
+  onTouchStart,
+  ...props
+}: LinkProps) {
   const { navigate } = useRouter()
   return (
     <a
       href={to}
+      onMouseEnter={(event) => {
+        prefetcher?.(to)
+        onMouseEnter?.(event)
+      }}
+      onFocus={(event) => {
+        prefetcher?.(to)
+        onFocus?.(event)
+      }}
+      onTouchStart={(event) => {
+        prefetcher?.(to)
+        onTouchStart?.(event)
+      }}
       onClick={(event) => {
         onClick?.(event)
         if (event.defaultPrevented) return
         // Modifier-click keeps the browser's own tab/window behaviour.
-        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0)
+          return
         event.preventDefault()
         navigate(to, { replace })
       }}

@@ -51,14 +51,18 @@ export function getStatusColor(
     case 'warning':
     case 'redirect':
       return {
-        text: 'text-warning',
+        // Warning-tinted text can't reach 4.5:1 on the light warning background;
+        // the background and border carry the colour, the text stays readable.
+        text: 'text-foreground-light',
         bg: 'bg-warning-300',
         border: 'border-warning-500/50',
       }
     case '5':
     case 'error':
       return {
-        text: 'text-destructive',
+        // destructive-600 passes 4.5:1 on destructive-300 in both themes (the
+        // default destructive measured 3.0:1 in dark mode).
+        text: 'text-destructive-600',
         bg: 'bg-destructive-300',
         border: 'border-destructive-500/50',
       }

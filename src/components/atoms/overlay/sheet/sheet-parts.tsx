@@ -39,7 +39,7 @@ const portalVariants = cva('fixed inset-0 z-50 flex', {
 interface SheetPortalProps
   extends SheetPrimitive.DialogPortalProps, VariantProps<typeof portalVariants> {}
 
-const SheetPortal = ({ side, children, ...props }: SheetPortalProps) => (
+const SheetPortal = ({ side: _side, children, ...props }: SheetPortalProps) => (
   <SheetPrimitive.Portal {...props}>{children}</SheetPrimitive.Portal>
 )
 SheetPortal.displayName = SheetPrimitive.Portal.displayName
@@ -47,10 +47,13 @@ SheetPortal.displayName = SheetPrimitive.Portal.displayName
 const SheetOverlay = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Overlay>,
   React.ComponentPropsWithoutRef<typeof SheetPrimitive.Overlay>
->(({ className, children, ...props }, ref) => (
+>(({ className, children: _children, ...props }, ref) => (
   <SheetPrimitive.Overlay
     className={cn(
-      'fixed inset-0 z-50 bg-alternative/90 backdrop-blur-xs transition-all duration-100 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:fade-in',
+      // Fade only: open used to have no animate-in, so the backdrop popped in.
+      // No backdrop-blur: re-blurring the page under the sliding panel every frame
+      // drops the open animation to ~30fps (see lib/modal-backdrop.ts).
+      'fixed inset-0 z-50 bg-alternative/90 data-[state=open]:animate-backdrop-show data-[state=closed]:animate-backdrop-hide',
       className
     )}
     {...props}
@@ -61,7 +64,7 @@ SheetOverlay.displayName = SheetPrimitive.Overlay.displayName
 
 const classes = cn([
   'fixed z-50 scale-100 gap-4 bg-popover opacity-100 shadow-lg',
-  'data-[state=open]:animate-in data-[state=open]:duration-300 data-[state=closed]:animate-out data-[state=closed]:duration-300',
+  'data-[state=open]:animate-in data-[state=open]:duration-300 data-[state=closed]:animate-out data-[state=closed]:duration-200',
 ])
 
 const sheetVariants = cva(classes, {

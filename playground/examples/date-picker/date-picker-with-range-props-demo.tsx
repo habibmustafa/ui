@@ -38,7 +38,7 @@ export default function DatePickerWithRangePropsDemo({
           )
         }
         calendarProps={{
-          initialFocus: true,
+          autoFocus: true,
           mode: 'range',
           defaultMonth: date?.from,
           selected: date,

@@ -1,0 +1,60 @@
+<div>
+<div class="flex w-full max-w-xl flex-col gap-6">
+<ol aria-label="Progress" class="flex w-full items-start" data-orientation="horizontal">
+<li class="relative flex flex-1 flex-col items-center" data-state="completed">
+<span aria-hidden="true" class="absolute transition-colors top-3.5 left-[calc(50%+1.25rem)] right-[calc(-50%+1.25rem)] h-px bg-brand-default">
+</span>
+<button class="group flex rounded-md flex-col items-center cursor-pointer focus-ring hover:opacity-80" type="button">
+<span aria-hidden="true" class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border text-xs font-medium tabular-nums transition-colors border-brand-default bg-brand-default text-background">
+<svg aria-hidden="true" class="lucide lucide-check h-3.5 w-3.5" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" width="24">
+<path d="M20 6 9 17l-5-5">
+</path>
+</svg>
+</span>
+<span class="flex min-w-0 flex-col mt-2 items-center text-center">
+<span class="text-sm text-foreground">Account<span class="sr-only"> (completed)</span>
+</span>
+<span class="mt-0.5 text-xs text-foreground-lighter">Email and password</span>
+</span>
+</button>
+</li>
+<li aria-current="step" class="relative flex flex-1 flex-col items-center" data-state="current">
+<span aria-hidden="true" class="absolute transition-colors top-3.5 left-[calc(50%+1.25rem)] right-[calc(-50%+1.25rem)] h-px bg-border-strong">
+</span>
+<div class="group flex rounded-md flex-col items-center">
+<span aria-hidden="true" class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border text-xs font-medium tabular-nums transition-colors border-brand-default bg-background text-foreground ring-2 ring-brand-default/30">2</span>
+<span class="flex min-w-0 flex-col mt-2 items-center text-center">
+<span class="text-sm text-foreground">Project<span class="sr-only"> (current)</span>
+</span>
+<span class="mt-0.5 text-xs text-foreground-lighter">Name and region</span>
+</span>
+</div>
+</li>
+<li class="relative flex flex-1 flex-col items-center" data-state="upcoming">
+<span aria-hidden="true" class="absolute transition-colors top-3.5 left-[calc(50%+1.25rem)] right-[calc(-50%+1.25rem)] h-px bg-border-strong">
+</span>
+<div class="group flex rounded-md flex-col items-center">
+<span aria-hidden="true" class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border text-xs font-medium tabular-nums transition-colors border-strong bg-surface-100 text-foreground-lighter">3</span>
+<span class="flex min-w-0 flex-col mt-2 items-center text-center">
+<span class="text-sm text-foreground-lighter">Plan<span class="sr-only"> (not started)</span>
+</span>
+<span class="mt-0.5 text-xs text-foreground-lighter">Free or Pro</span>
+</span>
+</div>
+</li>
+<li class="relative flex flex-1 flex-col items-center" data-state="upcoming">
+<div class="group flex rounded-md flex-col items-center">
+<span aria-hidden="true" class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border text-xs font-medium tabular-nums transition-colors border-strong bg-surface-100 text-foreground-lighter">4</span>
+<span class="flex min-w-0 flex-col mt-2 items-center text-center">
+<span class="text-sm text-foreground-lighter">Done<span class="sr-only"> (not started)</span>
+</span>
+</span>
+</div>
+</li>
+</ol>
+<div class="flex justify-center gap-2">
+<button class="relative inline-flex items-center justify-center cursor-pointer space-x-2 text-center font-regular ease-out duration-200 rounded-md transition-[background-color,border-color,color,scale] [&amp;:not([aria-haspopup])]:motion-safe:active:scale-[0.97] focus-ring border text-foreground bg-background dark:bg-card hover:bg-popover border-strong hover:border-control-hover data-[state=open]:bg-popover data-[state=open]:border-control-hover text-xs px-2.5 py-1 h-[26px]" data-size="tiny" tabindex="0" type="button"> <span class="truncate">Back</span> </button>
+<button class="relative inline-flex items-center justify-center cursor-pointer space-x-2 text-center font-regular ease-out duration-200 rounded-md transition-[background-color,border-color,color,scale] [&amp;:not([aria-haspopup])]:motion-safe:active:scale-[0.97] focus-ring border text-foreground bg-background dark:bg-card hover:bg-popover border-strong hover:border-control-hover data-[state=open]:bg-popover data-[state=open]:border-control-hover text-xs px-2.5 py-1 h-[26px]" data-size="tiny" tabindex="0" type="button"> <span class="truncate">Next</span> </button>
+</div>
+</div>
+</div>

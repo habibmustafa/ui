@@ -12,6 +12,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormControl,
   FormMessage,
   Select,
 } from '../../../src'
@@ -19,7 +20,7 @@ import {
 const FormSchema = z.object({
   email: z
     .string({
-      required_error: 'Please select an email to display.',
+      error: 'Please select an email to display.',
     })
     .email(),
 })
@@ -48,16 +49,18 @@ export default function SelectFormPropsDemo() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Email</FormLabel>
-              <Select
-                onValueChange={field.onChange}
-                defaultValue={field.value}
-                placeholder="Select a verified email to display"
-                options={[
-                  { value: 'm@example.com', label: 'm@example.com' },
-                  { value: 'm@google.com', label: 'm@google.com' },
-                  { value: 'm@support.com', label: 'm@support.com' },
-                ]}
-              />
+              <FormControl>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  placeholder="Select a verified email to display"
+                  options={[
+                    { value: 'm@example.com', label: 'm@example.com' },
+                    { value: 'm@google.com', label: 'm@google.com' },
+                    { value: 'm@support.com', label: 'm@support.com' },
+                  ]}
+                />
+              </FormControl>
               <FormDescription>
                 You can manage email addresses in your{' '}
                 <a href="/examples/forms">email settings</a>.

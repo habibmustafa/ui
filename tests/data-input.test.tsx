@@ -2,7 +2,7 @@ import { createRef } from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { expect, test, vi } from 'vitest'
 
-import { DataInput } from '../src/components/fragments/data-input'
+import { DataInput } from '../src/components/atoms/forms/data-input'
 import { copyToClipboard } from '../src/lib/copy-to-clipboard'
 
 vi.mock('../src/lib/copy-to-clipboard', () => ({ copyToClipboard: vi.fn() }))

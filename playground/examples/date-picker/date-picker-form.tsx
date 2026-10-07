@@ -14,7 +14,7 @@ import { Button, Calendar, DatePicker, Form, FormControl, FormDescription, FormF
 
 const FormSchema = z.object({
   dob: z.date({
-    required_error: 'A date of birth is required.',
+    error: 'A date of birth is required.',
   }),
 })
 
@@ -56,7 +56,7 @@ export default function DatePickerForm() {
                     selected={field.value}
                     onSelect={field.onChange}
                     disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
-                    initialFocus
+                    autoFocus
                   />
                 </DatePicker.Content>
               </DatePicker.Root>

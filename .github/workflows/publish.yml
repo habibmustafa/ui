@@ -1,30 +1,48 @@
 name: Publish
 
-# Runs when a GitHub Release is published. Tag/release version must match package.json
-# ("npm publish" refuses a mismatched or already-published version on its own).
+# Runs on every push to main, via Changesets (https://github.com/changesets/changesets):
 #
-# Uses npm Trusted Publishing (OIDC) instead of an NPM_TOKEN secret: npmjs.com is
-# configured (package settings -> Trusted Publisher) to trust this exact repo +
-# workflow file, so there's no long-lived token to leak, rotate, or get the type
-# wrong on. Requires npm CLI >= 11.5.1, hence the explicit upgrade step -- the
-# version bundled with actions/setup-node's node-version is usually older.
+#   - pending .changeset/*.md files  -> opens/updates a "Version Packages" PR that bumps
+#     package.json, writes CHANGELOG.md and deletes the consumed changesets;
+#   - no pending changesets and package.json holds a version that isn't on npm yet
+#     (i.e. that PR was just merged) -> `npm run release`: verify, `npm publish`, then
+#     push the vX.Y.Z tag and create the GitHub Release.
+#
+# Publishing uses npm Trusted Publishing (OIDC), not an NPM_TOKEN secret: npmjs.com is
+# configured (package settings -> Trusted Publisher) to trust this exact repo + workflow
+# file name, so keep the file name `publish.yml`. Requires npm CLI >= 11.5.1, hence the
+# explicit upgrade step -- the npm bundled with setup-node's Node is usually older.
+#
+# Repo setting needed once: Settings -> Actions -> General -> "Allow GitHub Actions to
+# create and approve pull requests", or the Version Packages PR can't be opened.
 on:
-  release:
-    types: [published]
+  push:
+    branches: [main]
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
-  publish:
+  release:
     runs-on: ubuntu-latest
     permissions:
-      id-token: write # required for OIDC trusted publishing + provenance
-      contents: read
+      contents: write # version commit, tags, GitHub Release
+      pull-requests: write # the Version Packages PR
+      id-token: write # OIDC trusted publishing + provenance
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
           registry-url: https://registry.npmjs.org
       - run: npm install -g npm@latest
       - run: npm ci
-      - run: npm run verify
-      - run: npm publish --provenance
+      - uses: changesets/action@v2
+        with:
+          version-script: npm run version-packages
+          publish-script: npm run release
+          commit-message: Version Packages
+          pr-title: Version Packages
+          create-github-releases: true
+        env:
+          NPM_CONFIG_PROVENANCE: true

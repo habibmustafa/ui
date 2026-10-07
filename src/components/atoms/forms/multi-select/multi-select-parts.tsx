@@ -1,0 +1,796 @@
+'use client'
+
+import { cva, type VariantProps } from 'class-variance-authority'
+import { Check, ChevronDown, X as RemoveIcon } from 'lucide-react'
+import React, { Children, useEffect } from 'react'
+
+import { cn } from '../../../../lib/utils'
+import { SIZE, SIZE_VARIANTS, SIZE_VARIANTS_DEFAULT } from '../../../../lib/constants'
+import { Badge } from '../../feedback/badge'
+import {
+  CommandEmpty,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandRoot as Command,
+} from '../../navigation/command'
+import {
+  PopoverAnchor,
+  PopoverContent,
+  PopoverRoot as Popover,
+  type PopoverContentProps,
+} from '../../overlay/popover'
+import { SelectionListState } from './selection-list-state'
+
+interface MultiSelectContextProps {
+  id: string
+  values: string[]
+  onValuesChange: (value: string[]) => void
+  toggleValue: (values: string) => void
+  open: boolean
+  setOpen: (open: boolean) => void
+  inputValue: string
+  setInputValue: React.Dispatch<React.SetStateAction<string>>
+  activeIndex: number
+  setActiveIndex: React.Dispatch<React.SetStateAction<number>>
+  size: MultiSelectorRootProps['size']
+  disabled?: boolean
+  dropdownMaxHeight: number
+}
+
+const MultiSelectContext = React.createContext<MultiSelectContextProps | null>(null)
+
+const DROPDOWN_MAX_HEIGHT = 300
+const DROPDOWN_GAP = 8
+const DROPDOWN_BORDER_HEIGHT = 2
+
+const commandItemClass = cn(
+  'relative text-foreground-light text-left px-2 py-1.5 rounded-xs',
+  'hover:text-foreground hover:!bg-overlay-hover w-full flex items-center space-x-2',
+  'peer-data-[value=true]:bg-overlay-hover'
+)
+
+function useMultiSelect() {
+  const context = React.useContext(MultiSelectContext)
+  if (!context) {
+    throw new Error('useMultiSelect must be used within a MultiSelectProvider')
+  }
+  return context
+}
+
+const MultiSelectorVariants = cva('', {
+  variants: {
+    size: {
+      ...SIZE_VARIANTS,
+    },
+  },
+  defaultVariants: {
+    size: SIZE_VARIANTS_DEFAULT,
+  },
+})
+
+type MultiSelectorMode = 'combobox' | 'inline-combobox'
+
+export type MultiSelectorRootProps = {
+  mode?: MultiSelectorMode
+  values: string[]
+  onValuesChange: (value: string[]) => void
+  onOpenChange?: (open: boolean) => void
+  disabled?: boolean
+} & React.ComponentPropsWithoutRef<typeof Command> &
+  VariantProps<typeof MultiSelectorVariants>
+
+export function MultiSelectorRoot({
+  values = [],
+  onValuesChange,
+  onOpenChange,
+  disabled,
+  dir,
+  size,
+  className,
+  children,
+  id: idProp,
+  ...props
+}: MultiSelectorRootProps) {
+  const ref = React.useRef(null)
+  const [open, setOpenState] = React.useState<boolean>(false)
+  const [inputValue, setInputValue] = React.useState<string>('')
+  const [activeIndex, setActiveIndex] = React.useState<number>(-1)
+  const [dropdownMaxHeight, setDropdownMaxHeight] = React.useState<number>(DROPDOWN_MAX_HEIGHT)
+  const openRef = React.useRef(false)
+  const generatedId = React.useId()
+  const id = idProp ?? generatedId
+
+  const handleOpenChange = React.useCallback(
+    (nextOpen: boolean) => {
+      if (openRef.current === nextOpen) return
+      openRef.current = nextOpen
+      setOpenState(nextOpen)
+      onOpenChange?.(nextOpen)
+    },
+    [onOpenChange]
+  )
+
+  const toggleValue = React.useCallback(
+    (toggledValue: string) => {
+      if (values.includes(toggledValue)) {
+        onValuesChange(values.filter((value) => value !== toggledValue) || [])
+      } else {
+        onValuesChange([...values, toggledValue])
+      }
+    },
+    [onValuesChange, values]
+  )
+
+  useEffect(() => {
+    if (!open) return
+    const controller = new AbortController()
+    const { signal } = controller
+
+    const updateDropdownMetrics = () => {
+      if (typeof window === 'undefined') return
+      const triggerEl = ref.current as HTMLDivElement | null
+      if (!triggerEl) return
+
+      const rect = triggerEl.getBoundingClientRect()
+      const viewportHeight = window.innerHeight
+      const spaceBelow = viewportHeight - rect.bottom - DROPDOWN_GAP
+      const spaceAbove = rect.top - DROPDOWN_GAP
+      const shouldDropUp = spaceBelow < DROPDOWN_MAX_HEIGHT && spaceAbove > spaceBelow
+      const placement = shouldDropUp ? 'top' : 'bottom'
+      const availableSpace = Math.max(placement === 'top' ? spaceAbove : spaceBelow, 0)
+      const nextHeight =
+        availableSpace > 0 ? Math.min(DROPDOWN_MAX_HEIGHT, availableSpace) : DROPDOWN_MAX_HEIGHT
+
+      setDropdownMaxHeight(nextHeight)
+    }
+
+    const handleUpdate = updateDropdownMetrics
+    handleUpdate()
+    window.addEventListener('resize', handleUpdate, { signal })
+    window.addEventListener('scroll', handleUpdate, { capture: true, passive: true, signal })
+
+    return () => controller.abort()
+  }, [open])
+
+  const handleKeyDown = React.useCallback(
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
+      switch (e.key) {
+        case 'Backspace':
+        case 'Delete':
+          if (values.length > 0 && inputValue.length === 0) {
+            if (activeIndex !== -1 && activeIndex < values.length) {
+              onValuesChange(values.filter((item) => item !== values[activeIndex]))
+              const newIndex = activeIndex - 1 < 0 ? 0 : activeIndex - 1
+              setActiveIndex(newIndex)
+            } else {
+              onValuesChange(values.filter((item) => item !== values[values.length - 1]))
+            }
+          }
+          break
+        case 'ArrowLeft':
+          // Pick a chip to remove: ← from the end, then further left.
+          if (values.length > 0 && inputValue.length === 0) {
+            e.preventDefault()
+            setActiveIndex(activeIndex === -1 ? values.length - 1 : Math.max(0, activeIndex - 1))
+          }
+          break
+        case 'ArrowRight':
+          if (activeIndex !== -1 && inputValue.length === 0) {
+            e.preventDefault()
+            setActiveIndex(activeIndex >= values.length - 1 ? -1 : activeIndex + 1)
+          }
+          break
+        case 'Escape':
+          if (activeIndex !== -1) setActiveIndex(-1)
+          else handleOpenChange(false)
+          if (ref.current) {
+            const button = (ref.current as HTMLDivElement).querySelector('button[role="combobox"]')
+            if (button) (button as HTMLButtonElement).focus()
+          }
+          break
+        case 'Enter':
+          handleOpenChange(true)
+          break
+      }
+    },
+    [values, inputValue, activeIndex, handleOpenChange, onValuesChange]
+  )
+
+  return (
+    <MultiSelectContext.Provider
+      value={{
+        id,
+        values,
+        toggleValue,
+        onValuesChange,
+        open,
+        setOpen: handleOpenChange,
+        inputValue,
+        setInputValue,
+        activeIndex,
+        setActiveIndex,
+        size: size || 'small',
+        disabled,
+        dropdownMaxHeight,
+      }}
+    >
+      <Popover open={open} onOpenChange={handleOpenChange}>
+        <Command
+          id={id}
+          ref={ref}
+          onKeyDown={handleKeyDown}
+          className={cn('relative w-auto overflow-visible bg-transparent flex flex-col', className)}
+          dir={dir}
+          {...props}
+        >
+          {children}
+        </Command>
+      </Popover>
+    </MultiSelectContext.Provider>
+  )
+}
+
+export interface MultiSelectorTriggerProps extends React.HTMLAttributes<HTMLButtonElement> {
+  label?: string
+  persistLabel?: boolean
+  className?: string
+  badgeLimit?: number | 'wrap'
+  wrapBadges?: boolean
+  deletableBadge?: boolean
+  showIcon?: boolean
+  mode?: MultiSelectorMode
+  renderValue?: (value: string) => React.ReactNode
+}
+
+// The tiny control has no vertical padding to spare, so its children stretch to the
+// control height and drop their line-height; the larger sizes center normally.
+const asMinHeight = (height: string) => height.replace('h-', 'min-h-')
+
+const MultiSelectorTriggerVariants = cva('', {
+  variants: {
+    size: {
+      tiny: `${SIZE.text.tiny} ${SIZE.height.tiny} p-0.5 items-stretch`,
+      small: `${SIZE.text.small} ${asMinHeight(SIZE.height.small)} p-1.5 items-center`,
+      medium: `${SIZE.text.medium} ${asMinHeight(SIZE.height.medium)} ${SIZE.padding.medium} items-center`,
+      large: `${SIZE.text.large} ${asMinHeight(SIZE.height.large)} ${SIZE.padding.large} items-center`,
+      xlarge: `${SIZE.text.xlarge} ${asMinHeight(SIZE.height.xlarge)} ${SIZE.padding.xlarge} items-center`,
+    },
+  },
+  defaultVariants: {
+    size: SIZE_VARIANTS_DEFAULT,
+  },
+})
+
+const MultiSelectorBadgesVariants = cva('flex overflow-hidden flex-1 min-w-0', {
+  variants: {
+    size: {
+      tiny: 'h-full min-h-0 items-center gap-0.5',
+      small: 'gap-1',
+      medium: 'gap-1',
+      large: 'gap-1',
+      xlarge: 'gap-1',
+    },
+  },
+  defaultVariants: {
+    size: SIZE_VARIANTS_DEFAULT,
+  },
+})
+
+const MultiSelectorBadgeVariants = cva(
+  'rounded-sm shrink-0 px-1.5 bg-surface-75 dark:bg-white/5 normal-case tracking-normal text-xs/none',
+  {
+    variants: {
+      size: {
+        tiny: 'h-full py-0',
+        small: '',
+        medium: '',
+        large: '',
+        xlarge: '',
+      },
+    },
+    defaultVariants: {
+      size: SIZE_VARIANTS_DEFAULT,
+    },
+  }
+)
+
+const MultiSelectorLabelVariants = cva(
+  'text-foreground-muted whitespace-nowrap opacity-0 transition-opacity hidden',
+  {
+    variants: {
+      size: {
+        tiny: 'leading-none',
+        small: 'leading-5',
+        medium: 'leading-5',
+        large: 'leading-5',
+        xlarge: 'leading-5',
+      },
+    },
+    defaultVariants: {
+      size: SIZE_VARIANTS_DEFAULT,
+    },
+  }
+)
+
+const MultiSelectorInlineInputWrapperVariants = cva(
+  '-ml-1 px-0 flex-1 border-none truncate min-w-0',
+  {
+    variants: {
+      size: {
+        tiny: 'h-full',
+        small: '',
+        medium: '',
+        large: '',
+        xlarge: '',
+      },
+    },
+    defaultVariants: {
+      size: SIZE_VARIANTS_DEFAULT,
+    },
+  }
+)
+
+const INLINE_INPUT_CLASSES = 'py-0 px-1 truncate'
+
+const MultiSelectorTrigger = React.forwardRef<HTMLButtonElement, MultiSelectorTriggerProps>(
+  (
+    {
+      label,
+      persistLabel = false,
+      className,
+      deletableBadge = true,
+      badgeLimit = 9999,
+      wrapBadges = false,
+      showIcon = true,
+      mode = 'combobox',
+      renderValue,
+      // The trigger renders its own chips/label; children aren't part of its API.
+      children: _children,
+      ...props
+    },
+    ref
+  ) => {
+    const { id, activeIndex, values, setInputValue, toggleValue, disabled, open, setOpen, size } =
+      useMultiSelect()
+
+    const inputRef = React.useRef<HTMLButtonElement>(null)
+
+    // Use the provided ref if available, otherwise use the local ref
+    React.useImperativeHandle(ref, () => inputRef.current as HTMLButtonElement)
+    const inlineInputRef = React.useRef<HTMLInputElement>(null)
+    const badgesRef = React.useRef<HTMLDivElement>(null)
+
+    const [isDeleteHovered, setIsDeleteHovered] = React.useState(false)
+
+    const SHOULD_WRAP_BADGES = wrapBadges || badgeLimit === 'wrap'
+    const IS_NUMERIC_LIMIT = typeof badgeLimit === 'number'
+    const IS_INLINE_MODE = mode === 'inline-combobox'
+    const HAS_TINY_PLACEHOLDER = size === 'tiny' && values.length === 0
+
+    // Derived during render: no effect + state round-trip, so the chips never lag a
+    // render behind `values`/`badgeLimit`.
+    const visibleBadges = IS_NUMERIC_LIMIT ? values.slice(0, badgeLimit) : values
+    const extraBadgesCount = IS_NUMERIC_LIMIT ? Math.max(0, values.length - badgeLimit) : 0
+
+    const badgeClasses = MultiSelectorBadgeVariants({ size })
+    const showRemoveHint = deletableBadge && values.length > 0 && !disabled
+    const activeValue = activeIndex >= 0 ? values[activeIndex] : undefined
+
+    const handleTriggerClick: React.MouseEventHandler<HTMLButtonElement> = React.useCallback(
+      (event) => {
+        if (IS_INLINE_MODE) {
+          event.stopPropagation()
+          event.preventDefault()
+
+          if (!open) {
+            setInputValue('')
+          }
+
+          setTimeout(() => {
+            inlineInputRef.current?.focus()
+          }, 100)
+
+          return
+        }
+
+        const willOpen = !open
+        setOpen(willOpen)
+        if (willOpen) setInputValue('')
+      },
+      [open, setOpen, setInputValue, IS_INLINE_MODE]
+    )
+
+    return (
+      <>
+        <PopoverAnchor asChild>
+          <button
+            ref={inputRef}
+            onClick={(e) => !isDeleteHovered && handleTriggerClick(e)}
+            disabled={disabled}
+            type="button"
+            role="combobox"
+            // A combobox doesn't take its name from its content (the chips), so the
+            // label has to be given explicitly; consumers can still override it.
+            aria-label={label}
+            aria-haspopup="listbox"
+            aria-expanded={open}
+            aria-controls={open ? getContentId(id) : undefined}
+            className={cn(
+              'flex w-full min-w-50 justify-between rounded-md border',
+              'border-strong',
+              // Empty: raised plate. Filled: sunk well for chips.
+              values.length > 0 ? 'bg-field' : 'bg-control-raised',
+              'placeholder:text-muted-foreground',
+              'ring-border-control focus-ring',
+              'disabled:cursor-not-allowed disabled:opacity-50',
+              'hover:border-control-hover transition-colors duration-200',
+              open && 'border-control-hover',
+              'aria-[invalid=true]:border-destructive-400 aria-[invalid=true]:bg-destructive-200 aria-[invalid=true]:hover:border-destructive',
+              MultiSelectorTriggerVariants({ size }),
+              className
+            )}
+            {...props}
+            // After the spread: a consumer's description is kept *alongside* the hint.
+            aria-describedby={
+              [props['aria-describedby'], showRemoveHint ? getRemoveHintId(id) : null]
+                .filter(Boolean)
+                .join(' ') || undefined
+            }
+          >
+            <div
+              ref={badgesRef}
+              className={cn(
+                MultiSelectorBadgesVariants({ size }),
+                SHOULD_WRAP_BADGES && 'flex-wrap',
+                !SHOULD_WRAP_BADGES &&
+                  'overflow-x-auto scrollbar-thin scrollbar-track-transparent transition-colors scrollbar-thumb-muted-foreground dark:scrollbar-thumb-muted scrollbar-thumb-rounded-lg'
+              )}
+            >
+              {visibleBadges.map((value, index) => (
+                <Badge
+                  key={value}
+                  className={cn(
+                    badgeClasses,
+                    deletableBadge && (size === 'tiny' ? 'pr-px' : 'pr-0.5'),
+                    index === activeIndex && 'ring-1 ring-foreground-light'
+                  )}
+                >
+                  {renderValue?.(value) ?? value}
+                  {deletableBadge && (
+                    // Pointer shortcut only: a <button> can't nest inside the trigger
+                    // button, so keyboard/screen-reader removal goes through ← → and
+                    // Backspace (described via aria-describedby) and this stays hidden.
+                    <div
+                      aria-hidden="true"
+                      onMouseEnter={() => setIsDeleteHovered(true)}
+                      onMouseLeave={() => setIsDeleteHovered(false)}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        toggleValue(value)
+                        setIsDeleteHovered(false)
+                      }}
+                      className="ml-1 p-0.5 rounded-xs cursor-pointer text-foreground-lighter hover:text-foreground-light hover:bg-surface-400 transition-colors pointer-events-auto"
+                    >
+                      <RemoveIcon size={12} />
+                    </div>
+                  )}
+                </Badge>
+              ))}
+              {extraBadgesCount > 0 && (
+                <Badge className={badgeClasses}>
+                  {IS_NUMERIC_LIMIT && badgeLimit < 1
+                    ? `${extraBadgesCount} item${extraBadgesCount > 1 ? 's' : ''} selected`
+                    : `+${extraBadgesCount}`}
+                </Badge>
+              )}
+              <span
+                className={cn(
+                  MultiSelectorLabelVariants({ size }),
+                  HAS_TINY_PLACEHOLDER && 'ml-2',
+                  !IS_INLINE_MODE &&
+                    (persistLabel || values.length === 0) &&
+                    'opacity-100 visible inline'
+                )}
+              >
+                {label}
+              </span>
+              {IS_INLINE_MODE && (
+                <MultiSelectorInput
+                  ref={inlineInputRef}
+                  showSearchIcon={false}
+                  onValueChange={activeIndex === -1 ? setInputValue : undefined}
+                  placeholder={values.length === 0 ? label : undefined}
+                  autoFocus={false}
+                  wrapperClassName={cn(
+                    MultiSelectorInlineInputWrapperVariants({ size }),
+                    SHOULD_WRAP_BADGES && 'min-w-21.25'
+                  )}
+                  className={cn(INLINE_INPUT_CLASSES, HAS_TINY_PLACEHOLDER && 'pl-3')}
+                />
+              )}
+            </div>
+
+            {showIcon && (
+              <ChevronDown
+                aria-hidden="true"
+                size={16}
+                strokeWidth={1.5}
+                className="text-foreground-lighter shrink-0 ml-1.5 self-center"
+              />
+            )}
+          </button>
+        </PopoverAnchor>
+        {showRemoveHint && (
+          <span id={getRemoveHintId(id)} className="sr-only">
+            Use left and right arrow keys to pick a selected item, then Backspace to remove it.
+          </span>
+        )}
+        <span aria-live="polite" className="sr-only">
+          {activeValue !== undefined ? `${activeValue} picked; press Backspace to remove` : ''}
+        </span>
+      </>
+    )
+  }
+)
+
+MultiSelectorTrigger.displayName = 'MultiSelectorTrigger'
+
+const MultiSelectorInputVariants = cva('', {
+  variants: {
+    size: {
+      ...SIZE_VARIANTS,
+    },
+  },
+  defaultVariants: {
+    size: SIZE_VARIANTS_DEFAULT,
+  },
+})
+
+const getInputId = (id: string) => `${id}-input`
+const getContentId = (id: string) => `${id}-content`
+const getRemoveHintId = (id: string) => `${id}-remove-hint`
+
+const MultiSelectorInput = React.forwardRef<
+  React.ElementRef<typeof CommandInput>,
+  React.ComponentPropsWithoutRef<typeof CommandInput> & {
+    showResetIcon?: boolean
+    showSearchIcon?: boolean
+    wrapperClassName?: string
+  }
+>(({ className, wrapperClassName, showResetIcon, showSearchIcon, ...props }, ref) => {
+  const {
+    id,
+    open,
+    setOpen,
+    inputValue,
+    setInputValue,
+    activeIndex,
+    setActiveIndex,
+    size,
+    disabled,
+  } = useMultiSelect()
+  const inputRef = React.useRef<HTMLInputElement>(null)
+
+  // Use the provided ref if available, otherwise use the local ref
+  React.useImperativeHandle(ref, () => inputRef.current as HTMLInputElement)
+
+  const handleFocus = () => !open && setOpen(true)
+  const handleClick = () => setActiveIndex(-1)
+  const handleReset = () => {
+    setInputValue('')
+    setInputFocus()
+  }
+
+  const setInputFocus = () => {
+    setTimeout(() => {
+      if (!inputRef?.current) return
+      if (open) {
+        inputRef.current.focus()
+      }
+    }, 100)
+  }
+
+  useEffect(() => {
+    if (!open) {
+      inputRef.current?.blur()
+      return
+    }
+    // Focus once the popover has rendered.
+    const timer = setTimeout(() => inputRef.current?.focus(), 100)
+    return () => clearTimeout(timer)
+  }, [open])
+
+  return (
+    <CommandInput
+      ref={inputRef}
+      value={inputValue}
+      onValueChange={activeIndex === -1 ? setInputValue : undefined}
+      onFocus={handleFocus}
+      onClick={handleClick}
+      tabIndex={open ? 0 : -1}
+      disabled={disabled}
+      showSearchIcon={showSearchIcon}
+      showResetIcon={showResetIcon}
+      handleReset={handleReset}
+      wrapperClassName={wrapperClassName}
+      className={cn(
+        MultiSelectorInputVariants({ size }),
+        'bg-transparent h-full grow border-none outline-hidden placeholder:text-foreground-muted flex-1',
+        activeIndex !== -1 && 'caret-transparent',
+        className
+      )}
+      // Can't use id as CommandInput overrides it
+      data-id={getInputId(id)}
+      {...props}
+    />
+  )
+})
+
+MultiSelectorInput.displayName = 'MultiSelectorInput'
+
+const MultiSelectorContent = React.forwardRef<HTMLDivElement, PopoverContentProps>(
+  ({ className, children, ...props }, ref) => {
+    const { id } = useMultiSelect()
+    return (
+      <PopoverContent
+        id={getContentId(id)}
+        align="start"
+        collisionPadding={DROPDOWN_GAP}
+        ref={ref}
+        sideOffset={DROPDOWN_GAP}
+        className={cn(
+          'bg-overlay shadow-md z-50 border rounded-md p-0',
+          'w-(--radix-popper-anchor-width)',
+          className
+        )}
+        onFocusOutside={(event) => {
+          if (event.target instanceof HTMLElement && event.target.dataset.id === getInputId(id)) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+        }}
+        sameWidthAsTrigger
+        {...props}
+      >
+        {children}
+      </PopoverContent>
+    )
+  }
+)
+
+MultiSelectorContent.displayName = 'MultiSelectorContent'
+
+const MultiSelectorList = React.forwardRef<
+  React.ElementRef<typeof CommandList>,
+  React.ComponentPropsWithoutRef<typeof CommandList> & {
+    creatable?: boolean
+    emptyLabel?: string
+    error?: boolean
+    errorLabel?: string
+    loading?: boolean
+  }
+>(
+  (
+    {
+      className,
+      children,
+      creatable = false,
+      emptyLabel = 'No results found',
+      error = false,
+      errorLabel,
+      loading = false,
+      ...props
+    },
+    ref
+  ) => {
+    const { open, inputValue, setInputValue, toggleValue, dropdownMaxHeight } = useMultiSelect()
+
+    const options = Children.toArray(children)
+    const availableOptions = options
+      .filter((x: any) => !!x.props.value)
+      .map((x: any) => x.props.value.toLowerCase())
+    const isOptionExists = availableOptions.some((x: string) => x === inputValue.toLowerCase())
+
+    return (
+      <CommandList
+        ref={ref}
+        className={cn(
+          'p-1 flex flex-col scrollbar-thin scrollbar-track-transparent transition-colors',
+          'scrollbar-thumb-muted-foreground dark:scrollbar-thumb-muted',
+          'scrollbar-thumb-rounded-lg w-full overflow-y-auto',
+          className
+        )}
+        style={{
+          maxHeight: `min(${dropdownMaxHeight}px, calc(var(--radix-popover-content-available-height) - ${DROPDOWN_BORDER_HEIGHT}px))`,
+        }}
+        {...props}
+      >
+        <SelectionListState
+          isLoading={loading}
+          isError={error}
+          isEmpty={!loading && !error && options.length === 0 && !creatable}
+          emptyLabel={emptyLabel}
+          errorLabel={errorLabel}
+          skeletonVariant="multi-select"
+        />
+        {!loading && !error && (options.length > 0 || creatable) && (
+          <>
+            {children}
+            {creatable && inputValue.length > 0 && !isOptionExists ? (
+              <CommandItem
+                role="option"
+                onSelect={() => {
+                  if (open) toggleValue(inputValue)
+                  setInputValue('')
+                }}
+                className={commandItemClass}
+              >
+                Create "{inputValue}"
+              </CommandItem>
+            ) : creatable && options.length === 0 ? (
+              <div className="p-2 py-1.5 text-xs text-foreground-lighter font-italic">
+                Type to add a value
+              </div>
+            ) : (
+              <CommandEmpty>
+                <span className="text-foreground-muted">{emptyLabel}</span>
+              </CommandEmpty>
+            )}
+          </>
+        )}
+      </CommandList>
+    )
+  }
+)
+
+MultiSelectorList.displayName = 'MultiSelectorList'
+
+const MultiSelectorItem = React.forwardRef<
+  HTMLDivElement,
+  { value: string } & React.ComponentPropsWithoutRef<typeof CommandItem>
+>(({ className, value, children, ...props }, ref) => {
+  const { values: selectedValues, setInputValue, toggleValue, open } = useMultiSelect()
+  const isSelected = selectedValues.includes(value)
+
+  return (
+    <CommandItem
+      ref={ref}
+      tabIndex={open ? 0 : -1}
+      role="option"
+      onSelect={() => {
+        if (open) toggleValue(value)
+        setInputValue('')
+      }}
+      className={cn(commandItemClass, className)}
+      {...props}
+    >
+      <div
+        className={cn(
+          'flex items-center justify-center',
+          'peer h-4 w-4 shrink-0 rounded-sm border border-control bg-control/25 ring-offset-background',
+          'transition-colors duration-150 ease-in-out',
+          'hover:border-strong',
+          'focus-ring',
+          'disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-foreground data-[state=checked]:text-background-overlay',
+          isSelected ? 'bg-foreground text-background-overlay' : '[&_svg]:invisible'
+        )}
+      >
+        <Check className="h-3 w-3" strokeWidth={4} />
+      </div>
+      <div className="text-sm grow leading-none pointer-events-none cursor-pointer peer-disabled:cursor-not-allowed peer-disabled:pointer-events-none peer-disabled:opacity-50">
+        {children}
+      </div>
+    </CommandItem>
+  )
+})
+
+MultiSelectorItem.displayName = 'MultiSelectorItem'
+
+export {
+  MultiSelectorContent,
+  MultiSelectorInput,
+  MultiSelectorItem,
+  MultiSelectorList,
+  MultiSelectorTrigger,
+}
