@@ -49,7 +49,7 @@ change as a `.changeset/*.md` file, these files accumulate, and then a single
     (`npm run version-packages`: `package.json` version, `CHANGELOG.md`,
     `package-lock.json`, consumed changeset files are deleted).
   - If there are no pending files and the version in `package.json` is not yet on npm (i.e.
-    that PR was just merged) → `npm run release`: `npm run verify` +
+    that PR was just merged) → `npm run release`: the same checks as `npm run verify`, minus `check:tokens`, +
     `changeset publish` (`npm publish --provenance`), then the `vX.Y.Z` tag and GitHub
     Release are created.
 
@@ -148,7 +148,7 @@ npx wrangler deploy --dry-run  # check only, does not deploy
 | File | Trigger | What it does |
 |---|---|---|
 | `.github/workflows/ci.yml` | every `push` (main) and every PR | `build:lib`, `lint`, `check:classes`, `check:api`, `test`, `build:playground` — all must pass. `check:api` verifies that the playground's API tables (`playground/generated/api.ts`) are in sync with the types; when you change a component's props, run `npm run api:generate` and commit the result. `check:tokens` is a separate job; because it depends on the network, it does not block the PR even if it fails (`continue-on-error: true`). |
-| `.github/workflows/publish.yml` | every `push` (main) | Changesets: if there is a pending changeset, opens/updates the "Version Packages" PR; if not, and the version is not on npm, `npm run verify` + `changeset publish` + tag + GitHub Release. |
+| `.github/workflows/publish.yml` | every `push` (main) | Changesets: if there is a pending changeset, opens/updates the "Version Packages" PR; if not, and the version is not on npm, `npm run release` (the `verify` checks without `check:tokens`, which compares against an external site and so can't gate a release) + `changeset publish` + tag + GitHub Release. |
 | Cloudflare Workers Builds | every push (main) | Reads from `wrangler.toml`, builds the playground and deploys it. This is NOT part of GitHub Actions — it is Cloudflare's own system, connected to the repo. |
 
 **Node version: 22** (both in CI and in `package.json`'s `engines`).
