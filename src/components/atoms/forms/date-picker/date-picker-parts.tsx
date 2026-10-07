@@ -1,6 +1,7 @@
 import { CalendarIcon, X } from 'lucide-react'
 import type { ComponentProps } from 'react'
 
+import { fieldIconButtonClass, fieldIconClass, fieldIconStrokeWidth } from '../../../../lib/field-icon-button'
 import { cn } from '../../../../lib/utils'
 import { Button } from '../../actions/button'
 import { DateField } from '../date-field'
@@ -82,27 +83,25 @@ export const DatePickerField = ({
           {...props}
         />
         {value && (
-          <Button
+          <button
             type="button"
-            variant="text"
-            size="tiny"
-            icon={<X className="h-3.5 w-3.5" />}
             disabled={disabled}
             aria-label="Clear date"
             onClick={() => onChange?.(null)}
-            className="absolute right-8 top-1/2 h-6 w-6 -translate-y-1/2 p-0"
-          />
+            className={cn(fieldIconButtonClass, 'absolute right-8 top-1/2 -translate-y-1/2')}
+          >
+            <X aria-hidden="true" className={fieldIconClass} strokeWidth={fieldIconStrokeWidth} />
+          </button>
         )}
         <PopoverTrigger asChild>
-          <Button
+          <button
             type="button"
-            variant="text"
-            size="tiny"
-            icon={DatePickerIcon}
             disabled={disabled}
             aria-label="Open calendar"
-            className="absolute right-1 top-1/2 h-6 w-6 -translate-y-1/2 p-0"
-          />
+            className={cn(fieldIconButtonClass, 'absolute right-1 top-1/2 -translate-y-1/2')}
+          >
+            <CalendarIcon aria-hidden="true" className={fieldIconClass} strokeWidth={fieldIconStrokeWidth} />
+          </button>
         </PopoverTrigger>
       </div>
     </PopoverAnchor>

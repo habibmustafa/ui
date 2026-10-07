@@ -7,6 +7,7 @@ import { InputVariants } from '../input'
 import { PopoverAnchor, PopoverContent, PopoverRoot, PopoverTrigger } from '../../overlay/popover'
 import { ClockFace, type ClockView } from './time-picker-clock'
 import { useControllableState } from '../../../../lib/use-controllable-state'
+import { fieldIconButtonClass, fieldIconClass, fieldIconStrokeWidth } from '../../../../lib/field-icon-button'
 import { cn } from '../../../../lib/utils'
 
 /*
@@ -332,9 +333,11 @@ export function TimePicker({
             type="button"
             aria-label="Choose time"
             disabled={disabled}
-            className="-mr-1 ml-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-sm text-foreground-lighter transition-colors hover:text-foreground focus-ring disabled:pointer-events-none"
+            // The field has 1px border + 12px padding, so -9px puts the button 4px from the
+            // edge, where the date field's calendar button sits.
+            className={cn(fieldIconButtonClass, '-mr-[9px] ml-1')}
           >
-            <Clock aria-hidden="true" className="h-4 w-4" strokeWidth={1.5} />
+            <Clock aria-hidden="true" className={fieldIconClass} strokeWidth={fieldIconStrokeWidth} />
           </button>
         </PopoverTrigger>
       ) : (
