@@ -1,14 +1,49 @@
 'use client'
 
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { DayPicker } from 'react-day-picker'
+import { DayPicker, type DateLib, type Modifiers } from 'react-day-picker'
 
 import { cn } from '../../../../lib/utils'
 import { buttonVariants } from '../../actions/button/shadcn-button'
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>
 
-function Calendar({ className, classNames, showOutsideDays = true, ...props }: CalendarProps) {
+const escapeRegExp = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+
+/**
+ * Day-button names that contain the day as shown (WCAG 2.5.3 "label in name"). The
+ * default `PPPP` format writes "September 7th" in English, so the visible "7" isn't in
+ * the name as a word and voice-control users can't say "click 7". Locales whose full
+ * date already contains the plain number keep their own format.
+ */
+function createDayButtonLabel(
+  formatDay?: (date: Date, options?: DateLib['options'], dateLib?: DateLib) => string
+) {
+  return (date: Date, modifiers: Modifiers, _options?: DateLib['options'], dateLib?: DateLib) => {
+    if (!dateLib) return date.toDateString()
+    const visible = formatDay
+      ? formatDay(date, dateLib.options, dateLib)
+      : dateLib.format(date, 'd')
+    const full = dateLib.format(date, 'PPPP')
+    let label = new RegExp(
+      `(^|[^\\p{L}\\p{N}])${escapeRegExp(visible)}([^\\p{L}\\p{N}]|$)`,
+      'u'
+    ).test(full)
+      ? full
+      : `${dateLib.format(date, 'EEEE')}, ${dateLib.format(date, 'MMMM')} ${visible}, ${dateLib.format(date, 'yyyy')}`
+    if (modifiers.today) label = `Today, ${label}`
+    if (modifiers.selected) label = `${label}, selected`
+    return label
+  }
+}
+
+function Calendar({
+  className,
+  classNames,
+  showOutsideDays = true,
+  labels,
+  ...props
+}: CalendarProps) {
   const fullDateRangeSelected =
     props.mode === 'range' && !!props.selected?.from && !!props.selected?.to
 
@@ -39,6 +74,10 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
+      labels={{
+        labelDayButton: createDayButtonLabel(props.formatters?.formatDay),
+        ...labels,
+      }}
       className={cn('p-3', className)}
       classNames={{
         months: cn(
