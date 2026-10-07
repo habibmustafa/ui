@@ -144,3 +144,14 @@ test('Kbd renders <kbd> keys inside a group', () => {
   const keys = container.querySelectorAll('kbd > kbd')
   expect([...keys].map((k) => k.textContent)).toEqual(['⌘', 'K'])
 })
+
+test('Slider puts aria-valuetext / -describedby / -invalid on the thumb, not the root', () => {
+  render(
+    <Slider defaultValue={[30]} aria-label="Tint" aria-valuetext="30%" aria-describedby="hint" aria-invalid />
+  )
+  const thumb = screen.getByRole('slider', { name: 'Tint' })
+  expect(thumb.getAttribute('aria-valuetext')).toBe('30%')
+  expect(thumb.getAttribute('aria-describedby')).toBe('hint')
+  expect(thumb.getAttribute('aria-invalid')).toBe('true')
+  expect(document.querySelector('span[aria-valuetext]:not([role="slider"])')).toBeNull()
+})

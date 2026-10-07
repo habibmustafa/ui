@@ -100,6 +100,7 @@ export * from './components/fragments/glass-panel'
 export * from './components/fragments/row'
 
 export * from './providers'
+export * from './theme'
 
 export { cn } from './lib/utils'
 export type { ClassValue } from './lib/utils'

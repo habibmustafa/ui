@@ -39,6 +39,11 @@ const NOT_CLASSES = new Set([
   'aria-label',
   'aria-label=',
   'aria-labelledby',
+  'aria-valuetext',
+  // Theme builder preview: an anchor id and Recharts fill values, not classes.
+  'theme-preview',
+  'var(--color-actual)',
+  'var(--color-plan)',
   // DataTable demo: a `"<column>:<direction>"` sort string, not a variant-prefixed class.
   'name:asc',
   // PasswordInput: autocomplete tokens, not classes.
