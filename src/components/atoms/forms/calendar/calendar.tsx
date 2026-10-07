@@ -42,6 +42,7 @@ function Calendar({
   classNames,
   showOutsideDays = true,
   labels,
+  animate = true,
   ...props
 }: CalendarProps) {
   const fullDateRangeSelected =
@@ -74,6 +75,7 @@ function Calendar({
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
+      animate={animate}
       labels={{
         labelDayButton: createDayButtonLabel(props.formatters?.formatDay),
         ...labels,
@@ -147,6 +149,17 @@ function Calendar({
           range_end
         ),
         hidden: cn('invisible', hidden),
+        // Month navigation (react-day-picker `animate`): a short slide + cross-fade of the
+        // weeks and a caption fade, defined in styles/motion.css. DayPicker skips it while
+        // a day has keyboard focus, so arrow-key navigation across months stays instant.
+        weeks_before_enter: 'calendar-weeks-before-enter',
+        weeks_after_enter: 'calendar-weeks-after-enter',
+        weeks_before_exit: 'calendar-weeks-before-exit',
+        weeks_after_exit: 'calendar-weeks-after-exit',
+        caption_before_enter: 'calendar-caption-enter',
+        caption_after_enter: 'calendar-caption-enter',
+        caption_before_exit: 'calendar-caption-exit',
+        caption_after_exit: 'calendar-caption-exit',
         ...restClassNames,
       }}
       components={{

@@ -1,0 +1,139 @@
+/*
+ * Motion system: one set of easings/durations for every enter/exit and transition in
+ * the library, tuned to feel soft rather than snappy.
+ *
+ * - Enters decelerate (fast start, long gentle settle); exits are shorter and accelerate
+ *   away, so closing never feels like it lingers.
+ * - Movement is small: overlays travel a few px and scale from ~97%, not 95% / 8px.
+ * - Everything here is a *default*: it lives in @layer base behind :where(), so any
+ *   explicit duration-* / ease-* utility on a component still wins.
+ * - prefers-reduced-motion keeps the fades but drops movement and scale.
+ */
+
+@theme {
+  /* Decelerating "settle" curve for things appearing / moving into place. */
+  --ease-soft-out: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Gentle accelerate-away for things leaving. */
+  --ease-soft-in: cubic-bezier(0.4, 0, 0.7, 0.2);
+  /* Symmetric curve for state changes that go both ways (height, position). */
+  --ease-soft-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --duration-enter: 220ms;
+  --duration-exit: 150ms;
+
+  /* Every transition-* utility without its own duration/ease (hover colours, switch
+     thumb, tab indicator, …) uses these instead of Tailwind's 150ms ease-in-out. */
+  --default-transition-duration: 200ms;
+  --default-transition-timing-function: var(--ease-soft-out);
+
+  /* Modal backdrops: a plain fade (the dialog panel does its own scale). */
+  --animate-backdrop-show: backdrop-show var(--duration-enter) var(--ease-soft-out) both;
+  --animate-backdrop-hide: backdrop-hide var(--duration-exit) var(--ease-soft-in) both;
+}
+
+@keyframes backdrop-show {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes backdrop-hide {
+  to {
+    opacity: 0;
+  }
+}
+
+@layer base {
+  /* tw-animate-css enter/exit (popover, menus, select, tooltip, dialog panel, …):
+     its keyframes read --tw-duration / --tw-ease, defaulting to 150ms `ease`. */
+  :where([class*='animate-in']) {
+    --tw-duration: var(--duration-enter);
+    --tw-ease: var(--ease-soft-out);
+  }
+  :where(
+      [class*='animate-out'][data-state='closed'],
+      [class*='animate-out'][data-state='hidden'],
+      [class*='animate-out'][data-closed]
+    ) {
+    --tw-duration: var(--duration-exit);
+    --tw-ease: var(--ease-soft-in);
+  }
+}
+
+/* Calendar month navigation (react-day-picker `animate`): the weeks slide a short way
+   and cross-fade instead of sliding a full width; the caption fades. */
+@keyframes calendar-weeks-in-from-left {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+}
+@keyframes calendar-weeks-in-from-right {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+}
+@keyframes calendar-weeks-out-to-left {
+  to {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+}
+@keyframes calendar-weeks-out-to-right {
+  to {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+}
+@keyframes calendar-caption-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes calendar-caption-out {
+  to {
+    opacity: 0;
+  }
+}
+
+.calendar-weeks-before-enter {
+  animation: calendar-weeks-in-from-left 260ms var(--ease-soft-out) both;
+}
+.calendar-weeks-after-enter {
+  animation: calendar-weeks-in-from-right 260ms var(--ease-soft-out) both;
+}
+.calendar-weeks-before-exit {
+  animation: calendar-weeks-out-to-left 200ms var(--ease-soft-in) both;
+}
+.calendar-weeks-after-exit {
+  animation: calendar-weeks-out-to-right 200ms var(--ease-soft-in) both;
+}
+.calendar-caption-enter {
+  animation: calendar-caption-in 260ms var(--ease-soft-out) both;
+}
+.calendar-caption-exit {
+  animation: calendar-caption-out 200ms var(--ease-soft-in) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Keep opacity changes (they carry meaning, e.g. something appeared) but remove
+     travel and scale, and shorten everything. */
+  :where(*, ::before, ::after) {
+    --tw-enter-translate-x: 0 !important;
+    --tw-enter-translate-y: 0 !important;
+    --tw-exit-translate-x: 0 !important;
+    --tw-exit-translate-y: 0 !important;
+    --tw-enter-scale: 1 !important;
+    --tw-exit-scale: 1 !important;
+    --tw-duration: 120ms !important;
+  }
+  .calendar-weeks-before-enter,
+  .calendar-weeks-after-enter {
+    animation-name: calendar-caption-in;
+  }
+  .calendar-weeks-before-exit,
+  .calendar-weeks-after-exit {
+    animation-name: calendar-caption-out;
+  }
+}

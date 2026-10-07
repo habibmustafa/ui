@@ -14,6 +14,7 @@ import {
   type FieldValues,
 } from 'react-hook-form'
 
+import { DURATION_ENTER, EASE_SOFT_IN_OUT } from '../../../../lib/motion'
 import { cn } from '../../../../lib/utils'
 import type { InputProps } from '../input'
 import { InputGroupInput, InputGroupTextarea } from './input-group'
@@ -168,7 +169,7 @@ const FormMessage = React.forwardRef<
           initial={{ opacity: 0, y: -5, height: 0 }} // Start slightly hidden
           animate={{ opacity: 1, y: 0, height: 'auto' }} // Fade in and slide up
           exit={{ opacity: 0, y: -5, height: 0 }} // Fade out and slide back up
-          transition={{ duration: 0.15, ease: 'easeInOut' }} // Smooth transition
+          transition={{ duration: DURATION_ENTER, ease: EASE_SOFT_IN_OUT }}
         >
           <p
             ref={ref}

@@ -53,7 +53,9 @@ const DialogOverlay = React.forwardRef<
     ref={ref}
     className={cn(
       'bg-black/40 backdrop-blur-xs',
-      'z-50 fixed inset-0 grid place-items-center overflow-y-auto data-closed:animate-overlay-hide py-8',
+      'z-50 fixed inset-0 grid place-items-center overflow-y-auto py-8',
+      // Backdrop fades in and out; it used to appear instantly and slide up on close.
+      'data-open:animate-backdrop-show data-closed:animate-backdrop-hide',
       !centered && 'flex flex-col flex-start pb-8 sm:pt-12 md:pt-20 lg:pt-32 xl:pt-40 px-5',
       className
     )}
@@ -66,9 +68,9 @@ const DialogContentVariants = cva(
   cn(
     'relative z-50 w-full max-w-screen border shadow-md dark:shadow-xs',
     'data-[state=open]:animate-in data-[state=closed]:animate-out',
-    'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
-    'data-[state=closed]:slide-out-to-left-[0%] data-[state=closed]:slide-out-to-top-[0%]',
-    'data-[state=open]:slide-in-from-left-[0%] data-[state=open]:slide-in-from-top-[0%]',
+    // Rises a few px and settles from 97% while fading in; leaves faster than it came.
+    'data-[state=open]:fade-in-0 data-[state=open]:zoom-in-97 data-[state=open]:slide-in-from-bottom-2',
+    'data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-97',
     'sm:rounded-lg md:w-full',
     'bg-dash-sidebar'
   ),
