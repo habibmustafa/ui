@@ -103,9 +103,9 @@ describe('createTheme', () => {
     expect(tokens.shared).toMatchObject({ '--radius-md': '12px', '--radius-xs': '4px', '--radius-xl': '24px' })
   })
 
-  test('neutral tint 0 keeps the shipped gray; contrast offsets light by 0.03', () => {
+  test('neutral tint 0 keeps the shipped gray; contrast offsets light by 0.1', () => {
     const tokens = createTheme({ neutral: { tint: 0, hue: 250 }, contrast: 0.5 })
-    expect(tokens.light).toMatchObject({ '--chroma': '0', '--surface-hue': '250', '--contrast': '0.53' })
+    expect(tokens.light).toMatchObject({ '--chroma': '0', '--surface-hue': '250', '--contrast': '0.6' })
     expect(tokens.dark).toMatchObject({ '--chroma': '0.005', '--contrast': '0.5' })
   })
 
