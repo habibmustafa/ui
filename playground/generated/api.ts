@@ -2406,6 +2406,12 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "default": "small"
           },
           {
+            "name": "clock",
+            "type": "boolean",
+            "default": "true",
+            "description": "Show the clock button that opens an analog clock picker."
+          },
+          {
             "name": "className",
             "type": "string"
           }
