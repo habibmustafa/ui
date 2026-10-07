@@ -42,16 +42,19 @@ const loadHome = () => import("./pages/home");
 const loadGettingStarted = () => import("./pages/getting-started");
 const loadComponentsIndex = () => import("./pages/components-index");
 const loadThemeBuilder = () => import("./pages/theme-builder");
+const loadBlocks = () => import("./pages/blocks");
 const HomePage = lazy(loadHome);
 const GettingStartedPage = lazy(loadGettingStarted);
 const ComponentsIndexPage = lazy(loadComponentsIndex);
 const ThemeBuilderPage = lazy(loadThemeBuilder);
+const BlocksPage = lazy(loadBlocks);
 
 const ROUTE_LOADERS: Record<string, () => Promise<unknown>> = {
   "/": loadHome,
   "/getting-started": loadGettingStarted,
   "/components": loadComponentsIndex,
   "/theme": loadThemeBuilder,
+  "/blocks": loadBlocks,
 };
 
 /**
@@ -270,7 +273,7 @@ function Header() {
         </div>
 
         <nav aria-label="Main" className="ml-4 hidden items-center gap-5 md:flex">
-          {PAGES.slice(1, 4).map((page) => (
+          {PAGES.slice(1, 5).map((page) => (
             <Link
               key={page.to}
               to={page.to}
@@ -369,7 +372,8 @@ function TypographyPage() {
 
 /**
  * The theme builder's tokens, rendered with the library's own <ThemeStyle>: always on
- * /theme, and on every page once "apply everywhere" is switched on.
+ * /theme, on the landing page (whose hero edits them) and on /blocks, and on every page
+ * once "apply everywhere" is switched on.
  */
 function SiteTheme({ active }: { active: boolean }) {
   const { state } = useThemeBuilder();
@@ -444,6 +448,9 @@ export function App() {
   } else if (pathname === "/components") {
     page = <ComponentsIndexPage />;
     title = "Components";
+  } else if (pathname === "/blocks") {
+    page = <BlocksPage />;
+    title = "Blocks";
   } else if (pathname === "/colors") {
     page = <ColorsPage />;
     title = "Colors";
@@ -465,18 +472,18 @@ export function App() {
   // The landing page runs full width; every other page reads next to the sidebar.
   const isHome = pathname === "/";
   // Wide pages run without the sidebar.
-  const isWide = isHome || pathname === "/theme";
+  const isWide = isHome || pathname === "/theme" || pathname === "/blocks";
   const { everywhere } = useThemeBuilder();
 
   return (
     <div className="min-h-screen bg-studio text-foreground">
-      <SiteTheme active={pathname === "/theme" || everywhere} />
+      <SiteTheme active={pathname === "/" || pathname === "/theme" || pathname === "/blocks" || everywhere} />
       <Header />
       <CustomThemeNotice />
       <div className="flex">
         {!isWide && <Sidebar />}
         <main className="min-w-0 flex-1 scroll-mt-14 px-6 py-8 outline-hidden md:px-10">
-          <div className={isHome ? "mx-auto max-w-6xl" : isWide ? "mx-auto max-w-7xl" : "mx-auto max-w-4xl"}>
+          <div className={isHome || pathname === "/blocks" ? "mx-auto max-w-6xl" : isWide ? "mx-auto max-w-7xl" : "mx-auto max-w-4xl"}>
             <PageErrorBoundary resetKey={pathname}>
               <Suspense fallback={<div className="min-h-[60vh]" />}>{page}</Suspense>
             </PageErrorBoundary>

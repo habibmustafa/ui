@@ -112,14 +112,14 @@ export interface ComponentGroup {
   entries: ComponentEntry[]
 }
 
-/* ui-specific additions — not part of the upstream Supabase design system. */
+/* Layout primitives: ours, not part of the upstream Supabase design system. */
 const layoutPrimitives: ComponentEntry[] = [
   {
     id: 'box',
     title: 'Box',
     icon: Box,
     description:
-      'ui-specific primitive: one component that renders any element via `as`, merged through cn().',
+      'Renders any element you choose with `as`, and merges class names for you.',
     previews: [
       { name: 'box-demo' },
     ],
@@ -129,7 +129,7 @@ const layoutPrimitives: ComponentEntry[] = [
     title: 'Container',
     icon: Frame,
     description:
-      'ui-specific primitive: centred, bounded page-width wrapper (sm/md/lg/full).',
+      'Centres content and limits it to a page width: sm, md, lg or full.',
     previews: [
       { name: 'container-demo' },
     ],
@@ -139,7 +139,7 @@ const layoutPrimitives: ComponentEntry[] = [
     title: 'Flex',
     icon: Columns3,
     description:
-      'ui-specific primitive: flex container with direction, align, justify, wrap and token gaps.',
+      'Flex container with direction, alignment, wrapping and token-based gaps.',
     previews: [
       { name: 'flex-demo' },
     ],
@@ -149,7 +149,7 @@ const layoutPrimitives: ComponentEntry[] = [
     title: 'Grid',
     icon: LayoutGrid,
     description:
-      'ui-specific primitive: CSS grid with columns, rows, flow and independent axis gaps.',
+      'CSS grid with columns, rows, flow and separate row and column gaps.',
     previews: [
       { name: 'grid-demo' },
     ],
@@ -159,7 +159,7 @@ const layoutPrimitives: ComponentEntry[] = [
     title: 'Stack',
     icon: Rows3,
     description:
-      'ui-specific primitive: the opinionated 1-dimensional preset of Flex — vertical by default, always gapped.',
+      'Lays children out in one direction with even spacing; vertical by default.',
     previews: [
       { name: 'stack-demo' },
     ],
@@ -431,7 +431,7 @@ const atoms: ComponentEntry[] = [
     title: 'Checkbox',
     icon: CheckSquare,
     description:
-      'Sunk control surface that inverts to the foreground colour when checked.',
+      'Checkbox that fills with the foreground colour when checked.',
     previews: [
       { name: 'checkbox-demo', label: 'Default' },
       { name: 'checkbox-disabled', label: 'Disabled' },
@@ -554,7 +554,7 @@ const atoms: ComponentEntry[] = [
     title: 'Date Field',
     icon: CalendarDays,
     description:
-      "ui-specific: a single typeable date input with MUI-style segments (day/month/year), not a port. Type digits, use arrow up/down to step a segment, arrow left/right to move between segments, backspace to clear, or paste a full date; optional minDate/maxDate mark aria-invalid without blocking typing. Standalone here — DatePicker composes it with a calendar popover.",
+      'Type a date by day, month and year, step each part with the arrow keys, or paste a full date. minDate and maxDate mark the field invalid without blocking typing. DatePicker adds a calendar popover on top.',
     previews: [{ name: 'date-field-demo' }],
   },
   {
@@ -767,7 +767,7 @@ const atoms: ComponentEntry[] = [
     title: 'Input',
     icon: TextCursorInput,
     description:
-      'Sunk field surface with the shared size scale and an aria-invalid state; optional prefix/suffix (ui-specific) glue an icon or short label inside the same border.',
+      'Single-line text field with a shared size scale and an invalid state. Optional prefix and suffix place an icon or short label inside the border.',
     previews: [
       { name: 'input-sizes', label: 'Sizes' },
       { name: 'input-states', label: 'States' },
@@ -1590,7 +1590,7 @@ const fragments: ComponentEntry[] = [
     title: 'Form Fields',
     icon: FileText,
     description:
-      "ui-specific: terser react-hook-form + zod fields (FormInput/FormSelect/FormCheckbox/FormSwitch/FormRadioGroup/FormTextarea/FormDatePicker, plus FormNumberInput/FormPasswordInput/FormCombobox/FormMultiSelect/FormDateField/FormDateRangePicker/FormRating/FormTimePicker/FormSlider/FormToggleGroup/FormInputOTP/FormFileUpload) — each wraps the FormField/FormItem/FormLabel/FormControl/FormMessage ceremony behind a single `name`, so a field is one line instead of a whole render-prop tree. Every field is labelled, marked invalid, focused on a failed submit and touched on blur.",
+      'Short react-hook-form fields: one line per field (FormInput, FormSelect, FormCheckbox, FormDatePicker, FormDateRangePicker, FormRating and more) instead of the whole label, control and message tree. Every field is labelled, marked invalid, focused on a failed submit and touched on blur.',
     previews: [{ name: 'form-fields-demo' }, { name: 'form-fields-advanced-demo' }],
   },
   {

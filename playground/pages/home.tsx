@@ -1,13 +1,12 @@
-import { ArrowRight, BookOpen } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 
-import { Button, Dialog, Tabs, THEME_PRESETS } from '../../src'
+import { Button, Dialog, Tabs, THEME_PRESETS, cn } from '../../src'
 import { version } from '../../package.json'
-import { CATALOG, COMPONENT_COUNT } from '../catalog'
+import { CATALOG } from '../catalog'
 import { CodeSnippet } from '../code-snippet'
-import { GithubIcon } from '../icons'
-import { InstallCommand } from '../install-command'
 import { Link } from '../router'
 import { fromConfig, stateToQuery } from '../theme-store'
+import { DISPLAY, Hero } from './home-hero'
 import { Showcase } from './home-showcase'
 
 const GITHUB_URL = 'https://github.com/habibmustafa/ui'
@@ -42,54 +41,9 @@ const COMPOUND_CODE = `<Dialog.Root>
 function SectionHeading({ title, description }: { title: string; description: string }) {
   return (
     <div className="mb-6 max-w-2xl">
-      <h2 className="text-2xl tracking-tight text-foreground">{title}</h2>
+      <h2 className={cn('text-2xl font-semibold text-foreground', DISPLAY)}>{title}</h2>
       <p className="mt-2 text-foreground-light">{description}</p>
     </div>
-  )
-}
-
-function Hero() {
-  return (
-    <section className="relative isolate pt-6 pb-14 sm:pt-12">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(oklch(from_var(--foreground-default)_l_c_h_/_0.05)_1px,transparent_1px)] bg-size-[18px_18px] mask-[radial-gradient(ellipse_60%_60%_at_50%_30%,#000_40%,transparent_100%)]"
-      />
-      <a
-        href={`${GITHUB_URL}/blob/main/CHANGELOG.md`}
-        target="_blank"
-        rel="noreferrer"
-        className="focus-ring inline-flex items-center gap-2 rounded-full border bg-surface-100 px-3 py-1 text-xs text-foreground-light transition-colors hover:border-foreground-muted hover:text-foreground"
-      >
-        <span className="h-1.5 w-1.5 rounded-full bg-brand-default" aria-hidden="true" />
-        v{version} — changelog
-        <ArrowRight className="h-3 w-3" aria-hidden="true" />
-      </a>
-      <h1 className="mt-5 max-w-3xl text-4xl leading-tight tracking-tight text-foreground sm:text-5xl">
-        Accessible, ready-made components for React 19
-      </h1>
-      <p className="mt-4 max-w-2xl text-lg text-foreground-light">
-        {COMPONENT_COUNT} components built on Radix and Tailwind CSS v4. Every one works with a
-        keyboard and a screen reader, supports light and dark themes, and form fields connect to
-        react-hook-form in a single line.
-      </p>
-      <div className="mt-8 flex flex-col gap-6 lg:flex-row lg:items-end">
-        <InstallCommand packages="@habibmustafa/ui" className="w-full max-w-md" />
-        <div className="flex flex-wrap gap-2">
-          <Button asChild variant="primary" size="medium" iconRight={<ArrowRight />}>
-            <Link to="/getting-started">Get started</Link>
-          </Button>
-          <Button asChild variant="default" size="medium" icon={<BookOpen />}>
-            <Link to="/components">Components</Link>
-          </Button>
-          <Button asChild variant="text" size="medium" icon={<GithubIcon />}>
-            <a href={GITHUB_URL} target="_blank" rel="noreferrer">
-              GitHub
-            </a>
-          </Button>
-        </div>
-      </div>
-    </section>
   )
 }
 
@@ -100,7 +54,7 @@ function HybridApi() {
         title="One component, two ways to write it"
         description="Common components are a single element driven by props. When you need your own layout, the same component splits into parts. Both open the same dialog."
       />
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)]">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)]">
         <div className="flex min-h-48 flex-col items-center justify-center gap-3 rounded-md border bg-surface-75 p-8">
           <Dialog
             trigger={<Button variant="danger">Delete project</Button>}

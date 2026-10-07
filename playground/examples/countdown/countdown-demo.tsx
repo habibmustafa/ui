@@ -12,7 +12,7 @@ export default function CountdownDemo() {
 
   return (
     <div className="flex flex-wrap gap-10">
-      <Countdown title="Sale ends in" value={sale} format="D [days] HH:mm:ss" />
+      <Countdown title="Sale ends in" value={sale} format="D[d] HH:mm:ss" />
       <Countdown
         title={done ? 'Offer expired' : 'Offer ends in'}
         value={offer}

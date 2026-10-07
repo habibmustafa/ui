@@ -46,7 +46,7 @@ const sourceLoaders = byBasename(
 )
 
 const lazyDemos = new Map<string, LazyExoticComponent<ComponentType>>()
-function getDemo(name: string) {
+export function getDemo(name: string) {
   let Demo = lazyDemos.get(name)
   if (!Demo) {
     Demo = lazy(demoLoaders[name] as () => Promise<{ default: ComponentType }>)
@@ -104,7 +104,7 @@ export interface ComponentPreviewCodeVariant {
  * screen keeps navigation and first paint fast. Without IntersectionObserver (tests,
  * old browsers) everything renders immediately.
  */
-function useNearViewport(): [(element: HTMLElement | null) => void, boolean] {
+export function useNearViewport(): [(element: HTMLElement | null) => void, boolean] {
   const [near, setNear] = useState(() => typeof IntersectionObserver === 'undefined')
   const observer = useRef<IntersectionObserver | null>(null)
   const ref = useCallback(
