@@ -8,7 +8,9 @@ import { useControllableState } from '../../../../lib/use-controllable-state'
 import { cn } from '../../../../lib/utils'
 
 /*
- * A numeric field built on Input's suffix slot: the value is typed freely and committed
+ * A numeric field built on Input's suffix slot: only number characters can be typed or
+ * pasted (digits, one leading "-" when `min` allows negatives, and in `decimal` mode one
+ * "." or "," with at most `decimalPlaces` digits after it). The value is committed
  * (parsed, clamped, rounded to `step`'s precision) on blur or Enter, while the − / +
  * buttons and the keyboard (↑/↓, PageUp/PageDown, Home/End) change it immediately.
  * The <input> carries role="spinbutton" with aria-valuenow/-min/-max; the buttons are
@@ -25,6 +27,16 @@ export interface NumberInputProps
   onValueChange?: (value: number | null) => void
   min?: number
   max?: number
+  /**
+   * `numeric`: whole numbers only. `decimal`: allows a fractional part (`.` or `,`).
+   * @default "decimal" when `step` or `min` has decimals, otherwise "numeric"
+   */
+  mode?: 'numeric' | 'decimal'
+  /**
+   * Max digits after the separator in `decimal` mode; typing more is blocked and values
+   * are rounded to it. @default step's decimals, at least 2
+   */
+  decimalPlaces?: number
   /** @default 1 */
   step?: number
   /** Step for PageUp/PageDown and Shift+↑/↓. @default step * 10 */
@@ -55,6 +67,8 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
       min = Number.NEGATIVE_INFINITY,
       max = Number.POSITIVE_INFINITY,
       step = 1,
+      mode: modeProp,
+      decimalPlaces,
       largeStep = step * 10,
       format,
       hideControls = false,
@@ -65,6 +79,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
       readOnly,
       className,
       onBlur,
+      onFocus,
       onKeyDown,
       ...props
     },
@@ -75,7 +90,36 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
       defaultValue,
       onChange: onValueChange,
     })
-    const precision = Math.max(decimals(step), min === Number.NEGATIVE_INFINITY ? 0 : decimals(min))
+    const stepPrecision = Math.max(
+      decimals(step),
+      min === Number.NEGATIVE_INFINITY ? 0 : decimals(min)
+    )
+    const mode = modeProp ?? (stepPrecision > 0 ? 'decimal' : 'numeric')
+    const precision = mode === 'numeric' ? 0 : (decimalPlaces ?? Math.max(stepPrecision, 2))
+    const allowNegative = min < 0
+
+    // Keeps only what a number in this mode can contain, so letters (and a second "." or
+    // "-") never reach the field — whether typed, pasted or dropped.
+    const sanitize = (text: string) => {
+      let out = ''
+      let separator = false
+      let fraction = 0
+      for (const char of text) {
+        if (/\d/.test(char)) {
+          if (separator) {
+            if (fraction >= precision) continue
+            fraction += 1
+          }
+          out += char
+        } else if (char === '-' && allowNegative && out === '') {
+          out = '-'
+        } else if ((char === '.' || char === ',') && precision > 0 && !separator) {
+          separator = true
+          out += '.'
+        }
+      }
+      return out
+    }
     const display = React.useCallback(
       (v: number | null) => (v === null ? '' : format ? format(v) : String(v)),
       [format]
@@ -98,8 +142,10 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
     }
 
     const parse = (text: string) => {
-      const cleaned = text.replace(/[^\d.,\-+eE]/g, '').replace(',', '.')
-      if (cleaned.trim() === '') return null
+      // Untouched formatted text ("1,000.00") is the committed value, not something to parse.
+      if (text === display(value)) return value
+      const cleaned = sanitize(text)
+      if (cleaned === '' || cleaned === '-') return null
       const n = Number(cleaned)
       return Number.isFinite(n) ? n : value
     }
@@ -120,7 +166,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
       <Input
         ref={ref}
         type="text"
-        inputMode={precision > 0 || min < 0 ? 'decimal' : 'numeric'}
+        inputMode={mode === 'decimal' || allowNegative ? 'decimal' : 'numeric'}
         role="spinbutton"
         aria-valuenow={value ?? undefined}
         aria-valuemin={Number.isFinite(min) ? min : undefined}
@@ -130,7 +176,13 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
         disabled={disabled}
         readOnly={readOnly}
         value={draft}
-        onChange={(event) => setDraft(event.target.value)}
+        onChange={(event) => setDraft(sanitize(event.target.value))}
+        onFocus={(event) => {
+          // Edit the plain number, not its formatted text (a "$" or thousands separator
+          // would be stripped as soon as the user typed).
+          if (format && value !== null && draft === display(value)) setDraft(String(value))
+          onFocus?.(event)
+        }}
         onBlur={(event) => {
           commit(parse(draft))
           onBlur?.(event)

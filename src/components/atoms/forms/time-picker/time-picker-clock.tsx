@@ -16,11 +16,14 @@ import { cn } from '../../../../lib/utils'
 
 export type ClockView = 'hours' | 'minutes' | 'seconds'
 
-const SIZE = 232
+// Compact dial (MUI's is 220px): fits a small popover next to a form field.
+const SIZE = 200
 const CENTER = SIZE / 2
-const OUTER_RADIUS = 92
-const INNER_RADIUS = 60
-const LABEL_SIZE = 32
+const OUTER_RADIUS = 80
+const INNER_RADIUS = 52
+const LABEL_SIZE = 28
+// The 24-hour inner ring is tighter (12 labels on a smaller circle).
+const INNER_LABEL_SIZE = 24
 
 const pad = (n: number) => String(n).padStart(2, '0')
 
@@ -201,20 +204,21 @@ export function ClockFace({ view, value, ampm, step, onChange, disabled }: Clock
         const { x, y } = polar(angleOf(v), radiusOf(v))
         const selected = v === value
         const inner = radiusOf(v) === INNER_RADIUS
+        const size = inner ? INNER_LABEL_SIZE : LABEL_SIZE
         return (
           <span
             key={v}
             aria-hidden="true"
             className={cn(
               'absolute flex items-center justify-center rounded-full tabular-nums transition-colors duration-200',
-              inner ? 'text-xs text-foreground-light' : 'text-sm text-foreground',
+              inner ? 'text-[11px] text-foreground-light' : 'text-[13px] text-foreground',
               selected && 'bg-brand-default font-medium text-black'
             )}
             style={{
-              width: LABEL_SIZE,
-              height: LABEL_SIZE,
-              left: x - LABEL_SIZE / 2,
-              top: y - LABEL_SIZE / 2,
+              width: size,
+              height: size,
+              left: x - size / 2,
+              top: y - size / 2,
             }}
           >
             {text}

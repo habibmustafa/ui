@@ -1704,6 +1704,18 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "default": "Number.POSITIVE_INFINITY"
           },
           {
+            "name": "mode",
+            "type": "\"decimal\" | \"numeric\"",
+            "default": "\"decimal\" when `step` or `min` has decimals, otherwise \"numeric\"",
+            "description": "`numeric`: whole numbers only. `decimal`: allows a fractional part (`.` or `,`)."
+          },
+          {
+            "name": "decimalPlaces",
+            "type": "number",
+            "default": "step's decimals, at least 2",
+            "description": "Max digits after the separator in `decimal` mode; typing more is blocked and values\nare rounded to it."
+          },
+          {
             "name": "step",
             "type": "number",
             "default": "1"
@@ -8197,6 +8209,18 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "name": "format",
             "type": "((value: number) => string)",
             "description": "Formats the committed value for display, e.g. `(v) => v.toFixed(2)`."
+          },
+          {
+            "name": "mode",
+            "type": "\"decimal\" | \"numeric\"",
+            "default": "\"decimal\" when `step` or `min` has decimals, otherwise \"numeric\"",
+            "description": "`numeric`: whole numbers only. `decimal`: allows a fractional part (`.` or `,`)."
+          },
+          {
+            "name": "decimalPlaces",
+            "type": "number",
+            "default": "step's decimals, at least 2",
+            "description": "Max digits after the separator in `decimal` mode; typing more is blocked and values\nare rounded to it."
           },
           {
             "name": "largeStep",
