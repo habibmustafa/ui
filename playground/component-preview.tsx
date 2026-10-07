@@ -1,8 +1,7 @@
-import { Check, Copy } from 'lucide-react'
 import { Suspense, lazy, useEffect, useState, type ComponentType, type LazyExoticComponent } from 'react'
 
 import { Tabs } from '../src'
-import { getHighlighter } from './shiki-highlighter'
+import { CodeSnippet } from './code-snippet'
 
 // Examples live one folder per component (./examples/<component>/<name>.tsx), so the
 // glob is recursive; call sites still address a demo by its bare file name.
@@ -46,42 +45,21 @@ function presentSource(source: string) {
   return source.replace(/(['"])(?:\.\.\/)+src\1/g, "'@habibmustafa/ui'").trim()
 }
 
-function useHighlightedSource(name: string) {
-  const [state, setState] = useState<{ source: string; html: string } | null>(null)
+function CodeTab({ name }: { name: string }) {
+  const [source, setSource] = useState<string | null>(null)
 
   useEffect(() => {
     let active = true
-    setState(null)
-
-    const loadSource = sourceLoaders[name]
-    if (!loadSource) return
-
-    Promise.all([loadSource(), getHighlighter()]).then(([raw, highlighter]) => {
-      if (!active) return
-      const source = presentSource(raw)
-      setState({ source, html: highlighter.codeToHtml(source, { lang: 'tsx', theme: 'ui' }) })
+    setSource(null)
+    sourceLoaders[name]?.().then((raw) => {
+      if (active) setSource(presentSource(raw))
     })
-
     return () => {
       active = false
     }
   }, [name])
 
-  return state
-}
-
-function CodeTab({ name }: { name: string }) {
-  const state = useHighlightedSource(name)
-
-  return (
-    <div className="relative w-full overflow-hidden rounded-md border bg-surface-75/75">
-      <CopyButton value={state?.source ?? ''} />
-      <div
-        className="code-content max-h-[650px] overflow-x-auto px-4 py-4 font-mono text-sm [&_pre]:my-0 [&_pre]:bg-transparent!"
-        dangerouslySetInnerHTML={{ __html: state?.html ?? '' }}
-      />
-    </div>
-  )
+  return <CodeSnippet code={source ?? ''} />
 }
 
 function PreviewPane({ Demo }: { Demo: ComponentType }) {
@@ -94,29 +72,6 @@ function PreviewPane({ Demo }: { Demo: ComponentType }) {
         </div>
       </div>
     </div>
-  )
-}
-
-function CopyButton({ value }: { value: string }) {
-  const [copied, setCopied] = useState(false)
-
-  useEffect(() => {
-    if (!copied) return
-    const timer = setTimeout(() => setCopied(false), 1500)
-    return () => clearTimeout(timer)
-  }, [copied])
-
-  return (
-    <button
-      type="button"
-      aria-label="Copy code"
-      onClick={() => {
-        navigator.clipboard.writeText(value).then(() => setCopied(true))
-      }}
-      className="focus-ring absolute right-2 top-2 z-10 inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded border border-border bg-surface-100 text-foreground-lighter transition-colors hover:text-foreground"
-    >
-      {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
-    </button>
   )
 }
 

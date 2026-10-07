@@ -26,8 +26,9 @@ npm i @habibmustafa/ui
 - **Hibrid API** — seçilmiş komponentlər tək `props` ilə, ya da Radix tərzi
   `Component.Root`/`Component.Part` compound yazılışı ilə işlədilə bilər. Hansı komponentin
   hibrid olduğu və niyə: [docs/hybrid-api-migration.md](docs/hybrid-api-migration.md).
-- **Tək dəyişənlə rebrand** — bütün rəng palitri (~700 OKLCH dəyəri) iki giriş dəyişənindən
-  (`--hue`, `--chroma`) törəyir; brendi dəyişmək üçün komponent kodu ilə işləməyə ehtiyac yoxdur.
+- **Dəyişənlərlə tema** — semantik rənglər (fon, mətn, sərhəd, `primary`) OKLCH-də bir neçə giriş
+  dəyişənindən (`--primary-hue`, `--surface-hue`, `--chroma`) törəyir; tonu dəyişmək üçün
+  komponent kodu ilə işləməyə ehtiyac yoxdur.
 - **Açıq/tünd/sistem tema** — `ThemeProvider` seçimi `localStorage`-a yazır və
   `prefers-color-scheme` dəyişikliyini canlı izləyir.
 - **Tree-shakeable** — build hər modulu ayrıca fayl kimi çıxarır; tək `Button` import etmək
@@ -97,14 +98,21 @@ const { theme, resolvedTheme, setTheme } = useTheme()
 Öz tema idarəetməniz varsa, `ThemeProvider` işlətmədən eyni iki atributu özünüz təyin edə
 bilərsiniz.
 
-Rəng palitrini dəyişmək üçün CSS-i yenidən yazmaq lazım deyil — giriş dəyişənlərini override edin:
+Semantik rəngləri dəyişmək üçün CSS-i yenidən yazmaq lazım deyil — `styles.css`-dən sonra
+yüklənən faylda giriş dəyişənlərini override edin:
 
 ```css
-:root {
-  --hue: 250;      /* neytral + brend rənglərin əsas tonu */
-  --chroma: 0.02;  /* doyğunluq */
+:root, .light, .dark {
+  --primary-hue: 250;  /* primary: keçidlər, primary mətn və fonlar */
+  --surface-hue: 250;  /* fon, mətn və sərhədlərin çaları */
 }
+.light { --chroma: 0.008; } /* neytralların doyğunluğu; açıq temada standart 0-dır (tam boz) */
+.dark  { --chroma: 0.03; }
 ```
+
+Düymələrin və vurğuların yaşıl brend şkalası (`--brand-default`, `--brand-200` … `--brand-600`)
+hər tema üçün ayrıca HSL dəyərləridir və bu dəyişənlərdən törəmir. Brend rəngini dəyişmək üçün
+həmin dəyişənləri də override edin (dəyərlər `H S% L%` formatındadır).
 
 ## Layihə strukturu
 
@@ -132,6 +140,7 @@ src/components/
 
 ## Sənədlər
 
+- [Başlanğıc bələdçisi](https://ui.habibmustafa.me/getting-started): quraşdırmadan işləyən formaya qədər
 - [Hibrid API](docs/hybrid-api-migration.md)
 - [Versiya tarixçəsi](CHANGELOG.md)
 - [Üçüncü tərəf mənbə və lisenziya qeydləri](THIRD-PARTY-NOTICES.md)

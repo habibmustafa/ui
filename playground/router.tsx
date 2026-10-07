@@ -30,7 +30,8 @@ function normalizePath(path: string) {
 }
 
 function currentPath() {
-  return normalizePath(window.location.pathname)
+  // Include the query: pages read state from it (e.g. /components?group=forms).
+  return normalizePath(window.location.pathname + window.location.search)
 }
 
 export function RouterProvider({ children }: { children: ReactNode }) {
