@@ -29,7 +29,8 @@
 // - code-block-demo, error-display-*, status-code-demo: contrast fixes — darker light-theme
 //   syntax colours, neutral text on warning backgrounds, destructive-600 status text.
 // - calendar-*: day buttons are named "Monday, September 7, 2026" (the visible number as
-//   a word) instead of react-day-picker's "…September 7th, 2026" (WCAG 2.5.3).
+//   a word) instead of react-day-picker's "…September 7th, 2026" (WCAG 2.5.3); outside
+//   days lost `opacity-50` (contrast 2.1:1 -> 5.4:1).
 // - chart-*, metric-card-*, drawer-*.open: Recharts 3's ResponsiveContainer adds an inner
 //   sizing <div> (jsdom never measures a size, so no chart SVG renders here either way).
 import { render, waitFor } from "@testing-library/react";
