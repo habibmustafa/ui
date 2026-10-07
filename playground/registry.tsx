@@ -724,10 +724,11 @@ const atoms: ComponentEntry[] = [
     title: 'Number Input',
     icon: Hash,
     description:
-      'Numeric spinbutton with − / + buttons, min/max/step clamping, ↑/↓, PageUp/PageDown and Home/End.',
+      'Numeric spinbutton with − / + buttons, min/max/step clamping, ↑/↓, PageUp/PageDown and Home/End. `mode="numeric"` takes whole numbers, `mode="decimal"` a fractional part; anything that is not part of a number (letters, a second separator) is never let into the field.',
     previews: [
       { name: 'number-input-demo', label: 'Default' },
       { name: 'number-input-formatted', label: 'Formatting & states' },
+      { name: 'number-input-modes', label: 'Numeric & decimal' },
     ],
   },
   {

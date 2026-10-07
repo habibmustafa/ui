@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { expect, test, vi } from 'vitest'
+import { describe, expect, test, vi } from 'vitest'
 
 import { NumberInput } from '../src/components/atoms/forms/number-input'
 import { Stepper } from '../src/components/atoms/navigation/stepper'
@@ -155,4 +155,71 @@ test('Stepper onStepClick makes only completed steps clickable', async () => {
   expect(buttons).toHaveLength(2)
   await user.click(buttons[0])
   expect(onStepClick).toHaveBeenCalledWith(0)
+})
+
+describe('NumberInput modes', () => {
+  test('numeric: letters, separators and a "-" without negative min are dropped', async () => {
+    const user = userEvent.setup()
+    const onValueChange = vi.fn()
+    render(<NumberInput aria-label="Qty" min={0} onValueChange={onValueChange} />)
+    const input = screen.getByRole('spinbutton', { name: 'Qty' }) as HTMLInputElement
+    expect(input.getAttribute('inputmode')).toBe('numeric')
+    await user.type(input, '-1a2.5e3')
+    expect(input.value).toBe('1253')
+    await user.tab()
+    expect(onValueChange).toHaveBeenLastCalledWith(1253)
+  })
+
+  test('numeric with a negative min keeps one leading "-"', async () => {
+    const user = userEvent.setup()
+    render(<NumberInput aria-label="Offset" min={-10} />)
+    const input = screen.getByRole('spinbutton', { name: 'Offset' }) as HTMLInputElement
+    await user.type(input, '5-')
+    expect(input.value).toBe('5')
+    await user.clear(input)
+    await user.type(input, '-5-')
+    expect(input.value).toBe('-5')
+  })
+
+  test('decimal: one separator (comma becomes a dot), limited decimal places', async () => {
+    const user = userEvent.setup()
+    const onValueChange = vi.fn()
+    render(
+      <NumberInput aria-label="Weight" mode="decimal" decimalPlaces={2} onValueChange={onValueChange} />
+    )
+    const input = screen.getByRole('spinbutton', { name: 'Weight' }) as HTMLInputElement
+    expect(input.getAttribute('inputmode')).toBe('decimal')
+    await user.type(input, '3,1x41.5')
+    expect(input.value).toBe('3.14')
+    await user.tab()
+    expect(onValueChange).toHaveBeenLastCalledWith(3.14)
+  })
+
+  test('decimal is the default when step has decimals; pasted text is cleaned', async () => {
+    const user = userEvent.setup()
+    render(<NumberInput aria-label="Rate" step={0.5} />)
+    const input = screen.getByRole('spinbutton', { name: 'Rate' }) as HTMLInputElement
+    input.focus()
+    await user.paste('abc 12.75 kg')
+    expect(input.value).toBe('12.75')
+  })
+
+  test('a formatted value is edited as the plain number', async () => {
+    const user = userEvent.setup()
+    render(
+      <NumberInput
+        aria-label="Amount"
+        defaultValue={1234.5}
+        step={0.01}
+        format={(v) => v.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+      />
+    )
+    const input = screen.getByRole('spinbutton', { name: 'Amount' }) as HTMLInputElement
+    expect(input.value).toBe('1,234.50')
+    await user.click(input)
+    expect(input.value).toBe('1234.5')
+    await user.tab()
+    expect(input.value).toBe('1,234.50')
+    expect(input.getAttribute('aria-valuenow')).toBe('1234.5')
+  })
 })

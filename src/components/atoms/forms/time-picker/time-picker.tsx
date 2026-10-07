@@ -366,26 +366,26 @@ export function TimePicker({
         ref={clockContentRef}
         align="end"
         aria-label="Choose time"
-        className="w-auto p-3 font-sans"
+        className="w-auto p-2.5 font-sans"
         onOpenAutoFocus={(event) => {
           // Land on the dial, not the first header button.
           event.preventDefault()
           clockPanelRef.current?.querySelector<HTMLElement>('[role="slider"]')?.focus()
         }}
       >
-        <div className="mb-3 flex items-center justify-center gap-1">
+        <div className="mb-2 flex items-center justify-center gap-0.5">
           {clockViews.map((view, index) => {
             const shown = getShown(view)
             return (
               <React.Fragment key={view}>
-                {index > 0 && <span className="text-3xl text-foreground-muted">:</span>}
+                {index > 0 && <span className="text-2xl text-foreground-muted">:</span>}
                 <button
                   type="button"
                   aria-label={`Edit ${view}`}
                   aria-pressed={clockView === view}
                   onClick={() => setClockView(view)}
                   className={cn(
-                    'rounded-md px-1.5 text-3xl tabular-nums transition-colors focus-ring',
+                    'rounded-md px-1 text-2xl tabular-nums transition-colors focus-ring',
                     clockView === view
                       ? 'bg-brand-200 text-foreground'
                       : 'text-foreground-light hover:text-foreground'
