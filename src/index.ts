@@ -3,6 +3,7 @@ import './styles/globals.css'
 // Atom components
 
 export * from './components/atoms/actions/button'
+export * from './components/atoms/actions/copy-button'
 export * from './components/atoms/actions/toggle'
 export * from './components/atoms/actions/toggle-group'
 
@@ -15,9 +16,11 @@ export * from './components/atoms/data-display/table'
 
 export * from './components/atoms/feedback/alert'
 export * from './components/atoms/feedback/badge'
+export * from './components/atoms/feedback/banner'
 export * from './components/atoms/feedback/progress'
 export * from './components/atoms/feedback/skeleton'
 export * from './components/atoms/feedback/sonner'
+export * from './components/atoms/feedback/spinner'
 
 export * from './components/atoms/forms/calendar'
 export * from './components/atoms/forms/checkbox'
@@ -42,6 +45,7 @@ export * from './components/atoms/layout/floating-plate'
 export * from './components/atoms/layout/grid'
 export * from './components/atoms/layout/layout-types'
 export * from './components/atoms/layout/resizable'
+export * from './components/atoms/layout/scroll-area'
 export * from './components/atoms/layout/separator'
 export * from './components/atoms/layout/stack'
 
