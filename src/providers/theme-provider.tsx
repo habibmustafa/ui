@@ -10,6 +10,8 @@ import {
   type ReactNode,
 } from 'react'
 
+import { createTheme, themeToCss, type ThemeConfig, type ThemeTokens } from '../theme'
+
 export type Theme = 'system' | 'light' | 'dark'
 export type ResolvedTheme = 'light' | 'dark'
 
@@ -43,12 +45,32 @@ export interface ThemeProviderProps {
   children: ReactNode
   defaultTheme?: Theme
   storageKey?: string
+  /**
+   * Custom colours, radius and fonts: a `createTheme()` result or the config itself.
+   * Rendered as a <style> next to the children, so it also works when server-rendered.
+   */
+  tokens?: ThemeTokens | ThemeConfig
+}
+
+/**
+ * Renders theme tokens as a <style>. ThemeProvider does this for its `tokens` prop;
+ * use it directly to theme part of an app's lifetime (e.g. a live preview) without a
+ * second provider.
+ */
+export function ThemeStyle({ tokens }: { tokens: ThemeTokens | ThemeConfig }) {
+  const css = useMemo(
+    () => themeToCss('shared' in tokens ? tokens : createTheme(tokens)),
+    [tokens]
+  )
+  if (!css) return null
+  return <style data-ui-theme="">{css}</style>
 }
 
 export function ThemeProvider({
   children,
   defaultTheme = 'system',
   storageKey = 'theme',
+  tokens,
 }: ThemeProviderProps) {
   const [theme, setThemeState] = useState<Theme>(
     () => (typeof window === 'undefined' ? null : readStoredTheme(storageKey)) ?? defaultTheme
@@ -107,7 +129,12 @@ export function ThemeProvider({
     [theme, resolvedTheme, setTheme]
   )
 
-  return <ThemeContext value={value}>{children}</ThemeContext>
+  return (
+    <ThemeContext value={value}>
+      {tokens && <ThemeStyle tokens={tokens} />}
+      {children}
+    </ThemeContext>
+  )
 }
 
 export function useTheme(): ThemeContextValue {

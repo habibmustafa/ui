@@ -43,7 +43,8 @@ export interface SliderProps
    * Accessible name per thumb, e.g. `['Minimum price', 'Maximum price']`. Without it
    * every thumb gets the slider's own `aria-label`/`aria-labelledby` — the thumbs are
    * the focusable `role="slider"` elements, so that's where the name has to live.
-   * `aria-describedby` and `aria-invalid` move onto the thumbs for the same reason.
+   * `aria-describedby`, `aria-invalid` and `aria-valuetext` move onto the thumbs for
+   * the same reason.
    */
   thumbLabels?: readonly string[]
 }
@@ -58,6 +59,7 @@ const Slider = React.forwardRef<React.ElementRef<typeof SliderPrimitive.Root>, S
       'aria-labelledby': ariaLabelledby,
       'aria-describedby': ariaDescribedby,
       'aria-invalid': ariaInvalid,
+      'aria-valuetext': ariaValueText,
       ...props
     },
     ref
@@ -88,6 +90,7 @@ const Slider = React.forwardRef<React.ElementRef<typeof SliderPrimitive.Root>, S
             aria-labelledby={thumbLabels?.[index] ? undefined : ariaLabelledby}
             aria-describedby={ariaDescribedby}
             aria-invalid={ariaInvalid}
+            aria-valuetext={ariaValueText}
             className={sliderThumbVariants({ size })}
           />
         ))}

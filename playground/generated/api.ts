@@ -3327,7 +3327,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "thumbLabels",
             "type": "readonly string[]",
-            "description": "Accessible name per thumb, e.g. `['Minimum price', 'Maximum price']`. Without it\nevery thumb gets the slider's own `aria-label`/`aria-labelledby` — the thumbs are\nthe focusable `role=\"slider\"` elements, so that's where the name has to live.\n`aria-describedby` and `aria-invalid` move onto the thumbs for the same reason."
+            "description": "Accessible name per thumb, e.g. `['Minimum price', 'Maximum price']`. Without it\nevery thumb gets the slider's own `aria-label`/`aria-labelledby` — the thumbs are\nthe focusable `role=\"slider\"` elements, so that's where the name has to live.\n`aria-describedby`, `aria-invalid` and `aria-valuetext` move onto the thumbs for\nthe same reason."
           },
           {
             "name": "size",
@@ -8942,7 +8942,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "thumbLabels",
             "type": "readonly string[]",
-            "description": "Accessible name per thumb, e.g. `['Minimum price', 'Maximum price']`. Without it\nevery thumb gets the slider's own `aria-label`/`aria-labelledby` — the thumbs are\nthe focusable `role=\"slider\"` elements, so that's where the name has to live.\n`aria-describedby` and `aria-invalid` move onto the thumbs for the same reason."
+            "description": "Accessible name per thumb, e.g. `['Minimum price', 'Maximum price']`. Without it\nevery thumb gets the slider's own `aria-label`/`aria-labelledby` — the thumbs are\nthe focusable `role=\"slider\"` elements, so that's where the name has to live.\n`aria-describedby`, `aria-invalid` and `aria-valuetext` move onto the thumbs for\nthe same reason."
           },
           {
             "name": "label",

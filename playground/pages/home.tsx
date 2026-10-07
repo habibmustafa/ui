@@ -1,12 +1,13 @@
 import { ArrowRight, BookOpen } from 'lucide-react'
 
-import { Button, Dialog, Tabs } from '../../src'
+import { Button, Dialog, Tabs, THEME_PRESETS } from '../../src'
 import { version } from '../../package.json'
 import { CATALOG, COMPONENT_COUNT } from '../catalog'
 import { CodeSnippet } from '../code-snippet'
 import { GithubIcon } from '../icons'
 import { InstallCommand } from '../install-command'
 import { Link } from '../router'
+import { PRESET_LABELS, fromConfig, stateToQuery } from '../theme-store'
 import { Showcase } from './home-showcase'
 
 const GITHUB_URL = 'https://github.com/habibmustafa/ui'
@@ -132,6 +133,42 @@ function HybridApi() {
   )
 }
 
+
+function ThemeTeaser() {
+  return (
+    <section className="py-14">
+      <SectionHeading
+        title="Öz temanız"
+        description="Bir brend rəngi seçin — açıq və tünd tema üçün bütün şkala, kontrast yoxlaması ilə birlikdə hesablanır. Nəticəni CSS və ya kod kimi götürün."
+      />
+      <div className="flex flex-col gap-4 rounded-md border bg-surface-75 p-5 md:flex-row md:items-center md:justify-between">
+        <ul className="flex flex-wrap gap-2" aria-label="Hazır temalar">
+          {THEME_PRESETS.map((preset) => {
+            const query = stateToQuery(fromConfig(preset.config))
+            return (
+              <li key={preset.id}>
+                <Link
+                  to={`/theme${query ? `?${query}` : ''}`}
+                  className="focus-ring inline-flex h-8 items-center gap-2 rounded-full border bg-studio px-3 text-sm text-foreground-light transition-colors hover:border-foreground-muted hover:text-foreground"
+                >
+                  <span aria-hidden="true" className="flex -space-x-1">
+                    <span className="h-3.5 w-3.5 rounded-full border border-background" style={{ background: preset.config.brand }} />
+                    <span className="h-3.5 w-3.5 rounded-full border border-background" style={{ background: preset.config.accent }} />
+                  </span>
+                  {PRESET_LABELS[preset.id] ?? preset.name}
+                </Link>
+              </li>
+            )
+          })}
+        </ul>
+        <Button asChild variant="default" iconRight={<ArrowRight />} className="shrink-0">
+          <Link to="/theme">Tema yaradıcısını aç</Link>
+        </Button>
+      </div>
+    </section>
+  )
+}
+
 function Catalog() {
   return (
     <section className="py-14">
@@ -201,6 +238,7 @@ export default function HomePage() {
         <Showcase />
       </section>
       <HybridApi />
+      <ThemeTeaser />
       <Catalog />
       <Footer />
     </div>

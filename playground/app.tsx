@@ -1,4 +1,4 @@
-import { Home, LayoutGrid, Menu, Palette, Rocket, Search, Type as TypeIcon } from "lucide-react";
+import { Home, LayoutGrid, Menu, Paintbrush, Palette, Rocket, Search, Type as TypeIcon } from "lucide-react";
 import {
   lazy,
   Suspense,
@@ -14,6 +14,7 @@ import {
   Dialog,
   Sheet,
   SonnerToaster,
+  ThemeStyle,
   ThemeToggle,
   useTheme,
   type CommandGroupData,
@@ -23,6 +24,14 @@ import { CATALOG } from "./catalog";
 import { Preview, Swatch } from "./docs";
 import { GithubIcon } from "./icons";
 import { PageErrorBoundary } from "./page-error-boundary";
+import {
+  ensureFontLoaded,
+  monoFont,
+  sansFont,
+  setApplyEverywhere,
+  toConfig,
+  useThemeBuilder,
+} from "./theme-store";
 import { Link, Navigate, useRouter } from "./router";
 import { findComponent, type ComponentPreviewSpec } from "./registry";
 
@@ -33,6 +42,7 @@ const ApiReference = lazy(() => import("./api-reference"));
 const HomePage = lazy(() => import("./pages/home"));
 const GettingStartedPage = lazy(() => import("./pages/getting-started"));
 const ComponentsIndexPage = lazy(() => import("./pages/components-index"));
+const ThemeBuilderPage = lazy(() => import("./pages/theme-builder"));
 
 const GITHUB_URL = "https://github.com/habibmustafa/ui";
 
@@ -41,6 +51,7 @@ const PAGES = [
   { to: "/", label: "Giriş", search: "Giriş ana səhifə home", icon: Home },
   { to: "/getting-started", label: "Başlanğıc", search: "Başlanğıc quraşdırma getting started install", icon: Rocket },
   { to: "/components", label: "Komponentlər", search: "Komponentlər components", icon: LayoutGrid },
+  { to: "/theme", label: "Tema yaradıcısı", search: "Tema yaradıcısı theme builder rəng colors", icon: Paintbrush },
   { to: "/colors", label: "Rənglər", search: "Rənglər colors tokens", icon: Palette },
   { to: "/typography", label: "Tipoqrafiya", search: "Tipoqrafiya typography", icon: TypeIcon },
 ];
@@ -290,7 +301,7 @@ function Header() {
         </div>
 
         <nav aria-label="Əsas" className="ml-4 hidden items-center gap-5 md:flex">
-          {PAGES.slice(1, 3).map((page) => (
+          {PAGES.slice(1, 4).map((page) => (
             <Link
               key={page.to}
               to={page.to}
@@ -449,6 +460,44 @@ function ComponentPage({ id }: { id: string }) {
   );
 }
 
+/**
+ * The theme builder's tokens, rendered with the library's own <ThemeStyle>: always on
+ * /theme, and on every page once "apply everywhere" is switched on.
+ */
+function SiteTheme({ active }: { active: boolean }) {
+  const { state } = useThemeBuilder();
+  const config = useMemo(() => toConfig(state), [state]);
+
+  useEffect(() => {
+    if (!active) return;
+    ensureFontLoaded(sansFont(state));
+    ensureFontLoaded(monoFont(state));
+  }, [active, state]);
+
+  return active ? <ThemeStyle tokens={config} /> : null;
+}
+
+function CustomThemeNotice() {
+  const { everywhere } = useThemeBuilder();
+  const { path } = useRouter();
+  if (!everywhere || path.split("?")[0] === "/theme") return null;
+  return (
+    <div className="flex items-center justify-center gap-3 border-b bg-surface-100 px-6 py-1.5 text-xs text-foreground-light">
+      <span>Tema yaradıcısındakı tema tətbiq olunub.</span>
+      <Link to="/theme" className="focus-ring rounded-xs text-foreground underline underline-offset-2">
+        Redaktə et
+      </Link>
+      <button
+        type="button"
+        onClick={() => setApplyEverywhere(false)}
+        className="focus-ring cursor-pointer rounded-xs text-foreground underline underline-offset-2"
+      >
+        Söndür
+      </button>
+    </div>
+  );
+}
+
 export function App() {
   const { path } = useRouter();
   const { resolvedTheme } = useTheme();
@@ -467,6 +516,9 @@ export function App() {
   } else if (pathname === "/getting-started") {
     page = <GettingStartedPage />;
     title = "Başlanğıc";
+  } else if (pathname === "/theme") {
+    page = <ThemeBuilderPage />;
+    title = "Tema yaradıcısı";
   } else if (pathname === "/components") {
     page = <ComponentsIndexPage />;
     title = "Komponentlər";
@@ -490,14 +542,19 @@ export function App() {
 
   // The landing page runs full width; every other page reads next to the sidebar.
   const isHome = pathname === "/";
+  // Wide pages run without the sidebar.
+  const isWide = isHome || pathname === "/theme";
+  const { everywhere } = useThemeBuilder();
 
   return (
     <div className="min-h-screen bg-studio text-foreground">
+      <SiteTheme active={pathname === "/theme" || everywhere} />
       <Header />
+      <CustomThemeNotice />
       <div className="flex">
-        {!isHome && <Sidebar />}
+        {!isWide && <Sidebar />}
         <main className="min-w-0 flex-1 scroll-mt-14 px-6 py-8 outline-hidden md:px-10">
-          <div className={isHome ? "mx-auto max-w-6xl" : "mx-auto max-w-4xl"}>
+          <div className={isHome ? "mx-auto max-w-6xl" : isWide ? "mx-auto max-w-7xl" : "mx-auto max-w-4xl"}>
             <PageErrorBoundary resetKey={pathname}>
               <Suspense fallback={<div className="min-h-[60vh]" />}>{page}</Suspense>
             </PageErrorBoundary>

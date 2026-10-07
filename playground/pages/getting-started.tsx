@@ -128,33 +128,24 @@ export function SignupForm() {
   )
 }`
 
-const THEMING_CODE = `/* styles.css-dən SONRA yüklənən öz CSS faylınızda */
-:root,
-.light,
-.dark {
-  --primary-hue: 250; /* primary: keçidlər, primary mətn və fonlar (OKLCH tonu) */
-  --surface-hue: 250; /* fon, mətn və sərhədlərin çaları */
-}
+const THEMING_CODE = `import { ThemeProvider, createTheme } from '@habibmustafa/ui'
 
-/* Neytralların doyğunluğu. Açıq temada standart 0-dır (tam boz),
-   ona görə --surface-hue orada yalnız bununla görünür. */
-.light { --chroma: 0.008; }
-.dark  { --chroma: 0.03; }`
+// Bir rəngdən bütün brend şkalası (açıq və tünd tema üçün) hesablanır.
+const theme = createTheme({
+  brand: '#6366f1',     // düymələr, keçidlər, fokus
+  accent: '#ec4899',    // info rəngi, qrafikin 2-ci seriyası
+  neutral: { tint: 0.2 }, // fonun brend tonunda yüngül çaları (0 = boz)
+  radius: 8,            // rounded-md, digər ölçülər mütənasib
+})
 
-const BRAND_CODE = `/* Brend şkalası: H S% L%, hər tema üçün ayrıca (tünd temada fonlar çox tünddür) */
-.light {
-  --brand-default: 250deg 60% 53%;
-  --brand-400: 250deg 67% 67%;
-  --brand-500: 250deg 78% 40%;
-  --brand-600: 250deg 86% 26%;
-}
-.dark {
-  --brand-default: 250deg 60% 60%;
-  --brand-400: 250deg 100% 12%;
-  --brand-500: 250deg 100% 22%;
-  --brand-600: 250deg 60% 72%;
-}
-/* … həmçinin --brand-200 və --brand-300 */`
+<ThemeProvider tokens={theme}>
+  <App />
+</ThemeProvider>`
+
+const THEMING_CSS_CODE = `import { themeToCss } from '@habibmustafa/ui'
+
+// Build zamanı və ya serverdə: eyni tema statik CSS kimi
+const css = themeToCss({ brand: '#6366f1', radius: 8 })`
 
 const plans = [
   { value: 'free', label: 'Pulsuz' },
@@ -297,20 +288,20 @@ export default function GettingStartedPage() {
 
       <Step id="theming">
         <p>
-          Fon, mətn, sərhəd və {code('primary')} rəngləri OKLCH-də bir neçə giriş dəyişənindən
-          törəyir, ona görə komponent CSS-ini yazmadan tonu dəyişə bilərsiniz. Mövcud tokenlərin hamısı{' '}
-          <Link to="/colors" className="focus-ring rounded-xs text-foreground underline underline-offset-2">
-            Rənglər
-          </Link>{' '}
-          səhifəsindədir.
+          Ən rahat yol{' '}
+          <Link to="/theme" className="focus-ring rounded-xs text-foreground underline underline-offset-2">
+            Tema yaradıcısı
+          </Link>
+          dır: rəngləri, kontrastı, radiusu və şrifti seçin, nəticəni canlı görün, sonra CSS faylı və ya kod kimi
+          götürün. Eyni generator kitabxanada da var:
         </p>
-        <CodeSnippet code={THEMING_CODE} lang="css" />
+        <CodeSnippet code={THEMING_CODE} />
         <p>
-          Düymələrin və vurğuların yaşıl brend şkalası ({code('--brand-default')},{' '}
-          {code('--brand-200')} … {code('--brand-600')}) bu dəyişənlərdən törəmir, hər tema üçün
-          ayrıca dəyərlərdir. Brend rəngini dəyişmək üçün onları da override edin:
+          {code('createTheme')} hər addımın açıq/tünd tema strukturunu saxlayır (düymə mətni oxunaqlı qalır), yalnız
+          verdiyiniz açarları dəyişir. Statik CSS lazımdırsa (SSR, ayrıca fayl), {code('themeToCss')} işlədin; nəticəni{' '}
+          {code('styles.css')}-dən sonra yükləyin.
         </p>
-        <CodeSnippet code={BRAND_CODE} lang="css" />
+        <CodeSnippet code={THEMING_CSS_CODE} />
       </Step>
 
       <div className="flex flex-col gap-3 rounded-md border bg-surface-75 p-5 sm:flex-row sm:items-center sm:justify-between">
