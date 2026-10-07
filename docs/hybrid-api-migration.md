@@ -1,90 +1,90 @@
-# Hibrid API — cari texniki qaydalar
+# Hybrid API — current technical rules
 
-Bu sənəd hibrid komponenti dəyişəndə istifadə olunur. Mövcud
-`dialog.tsx`/`dialog-parts.tsx` və
-`dialog-demo.tsx`/`dialog-props-demo.tsx` cütü işlək istinaddır.
+This document is used when changing a hybrid component. The existing
+`dialog.tsx`/`dialog-parts.tsx` and
+`dialog-demo.tsx`/`dialog-props-demo.tsx` pair is the working reference.
 
-## Uyğunluq və iki rejim
+## Eligibility and the two modes
 
-Yalnız Root və bir neçə mənalı public hissəsi olan komponent hibrid olur. Ayırd edici prop
-(`items`, `options`, `columns` və s.) əl ilə hissə yığmağı əvəz etməlidir. Tək elementli
-komponentə və ya tam sxem generatoru tələb edən sistemə süni ikinci API əlavə etmə.
-`Chart`-ın məhdud props API-si ümumi hibrid nümunəsi deyil; Sonner, Calendar, Form və Sidebar
-qəsdən hibridləşdirilməyib.
+Only a component with a Root and several meaningful public parts becomes hybrid. The distinguishing prop
+(`items`, `options`, `columns`, etc.) must replace assembling parts by hand. Do not add an artificial second API
+to a single-element component or to a system that requires a full schema generator.
+`Chart`'s limited props API is not a general hybrid example; Sonner, Calendar, Form and Sidebar
+are intentionally not made hybrid.
 
 ```tsx
 <Tabs items={items} />
 <Tabs.Root><Tabs.List><Tabs.Trigger value="a">A</Tabs.Trigger></Tabs.List></Tabs.Root>
 ```
 
-Props rejimi `<Component … />`, compound rejimi `<Component.Root>` və `<Component.Child>`
-yazılır. Hər hissənin əvvəlki named export-u (`TabsTrigger` və s.) uyğunluq üçün qalır.
+Props mode is written as `<Component … />`, compound mode as `<Component.Root>` and `<Component.Child>`.
+Each part's previous named export (`TabsTrigger`, etc.) remains for compatibility.
 
-## Struktur və strategiya
+## Structure and strategy
 
-`<name>-parts.tsx` compound hissələri, `<name>.tsx` props renderini, `index.ts` isə
-`Object.assign(Hybrid, { Root, Child, … })` namespace-ini və named export-ları saxlayır.
-Fragmentlərdə də eyni bölgü tətbiq olunur. Props renderi mövcud hissələri və digər atomları
-kompozisiya edir; Radix/cmdk/vaul-u ikinci dəfə birbaşa yığıb davranışı təkrarlamır.
-Fragment üçün yeni props kompozisiyası yazmazdan əvvəl upstream `packages/ui-patterns`-da
-hazır uyğun variantı yoxla.
+`<name>-parts.tsx` holds the compound parts, `<name>.tsx` the props render, and `index.ts`
+the `Object.assign(Hybrid, { Root, Child, … })` namespace and the named exports.
+The same split applies to fragments. The props render composes the existing parts and other atoms;
+it does not assemble Radix/cmdk/vaul directly a second time and duplicate the behavior.
+Before writing a new props composition for a fragment, check upstream `packages/ui-patterns`
+for a ready-made matching variant.
 
-| Strategiya | Şərt | Rejim seçimi |
+| Strategy | Condition | Mode selection |
 |---|---|---|
-| A | Compound root-da olmayan ayırd edici prop və ya prop dəsti var | `props.items !== undefined` kimi açıq yoxlama; ayırd edici prop yoxdursa compound root |
-| B | `children`, `open` və digər sahələr iki rejimdə də işlənir | `<Component>` props renderi, `<Component.Root>` compound root |
+| A | There is a distinguishing prop or prop set that is not on the compound root | An explicit check such as `props.items !== undefined`; if the distinguishing prop is absent, compound root |
+| B | `children`, `open` and other fields are handled in both modes | `<Component>` props render, `<Component.Root>` compound root |
 
-Strategiya A-da `PropsMode | CompoundMode` union-u data prop-un compound rejimə düşməsini
-tip səviyyəsində qadağan edir (`items?: never`). `children` props rejimində mənalı deyilsə
-`children?: never` əlavə et; Card kimi body qəbul edən rejimdə onu saxla. Strategiya B-də
-köhnə root adı `ComponentRoot` named export-u kimi qalır. Rejimi `child.type` və ya JSX
-uşağının quruluşuna baxaraq təxmin etmə.
-Birdən çox sahə `||` ilə yoxlanırsa (Card, Alert), TypeScript compound branch-ı avtomatik
-daraltmaya bilər; həmin branch-da dəqiq compound tipinə cast et.
+In Strategy A, the `PropsMode | CompoundMode` union forbids the data prop from falling into compound mode
+at the type level (`items?: never`). If `children` is not meaningful in props mode,
+add `children?: never`; keep it in a mode that accepts a body, like Card. In Strategy B the
+old root name remains as the `ComponentRoot` named export. Do not guess the mode by looking at `child.type` or
+the structure of the JSX children.
+If more than one field is checked with `||` (Card, Alert), TypeScript may not automatically
+narrow the compound branch; cast to the exact compound type in that branch.
 
-Namespace hissələri wrapper deyil, mövcud hissələrə birbaşa istinaddır. `Object.assign`-ə
-əlavə olunan **hər hissənin prop tipini** `-parts.tsx`-dən export et; əks halda declaration
-bundle `TS4023` ilə sına bilər. Birbaşa Radix export-una statik sahə yapışdırma; əvvəl
-öz funksiya komponentini qur. Hook-ları rejim branch-ından kənarda, şərtsiz çağır.
+Namespace parts are not wrappers but direct references to the existing parts. Export **the prop type of
+every part** added to `Object.assign` from `-parts.tsx`; otherwise the declaration
+bundle may break with `TS4023`. Do not attach a static field directly to a Radix export; first
+build your own function component. Call hooks unconditionally, outside the mode branch.
 
-## Props rejiminin davranışı
+## Props mode behavior
 
-- Default görünüşdə upstream demo və compound nümunənin DOM-u, class-ları, ARIA-sı, focus
-  idarəsi, portalı və animasiyası eyni qalır. Variant tiplərini hissənin prop tipindən çıxar;
-  paralel union yazma. Yeni data prop üçün sinifləri literal xəritədə saxla, dinamik Tailwind
-  class adı qurma. Upstream demo yoxdursa, minimal hissə kompozisiyası seç
-  qeyd et.
-- `open/defaultOpen/onOpenChange`, `value/defaultValue/onValueChange` kimi adları saxla.
-  Lazım olanda `src/lib/use-controllable-state.ts`-dən istifadə et; controlled state-i
-  `useEffect` ilə təkrarlama. Tabs/Accordion/Select/RadioGroup dəyər tiplərini mümkün olduqda
-  `TValue extends string` ilə generik saxla. `trigger` elementi hissənin Trigger-i ilə `asChild`
-  vasitəsilə render olunur.
-- Slot mənaları: `undefined` — default görünüş; `null` — hissəni gizlət;
-  `ReactNode` — xüsusi məzmun; `(ctx) => ReactNode` — daxili state-ə çıxışlı məzmun.
-  Məzmun prop-u yalnız `string` ilə məhdudlaşmır.
-- `className` xarici vizual elementə gedir; `classNames` hissə üzrə siniflərdir;
-  `slotProps` hissələrin öz prop tiplərindən törəyir. Class birləşmə sırası:
+- In the default appearance, the DOM, classes, ARIA, focus
+  management, portal and animation of the upstream demo and the compound example stay the same. Derive variant types from the part's prop type;
+  do not write a parallel union. For a new data prop, keep classes in a literal map; do not build dynamic Tailwind
+  class names. If there is no upstream demo, choose a minimal part composition
+  note it.
+- Keep names such as `open/defaultOpen/onOpenChange`, `value/defaultValue/onValueChange`.
+  When needed, use `src/lib/use-controllable-state.ts`; do not duplicate controlled state
+  with `useEffect`. Keep Tabs/Accordion/Select/RadioGroup value types generic with
+  `TValue extends string` where possible. The `trigger` element is rendered through the part's Trigger via
+  `asChild`.
+- Slot meanings: `undefined` — default appearance; `null` — hide the part;
+  `ReactNode` — custom content; `(ctx) => ReactNode` — content with access to internal state.
+  A content prop is not limited to `string` only.
+- `className` goes to the outer visual element; `classNames` are per-part classes;
+  `slotProps` derive from the parts' own prop types. Class merge order:
   default → `classNames.x` → `slotProps.x.className`.
-- Lazımsız birinci səviyyə boolean prop-ları və paralel variant şkalası artırma;
-  `null` slot, `classNames`, `slotProps` və ya compound kompozisiyasını seç. `MenuItem`
-  variantı yalnız uyğun compound hissə varsa əlavə olunur. Props renderi üçün yeni token,
-  CSS faylı və runtime dependency uydurma.
-- `content` və `title` React `HTMLAttributes`-də artıq var. Eyni adlı props sahəsi
-  əlavə edəndə root tipindən onları açıq `Omit` et; yalnız `children`-i çıxarmaq kifayət deyil.
-- Async `onConfirm` zamanı pending/loading göstər, Cancel və overlay dismiss-i blokla,
-  uğurla bitəndə `closeOnConfirm` qaydasına görə bağla (`true` default); Promise rədd edilərsə
-  dialoq açıq qalsın və xətanı udma.
+- Do not add unnecessary top-level boolean props or a parallel variant scale;
+  choose a `null` slot, `classNames`, `slotProps` or compound composition. A `MenuItem`
+  variant is added only if a matching compound part exists. Do not invent new tokens,
+  CSS files or runtime dependencies for the props render.
+- `content` and `title` already exist in React `HTMLAttributes`. When adding a props field
+  with the same name, explicitly `Omit` them from the root type; removing only `children` is not enough.
+- During an async `onConfirm`, show pending/loading, block Cancel and overlay dismiss,
+  and on success close according to the `closeOnConfirm` rule (`true` by default); if the Promise is rejected,
+  the dialog should stay open and the error must not be swallowed.
 
-## Playground və yoxlama
+## Playground and verification
 
-Hər uyğun hibrid nümunə üçün props və compound faylını
-`playground/registry.tsx`-də `codeVariants: [{ id: 'props', ... }, { id: 'compound', ... }]`
-ilə cütləşdir. `Preview` props nümunəsini göstərir; compound faylı `.Root`/`.Child` yazır.
-Əgər props API eyni davranışı ifadə etmirsə, saxta nümunə düzəltmə
-qeyd et. Flat komponentlərdə ikinci rejim yaratma.
+For every eligible hybrid example, pair the props and compound files in
+`playground/registry.tsx` with `codeVariants: [{ id: 'props', ... }, { id: 'compound', ... }]`.
+`Preview` shows the props example; the compound file uses `.Root`/`.Child`.
+If the props API does not express the same behavior, do not fabricate a fake example
+note it. Do not create a second mode for flat components.
 
-Yeni hibrid keçidindən əvvəl compound nümunənin golden baseline-ını yarat. Mövcud golden HTML
-dəyişməməlidir. Dəyişiklik qəsdəndirsə, səbəbini testdə
-izah et; sadəcə testi keçirmək üçün snapshot yeniləmə. `npm run verify` build, lint,
-class/token yoxlamaları və testləri birlikdə işlədir. Qərarı və nəticəni eyni turda
-sənədləşdir.
+Before a new hybrid migration, create a golden baseline of the compound example. The existing golden HTML
+must not change. If a change is intentional, explain the reason in the
+test; do not update the snapshot just to make the test pass. `npm run verify` runs build, lint,
+class/token checks and tests together. Document the decision and the result in the same
+turn.

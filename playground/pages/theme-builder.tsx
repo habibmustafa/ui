@@ -27,7 +27,6 @@ import { CodeSnippet } from '../code-snippet'
 import {
   DEFAULT_STATE,
   MONO_FONTS,
-  PRESET_LABELS,
   SANS_FONTS,
   fromConfig,
   monoFont,
@@ -91,7 +90,7 @@ function ColorField({
       <div className="flex items-center gap-2">
         <input
           type="color"
-          aria-label={`${label}: rəng seçici`}
+          aria-label={`${label}: colour picker`}
           value={hex}
           onChange={(event) => onChange(event.target.value)}
           className="h-[34px] w-10 shrink-0 cursor-pointer rounded-md border border-control bg-transparent p-0.5 [&::-webkit-color-swatch]:rounded-sm [&::-webkit-color-swatch]:border-none [&::-webkit-color-swatch-wrapper]:p-0"
@@ -111,7 +110,7 @@ function ColorField({
         />
       </div>
       <p id={`${id}-hint`} className={cn('text-xs', invalid ? 'text-destructive' : 'text-foreground-lighter')}>
-        {invalid ? 'Tanınmayan rəng — HEX, rgb(), hsl() və ya oklch() yazın.' : description}
+        {invalid ? 'Unrecognised colour. Use HEX, rgb(), hsl() or oklch().' : description}
       </p>
     </div>
   )
@@ -168,13 +167,13 @@ interface ContrastRow {
 }
 
 const CONTRAST_ROWS: { key: string; label: string }[] = [
-  { key: 'text', label: 'Əsas mətn' },
-  { key: 'text-light', label: 'İkinci dərəcəli mətn' },
-  { key: 'text-lighter', label: 'Köməkçi mətn' },
-  { key: 'primary', label: 'Keçid (primary)' },
-  { key: 'button', label: 'Əsas düymə' },
-  { key: 'destructive', label: 'Xəta mətni' },
-  { key: 'warning', label: 'Xəbərdarlıq mətni' },
+  { key: 'text', label: 'Body text' },
+  { key: 'text-light', label: 'Secondary text' },
+  { key: 'text-lighter', label: 'Helper text' },
+  { key: 'primary', label: 'Link (primary)' },
+  { key: 'button', label: 'Primary button' },
+  { key: 'destructive', label: 'Error text' },
+  { key: 'warning', label: 'Warning text' },
 ]
 
 /** Resolves any computed CSS colour (oklch(), color-mix, …) to sRGB via a 1px canvas. */
@@ -231,11 +230,11 @@ function useContrastRows(key: string): ContrastRow[] {
 function ContrastPanel({ rows }: { rows: ContrastRow[] }) {
   return (
     <div className="flex flex-col gap-2">
-      <ul className="flex flex-col gap-1.5" aria-label="Kontrast yoxlaması">
+      <ul className="flex flex-col gap-1.5" aria-label="Contrast check">
         {rows.map((row) => {
           const ratio = row.ratio
           const grade =
-            ratio === null ? null : ratio >= 7 ? 'AAA' : ratio >= 4.5 ? 'AA' : ratio >= 3 ? 'AA böyük' : 'Zəif'
+            ratio === null ? null : ratio >= 7 ? 'AAA' : ratio >= 4.5 ? 'AA' : ratio >= 3 ? 'AA large' : 'Fail'
           return (
             <li key={row.key} className="flex items-center justify-between gap-2 text-sm">
               <span className="text-foreground-light">{row.label}</span>
@@ -244,7 +243,7 @@ function ContrastPanel({ rows }: { rows: ContrastRow[] }) {
                   {ratio === null ? '—' : `${ratio.toFixed(1)}:1`}
                 </span>
                 {grade && (
-                  <Badge variant={grade === 'Zəif' ? 'destructive' : grade === 'AA böyük' ? 'warning' : 'success'}>
+                  <Badge variant={grade === 'Fail' ? 'destructive' : grade === 'AA large' ? 'warning' : 'success'}>
                     {grade}
                   </Badge>
                 )}
@@ -254,7 +253,7 @@ function ContrastPanel({ rows }: { rows: ContrastRow[] }) {
         })}
       </ul>
       <p className="text-xs text-foreground-lighter">
-        WCAG: adi mətn üçün AA ≥ 4,5:1, AAA ≥ 7:1; böyük mətn üçün 3:1 kifayətdir.
+        WCAG: normal text needs AA ≥ 4.5:1 (AAA ≥ 7:1); large text needs 3:1.
       </p>
     </div>
   )
@@ -305,7 +304,7 @@ function ImportTab({ onDone }: { onDone: () => void }) {
     let next: BuilderState | null = null
     if (/^https?:\/\//.test(input) || input.startsWith('?')) {
       next = stateFromQuery(input.includes('?') ? input.slice(input.indexOf('?') + 1) : '')
-      if (!next) return setError('Linkdə tema parametrləri tapılmadı.')
+      if (!next) return setError('That link has no theme parameters.')
     } else {
       try {
         const parsed: unknown = JSON.parse(input)
@@ -313,22 +312,22 @@ function ImportTab({ onDone }: { onDone: () => void }) {
         const config = parsed as ThemeConfig
         for (const key of ['brand', 'accent'] as const) {
           if (config[key] !== undefined && (typeof config[key] !== 'string' || !parseColor(config[key]))) {
-            return setError(`"${key}" oxunan rəng deyil.`)
+            return setError(`"${key}" is not a readable colour.`)
           }
         }
         next = fromConfig(config)
       } catch {
-        return setError('JSON oxunmadı. Export-dakı JSON-u və ya builder linkini yapışdırın.')
+        return setError('Could not read that JSON. Paste the JSON from Export or a builder link.')
       }
     }
     setBuilderState(next)
-    toast.success('Tema idxal olundu')
+    toast.success('Theme imported')
     onDone()
   }
 
   return (
     <div className="flex flex-col gap-3">
-      <Label htmlFor={id}>JSON konfiq və ya builder linki</Label>
+      <Label htmlFor={id}>JSON config or builder link</Label>
       <Textarea
         id={id}
         rows={8}
@@ -349,7 +348,7 @@ function ImportTab({ onDone }: { onDone: () => void }) {
       )}
       <div>
         <Button variant="primary" icon={<Upload />} disabled={!text.trim()} onClick={apply}>
-          Tətbiq et
+          Apply
         </Button>
       </div>
     </div>
@@ -366,36 +365,36 @@ function ExportDialog({ state, link }: { state: BuilderState; link: string }) {
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger asChild>
         <Button variant="primary" icon={<Download />}>
-          Export / İdxal
+          Export / Import
         </Button>
       </Dialog.Trigger>
       <Dialog.Content size="xlarge">
         <Dialog.Header>
-          <Dialog.Title>Temanı layihəyə köçürün</Dialog.Title>
+          <Dialog.Title>Take the theme to your project</Dialog.Title>
           <Dialog.Description>
-            CSS faylı heç bir kod dəyişikliyi tələb etmir. Kod variantı temanı runtime-da dəyişməyə imkan verir.
+            The CSS file needs no code changes. The code version lets you change the theme at runtime.
           </Dialog.Description>
         </Dialog.Header>
         <Dialog.Section>
           <Tabs.Root defaultValue="css">
             <Tabs.List className="gap-5">
               <Tabs.Trigger value="css">CSS</Tabs.Trigger>
-              <Tabs.Trigger value="code">Kod</Tabs.Trigger>
+              <Tabs.Trigger value="code">Code</Tabs.Trigger>
               <Tabs.Trigger value="json">JSON</Tabs.Trigger>
-              <Tabs.Trigger value="import">İdxal</Tabs.Trigger>
+              <Tabs.Trigger value="import">Import</Tabs.Trigger>
               <Tabs.Indicator />
             </Tabs.List>
             <Tabs.Content value="css" className="flex flex-col gap-3">
               <CodeSnippet code={css} lang="css" maxHeight={340} />
               <div>
                 <Button variant="default" icon={<Download />} onClick={() => download('theme.css', css, 'text/css')}>
-                  theme.css yüklə
+                  Download theme.css
                 </Button>
               </div>
             </Tabs.Content>
             <Tabs.Content value="code" className="flex flex-col gap-3">
               <p className="text-sm text-foreground-light">
-                Eyni generator kitabxanada da var: konfiqi kodda saxlayın, lazım olanda dəyişin.
+                The same generator ships in the library: keep the config in code and change it whenever you need.
               </p>
               <CodeSnippet code={codeFile(config)} maxHeight={340} />
             </Tabs.Content>
@@ -403,7 +402,7 @@ function ExportDialog({ state, link }: { state: BuilderState; link: string }) {
               <CodeSnippet code={json} maxHeight={340} />
               <div>
                 <Button variant="default" icon={<Download />} onClick={() => download('theme.json', json, 'application/json')}>
-                  theme.json yüklə
+                  Download theme.json
                 </Button>
               </div>
             </Tabs.Content>
@@ -453,10 +452,10 @@ export default function ThemeBuilderPage() {
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div>
-          <h1 className="scroll-m-20 text-3xl tracking-tight">Tema yaradıcısı</h1>
+          <h1 className="scroll-m-20 text-3xl tracking-tight">Theme builder</h1>
           <p className="mt-2 max-w-2xl text-lg text-foreground-light">
-            Rəngi, kontrastı, radiusu və şrifti seçin — bütün səhifə dərhal yenilənir. Hazır olanda CSS və ya kod kimi
-            götürün.
+            Pick colours, contrast, radius and fonts — the whole page updates as you go. When you're happy, take
+            it as CSS or code.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -466,22 +465,22 @@ export default function ThemeBuilderPage() {
             disabled={sameState(state, DEFAULT_STATE)}
             onClick={() => setBuilderState(DEFAULT_STATE)}
           >
-            Sıfırla
+            Reset
           </Button>
           <Button
             variant="default"
             icon={<Link2 />}
             onClick={() =>
-              navigator.clipboard.writeText(link).then(() => toast.success('Link kopyalandı', { description: link }))
+              navigator.clipboard.writeText(link).then(() => toast.success('Link copied', { description: link }))
             }
           >
-            Linki kopyala
+            Copy link
           </Button>
           <ExportDialog state={state} link={link} />
         </div>
       </div>
 
-      <div role="group" aria-label="Hazır temalar" className="flex flex-wrap gap-2">
+      <div role="group" aria-label="Presets" className="flex flex-wrap gap-2">
         {THEME_PRESETS.map((preset) => {
           const active = preset.id === activePreset?.id
           return (
@@ -501,7 +500,7 @@ export default function ThemeBuilderPage() {
                 <span className="h-3.5 w-3.5 rounded-full border border-background" style={{ background: preset.config.brand }} />
                 <span className="h-3.5 w-3.5 rounded-full border border-background" style={{ background: preset.config.accent }} />
               </span>
-              {PRESET_LABELS[preset.id] ?? preset.name}
+              {preset.name}
               {active && <Check aria-hidden="true" className="h-3.5 w-3.5" />}
             </button>
           )
@@ -510,36 +509,36 @@ export default function ThemeBuilderPage() {
 
       <div className="grid items-start gap-6 lg:grid-cols-[320px_minmax(0,1fr)]">
         <aside
-          aria-label="Tema parametrləri"
+          aria-label="Theme settings"
           className="rounded-lg border bg-surface-75 p-5 lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto"
         >
-          <Section title="Rənglər">
+          <Section title="Colours">
             <ColorField
-              label="Brend rəngi"
-              description="Düymələr, keçidlər, fokus, qrafikin 1-ci seriyası."
+              label="Brand colour"
+              description="Buttons, links, focus, first chart series."
               value={state.brand}
               onChange={(brand) => update({ brand })}
             />
             <ColorField
-              label="Vurğu rəngi"
-              description="Info rəngi və qrafikin 2-ci seriyası."
+              label="Accent colour"
+              description="Info colour and the second chart series."
               value={state.accent}
               onChange={(accent) => update({ accent })}
             />
           </Section>
 
-          <Section title="Neytral rənglər">
+          <Section title="Neutrals">
             <SliderField
-              label="Çalar"
+              label="Tint"
               value={state.tint}
               min={0}
               max={1}
               step={0.05}
-              format={(v) => (v === 0 ? 'Boz' : `${Math.round(v * 100)}%`)}
+              format={(v) => (v === 0 ? 'Gray' : `${Math.round(v * 100)}%`)}
               onChange={(tint) => update({ tint })}
             />
             <div className="flex items-center justify-between gap-2">
-              <Label htmlFor={`${everywhereId}-follow`}>Brendin tonunu izlə</Label>
+              <Label htmlFor={`${everywhereId}-follow`}>Follow brand hue</Label>
               <Switch
                 id={`${everywhereId}-follow`}
                 checked={state.neutralHue === null}
@@ -548,7 +547,7 @@ export default function ThemeBuilderPage() {
             </div>
             {state.neutralHue !== null && (
               <SliderField
-                label="Neytral ton"
+                label="Neutral hue"
                 value={state.neutralHue}
                 min={0}
                 max={360}
@@ -558,19 +557,19 @@ export default function ThemeBuilderPage() {
               />
             )}
             <SliderField
-              label="Kontrast"
+              label="Contrast"
               value={state.contrast}
               min={0}
               max={1}
               step={0.05}
-              format={(v) => (v === 0.5 ? 'Standart' : `${Math.round(v * 100)}%`)}
+              format={(v) => (v === 0.5 ? 'Default' : `${Math.round(v * 100)}%`)}
               onChange={(contrast) => update({ contrast })}
             />
           </Section>
 
-          <Section title="Status rəngləri">
+          <Section title="Status colours">
             <SliderField
-              label="Xəbərdarlıq tonu"
+              label="Warning hue"
               value={state.warningHue}
               min={40}
               max={110}
@@ -579,7 +578,7 @@ export default function ThemeBuilderPage() {
               onChange={(warningHue) => update({ warningHue })}
             />
             <SliderField
-              label="Xəta tonu"
+              label="Error hue"
               value={state.destructiveHue}
               min={0}
               max={50}
@@ -589,9 +588,9 @@ export default function ThemeBuilderPage() {
             />
           </Section>
 
-          <Section title="Forma və şrift">
+          <Section title="Shape and type">
             <SliderField
-              label="Künc radiusu"
+              label="Corner radius"
               value={state.radius}
               min={0}
               max={16}
@@ -599,7 +598,7 @@ export default function ThemeBuilderPage() {
               onChange={(radius) => update({ radius })}
             />
             <div className="flex flex-col gap-2">
-              <Label id={`${everywhereId}-sans`}>Əsas şrift</Label>
+              <Label id={`${everywhereId}-sans`}>Body font</Label>
               <Select
                 aria-labelledby={`${everywhereId}-sans`}
                 value={state.sans}
@@ -608,7 +607,7 @@ export default function ThemeBuilderPage() {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <Label id={`${everywhereId}-mono`}>Kod şrifti</Label>
+              <Label id={`${everywhereId}-mono`}>Code font</Label>
               <Select
                 aria-labelledby={`${everywhereId}-mono`}
                 value={state.mono}
@@ -618,15 +617,15 @@ export default function ThemeBuilderPage() {
             </div>
           </Section>
 
-          <Section title="Kontrast yoxlaması">
+          <Section title="Contrast check">
             <ContrastPanel rows={rows} />
           </Section>
 
-          <Section title="Sayt">
+          <Section title="Site">
             <div className="flex items-start justify-between gap-3">
               <div>
-                <Label htmlFor={everywhereId}>Bütün saytda tətbiq et</Label>
-                <p className="mt-1 text-xs text-foreground-lighter">Komponent səhifələrini də bu temada gəzin.</p>
+                <Label htmlFor={everywhereId}>Apply across the site</Label>
+                <p className="mt-1 text-xs text-foreground-lighter">Browse the component pages in this theme too.</p>
               </div>
               <Switch id={everywhereId} checked={everywhere} onCheckedChange={setApplyEverywhere} />
             </div>
@@ -635,19 +634,19 @@ export default function ThemeBuilderPage() {
 
         <div className="flex min-w-0 flex-col gap-4">
           <div className="flex items-center justify-between gap-3">
-            <p className="text-sm text-foreground-light">Önizləmə</p>
+            <p className="text-sm text-foreground-light">Preview</p>
             <ToggleGroup
               type="single"
               variant="segmented"
               tone="outline"
               size="tiny"
               allowDeselect={false}
-              aria-label="Önizləmə rejimi"
+              aria-label="Preview mode"
               value={resolvedTheme}
               onValueChange={(mode: string) => mode && setTheme(mode as 'light' | 'dark')}
               items={[
-                { value: 'light', label: 'Açıq', icon: <Sun aria-hidden="true" className="mr-1.5 h-3.5 w-3.5" /> },
-                { value: 'dark', label: 'Tünd', icon: <Moon aria-hidden="true" className="mr-1.5 h-3.5 w-3.5" /> },
+                { value: 'light', label: 'Light', icon: <Sun aria-hidden="true" className="mr-1.5 h-3.5 w-3.5" /> },
+                { value: 'dark', label: 'Dark', icon: <Moon aria-hidden="true" className="mr-1.5 h-3.5 w-3.5" /> },
               ]}
             />
           </div>

@@ -15,13 +15,13 @@ import { Link } from '../router'
  */
 
 const STEPS = [
-  { id: 'install', title: 'Quraşdırın' },
-  { id: 'styles', title: 'Stilləri qoşun' },
-  { id: 'theme', title: 'ThemeProvider əlavə edin' },
-  { id: 'first-component', title: 'İlk komponent' },
-  { id: 'toast', title: 'Bildirişlər' },
-  { id: 'forms', title: 'Formalar' },
-  { id: 'theming', title: 'Rəngləri dəyişin' },
+  { id: 'install', title: 'Install' },
+  { id: 'styles', title: 'Import the styles' },
+  { id: 'theme', title: 'Add ThemeProvider' },
+  { id: 'first-component', title: 'Your first component' },
+  { id: 'toast', title: 'Toasts' },
+  { id: 'forms', title: 'Forms' },
+  { id: 'theming', title: 'Make it yours' },
 ] as const
 
 type StepId = (typeof STEPS)[number]['id']
@@ -63,7 +63,7 @@ const code = (text: string) => (
   </code>
 )
 
-const STYLES_CODE = `// main.tsx — tətbiqin giriş faylında bir dəfə
+const STYLES_CODE = `// main.tsx — once, in your app's entry file
 import '@habibmustafa/ui/styles.css'`
 
 const THEME_CODE = `import { ThemeProvider } from '@habibmustafa/ui'
@@ -82,13 +82,13 @@ const FIRST_COMPONENT_CODE = `import { Button, Dialog } from '@habibmustafa/ui'
 export function DeleteProject() {
   return (
     <Dialog
-      trigger={<Button variant="danger">Layihəni sil</Button>}
-      title="Layihə silinsin?"
-      description="Bu əməliyyat geri qaytarılmır."
-      confirmText="Sil"
+      trigger={<Button variant="danger">Delete project</Button>}
+      title="Delete this project?"
+      description="This action cannot be undone."
+      confirmText="Delete"
       confirmType="danger"
       onConfirm={async () => {
-        await api.deleteProject() // gözləyərkən düymə "loading" olur
+        await api.deleteProject() // the button shows a spinner while this runs
       }}
     />
   )
@@ -96,12 +96,12 @@ export function DeleteProject() {
 
 const TOAST_CODE = `import { SonnerToaster, toast } from '@habibmustafa/ui'
 
-// Tətbiqdə bir dəfə:
+// Once, in your app:
 <SonnerToaster />
 
-// İstənilən yerdən:
-toast.success('Dəyişikliklər yadda saxlanıldı', {
-  description: 'Bütün komanda yeni versiyanı görür.',
+// Anywhere:
+toast.success('Changes saved', {
+  description: 'Everyone on the team now sees the new version.',
 })`
 
 const FORM_CODE = `import { zodResolver } from '@hookform/resolvers/zod'
@@ -110,8 +110,8 @@ import { z } from 'zod'
 import { Button, Form, FormInput, FormSelect } from '@habibmustafa/ui'
 
 const schema = z.object({
-  name: z.string().min(2, 'Ən azı 2 simvol yazın.'),
-  plan: z.string({ error: 'Plan seçin.' }),
+  name: z.string().min(2, 'Use at least 2 characters.'),
+  plan: z.string({ error: 'Pick a plan.' }),
 })
 
 export function SignupForm() {
@@ -120,9 +120,9 @@ export function SignupForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(save)} className="flex flex-col gap-4">
-        <FormInput name="name" label="Ad" />
-        <FormSelect name="plan" label="Plan" options={plans} placeholder="Plan seçin" />
-        <Button type="submit" variant="primary">Qeydiyyat</Button>
+        <FormInput name="name" label="Name" />
+        <FormSelect name="plan" label="Plan" options={plans} placeholder="Pick a plan" />
+        <Button type="submit" variant="primary">Sign up</Button>
       </form>
     </Form>
   )
@@ -130,12 +130,12 @@ export function SignupForm() {
 
 const THEMING_CODE = `import { ThemeProvider, createTheme } from '@habibmustafa/ui'
 
-// Bir rəngdən bütün brend şkalası (açıq və tünd tema üçün) hesablanır.
+// The whole brand scale (light and dark) is generated from one colour.
 const theme = createTheme({
-  brand: '#6366f1',     // düymələr, keçidlər, fokus
-  accent: '#ec4899',    // info rəngi, qrafikin 2-ci seriyası
-  neutral: { tint: 0.2 }, // fonun brend tonunda yüngül çaları (0 = boz)
-  radius: 8,            // rounded-md, digər ölçülər mütənasib
+  brand: '#6366f1',     // buttons, links, focus
+  accent: '#ec4899',    // info colour, second chart series
+  neutral: { tint: 0.2 }, // a light brand tint on surfaces (0 = gray)
+  radius: 8,            // rounded-md; the other sizes scale with it
 })
 
 <ThemeProvider tokens={theme}>
@@ -144,18 +144,18 @@ const theme = createTheme({
 
 const THEMING_CSS_CODE = `import { themeToCss } from '@habibmustafa/ui'
 
-// Build zamanı və ya serverdə: eyni tema statik CSS kimi
+// At build time or on the server: the same theme as static CSS
 const css = themeToCss({ brand: '#6366f1', radius: 8 })`
 
 const plans = [
-  { value: 'free', label: 'Pulsuz' },
-  { value: 'team', label: 'Komanda' },
-  { value: 'business', label: 'Biznes' },
+  { value: 'free', label: 'Free' },
+  { value: 'team', label: 'Team' },
+  { value: 'business', label: 'Business' },
 ]
 
 const signupSchema = z.object({
-  name: z.string().min(2, { error: 'Ən azı 2 simvol yazın.' }),
-  plan: z.string({ error: 'Plan seçin.' }),
+  name: z.string().min(2, { error: 'Use at least 2 characters.' }),
+  plan: z.string({ error: 'Pick a plan.' }),
 })
 
 function SignupFormDemo() {
@@ -169,17 +169,17 @@ function SignupFormDemo() {
       <form
         noValidate
         onSubmit={form.handleSubmit(({ name, plan }) => {
-          toast.success(`Xoş gəldiniz, ${name}!`, {
-            description: `${plans.find((p) => p.value === plan)?.label} planı seçildi.`,
+          toast.success(`Welcome, ${name}!`, {
+            description: `You picked the ${plans.find((p) => p.value === plan)?.label} plan.`,
           })
           form.reset()
         })}
         className="flex w-full max-w-xs flex-col gap-4"
       >
-        <FormInput name="name" label="Ad" />
-        <FormSelect name="plan" label="Plan" options={plans} placeholder="Plan seçin" />
+        <FormInput name="name" label="Name" />
+        <FormSelect name="plan" label="Plan" options={plans} placeholder="Pick a plan" />
         <Button type="submit" variant="primary">
-          Qeydiyyat
+          Sign up
         </Button>
       </form>
     </Form>
@@ -189,12 +189,12 @@ function SignupFormDemo() {
 export default function GettingStartedPage() {
   return (
     <div>
-      <h1 className="scroll-m-20 text-3xl tracking-tight">Başlanğıc</h1>
+      <h1 className="scroll-m-20 text-3xl tracking-tight">Getting started</h1>
       <p className="mt-2 text-lg text-foreground-light">
-        Quraşdırmadan işləyən formaya qədər yeddi addım. Hər addımın nəticəsi kodun yanında canlı
-        göstərilir.
+        Seven steps from install to a working, validated form. Each step shows its result live next
+        to the code.
       </p>
-      <nav aria-label="Addımlar" className="mt-6 mb-10 flex flex-wrap gap-x-4 gap-y-1 border-b pb-4 text-sm">
+      <nav aria-label="Steps" className="mt-6 mb-10 flex flex-wrap gap-x-4 gap-y-1 border-b pb-4 text-sm">
         {STEPS.map((step, index) => (
           <a
             key={step.id}
@@ -208,76 +208,75 @@ export default function GettingStartedPage() {
 
       <Step id="install">
         <p>
-          Paket React 19 və React DOM 19 tələb edir. Tailwind quraşdırmağa ehtiyac yoxdur: stillər
-          hazır CSS faylı kimi gəlir.
+          Requires React 19 and React DOM 19. You don't need to install Tailwind: the styles ship as a
+          ready-made CSS file.
         </p>
         <InstallCommand packages="@habibmustafa/ui" />
       </Step>
 
       <Step id="styles">
-        <p>Bütün komponentlərin stilləri və tema tokenləri bir fayldadır. Onu tətbiqin girişində bir dəfə import edin.</p>
+        <p>Every component's styles and the theme tokens live in one file. Import it once in your app's entry.</p>
         <CodeSnippet code={STYLES_CODE} />
       </Step>
 
       <Step id="theme">
         <p>
-          {code('ThemeProvider')} seçilmiş temanı {code('html')} elementinə yazır, seçimi yadda
-          saxlayır və {code('system')} rejimində əməliyyat sisteminin dəyişikliyini canlı izləyir.
+          {code('ThemeProvider')} writes the chosen theme to the {code('html')} element, remembers the
+          choice and, in {code('system')} mode, follows the operating system as it changes.
         </p>
         <CodeSnippet code={THEME_CODE} />
-        <p>Temanı koddan oxumaq və dəyişmək üçün {code('useTheme')}:</p>
+        <p>To read or change the theme from code, use {code('useTheme')}:</p>
         <CodeSnippet code={THEME_HOOK_CODE} />
       </Step>
 
       <Step id="first-component">
         <p>
-          Çox işlənən komponentlər props ilə bir elementdə yazılır. {code('onConfirm')} Promise
-          qaytaranda təsdiq düyməsi gözləyir, sonra dialoq özü bağlanır.
+          Common components are a single element driven by props. When {code('onConfirm')} returns a
+          Promise, the confirm button waits for it and the dialog then closes itself.
         </p>
         <CodeSnippet code={FIRST_COMPONENT_CODE} />
         <Live>
           <Dialog
-            trigger={<Button variant="danger">Layihəni sil</Button>}
-            title="Layihə silinsin?"
-            description="Bu əməliyyat geri qaytarılmır."
-            confirmText="Sil"
-            cancelText="Ləğv et"
+            trigger={<Button variant="danger">Delete project</Button>}
+            title="Delete this project?"
+            description="This action cannot be undone."
+            confirmText="Delete"
+            cancelText="Cancel"
             confirmType="danger"
             onConfirm={() => new Promise((resolve) => setTimeout(resolve, 900))}
           />
         </Live>
         <p>
-          Öz layout-unuz lazım olanda eyni komponenti hissələrlə yazın ({code('Dialog.Root')},{' '}
-          {code('Dialog.Trigger')}, {code('Dialog.Content')}, …). Hər komponentin səhifəsində
-          hər iki yazılışın kodu var.
+          When you need your own layout, compose the same component from parts ({code('Dialog.Root')},{' '}
+          {code('Dialog.Trigger')}, {code('Dialog.Content')}, …). Every component page shows the code
+          for both styles.
         </p>
       </Step>
 
       <Step id="toast">
         <p>
-          {code('SonnerToaster')}-i tətbiqə bir dəfə əlavə edin, sonra {code('toast')} funksiyasını
-          istənilən yerdən çağırın.
+          Add {code('SonnerToaster')} to your app once, then call {code('toast')} from anywhere.
         </p>
         <CodeSnippet code={TOAST_CODE} />
         <Live>
           <Button
             variant="default"
             onClick={() =>
-              toast.success('Dəyişikliklər yadda saxlanıldı', {
-                description: 'Bütün komanda yeni versiyanı görür.',
+              toast.success('Changes saved', {
+                description: 'Everyone on the team now sees the new version.',
               })
             }
           >
-            Bildiriş göstər
+            Show a toast
           </Button>
         </Live>
       </Step>
 
       <Step id="forms">
         <p>
-          {code('FormInput')}, {code('FormSelect')}, {code('FormDatePicker')} və digər sahələr
-          react-hook-form-a bağlıdır: label, səhv mesajı, {code('aria-invalid')} və səhv sahəyə
-          fokus özü işləyir. Yoxlama üçün zod əlavə edin:
+          {code('FormInput')}, {code('FormSelect')}, {code('FormDatePicker')} and the other fields are
+          wired to react-hook-form: the label, error message, {code('aria-invalid')} and focus on the
+          invalid field all just work. Add zod for validation:
         </p>
         <InstallCommand packages="react-hook-form zod @hookform/resolvers" />
         <CodeSnippet code={FORM_CODE} />
@@ -288,31 +287,31 @@ export default function GettingStartedPage() {
 
       <Step id="theming">
         <p>
-          Ən rahat yol{' '}
+          The easiest way is the{' '}
           <Link to="/theme" className="focus-ring rounded-xs text-foreground underline underline-offset-2">
-            Tema yaradıcısı
+            theme builder
           </Link>
-          dır: rəngləri, kontrastı, radiusu və şrifti seçin, nəticəni canlı görün, sonra CSS faylı və ya kod kimi
-          götürün. Eyni generator kitabxanada da var:
+          : pick colours, contrast, radius and fonts, see the result live, then take it as a CSS file or
+          as code. The same generator ships in the library:
         </p>
         <CodeSnippet code={THEMING_CODE} />
         <p>
-          {code('createTheme')} hər addımın açıq/tünd tema strukturunu saxlayır (düymə mətni oxunaqlı qalır), yalnız
-          verdiyiniz açarları dəyişir. Statik CSS lazımdırsa (SSR, ayrıca fayl), {code('themeToCss')} işlədin; nəticəni{' '}
-          {code('styles.css')}-dən sonra yükləyin.
+          {code('createTheme')} keeps every step's light/dark structure (button text stays readable) and
+          only changes the keys you pass. For static CSS (SSR, a separate file) use{' '}
+          {code('themeToCss')} and load the result after {code('styles.css')}.
         </p>
         <CodeSnippet code={THEMING_CSS_CODE} />
       </Step>
 
       <div className="flex flex-col gap-3 rounded-md border bg-surface-75 p-5 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p className="text-sm font-medium text-foreground">Hazırsınız</p>
+          <p className="text-sm font-medium text-foreground">You're set</p>
           <p className="mt-1 text-sm text-foreground-light">
-            Növbəti addım: lazım olan komponenti tapın, nümunəsini kopyalayın.
+            Next: find the component you need and copy its example.
           </p>
         </div>
         <Button asChild variant="primary" iconRight={<ArrowRight />}>
-          <Link to="/components">Komponentlərə bax</Link>
+          <Link to="/components">Browse components</Link>
         </Button>
       </div>
     </div>

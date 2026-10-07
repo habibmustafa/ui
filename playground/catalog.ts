@@ -23,12 +23,12 @@ export interface CatalogGroup {
 }
 
 const ROLES: { key: string; title: string }[] = [
-  { key: 'forms', title: 'Forma' },
-  { key: 'actions', title: 'Əməliyyat' },
+  { key: 'forms', title: 'Forms' },
+  { key: 'actions', title: 'Actions' },
   { key: 'overlay', title: 'Overlay' },
-  { key: 'navigation', title: 'Naviqasiya' },
-  { key: 'feedback', title: 'Bildiriş' },
-  { key: 'data-display', title: 'Məlumat' },
+  { key: 'navigation', title: 'Navigation' },
+  { key: 'feedback', title: 'Feedback' },
+  { key: 'data-display', title: 'Data display' },
   { key: 'layout', title: 'Layout' },
 ]
 
@@ -42,7 +42,7 @@ export const CATALOG: CatalogGroup[] = [
   })),
   {
     key: 'fragments',
-    title: 'Fragmentlər',
+    title: 'Fragments',
     entries: allEntries.filter((entry) => !ROLE_OF.has(entry.id)).sort(byTitle),
   },
 ]

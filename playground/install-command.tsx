@@ -76,7 +76,7 @@ export function InstallCommand({
           value={manager}
           onValueChange={(value) => value && setManager(value as Manager)}
           allowDeselect={false}
-          aria-label="Paket meneceri"
+          aria-label="Package manager"
         >
           {MANAGERS.map((name) => (
             <ToggleGroup.Item key={name} value={name} className="px-2 font-mono text-xs">

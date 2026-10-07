@@ -1,108 +1,108 @@
-# Publish və deploy rəhbəri
+# Publish and deploy guide
 
-Bu sənəd `@habibmustafa/ui`-ni **npm-ə çıxarmaq** və playground saytını
-(`ui.habibmustafa.me`) **Cloudflare-də deploy etmək** üçün bütün prosesi izah edir.
-Məqsəd: bir neçə ay sonra geri qayıdıb hər şeyi sıfırdan xatırlamaq.
+This document explains the whole process for **releasing `@habibmustafa/ui` to npm** and
+**deploying the playground site** (`ui.habibmustafa.me`) **on Cloudflare**.
+Goal: to be able to come back a few months later and remember everything from scratch.
 
-Bu fayl `docs/` qovluğundadır — npm paketinin içinə girmir (`package.json`-un
-`files` siyahısına baxın), yəni sadəcə GitHub repo-da qalır, konsumerlər görmür.
+This file is in the `docs/` folder — it does not go into the npm package (see the `files`
+list in `package.json`), i.e. it stays only in the GitHub repo; consumers don't see it.
 
 ---
 
-## 1. İki ayrı "deploy" var, qarışdırma
+## 1. There are two separate "deploys", don't mix them up
 
-| | Nə | Harada | Necə tetiklənir |
+| | What | Where | How it is triggered |
 |---|---|---|---|
-| **npm publish** | `@habibmustafa/ui` kitabxanasının özü | npmjs.com | "Version Packages" PR-ı `main`-ə merge olunanda (Changesets) |
-| **Playground deploy** | Demo sayt (bütün komponentləri göstərən) | Cloudflare Workers, `ui.habibmustafa.me` | `main`-ə hər push-da avtomatik |
+| **npm publish** | The `@habibmustafa/ui` library itself | npmjs.com | When the "Version Packages" PR is merged into `main` (Changesets) |
+| **Playground deploy** | Demo site (showing all components) | Cloudflare Workers, `ui.habibmustafa.me` | Automatically on every push to `main` |
 
-İkisi tamam ayrı sistemlərdir, ayrı tetiklənir, ayrı fayllardan asılıdır.
+The two are completely separate systems, triggered separately, depending on separate files.
 
 ---
 
-## 2. npm-ə yeni versiya çıxarmaq (Changesets)
+## 2. Releasing a new version to npm (Changesets)
 
-Versiya, CHANGELOG, tag və GitHub Release artıq əl ilə edilmir —
-[Changesets](https://github.com/changesets/changesets) edir. Fikir belədir: hər PR öz
-dəyişikliyini `.changeset/*.md` faylı kimi qeyd edir, bu fayllar yığılır, sonra bir
-"Version Packages" PR-ı hamısını bir versiyaya çevirir.
+Version, CHANGELOG, tag and GitHub Release are no longer done by hand —
+[Changesets](https://github.com/changesets/changesets) does it. The idea is: each PR records its
+change as a `.changeset/*.md` file, these files accumulate, and then a single
+"Version Packages" PR turns them all into one version.
 
-### Bir dəfəlik qurulmuş şeylər
+### Things set up once
 
-- **Trusted Publishing (OIDC)** — `NPM_TOKEN` secret-i YOXDUR, lazım da deyil.
-  npmjs.com-da paketin **Settings → Trusted Publisher** bölməsində GitHub
-  provayderi əlavə edilib: repo `habibmustafa/ui`, workflow faylı
-  `.github/workflows/publish.yml`. GitHub Actions hər run-da OIDC vasitəsilə
-  öz kimliyini sübut edir, npm bunu həmin qeydlə tutuşdurur.
-  - **Workflow faylının adı `publish.yml` qalmalıdır** — npm məhz bu adı yoxlayır.
-  - Əgər bunu YENİDƏN qurmaq lazım olsa (məs. repo adı dəyişsə): npmjs.com →
+- **Trusted Publishing (OIDC)** — there is NO `NPM_TOKEN` secret, and none is needed.
+  On npmjs.com, in the package's **Settings → Trusted Publisher** section, a GitHub
+  provider has been added: repo `habibmustafa/ui`, workflow file
+  `.github/workflows/publish.yml`. GitHub Actions proves its identity via OIDC on every run,
+  and npm matches it against that record.
+  - **The workflow file name must stay `publish.yml`** — npm checks exactly this name.
+  - If this ever needs to be set up AGAIN (e.g. if the repo name changes): npmjs.com →
     `npmjs.com/package/@habibmustafa/ui` → Settings → Trusted Publisher →
     GitHub → Repository: `habibmustafa/ui`, Workflow filename: `publish.yml`.
-  - `publish.yml`-də `permissions.id-token: write` və `npm install -g npm@latest`
-    addımı saxlanmalıdır (OIDC npm CLI ≥11.5.1 tələb edir).
-- **GitHub repo ayarı (bir dəfə, əl ilə):** Settings → Actions → General →
-  **"Allow GitHub Actions to create and approve pull requests"** aktiv olmalıdır,
-  yoxsa workflow "Version Packages" PR-ını aça bilməz.
+  - `publish.yml` must keep `permissions.id-token: write` and the `npm install -g npm@latest`
+    step (OIDC requires npm CLI ≥11.5.1).
+- **GitHub repo setting (once, by hand):** Settings → Actions → General →
+  **"Allow GitHub Actions to create and approve pull requests"** must be enabled,
+  otherwise the workflow cannot open the "Version Packages" PR.
 - **`.changeset/config.json`** — `access: "public"`, `baseBranch: "main"`.
-- **`.github/workflows/publish.yml`** — `main`-ə hər push-da `changesets/action` işləyir:
-  - `.changeset/`-də gözləyən fayl varsa → "Version Packages" PR-ını açır/yeniləyir
-    (`npm run version-packages`: `package.json` versiyası, `CHANGELOG.md`,
-    `package-lock.json`, istifadə olunmuş changeset faylları silinir).
-  - Gözləyən fayl yoxdursa və `package.json`-dakı versiya npm-də hələ yoxdursa (yəni
-    həmin PR indicə merge olunub) → `npm run release`: `npm run verify` +
-    `changeset publish` (`npm publish --provenance`), sonra `vX.Y.Z` tag-i və GitHub
-    Release yaradılır.
+- **`.github/workflows/publish.yml`** — on every push to `main`, `changesets/action` runs:
+  - If there are pending files in `.changeset/` → opens/updates the "Version Packages" PR
+    (`npm run version-packages`: `package.json` version, `CHANGELOG.md`,
+    `package-lock.json`, consumed changeset files are deleted).
+  - If there are no pending files and the version in `package.json` is not yet on npm (i.e.
+    that PR was just merged) → `npm run release`: `npm run verify` +
+    `changeset publish` (`npm publish --provenance`), then the `vX.Y.Z` tag and GitHub
+    Release are created.
 
-### Hər dəyişiklikdə (PR-da)
+### On every change (in the PR)
 
-Kitabxananı istifadə edənlərin görəcəyi dəyişiklik (fix, yeni komponent, breaking
-change) edirsənsə, eyni PR-a changeset əlavə et:
+If you are making a change that library users will see (fix, new component, breaking
+change), add a changeset to the same PR:
 
 ```sh
-npx changeset      # paketi seç, bump növünü seç, qısa təsvir yaz
+npx changeset      # pick the package, pick the bump type, write a short description
 ```
 
-Bu `.changeset/<təsadüfi-ad>.md` yaradır — onu da commit et. Əl ilə də yazmaq olar:
+This creates `.changeset/<random-name>.md` — commit it too. You can also write it by hand:
 
 ```md
 ---
 "@habibmustafa/ui": minor
 ---
 
-`Pagination` komponenti əlavə olundu.
+Added the `Pagination` component.
 ```
 
-**Bump növü (0.x mərhələsində):** breaking change və yeni komponent/feature → `minor`,
-bug fix → `patch`. `major` seçmə — o, paketi 1.0.0-a çıxarır.
+**Bump type (during the 0.x stage):** breaking change and new component/feature → `minor`,
+bug fix → `patch`. Don't pick `major` — it takes the package to 1.0.0.
 
-Yalnız playground, sənəd, test, CI dəyişiklikləri üçün changeset lazım deyil.
+No changeset is needed for playground-only, docs, test or CI changes.
 
-### Versiya çıxarmaq
+### Releasing a version
 
-1. Changeset-li PR-lar `main`-ə merge olunur.
-2. Workflow avtomatik **"Version Packages"** PR-ı açır (sonrakı merge-lərdə onu
-   yeniləyir). PR-da yeni versiyanı və CHANGELOG-u yoxla.
-3. Hazır olanda həmin PR-ı **merge et** — workflow npm-ə publish edir, tag və GitHub
-   Release yaradır. Başqa heç nə etmə: versiyanı əl ilə dəyişmə, Release-i əl ilə yaratma.
-4. **Yoxla**: `github.com/habibmustafa/ui/actions` → "Publish" yaşıl ✓,
-   `npmjs.com/package/@habibmustafa/ui` yeni versiyanı göstərməlidir.
+1. PRs with changesets are merged into `main`.
+2. The workflow automatically opens a **"Version Packages"** PR (and updates it on subsequent
+   merges). Check the new version and the CHANGELOG in the PR.
+3. When ready, **merge** that PR — the workflow publishes to npm and creates the tag and GitHub
+   Release. Do nothing else: don't change the version by hand, don't create the Release by hand.
+4. **Verify**: `github.com/habibmustafa/ui/actions` → "Publish" green ✓,
+   `npmjs.com/package/@habibmustafa/ui` should show the new version.
 
-### Publish uğursuz olarsa
+### If publish fails
 
-Versiya commit-i `main`-də artıq var, amma npm-də yoxdur — workflow-u yenidən
-işlətmək kifayətdir (Actions → Publish → **Re-run jobs**): `changeset publish` yalnız
-npm-də olmayan versiyanı publish edir, ikinci dəfə cəhd təhlükəsizdir. Səbəb kodda idisə,
-düzəlişi `main`-ə push et — həmin push-un run-ı da eyni şəkildə publish edəcək.
+The version commit is already on `main` but not on npm — re-running the workflow
+is enough (Actions → Publish → **Re-run jobs**): `changeset publish` publishes only
+the version that is not on npm, so a second attempt is safe. If the cause was in the code,
+push the fix to `main` — that push's run will publish in the same way.
 
-## 3. Playground-u Cloudflare-də deploy etmək
+## 3. Deploying the playground on Cloudflare
 
-### Necə işləyir (bir dəfəlik qurulub)
+### How it works (set up once)
 
-Cloudflare-də **Workers & Pages → `ui` layihəsi** GitHub repo-ya bağlıdır
-("Workers Builds" / Git integration). **Hər `main`-ə push avtomatik yeni
-deploy tetikləyir** — əlavə addım lazım deyil.
+On Cloudflare, **Workers & Pages → the `ui` project** is connected to the GitHub repo
+("Workers Builds" / Git integration). **Every push to `main` automatically triggers a new
+deploy** — no extra step is needed.
 
-Konfiqurasiya **dashboard-da deyil**, repo-dakı `wrangler.toml` faylındadır:
+The configuration is **not in the dashboard**; it is in the `wrangler.toml` file in the repo:
 
 ```toml
 name = "ui"
@@ -116,119 +116,119 @@ directory = "./playground-dist"
 not_found_handling = "404-page"
 ```
 
-- `[build].command` — Cloudflare bunu özü işlədib `playground-dist/` qovluğunu
-  yaradır.
-- `[assets].directory` — hansı qovluq yüklənsin.
-- `not_found_handling = "404-page"` — SPA-nın client-side router-i (`/components/dialog`
-  kimi) hard-refresh-də işləsin deyə. **`"single-page-application"` YAZMA** —
-  bu konkret layihə üçün Cloudflare-in daxili `_redirects` validatoru onu "sonsuz
-  dövr" kimi rədd edir (bax §5, "Bilinən problemlər"). `"404-page"` + `build:playground`
-  skriptinin `index.html`-i `404.html`-ə kopyalaması bunun əvəzinədir.
+- `[build].command` — Cloudflare runs this itself and creates the `playground-dist/`
+  folder.
+- `[assets].directory` — which folder to upload.
+- `not_found_handling = "404-page"` — so that the SPA's client-side router (e.g. `/components/dialog`)
+  works on hard refresh. **DO NOT WRITE `"single-page-application"`** —
+  for this specific project, Cloudflare's internal `_redirects` validator rejects it as an "infinite
+  loop" (see §5, "Known issues"). `"404-page"` + the `build:playground`
+  script copying `index.html` to `404.html` is the replacement for it.
 
-**Domen**: `ui.habibmustafa.me` → Cloudflare Pages/Workers layihəsinin
-**Custom domains** bölməsində əlavə edilib. Domen artıq Cloudflare-in öz
-nameserver-lərindədir, ona görə DNS/SSL avtomatik qurulur, əl ilə heç nə etmə.
+**Domain**: `ui.habibmustafa.me` → added in the **Custom domains** section of the Cloudflare Pages/Workers project.
+The domain is already on Cloudflare's own
+nameservers, so DNS/SSL is set up automatically; don't do anything by hand.
 
-### Yeni deploy üçün nə etməli
+### What to do for a new deploy
 
-**Heç nə.** `main`-ə push elə, Cloudflare özü tutur. Statusu yoxlamaq üçün:
-`dash.cloudflare.com` → Workers & Pages → `ui` → **Deployments** tab-ı.
+**Nothing.** Push to `main`, and Cloudflare picks it up itself. To check the status:
+`dash.cloudflare.com` → Workers & Pages → `ui` → **Deployments** tab.
 
-Əl ilə, lokal maşından deploy etmək istəsən (nadir hal):
+If you want to deploy manually from a local machine (rare case):
 ```sh
-npx wrangler deploy          # əsl deploy
-npx wrangler deploy --dry-run  # yalnız yoxlama, deploy etmir
+npx wrangler deploy          # real deploy
+npx wrangler deploy --dry-run  # check only, does not deploy
 ```
-(`wrangler login` ilə əvvəlcə Cloudflare hesabına autentifikasiya lazımdır.)
+(You first need to authenticate to the Cloudflare account with `wrangler login`.)
 
 ---
 
-## 4. GitHub Actions — nə vaxt nə işləyir
+## 4. GitHub Actions — what runs when
 
-| Fayl | Tetiklənmə | Nə edir |
+| File | Trigger | What it does |
 |---|---|---|
-| `.github/workflows/ci.yml` | hər `push` (main) və hər PR | `build:lib`, `lint`, `check:classes`, `check:api`, `test`, `build:playground` — hamısı keçməlidir. `check:api` playground-un API cədvəllərinin (`playground/generated/api.ts`) tiplərlə sinxron olduğunu yoxlayır; komponentin props-unu dəyişəndə `npm run api:generate` işlət və nəticəni commit et. `check:tokens` ayrıca job, şəbəkə asılı olduğu üçün uğursuz olsa belə PR-u bloklamır (`continue-on-error: true`). |
-| `.github/workflows/publish.yml` | hər `push` (main) | Changesets: gözləyən changeset varsa "Version Packages" PR-ı açır/yeniləyir; yoxdursa və versiya npm-də yoxdursa `npm run verify` + `changeset publish` + tag + GitHub Release. |
-| Cloudflare Workers Builds | hər push (main) | `wrangler.toml`-dan oxuyur, playground-u build edib deploy edir. Bu, GitHub Actions-un hissəsi DEYİL — Cloudflare-in öz sistemidir, repo-ya qoşulub. |
+| `.github/workflows/ci.yml` | every `push` (main) and every PR | `build:lib`, `lint`, `check:classes`, `check:api`, `test`, `build:playground` — all must pass. `check:api` verifies that the playground's API tables (`playground/generated/api.ts`) are in sync with the types; when you change a component's props, run `npm run api:generate` and commit the result. `check:tokens` is a separate job; because it depends on the network, it does not block the PR even if it fails (`continue-on-error: true`). |
+| `.github/workflows/publish.yml` | every `push` (main) | Changesets: if there is a pending changeset, opens/updates the "Version Packages" PR; if not, and the version is not on npm, `npm run verify` + `changeset publish` + tag + GitHub Release. |
+| Cloudflare Workers Builds | every push (main) | Reads from `wrangler.toml`, builds the playground and deploys it. This is NOT part of GitHub Actions — it is Cloudflare's own system, connected to the repo. |
 
-**Node versiyası: 22** (həm CI-də, həm `package.json`-un `engines`-ində).
-`scripts/check-classes.mjs` `node:fs`-in `globSync`-ini işlədir, bu yalnız
-Node 22+-da var — Node 20 yazsan CI sınar.
-
----
-
-## 5. Bilinən problemlər (bu dəfə həll olunub, gələcəkdə təkrarlanmasın)
-
-Bunlar bu layihənin ilk dəfə tam CI/deploy zənciri qurulanda üzə çıxan, həqiqi
-kök-səbəbli problemlər idi. Əgər gələcəkdə oxşar xəta görsən, əvvəlcə burayı yoxla:
-
-1. **`npm run check:classes` CI-də `globSync is not exported` xətası verir**
-   → Node versiyası 20-dir, 22 olmalıdır. `ci.yml`/`publish.yml`-də `node-version`
-   və `package.json`-da `engines.node`.
-
-2. **Cloudflare deploy "`_redirects` — infinite loop detected (code 100324)" xətası**
-   → `wrangler.toml`-da `not_found_handling = "single-page-application"` yazılıbsa,
-   bunu dəyişmə — Cloudflare-in öz SPA-fallback generasiyası bu layihə üçün bu
-   xətanı yaradır. `"404-page"` işlət (yuxarıda §3).
-
-3. **Golden snapshot testləri (`tests/golden/*.html`) CI-də (Linux) keçmir,
-   lokalda (Windows) keçir** — bunun 3 fərqli kökü var idi, hamısı
-   `tests/golden/normalize.ts` və ya `tests/setup.ts`-də düzəldilib:
-   - **Atribut sırası** (`<rect x="3" rx="2" ...>` vs `<rect rx="2" ... x="3">`):
-     `normalize.ts`-dəki köhnə kod `.sort((a,b) => a.localeCompare(b))` işlədirdi.
-     **`localeCompare` əlifba sırası DEYİL, locale-collation-dur** —
-     `"x".localeCompare("rx")` mənfi qayıdır (!), nəticə host-un ICU locale
-     data-sına görə dəyişir. Həll: `(a < b ? -1 : a > b ? 1 : 0)` kimi sadə
-     müqayisə. **Heç vaxt `localeCompare`-i sırf-texniki (atribut adı, fayl
-     adı və s.) sort üçün işlətmə** — yalnız real, oxunan mətn (istifadəçi adı
-     kimi) sıralamaq üçün uyğundur.
-   - **Saat fərqi** (`13:30:00` vs `09:30:00`, 4 saat = Bakı UTC+4):
-     `TimestampInfo` komponenti brauzerin lokal saat zonasında göstərir (bu,
-     düzgün davranışdır, dəyişmə). Test mühiti saat zonasını təyin etmirdi.
-     Həll: `tests/setup.ts`-də `process.env.TZ = "UTC"`.
-   - **Min ayırıcısı** (`4.724` vs `4,724`): playground nümunələri
-     `value.toLocaleString(undefined, {...})` işlədirdi — `undefined` locale
-     host-un default-una düşür (Windows-da nöqtə, Linux-da vergül). Həll:
-     `toLocaleString('en-US', {...})` — amma YALNIZ `playground/examples/`
-     içindəki demo fayllarında, əsl komponent mənbəyində (`chart.tsx`,
-     `metric-card-parts.tsx`) YOX, çünki o, real kitabxana davranışıdır,
-     test artefaktı deyil.
-
-   **Ümumi dərs**: istənilən kod `toLocaleString`, `localeCompare`,
-   `Intl.*`, saat zonası və ya locale-dən asılı nəticə verirsə, lokal maşın
-   (Windows) və CI (Linux, UTC, en-US-vari locale) arasında FƏRQLİ nəticə verə
-   bilər — hətta eyni `package-lock.json`, eyni Node versiyası olsa belə.
-   Test/golden-snapshot kodunda bunları ya tamam sil (atribut sırası kimi mənasız
-   yerdə), ya da aydın şəkildə pin et (TZ, locale).
-
-4. **Publish workflow `npm error code ENEEDAUTH` və ya `EOTP` ilə uğursuz olur**
-   → Bu, `NPM_TOKEN` secret-dən istifadə edəndə rastlaşdığımız problem idi
-   (token tipi "Granular Access Token" idi, 2FA-writes ayarını bypass etmirdi,
-   CI-də OTP istəyirdi). Həlli token-i düzəltmək YOX, bütün token sistemindən
-   **Trusted Publishing**-ə keçmək oldu (yuxarıda §2-dəki "Bir dəfəlik qurulmuş
-   şeylər"). İndi `publish.yml`-də `NODE_AUTH_TOKEN`/`NPM_TOKEN` heç yoxdur —
-   bu xətaları YENİDƏN görsən, deməli kimsə workflow-u token-based formaya
-   geri qaytarıb, ya da npmjs.com-dakı Trusted Publisher qeydini silib/dəyişib.
+**Node version: 22** (both in CI and in `package.json`'s `engines`).
+`scripts/check-classes.mjs` uses `node:fs`'s `globSync`, which exists only in
+Node 22+ — if you write Node 20, CI will break.
 
 ---
 
-## 6. Tez-sürətli xülasə ("yeni versiya çıxarmaq istəyirəm, nə edim?")
+## 5. Known issues (solved this time, so they don't recur in the future)
+
+These were real, root-caused problems that surfaced when this project's full CI/deploy chain was
+first set up. If you see a similar error in the future, check here first:
+
+1. **`npm run check:classes` fails in CI with a `globSync is not exported` error**
+   → The Node version is 20; it must be 22. `node-version` in `ci.yml`/`publish.yml`
+   and `engines.node` in `package.json`.
+
+2. **Cloudflare deploy error "`_redirects` — infinite loop detected (code 100324)"**
+   → If `not_found_handling = "single-page-application"` is written in `wrangler.toml`,
+   change it — Cloudflare's own SPA-fallback generation produces this
+   error for this project. Use `"404-page"` (§3 above).
+
+3. **Golden snapshot tests (`tests/golden/*.html`) fail in CI (Linux)
+   but pass locally (Windows)** — this had 3 different root causes, all fixed in
+   `tests/golden/normalize.ts` or `tests/setup.ts`:
+   - **Attribute order** (`<rect x="3" rx="2" ...>` vs `<rect rx="2" ... x="3">`):
+     the old code in `normalize.ts` used `.sort((a,b) => a.localeCompare(b))`.
+     **`localeCompare` is NOT alphabetical order, it is locale collation** —
+     `"x".localeCompare("rx")` returns negative (!), and the result varies with the host's ICU locale
+     data. Fix: a simple comparison like `(a < b ? -1 : a > b ? 1 : 0)`.
+     **Never use `localeCompare` for purely technical sorting (attribute names, file
+     names, etc.)** — it is only suitable for sorting real, human-readable text (such as
+     user names).
+   - **Time difference** (`13:30:00` vs `09:30:00`, 4 hours = Baku UTC+4):
+     the `TimestampInfo` component displays in the browser's local time zone (this is
+     correct behavior, don't change it). The test environment did not set a time zone.
+     Fix: `process.env.TZ = "UTC"` in `tests/setup.ts`.
+   - **Thousands separator** (`4.724` vs `4,724`): playground examples
+     used `value.toLocaleString(undefined, {...})` — an `undefined` locale
+     falls back to the host's default (a dot on Windows, a comma on Linux). Fix:
+     `toLocaleString('en-US', {...})` — but ONLY in the demo files inside
+     `playground/examples/`, NOT in the actual component source (`chart.tsx`,
+     `metric-card-parts.tsx`), because that is real library behavior,
+     not a test artifact.
+
+   **General lesson**: any code whose output depends on `toLocaleString`, `localeCompare`,
+   `Intl.*`, the time zone or the locale can produce DIFFERENT results between the local machine
+   (Windows) and CI (Linux, UTC, en-US-like locale) — even with the same
+   `package-lock.json` and the same Node version.
+   In test/golden-snapshot code, either remove these entirely (in meaningless places such as
+   attribute order), or pin them explicitly (TZ, locale).
+
+4. **The publish workflow fails with `npm error code ENEEDAUTH` or `EOTP`**
+   → This was the problem we hit when using the `NPM_TOKEN` secret
+   (the token type was "Granular Access Token", it did not bypass the 2FA-writes setting,
+   and it asked for an OTP in CI). The fix was NOT to fix the token but to move from the whole token system to
+   **Trusted Publishing** ("Things set up once" in §2 above). Now `publish.yml` has no
+   `NODE_AUTH_TOKEN`/`NPM_TOKEN` at all —
+   if you see these errors AGAIN, it means someone has reverted the workflow to the token-based form,
+   or deleted/changed the Trusted Publisher record on npmjs.com.
+
+---
+
+## 6. Quick summary ("I want to release a new version, what do I do?")
 
 ```sh
-# 1. Dəyişikliyi edən PR-da changeset əlavə et
-npx changeset          # minor / patch seç, təsvir yaz
+# 1. Add a changeset in the PR that makes the change
+npx changeset          # pick minor / patch, write a description
 git add .changeset && git commit -m "Add changeset"
 
-# 2. PR-ı main-ə merge et
-#    -> workflow "Version Packages" PR-ı açır
+# 2. Merge the PR into main
+#    -> the workflow opens the "Version Packages" PR
 
-# 3. "Version Packages" PR-ını yoxla və merge et
-#    -> workflow npm-ə publish edir, vX.Y.Z tag-i və GitHub Release yaradır
+# 3. Review and merge the "Version Packages" PR
+#    -> the workflow publishes to npm, creates the vX.Y.Z tag and the GitHub Release
 
-# 4. Yoxla:
-#    github.com/habibmustafa/ui/actions  (Publish workflow yaşıl olmalı)
-#    npmjs.com/package/@habibmustafa/ui  (yeni versiya görünməli)
+# 4. Verify:
+#    github.com/habibmustafa/ui/actions  (Publish workflow should be green)
+#    npmjs.com/package/@habibmustafa/ui  (the new version should be visible)
 
-# Playground (ui.habibmustafa.me) - əlavə iş lazım deyil, main-ə hər push onu
-# avtomatik deploy edir.
+# Playground (ui.habibmustafa.me) - no extra work needed, every push to main
+# deploys it automatically.
 ```
