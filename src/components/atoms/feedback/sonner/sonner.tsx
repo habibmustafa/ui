@@ -75,3 +75,6 @@ const SonnerToaster = ({ toastOptions, ...props }: ToasterProps) => {
 }
 
 export { SonnerToaster }
+// Re-exported so apps call toast() from the same sonner instance SonnerToaster
+// renders, without a separate (possibly duplicated) `sonner` install.
+export { toast } from 'sonner'

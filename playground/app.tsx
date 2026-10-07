@@ -1,4 +1,4 @@
-import { Home, Menu, Palette, Search, Type as TypeIcon } from "lucide-react";
+import { Home, LayoutGrid, Menu, Palette, Rocket, Search, Type as TypeIcon } from "lucide-react";
 import {
   lazy,
   Suspense,
@@ -19,21 +19,36 @@ import {
   type CommandGroupData,
 } from "../src";
 import { ComponentPreview, previewAnchor } from "./component-preview";
+import { CATALOG } from "./catalog";
 import { Preview, Swatch } from "./docs";
+import { GithubIcon } from "./icons";
 import { Link, Navigate, useRouter } from "./router";
-import {
-  COMPONENT_GROUPS,
-  findComponent,
-  type ComponentPreviewSpec,
-} from "./registry";
+import { findComponent, type ComponentPreviewSpec } from "./registry";
 
 // The generated props data is ~190KB; keep it out of the main bundle until a
 // component page actually needs it.
 const ApiReference = lazy(() => import("./api-reference"));
+// Intro pages pull in their live demos (forms, pickers, zod); component pages don't.
+const HomePage = lazy(() => import("./pages/home"));
+const GettingStartedPage = lazy(() => import("./pages/getting-started"));
+const ComponentsIndexPage = lazy(() => import("./pages/components-index"));
+
+const GITHUB_URL = "https://github.com/habibmustafa/ui";
+
+/** Top-level pages, shared by the sidebar and the search palette. */
+const PAGES = [
+  { to: "/", label: "Giriş", search: "Giriş ana səhifə home", icon: Home },
+  { to: "/getting-started", label: "Başlanğıc", search: "Başlanğıc quraşdırma getting started install", icon: Rocket },
+  { to: "/components", label: "Komponentlər", search: "Komponentlər components", icon: LayoutGrid },
+  { to: "/colors", label: "Rənglər", search: "Rənglər colors tokens", icon: Palette },
+  { to: "/typography", label: "Tipoqrafiya", search: "Tipoqrafiya typography", icon: TypeIcon },
+];
 
 /*
  * Route map:
- *   /                     → overview (tokens + component index)
+ *   /                     → landing (install, live examples, catalog)
+ *   /getting-started      → step-by-step setup
+ *   /components           → filterable component index (?group=<role>)
  *   /colors, /typography  → token pages
  *   /components/<id>      → one page per component (id = registry entry id)
  * Unknown paths redirect to "/" via <Navigate>.
@@ -56,38 +71,29 @@ const commandRootClassName =
  */
 function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
   const { path } = useRouter();
+  const pathname = path.split("?")[0];
 
   return (
     <nav className="flex min-w-[220px] flex-col gap-6 py-6 lg:py-8">
       <div className="flex flex-col gap-2">
         <p className="font-mono text-xs uppercase text-foreground-muted">
-          Overview
+          Sənədlər
         </p>
-        <Link
-          to="/"
-          onClick={onNavigate}
-          className={path === "/" ? activeNavLink : navLink}
-        >
-          Components
-        </Link>
-        <Link
-          to="/colors"
-          onClick={onNavigate}
-          className={path === "/colors" ? activeNavLink : navLink}
-        >
-          Colors
-        </Link>
-        <Link
-          to="/typography"
-          onClick={onNavigate}
-          className={path === "/typography" ? activeNavLink : navLink}
-        >
-          Typography
-        </Link>
+        {PAGES.map((page) => (
+          <Link
+            key={page.to}
+            to={page.to}
+            onClick={onNavigate}
+            aria-current={pathname === page.to ? "page" : undefined}
+            className={pathname === page.to ? activeNavLink : navLink}
+          >
+            {page.label}
+          </Link>
+        ))}
       </div>
 
-      {COMPONENT_GROUPS.map((group) => (
-        <div key={group.title} className="flex flex-col gap-2">
+      {CATALOG.map((group) => (
+        <div key={group.key} className="flex flex-col gap-2">
           <p className="font-mono text-xs uppercase text-foreground-muted">
             {group.title}
           </p>
@@ -98,6 +104,7 @@ function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
                 key={entry.id}
                 to={href}
                 onClick={onNavigate}
+                aria-current={path === href ? "page" : undefined}
                 className={path === href ? activeNavLink : navLink}
               >
                 {entry.title}
@@ -143,33 +150,20 @@ function CommandMenu() {
     () => [
       {
         key: "pages",
-        heading: "Pages",
-        items: [
-          {
-            key: "overview",
-            value: "Components overview",
-            label: "Components",
-            icon: <Home className={commandItemIcon} />,
-            onSelect: () => go("/"),
-          },
-          {
-            key: "colors",
-            value: "Colors tokens",
-            label: "Colors",
-            icon: <Palette className={commandItemIcon} />,
-            onSelect: () => go("/colors"),
-          },
-          {
-            key: "typography",
-            value: "Typography tokens",
-            label: "Typography",
-            icon: <TypeIcon className={commandItemIcon} />,
-            onSelect: () => go("/typography"),
-          },
-        ],
+        heading: "Səhifələr",
+        items: PAGES.map((page) => {
+          const Icon = page.icon;
+          return {
+            key: page.to,
+            value: page.search,
+            label: page.label,
+            icon: <Icon className={commandItemIcon} />,
+            onSelect: () => go(page.to),
+          };
+        }),
       },
-      ...COMPONENT_GROUPS.map((group) => ({
-        key: group.title,
+      ...CATALOG.map((group) => ({
+        key: group.key,
         heading: group.title,
         items: group.entries.map((entry) => {
           const Icon = entry.icon;
@@ -183,7 +177,7 @@ function CommandMenu() {
         }),
       })),
     ],
-    // COMPONENT_GROUPS is a module-level constant — this never actually reruns.
+    // CATALOG and PAGES are module-level constants — this never actually reruns.
     []
   );
 
@@ -294,8 +288,30 @@ function Header() {
           </Badge>
         </div>
 
+        <nav aria-label="Əsas" className="ml-4 hidden items-center gap-5 md:flex">
+          {PAGES.slice(1, 3).map((page) => (
+            <Link
+              key={page.to}
+              to={page.to}
+              aria-current={path.split("?")[0] === page.to ? "page" : undefined}
+              className={path.split("?")[0] === page.to ? activeNavLink : navLink}
+            >
+              {page.label}
+            </Link>
+          ))}
+        </nav>
+
         <div className="ml-auto flex items-center gap-3">
           <CommandMenu />
+          <a
+            href={GITHUB_URL}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="GitHub repozitoriyası"
+            className="focus-ring inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-foreground-light transition-colors hover:bg-surface-100 hover:text-foreground"
+          >
+            <GithubIcon className="h-4 w-4" />
+          </a>
           <ThemeToggle />
         </div>
       </div>
@@ -322,56 +338,12 @@ function PageHeader({ title, description }: { title: string; description: string
   )
 }
 
-function Overview() {
-  return (
-    <div className="flex flex-col">
-      <h1 className="scroll-m-20 text-4xl tracking-tight">Components</h1>
-      <p className="mt-2 text-lg text-foreground-light">
-        React components, patterns and design tokens for ui.
-      </p>
-      <div
-        role="none"
-        className="mt-6 mb-6 h-px w-full shrink-0 bg-border-muted"
-      />
-      {COMPONENT_GROUPS.map((group) => (
-        <div key={group.title} className="mb-10">
-          <p className="font-mono text-xs uppercase text-foreground-muted">
-            {group.title}
-          </p>
-          <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {group.entries.map((entry) => {
-              const Icon = entry.icon;
-              return (
-                <Link
-                  key={entry.id}
-                  to={`/components/${entry.id}`}
-                  className="focus-ring group flex gap-3 rounded-md border bg-studio p-4 transition-colors hover:border-foreground-lighter"
-                >
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border bg-surface-100 text-foreground-muted transition-colors group-hover:text-foreground">
-                    <Icon className="h-4 w-4" />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-sm font-medium">{entry.title}</p>
-                    <p className="mt-1 line-clamp-2 text-xs text-foreground-light">
-                      {entry.description}
-                    </p>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 function ColorsPage() {
   return (
     <div>
       <PageHeader
-        title="Colors"
-        description="Semantic tokens derived in OKLCH from a single hue, surface and contrast input."
+        title="Rənglər"
+        description="Semantik tokenlər — OKLCH-də ton, səth və kontrast girişlərindən törəyir."
       />
       <Preview label="Surfaces" align="start">
         <Swatch token="bg-background" className="bg-background" />
@@ -402,8 +374,8 @@ function TypographyPage() {
   return (
     <div>
       <PageHeader
-        title="Typography"
-        description="Inter-tuned scale: text-sm is 13px and text-base 15px, with normal weight at 450."
+        title="Tipoqrafiya"
+        description="Inter üçün tənzimlənmiş şkala: text-sm 13px, text-base 15px, normal qalınlıq 450."
       />
       <Preview label="Scale" align="start">
         <div className="flex flex-col gap-2">
@@ -486,26 +458,47 @@ export function App() {
     window.scrollTo({ top: 0 });
   }, [path]);
 
+  const pathname = path.split("?")[0];
   let page: ReactNode;
-  if (path === "/") {
-    page = <Overview />;
-  } else if (path === "/colors") {
+  let title: string | undefined;
+  if (pathname === "/") {
+    page = <HomePage />;
+  } else if (pathname === "/getting-started") {
+    page = <GettingStartedPage />;
+    title = "Başlanğıc";
+  } else if (pathname === "/components") {
+    page = <ComponentsIndexPage />;
+    title = "Komponentlər";
+  } else if (pathname === "/colors") {
     page = <ColorsPage />;
-  } else if (path === "/typography") {
+    title = "Rənglər";
+  } else if (pathname === "/typography") {
     page = <TypographyPage />;
-  } else if (path.startsWith("/components/")) {
-    page = <ComponentPage id={path.slice("/components/".length)} />;
+    title = "Tipoqrafiya";
+  } else if (pathname.startsWith("/components/")) {
+    const id = pathname.slice("/components/".length);
+    page = <ComponentPage id={id} />;
+    title = findComponent(id)?.title;
   } else {
     page = <Navigate to="/" />;
   }
+
+  useEffect(() => {
+    document.title = title ? `${title} — ui` : "ui — React 19 komponent kitabxanası";
+  }, [title]);
+
+  // The landing page runs full width; every other page reads next to the sidebar.
+  const isHome = pathname === "/";
 
   return (
     <div className="min-h-screen bg-studio text-foreground">
       <Header />
       <div className="flex">
-        <Sidebar />
+        {!isHome && <Sidebar />}
         <main className="min-w-0 flex-1 scroll-mt-14 px-6 py-8 outline-hidden md:px-10">
-          <div className="mx-auto max-w-4xl">{page}</div>
+          <div className={isHome ? "mx-auto max-w-6xl" : "mx-auto max-w-4xl"}>
+            <Suspense fallback={<div className="min-h-[60vh]" />}>{page}</Suspense>
+          </div>
         </main>
       </div>
       <SonnerToaster theme={resolvedTheme} />
