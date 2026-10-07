@@ -5,6 +5,7 @@ import { X } from 'lucide-react'
 import { Dialog as DialogPrimitive } from 'radix-ui'
 import * as React from 'react'
 
+import { modalBackdropClass } from '../../../../lib/modal-backdrop'
 import { cn } from '../../../../lib/utils'
 import { getExplicitTabIndex } from '../../../../lib/get-explicit-tab-index'
 
@@ -52,10 +53,8 @@ const DialogOverlay = React.forwardRef<
   <DialogPrimitive.Overlay
     ref={ref}
     className={cn(
-      'bg-black/40 backdrop-blur-xs',
+      modalBackdropClass,
       'z-50 fixed inset-0 grid place-items-center overflow-y-auto py-8',
-      // Backdrop fades in and out; it used to appear instantly and slide up on close.
-      'data-open:animate-backdrop-show data-closed:animate-backdrop-hide',
       !centered && 'flex flex-col flex-start pb-8 sm:pt-12 md:pt-20 lg:pt-32 xl:pt-40 px-5',
       className
     )}

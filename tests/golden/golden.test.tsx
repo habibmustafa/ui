@@ -38,6 +38,10 @@
 // - time-picker-*: the clock icon is now a "Choose time" button opening the clock dial.
 // - chart-*, metric-card-*, drawer-*.open: Recharts 3's ResponsiveContainer adds an inner
 //   sizing <div> (jsdom never measures a size, so no chart SVG renders here either way).
+// - dialog-*, alert-dialog-*, sheet-* (open): no backdrop-blur (it halved the open
+//   animation's frame rate); Dialog/AlertDialog draw the dim on the overlay's ::before so
+//   the panel's fade isn't multiplied by the backdrop's; AlertDialog's portal lost a
+//   wrapper <div> that made Radix skip the close animation.
 // - every form demo (FormLabel): the label carries an id (`…-form-item-label`) so controls
 //   a <label for> can't name (TimePicker's group, Slider thumbs, MultiSelector's trigger,
 //   ToggleGroup) can point aria-labelledby at it.
