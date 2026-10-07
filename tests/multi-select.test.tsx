@@ -121,3 +121,12 @@ test('arrow keys pick a chip and Backspace removes that one (keyboard path for d
   fireEvent.keyDown(combobox, { key: 'Backspace' })
   expect(onValuesChange).toHaveBeenLastCalledWith(['vue'])
 })
+
+test('options mode sends aria-describedby/-invalid to the trigger, keeping the remove hint', () => {
+  render(<Host initial={['react']} aria-describedby="help" aria-invalid />)
+  const describedBy = trigger().getAttribute('aria-describedby')!.split(' ')
+  expect(describedBy[0]).toBe('help')
+  expect(describedBy).toHaveLength(2)
+  expect(document.getElementById(describedBy[1])?.textContent).toMatch(/Backspace to remove/)
+  expect(trigger().getAttribute('aria-invalid')).toBe('true')
+})

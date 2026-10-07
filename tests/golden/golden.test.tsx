@@ -38,6 +38,16 @@
 // - time-picker-*: the clock icon is now a "Choose time" button opening the clock dial.
 // - chart-*, metric-card-*, drawer-*.open: Recharts 3's ResponsiveContainer adds an inner
 //   sizing <div> (jsdom never measures a size, so no chart SVG renders here either way).
+// - every form demo (FormLabel): the label carries an id (`…-form-item-label`) so controls
+//   a <label for> can't name (TimePicker's group, Slider thumbs, MultiSelector's trigger,
+//   ToggleGroup) can point aria-labelledby at it.
+// - select-*, combobox-*, form-*: the Select-style trigger gained aria-[invalid=true]
+//   destructive styles; multi-select-*: same for its trigger, and a consumer's
+//   aria-describedby now sits alongside the remove hint instead of replacing it.
+// - file-upload-*: the id moved from the hidden file input to the Browse button (the
+//   accessible control), whose text sits in a span aria-labelledby can reference.
+// - slider-*: thumbs gained an aria-[invalid=true] border; time-picker-*: the group is
+//   programmatically focusable (tabindex=-1, forwards focus to its first segment).
 import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, test } from "vitest";

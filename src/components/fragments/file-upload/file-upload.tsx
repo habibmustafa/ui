@@ -46,6 +46,7 @@ export interface FileUploadProps {
   disabled?: boolean
   /** Submitted with forms via the underlying file input. */
   name?: string
+  /** Goes on the Browse button — the accessible control — so `<label for>` names it. */
   id?: string
   /** Heading inside the drop zone. @default "Drag and drop files here" */
   label?: React.ReactNode
@@ -57,7 +58,12 @@ export interface FileUploadProps {
   showFileList?: boolean
   /** Messages for rejected files. */
   rejectionMessages?: Partial<Record<FileRejectionReason, string>>
+  /** Labels the Browse button (its own text is kept after the label). */
+  'aria-labelledby'?: string
   'aria-describedby'?: string
+  'aria-invalid'?: React.AriaAttributes['aria-invalid']
+  /** Called when the Browse button loses focus. */
+  onBlur?: React.FocusEventHandler<HTMLButtonElement>
   className?: string
   classNames?: FileUploadClassNames
 }
@@ -87,7 +93,10 @@ const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
       browseText = 'Browse files',
       showFileList = true,
       rejectionMessages,
+      'aria-labelledby': ariaLabelledby,
       'aria-describedby': ariaDescribedby,
+      'aria-invalid': ariaInvalid,
+      onBlur,
       className,
       classNames,
     },
@@ -102,6 +111,7 @@ const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
     const [dragging, setDragging] = React.useState(false)
     const dragDepth = React.useRef(0)
     const inputRef = React.useRef<HTMLInputElement>(null)
+    const browseRef = React.useRef<HTMLButtonElement>(null)
     React.useImperativeHandle(ref, () => inputRef.current as HTMLInputElement)
 
     // Mirror the selection (picked, dropped or removed) into the native input, so a form
@@ -117,8 +127,9 @@ const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
     React.useEffect(() => syncInput(files), [files, syncInput])
 
     const autoId = React.useId()
-    const inputId = id ?? autoId
-    const descriptionId = `${inputId}-description`
+    const browseId = id ?? autoId
+    const descriptionId = `${browseId}-description`
+    const invalid = ariaInvalid === true || ariaInvalid === 'true'
     const messages = { ...DEFAULT_REJECTION_MESSAGES, ...rejectionMessages }
     const limit = multiple ? maxFiles : 1
 
@@ -140,7 +151,7 @@ const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
     const removeFile = (index: number) => {
       setFiles(files.filter((_, i) => i !== index))
       setRejections([])
-      inputRef.current?.focus()
+      browseRef.current?.focus()
     }
 
     const dragHandlers = {
@@ -177,6 +188,7 @@ const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
           {...dragHandlers}
           data-dragging={dragging ? '' : undefined}
           data-disabled={disabled ? '' : undefined}
+          data-invalid={invalid ? '' : undefined}
           onClick={(event) => {
             if (disabled || (event.target as HTMLElement).closest('button, input')) return
             inputRef.current?.click()
@@ -184,6 +196,7 @@ const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
           className={cn(
             'flex cursor-pointer flex-col items-center justify-center gap-2 rounded-md border border-dashed border-strong bg-surface-100 px-6 py-8 text-center transition-colors',
             'hover:border-foreground-muted data-dragging:border-brand-default data-dragging:bg-brand-200/40',
+            'data-invalid:border-destructive-400 data-invalid:bg-destructive-200',
             'data-disabled:cursor-not-allowed data-disabled:opacity-50',
             classNames?.dropzone
           )}
@@ -198,18 +211,24 @@ const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
             </p>
           )}
           <Button
+            ref={browseRef}
+            id={browseId}
             variant="default"
             size="tiny"
             disabled={disabled}
+            // Point at the text, not the button itself: the button's own name would come
+            // from the `<label for>` that already names it, repeating the label.
+            aria-labelledby={ariaLabelledby ? `${ariaLabelledby} ${browseId}-text` : undefined}
             aria-describedby={describedBy || undefined}
+            aria-invalid={ariaInvalid}
+            onBlur={onBlur}
             onClick={() => inputRef.current?.click()}
             className="mt-1"
           >
-            {browseText}
+            <span id={`${browseId}-text`}>{browseText}</span>
           </Button>
           <input
             ref={inputRef}
-            id={inputId}
             type="file"
             name={name}
             accept={accept}
@@ -220,6 +239,9 @@ const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
             aria-hidden="true"
             tabIndex={-1}
             className="sr-only"
+            // Focusing the input (the forwarded ref, e.g. a form library focusing the
+            // field on an error) focuses the Browse button instead.
+            onFocus={() => browseRef.current?.focus()}
             onChange={(event) => {
               const picked = Array.from(event.target.files ?? [])
               // The picker replaced the input's FileList with just this pick; put the

@@ -1417,8 +1417,21 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "type": "string"
           },
           {
+            "name": "aria-labelledby",
+            "type": "string"
+          },
+          {
+            "name": "aria-describedby",
+            "type": "string"
+          },
+          {
             "name": "aria-invalid",
             "type": "boolean"
+          },
+          {
+            "name": "ref",
+            "type": "Ref<HTMLInputElement>",
+            "description": "The underlying `<input>`."
           }
         ],
         "extends": []
@@ -2272,7 +2285,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "thumbLabels",
             "type": "readonly string[]",
-            "description": "Accessible name per thumb, e.g. `['Minimum price', 'Maximum price']`. Without it\nevery thumb gets the slider's own `aria-label`/`aria-labelledby` — the thumbs are\nthe focusable `role=\"slider\"` elements, so that's where the name has to live."
+            "description": "Accessible name per thumb, e.g. `['Minimum price', 'Maximum price']`. Without it\nevery thumb gets the slider's own `aria-label`/`aria-labelledby` — the thumbs are\nthe focusable `role=\"slider\"` elements, so that's where the name has to live.\n`aria-describedby` and `aria-invalid` move onto the thumbs for the same reason."
           },
           {
             "name": "size",
@@ -2399,6 +2412,16 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "aria-invalid",
             "type": "boolean | \"true\" | \"false\" | \"grammar\" | \"spelling\""
+          },
+          {
+            "name": "onBlur",
+            "type": "((event: FocusEvent<HTMLDivElement, Element>) => void)",
+            "description": "Called when focus leaves the whole field (segments, clock button and dial)."
+          },
+          {
+            "name": "ref",
+            "type": "Ref<HTMLDivElement>",
+            "description": "The field's `role=\"group\"` element. Calling `focus()` on it moves focus to the first\nsegment, so form libraries can focus the field (e.g. react-hook-form on an error)."
           },
           {
             "name": "size",
@@ -7027,6 +7050,11 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "type": "boolean | \"true\" | \"false\" | \"grammar\" | \"spelling\""
           },
           {
+            "name": "onBlur",
+            "type": "FocusEventHandler<HTMLButtonElement>",
+            "description": "Called when focus leaves the trigger for anywhere but the open list."
+          },
+          {
             "name": "className",
             "type": "string"
           },
@@ -7491,8 +7519,21 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "type": "string"
           },
           {
+            "name": "aria-labelledby",
+            "type": "string"
+          },
+          {
+            "name": "aria-describedby",
+            "type": "string"
+          },
+          {
             "name": "aria-invalid",
             "type": "boolean"
+          },
+          {
+            "name": "ref",
+            "type": "Ref<HTMLInputElement>",
+            "description": "The underlying `<input>`."
           },
           {
             "name": "isInvalid",
@@ -7709,7 +7750,8 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           },
           {
             "name": "id",
-            "type": "string"
+            "type": "string",
+            "description": "Goes on the Browse button — the accessible control — so `<label for>` names it."
           },
           {
             "name": "label",
@@ -7739,8 +7781,22 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "description": "Messages for rejected files."
           },
           {
+            "name": "aria-labelledby",
+            "type": "string",
+            "description": "Labels the Browse button (its own text is kept after the label)."
+          },
+          {
             "name": "aria-describedby",
             "type": "string"
+          },
+          {
+            "name": "aria-invalid",
+            "type": "boolean | \"true\" | \"false\" | \"grammar\" | \"spelling\""
+          },
+          {
+            "name": "onBlur",
+            "type": "FocusEventHandler<HTMLButtonElement>",
+            "description": "Called when the Browse button loses focus."
           },
           {
             "name": "className",
@@ -8098,6 +8154,886 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "size",
             "type": "\"large\" | \"medium\" | \"small\" | \"tiny\" | \"xlarge\""
+          },
+          {
+            "name": "labelLayout",
+            "type": "\"horizontal\" | \"vertical\""
+          }
+        ],
+        "extends": []
+      },
+      {
+        "name": "FormNumberInput",
+        "description": "Value is `number | null` (null for an empty field).",
+        "props": [
+          {
+            "name": "name",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "size",
+            "type": "\"tiny\" | \"small\" | \"medium\" | \"large\" | \"xlarge\" | null"
+          },
+          {
+            "name": "prefix",
+            "type": "ReactNode",
+            "description": "Rendered before the value, inside the field (e.g. \"$\")."
+          },
+          {
+            "name": "step",
+            "type": "number",
+            "default": "1"
+          },
+          {
+            "name": "max",
+            "type": "number"
+          },
+          {
+            "name": "min",
+            "type": "number"
+          },
+          {
+            "name": "format",
+            "type": "((value: number) => string)",
+            "description": "Formats the committed value for display, e.g. `(v) => v.toFixed(2)`."
+          },
+          {
+            "name": "largeStep",
+            "type": "number",
+            "default": "step * 10",
+            "description": "Step for PageUp/PageDown and Shift+↑/↓."
+          },
+          {
+            "name": "hideControls",
+            "type": "boolean",
+            "default": "false",
+            "description": "Hide the − / + buttons."
+          },
+          {
+            "name": "decrementLabel",
+            "type": "string",
+            "description": "Accessible names of the buttons."
+          },
+          {
+            "name": "incrementLabel",
+            "type": "string"
+          },
+          {
+            "name": "label",
+            "type": "ReactNode"
+          },
+          {
+            "name": "layout",
+            "type": "\"flex-row-reverse\" | \"flex\" | \"horizontal\" | \"vertical\""
+          },
+          {
+            "name": "align",
+            "type": "\"left\" | \"right\""
+          },
+          {
+            "name": "description",
+            "type": "ReactNode"
+          },
+          {
+            "name": "labelOptional",
+            "type": "ReactNode"
+          },
+          {
+            "name": "labelLayout",
+            "type": "\"horizontal\" | \"vertical\""
+          }
+        ],
+        "extends": [
+          {
+            "name": "InputHTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "FormPasswordInput",
+        "props": [
+          {
+            "name": "name",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "size",
+            "type": "\"tiny\" | \"small\" | \"medium\" | \"large\" | \"xlarge\" | null"
+          },
+          {
+            "name": "prefix",
+            "type": "ReactNode",
+            "description": "Rendered inside the field's own border, before the value (e.g. an icon or \"$\")."
+          },
+          {
+            "name": "showStrength",
+            "type": "boolean",
+            "description": "Show a strength meter under the field."
+          },
+          {
+            "name": "getStrength",
+            "type": "((password: string) => PasswordStrength)",
+            "description": "Custom scoring; defaults to `estimatePasswordStrength`."
+          },
+          {
+            "name": "strengthLabels",
+            "type": "Partial<Record<PasswordStrength, string>>",
+            "description": "Override the meter's labels (\"Weak\", \"Fair\", …)."
+          },
+          {
+            "name": "showLabel",
+            "type": "string",
+            "default": "\"Show password\"",
+            "description": "Accessible name of the toggle."
+          },
+          {
+            "name": "defaultVisible",
+            "type": "boolean",
+            "default": "false",
+            "description": "Whether the password starts visible."
+          },
+          {
+            "name": "label",
+            "type": "ReactNode"
+          },
+          {
+            "name": "layout",
+            "type": "\"flex-row-reverse\" | \"flex\" | \"horizontal\" | \"vertical\""
+          },
+          {
+            "name": "align",
+            "type": "\"left\" | \"right\""
+          },
+          {
+            "name": "description",
+            "type": "ReactNode"
+          },
+          {
+            "name": "labelOptional",
+            "type": "ReactNode"
+          },
+          {
+            "name": "labelLayout",
+            "type": "\"horizontal\" | \"vertical\""
+          }
+        ],
+        "extends": [
+          {
+            "name": "InputHTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "FormTimePicker",
+        "description": "Value is an \"HH:mm\" / \"HH:mm:ss\" string, or null until every segment is filled.",
+        "props": [
+          {
+            "name": "name",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "className",
+            "type": "string"
+          },
+          {
+            "name": "size",
+            "type": "\"large\" | \"medium\" | \"small\" | \"tiny\"",
+            "default": "\"small\""
+          },
+          {
+            "name": "disabled",
+            "type": "boolean"
+          },
+          {
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "name": "aria-describedby",
+            "type": "string"
+          },
+          {
+            "name": "aria-invalid",
+            "type": "boolean | \"true\" | \"false\" | \"grammar\" | \"spelling\""
+          },
+          {
+            "name": "aria-label",
+            "type": "string"
+          },
+          {
+            "name": "aria-labelledby",
+            "type": "string"
+          },
+          {
+            "name": "hourCycle",
+            "type": "12 | 24",
+            "default": "24",
+            "description": "Display 12-hour with AM/PM, or 24-hour."
+          },
+          {
+            "name": "showSeconds",
+            "type": "boolean",
+            "default": "false",
+            "description": "Add a seconds segment."
+          },
+          {
+            "name": "minuteStep",
+            "type": "number",
+            "default": "1",
+            "description": "Arrow-key step for minutes."
+          },
+          {
+            "name": "clock",
+            "type": "boolean",
+            "default": "true",
+            "description": "Show the clock button that opens an analog clock picker."
+          },
+          {
+            "name": "label",
+            "type": "ReactNode"
+          },
+          {
+            "name": "layout",
+            "type": "\"flex-row-reverse\" | \"flex\" | \"horizontal\" | \"vertical\""
+          },
+          {
+            "name": "align",
+            "type": "\"left\" | \"right\""
+          },
+          {
+            "name": "description",
+            "type": "ReactNode"
+          },
+          {
+            "name": "labelOptional",
+            "type": "ReactNode"
+          },
+          {
+            "name": "labelLayout",
+            "type": "\"horizontal\" | \"vertical\""
+          }
+        ],
+        "extends": []
+      },
+      {
+        "name": "FormSlider",
+        "description": "Value is a `number[]` — one entry per thumb, so two values make a range.",
+        "props": [
+          {
+            "name": "name",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "size",
+            "type": "\"small\" | \"medium\" | \"large\" | null"
+          },
+          {
+            "name": "thumbLabels",
+            "type": "readonly string[]",
+            "description": "Accessible name per thumb, e.g. `['Minimum price', 'Maximum price']`. Without it\nevery thumb gets the slider's own `aria-label`/`aria-labelledby` — the thumbs are\nthe focusable `role=\"slider\"` elements, so that's where the name has to live.\n`aria-describedby` and `aria-invalid` move onto the thumbs for the same reason."
+          },
+          {
+            "name": "label",
+            "type": "ReactNode"
+          },
+          {
+            "name": "layout",
+            "type": "\"flex-row-reverse\" | \"flex\" | \"horizontal\" | \"vertical\""
+          },
+          {
+            "name": "align",
+            "type": "\"left\" | \"right\""
+          },
+          {
+            "name": "description",
+            "type": "ReactNode"
+          },
+          {
+            "name": "labelOptional",
+            "type": "ReactNode"
+          },
+          {
+            "name": "labelLayout",
+            "type": "\"horizontal\" | \"vertical\""
+          }
+        ],
+        "extends": [
+          {
+            "name": "SliderProps",
+            "package": "@radix-ui/react-slider"
+          },
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "FormInputOTP",
+        "description": "Value is the typed string (`''` when empty).",
+        "props": [
+          {
+            "name": "name",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "slots",
+            "type": "number",
+            "required": true,
+            "description": "Number of character slots."
+          },
+          {
+            "name": "groupSize",
+            "type": "number",
+            "description": "Splits the slots into groups of this size."
+          },
+          {
+            "name": "pattern",
+            "type": "string",
+            "description": "Allowed characters, e.g. `REGEXP_ONLY_DIGITS`."
+          },
+          {
+            "name": "disabled",
+            "type": "boolean"
+          },
+          {
+            "name": "onComplete",
+            "type": "((value: string) => void)"
+          },
+          {
+            "name": "className",
+            "type": "string"
+          },
+          {
+            "name": "containerClassName",
+            "type": "string"
+          },
+          {
+            "name": "label",
+            "type": "ReactNode"
+          },
+          {
+            "name": "layout",
+            "type": "\"flex-row-reverse\" | \"flex\" | \"horizontal\" | \"vertical\""
+          },
+          {
+            "name": "align",
+            "type": "\"left\" | \"right\""
+          },
+          {
+            "name": "description",
+            "type": "ReactNode"
+          },
+          {
+            "name": "labelOptional",
+            "type": "ReactNode"
+          },
+          {
+            "name": "labelLayout",
+            "type": "\"horizontal\" | \"vertical\""
+          }
+        ],
+        "extends": []
+      },
+      {
+        "name": "FormDateField",
+        "description": "Typed date (no calendar); value is a `Date` or null until the date is complete.",
+        "props": [
+          {
+            "name": "name",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "className",
+            "type": "string"
+          },
+          {
+            "name": "size",
+            "type": "\"large\" | \"medium\" | \"small\" | \"tiny\" | \"xlarge\""
+          },
+          {
+            "name": "disabled",
+            "type": "boolean"
+          },
+          {
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "name": "aria-describedby",
+            "type": "string"
+          },
+          {
+            "name": "aria-invalid",
+            "type": "boolean"
+          },
+          {
+            "name": "aria-label",
+            "type": "string"
+          },
+          {
+            "name": "aria-labelledby",
+            "type": "string"
+          },
+          {
+            "name": "format",
+            "type": "string",
+            "description": "dayjs tokens; only `YYYY`, `MM`, `DD` and literal separators are supported."
+          },
+          {
+            "name": "readOnly",
+            "type": "boolean"
+          },
+          {
+            "name": "minDate",
+            "type": "Date",
+            "description": "Range/predicate checks against a *complete* typed date. Never block typing — only\nmark `aria-invalid` once the date is fully formed, same as MUI's own DateField."
+          },
+          {
+            "name": "maxDate",
+            "type": "Date"
+          },
+          {
+            "name": "isDateInvalid",
+            "type": "((date: Date) => boolean)"
+          },
+          {
+            "name": "label",
+            "type": "ReactNode"
+          },
+          {
+            "name": "layout",
+            "type": "\"flex-row-reverse\" | \"flex\" | \"horizontal\" | \"vertical\""
+          },
+          {
+            "name": "align",
+            "type": "\"left\" | \"right\""
+          },
+          {
+            "name": "description",
+            "type": "ReactNode"
+          },
+          {
+            "name": "labelOptional",
+            "type": "ReactNode"
+          },
+          {
+            "name": "labelLayout",
+            "type": "\"horizontal\" | \"vertical\""
+          }
+        ],
+        "extends": []
+      },
+      {
+        "name": "FormCombobox",
+        "description": "Value is the selected option's `value`, or null.",
+        "props": [
+          {
+            "name": "name",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "className",
+            "type": "string"
+          },
+          {
+            "name": "size",
+            "type": "\"large\" | \"medium\" | \"small\" | \"tiny\" | \"xlarge\""
+          },
+          {
+            "name": "disabled",
+            "type": "boolean"
+          },
+          {
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "name": "aria-describedby",
+            "type": "string"
+          },
+          {
+            "name": "aria-invalid",
+            "type": "boolean | \"true\" | \"false\" | \"grammar\" | \"spelling\""
+          },
+          {
+            "name": "aria-label",
+            "type": "string"
+          },
+          {
+            "name": "aria-labelledby",
+            "type": "string"
+          },
+          {
+            "name": "defaultOpen",
+            "type": "boolean"
+          },
+          {
+            "name": "open",
+            "type": "boolean"
+          },
+          {
+            "name": "onOpenChange",
+            "type": "((open: boolean) => void)"
+          },
+          {
+            "name": "classNames",
+            "type": "ComboboxClassNames"
+          },
+          {
+            "name": "placeholder",
+            "type": "ReactNode",
+            "default": "\"Select…\"",
+            "description": "Trigger text when nothing is selected."
+          },
+          {
+            "name": "emptyText",
+            "type": "ReactNode",
+            "default": "\"No results found.\"",
+            "description": "Shown when the search matches nothing."
+          },
+          {
+            "name": "options",
+            "type": "readonly ComboboxOption[]"
+          },
+          {
+            "name": "groups",
+            "type": "readonly ComboboxOptionGroup[]",
+            "description": "Grouped options; used instead of `options` when both are given."
+          },
+          {
+            "name": "searchPlaceholder",
+            "type": "string",
+            "default": "\"Search…\""
+          },
+          {
+            "name": "clearable",
+            "type": "boolean",
+            "default": "false",
+            "description": "Picking the selected option again clears it."
+          },
+          {
+            "name": "label",
+            "type": "ReactNode"
+          },
+          {
+            "name": "layout",
+            "type": "\"flex-row-reverse\" | \"flex\" | \"horizontal\" | \"vertical\""
+          },
+          {
+            "name": "align",
+            "type": "\"left\" | \"right\""
+          },
+          {
+            "name": "description",
+            "type": "ReactNode"
+          },
+          {
+            "name": "labelOptional",
+            "type": "ReactNode"
+          },
+          {
+            "name": "labelLayout",
+            "type": "\"horizontal\" | \"vertical\""
+          }
+        ],
+        "extends": []
+      },
+      {
+        "name": "FormMultiSelect",
+        "description": "Value is a `string[]` of selected option values.",
+        "props": [
+          {
+            "name": "size",
+            "type": "\"tiny\" | \"small\" | \"medium\" | \"large\" | \"xlarge\" | null"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean"
+          },
+          {
+            "name": "loading",
+            "type": "boolean"
+          },
+          {
+            "name": "onOpenChange",
+            "type": "((open: boolean) => void)"
+          },
+          {
+            "name": "error",
+            "type": "boolean"
+          },
+          {
+            "name": "mode",
+            "type": "\"combobox\" | \"inline-combobox\""
+          },
+          {
+            "name": "showIcon",
+            "type": "boolean"
+          },
+          {
+            "name": "triggerClassName",
+            "type": "string"
+          },
+          {
+            "name": "options",
+            "type": "readonly MultiSelectorOption[]",
+            "required": true
+          },
+          {
+            "name": "searchPlaceholder",
+            "type": "string"
+          },
+          {
+            "name": "persistLabel",
+            "type": "boolean"
+          },
+          {
+            "name": "badgeLimit",
+            "type": "number | \"wrap\""
+          },
+          {
+            "name": "wrapBadges",
+            "type": "boolean"
+          },
+          {
+            "name": "deletableBadge",
+            "type": "boolean"
+          },
+          {
+            "name": "renderValue",
+            "type": "((value: string) => ReactNode)"
+          },
+          {
+            "name": "creatable",
+            "type": "boolean",
+            "default": "9999 (no wrap)"
+          },
+          {
+            "name": "emptyLabel",
+            "type": "string"
+          },
+          {
+            "name": "errorLabel",
+            "type": "string"
+          },
+          {
+            "name": "searchable",
+            "type": "boolean",
+            "description": "Renders a MultiSelectorInput search field above the list (`mode=\"combobox\"`'s own\nfilter box) — not used with `mode: \"inline-combobox\"`, which searches inline in the\ntrigger instead."
+          },
+          {
+            "name": "label",
+            "type": "ReactNode"
+          },
+          {
+            "name": "layout",
+            "type": "\"flex-row-reverse\" | \"flex\" | \"horizontal\" | \"vertical\""
+          },
+          {
+            "name": "align",
+            "type": "\"left\" | \"right\""
+          },
+          {
+            "name": "description",
+            "type": "ReactNode"
+          },
+          {
+            "name": "labelOptional",
+            "type": "ReactNode"
+          },
+          {
+            "name": "labelLayout",
+            "type": "\"horizontal\" | \"vertical\""
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "placeholder",
+            "type": "string",
+            "description": "Trigger text while nothing is selected (MultiSelector's own `label`)."
+          }
+        ],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "FormFileUpload",
+        "description": "Value is a `File[]`.",
+        "props": [
+          {
+            "name": "name",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "dropzoneLabel",
+            "type": "ReactNode",
+            "description": "Heading inside the drop zone (FileUpload's own `label`)."
+          },
+          {
+            "name": "className",
+            "type": "string"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean"
+          },
+          {
+            "name": "aria-describedby",
+            "type": "string"
+          },
+          {
+            "name": "aria-invalid",
+            "type": "boolean | \"true\" | \"false\" | \"grammar\" | \"spelling\""
+          },
+          {
+            "name": "aria-labelledby",
+            "type": "string",
+            "description": "Labels the Browse button (its own text is kept after the label)."
+          },
+          {
+            "name": "multiple",
+            "type": "boolean",
+            "default": "true"
+          },
+          {
+            "name": "classNames",
+            "type": "FileUploadClassNames"
+          },
+          {
+            "name": "accept",
+            "type": "string",
+            "description": "Same syntax as <input accept>: \".pdf,image/*\"."
+          },
+          {
+            "name": "description",
+            "type": "ReactNode",
+            "description": "Smaller text under the label, e.g. accepted types and limits."
+          },
+          {
+            "name": "maxSize",
+            "type": "number",
+            "description": "Bytes."
+          },
+          {
+            "name": "onReject",
+            "type": "((rejections: FileRejection[]) => void)",
+            "description": "Called with every rejected file and why (type / size / count)."
+          },
+          {
+            "name": "maxFiles",
+            "type": "number"
+          },
+          {
+            "name": "browseText",
+            "type": "ReactNode",
+            "default": "\"Browse files\""
+          },
+          {
+            "name": "showFileList",
+            "type": "boolean",
+            "default": "true",
+            "description": "Render the list of selected files below the zone."
+          },
+          {
+            "name": "rejectionMessages",
+            "type": "Partial<Record<FileRejectionReason, string>>",
+            "description": "Messages for rejected files."
+          },
+          {
+            "name": "label",
+            "type": "ReactNode"
+          },
+          {
+            "name": "layout",
+            "type": "\"flex-row-reverse\" | \"flex\" | \"horizontal\" | \"vertical\""
+          },
+          {
+            "name": "align",
+            "type": "\"left\" | \"right\""
+          },
+          {
+            "name": "labelOptional",
+            "type": "ReactNode"
+          },
+          {
+            "name": "labelLayout",
+            "type": "\"horizontal\" | \"vertical\""
+          }
+        ],
+        "extends": []
+      },
+      {
+        "name": "FormToggleGroup",
+        "props": [
+          {
+            "name": "name",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "items",
+            "type": "readonly ToggleGroupItemData[]",
+            "required": true
+          },
+          {
+            "name": "type",
+            "type": "\"multiple\" | \"single\"",
+            "default": "single",
+            "description": "`single`: the value is a string (`''` when none); `multiple`: a `string[]`."
+          },
+          {
+            "name": "variant",
+            "type": "\"default\" | \"outline\" | \"segmented\" | null"
+          },
+          {
+            "name": "size",
+            "type": "\"default\" | \"tiny\" | \"sm\" | \"lg\" | null"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean"
+          },
+          {
+            "name": "className",
+            "type": "string"
+          },
+          {
+            "name": "label",
+            "type": "ReactNode"
+          },
+          {
+            "name": "layout",
+            "type": "\"flex-row-reverse\" | \"flex\" | \"horizontal\" | \"vertical\""
+          },
+          {
+            "name": "align",
+            "type": "\"left\" | \"right\""
+          },
+          {
+            "name": "description",
+            "type": "ReactNode"
+          },
+          {
+            "name": "labelOptional",
+            "type": "ReactNode"
           },
           {
             "name": "labelLayout",
@@ -8666,6 +9602,11 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "searchPlaceholder",
             "type": "string"
+          },
+          {
+            "name": "ref",
+            "type": "Ref<HTMLButtonElement>",
+            "description": "The trigger button — the focusable control. `aria-labelledby`, `aria-describedby`,\n`aria-invalid` and `onBlur` also go to the trigger in this mode (so a FormControl\naround it marks the control a user actually reaches), while `id` stays on the root."
           }
         ],
         "extends": [

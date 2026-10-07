@@ -23,7 +23,7 @@ const sliderTrackVariants = cva('relative w-full grow overflow-hidden rounded-fu
 })
 
 const sliderThumbVariants = cva(
-  'block rounded-full border border-brand-default bg-background shadow-sm transition-colors focus-ring disabled:pointer-events-none',
+  'block rounded-full border border-brand-default bg-background shadow-sm transition-colors focus-ring disabled:pointer-events-none aria-[invalid=true]:border-destructive',
   {
     variants: {
       size: {
@@ -43,6 +43,7 @@ export interface SliderProps
    * Accessible name per thumb, e.g. `['Minimum price', 'Maximum price']`. Without it
    * every thumb gets the slider's own `aria-label`/`aria-labelledby` — the thumbs are
    * the focusable `role="slider"` elements, so that's where the name has to live.
+   * `aria-describedby` and `aria-invalid` move onto the thumbs for the same reason.
    */
   thumbLabels?: readonly string[]
 }
@@ -55,6 +56,8 @@ const Slider = React.forwardRef<React.ElementRef<typeof SliderPrimitive.Root>, S
       thumbLabels,
       'aria-label': ariaLabel,
       'aria-labelledby': ariaLabelledby,
+      'aria-describedby': ariaDescribedby,
+      'aria-invalid': ariaInvalid,
       ...props
     },
     ref
@@ -83,6 +86,8 @@ const Slider = React.forwardRef<React.ElementRef<typeof SliderPrimitive.Root>, S
             key={index}
             aria-label={thumbLabels?.[index] ?? ariaLabel}
             aria-labelledby={thumbLabels?.[index] ? undefined : ariaLabelledby}
+            aria-describedby={ariaDescribedby}
+            aria-invalid={ariaInvalid}
             className={sliderThumbVariants({ size })}
           />
         ))}

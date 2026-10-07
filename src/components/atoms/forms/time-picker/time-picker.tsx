@@ -56,6 +56,13 @@ export interface TimePickerProps {
   'aria-labelledby'?: string
   'aria-describedby'?: string
   'aria-invalid'?: React.AriaAttributes['aria-invalid']
+  /** Called when focus leaves the whole field (segments, clock button and dial). */
+  onBlur?: (event: React.FocusEvent<HTMLDivElement>) => void
+  /**
+   * The field's `role="group"` element. Calling `focus()` on it moves focus to the first
+   * segment, so form libraries can focus the field (e.g. react-hook-form on an error).
+   */
+  ref?: React.Ref<HTMLDivElement>
   /** @default "small" */
   size?: 'tiny' | 'small' | 'medium' | 'large'
   /** Show the clock button that opens an analog clock picker. @default true */
@@ -77,6 +84,8 @@ export function TimePicker({
   'aria-labelledby': ariaLabelledby,
   'aria-describedby': ariaDescribedby,
   'aria-invalid': ariaInvalid,
+  onBlur,
+  ref,
   size = 'small',
   clock = true,
   className,
@@ -202,6 +211,7 @@ export function TimePicker({
   const [clockOpen, setClockOpen] = React.useState(false)
   const [clockView, setClockView] = React.useState<ClockView>('hours')
   const clockPanelRef = React.useRef<HTMLDivElement>(null)
+  const clockContentRef = React.useRef<HTMLDivElement>(null)
   const clockViews: ClockView[] = [
     'hours',
     'minutes',
@@ -220,8 +230,22 @@ export function TimePicker({
 
   const field = (
     <div
+      ref={ref}
       id={id}
       role="group"
+      // Focusable only programmatically: focusing the group itself (a form library
+      // focusing the field, a click between segments) lands on the first segment.
+      tabIndex={-1}
+      onFocus={(event) => {
+        if (event.target === event.currentTarget && !disabled) focusSegment(keys[0])
+      }}
+      onBlur={(event) => {
+        const next = event.relatedTarget as Node | null
+        // Moving between segments, or into the clock dial, is still "inside" the field.
+        if (next && (event.currentTarget.contains(next) || clockContentRef.current?.contains(next)))
+          return
+        onBlur?.(event)
+      }}
       aria-label={ariaLabelledby ? undefined : ariaLabel}
       aria-labelledby={ariaLabelledby}
       aria-describedby={ariaDescribedby}
@@ -229,7 +253,7 @@ export function TimePicker({
       aria-disabled={disabled || undefined}
       className={cn(
         InputVariants({ size }),
-        'inline-flex w-auto items-center gap-0.5 font-mono',
+        'inline-flex w-auto items-center gap-0.5 font-mono outline-none',
         'has-[:focus-visible]:border-control-hover',
         disabled && 'cursor-not-allowed opacity-50',
         className
@@ -339,6 +363,7 @@ export function TimePicker({
           field's padding. */}
       <PopoverAnchor asChild>{field}</PopoverAnchor>
       <PopoverContent
+        ref={clockContentRef}
         align="end"
         aria-label="Choose time"
         className="w-auto p-3 font-sans"

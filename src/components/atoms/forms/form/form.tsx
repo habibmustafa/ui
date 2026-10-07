@@ -66,6 +66,10 @@ const useFormField = () => {
     id,
     name: fieldContext.name,
     formItemId: `${id}-form-item`,
+    // For controls a <label for> can't name (a role="group" of segments, a slider's
+    // thumbs, a combobox button that is not the FormControl's root): point
+    // aria-labelledby here instead.
+    formLabelId: `${id}-form-item-label`,
     formDescriptionId: `${id}-form-item-description`,
     formMessageId: `${id}-form-item-message`,
     ...fieldState,
@@ -98,13 +102,14 @@ const FormLabel = React.forwardRef<
   React.ElementRef<typeof LabelPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> & { enableSelection?: boolean }
 >(({ className, enableSelection = false, htmlFor, ...props }, ref) => {
-  const { error, formItemId } = useFormField()
+  const { error, formItemId, formLabelId } = useFormField()
 
   const Comp = enableSelection ? 'label' : Label
 
   return (
     <Comp
       ref={ref}
+      id={formLabelId}
       className={cn(
         'text-foreground-light text-sm',
         'transition-colors',

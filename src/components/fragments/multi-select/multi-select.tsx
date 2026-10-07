@@ -49,6 +49,12 @@ type MultiSelectorOptionsModeProps = Omit<MultiSelectorRootProps, 'children'> &
      */
     searchable?: boolean
     searchPlaceholder?: string
+    /**
+     * The trigger button — the focusable control. `aria-labelledby`, `aria-describedby`,
+     * `aria-invalid` and `onBlur` also go to the trigger in this mode (so a FormControl
+     * around it marks the control a user actually reaches), while `id` stays on the root.
+     */
+    ref?: React.Ref<HTMLButtonElement>
     children?: never
   }
 
@@ -79,6 +85,11 @@ export function MultiSelectorHybrid(props: MultiSelectorProps) {
     triggerClassName,
     searchable,
     searchPlaceholder,
+    ref,
+    'aria-labelledby': ariaLabelledby,
+    'aria-describedby': ariaDescribedby,
+    'aria-invalid': ariaInvalid,
+    onBlur,
     ...rootProps
   } = props
 
@@ -91,6 +102,11 @@ export function MultiSelectorHybrid(props: MultiSelectorProps) {
   return (
     <MultiSelectorRoot {...rootProps}>
       <MultiSelectorTrigger
+        ref={ref}
+        aria-labelledby={ariaLabelledby}
+        aria-describedby={ariaDescribedby}
+        aria-invalid={ariaInvalid}
+        onBlur={onBlur as React.FocusEventHandler<HTMLButtonElement> | undefined}
         className={triggerClassName}
         label={label}
         persistLabel={persistLabel}
