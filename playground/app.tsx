@@ -22,6 +22,7 @@ import { ComponentPreview, previewAnchor } from "./component-preview";
 import { CATALOG } from "./catalog";
 import { Preview, Swatch } from "./docs";
 import { GithubIcon } from "./icons";
+import { PageErrorBoundary } from "./page-error-boundary";
 import { Link, Navigate, useRouter } from "./router";
 import { findComponent, type ComponentPreviewSpec } from "./registry";
 
@@ -497,7 +498,9 @@ export function App() {
         {!isHome && <Sidebar />}
         <main className="min-w-0 flex-1 scroll-mt-14 px-6 py-8 outline-hidden md:px-10">
           <div className={isHome ? "mx-auto max-w-6xl" : "mx-auto max-w-4xl"}>
-            <Suspense fallback={<div className="min-h-[60vh]" />}>{page}</Suspense>
+            <PageErrorBoundary resetKey={pathname}>
+              <Suspense fallback={<div className="min-h-[60vh]" />}>{page}</Suspense>
+            </PageErrorBoundary>
           </div>
         </main>
       </div>
