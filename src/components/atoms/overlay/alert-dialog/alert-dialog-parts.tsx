@@ -5,6 +5,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { AlertDialog as AlertDialogPrimitive } from 'radix-ui'
 import * as React from 'react'
 
+import { modalBackdropClass } from '../../../../lib/modal-backdrop'
 import { cn } from '../../../../lib/utils'
 import { getExplicitTabIndex } from '../../../../lib/get-explicit-tab-index'
 import { Button, buttonVariants, type ButtonVariantProps } from '../../actions/button'
@@ -98,11 +99,10 @@ const AlertDialogPortal = ({
   children,
   ...props
 }: AlertDialogPrimitive.AlertDialogPortalProps) => (
-  <AlertDialogPrimitive.Portal {...props}>
-    <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center">
-      {children}
-    </div>
-  </AlertDialogPrimitive.Portal>
+  // Children go straight into the portal: Radix keeps each direct child mounted until
+  // its exit animation ends, and a plain wrapper <div> (no animation) here made the
+  // whole dialog vanish instantly on close. The overlay already fills and centres.
+  <AlertDialogPrimitive.Portal {...props}>{children}</AlertDialogPrimitive.Portal>
 )
 AlertDialogPortal.displayName = AlertDialogPrimitive.Portal.displayName
 
@@ -113,10 +113,8 @@ const AlertDialogOverlay = React.forwardRef<
   <AlertDialogPrimitive.Overlay
     ref={ref}
     className={cn(
-      'bg-black/40 backdrop-blur-xs',
+      modalBackdropClass,
       'z-50 fixed inset-0 grid place-items-center overflow-y-auto py-8',
-      // Same motion as Dialog: the backdrop fades, the panel settles.
-      'data-open:animate-backdrop-show data-closed:animate-backdrop-hide',
       !centered && 'flex flex-col flex-start pb-8 sm:pt-12 md:pt-20 lg:pt-32 xl:pt-40 px-5',
       className
     )}
