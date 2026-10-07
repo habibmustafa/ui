@@ -1,6 +1,9 @@
 import './styles/globals.css'
 
-// Atom components
+// Atoms: the generic building blocks — every control, overlay, navigation, layout and
+// feedback component, grouped by role. One component does one job, however much it is
+// composed of inside (DatePicker = trigger + Popover + Calendar is still one control).
+// Atoms never import from fragments (tests/structure.test.ts enforces it).
 
 export * from './components/atoms/actions/button'
 export * from './components/atoms/actions/copy-button'
@@ -18,17 +21,23 @@ export * from './components/atoms/feedback/alert'
 export * from './components/atoms/feedback/badge'
 export * from './components/atoms/feedback/banner'
 export * from './components/atoms/feedback/progress'
+export * from './components/atoms/feedback/shimmering-loader'
 export * from './components/atoms/feedback/skeleton'
 export * from './components/atoms/feedback/sonner'
 export * from './components/atoms/feedback/spinner'
 
 export * from './components/atoms/forms/calendar'
 export * from './components/atoms/forms/checkbox'
+export * from './components/atoms/forms/combobox'
+export * from './components/atoms/forms/data-input'
 export * from './components/atoms/forms/date-field'
+export * from './components/atoms/forms/date-picker'
+export * from './components/atoms/forms/file-upload'
 export * from './components/atoms/forms/form'
 export * from './components/atoms/forms/input'
 export * from './components/atoms/forms/input-otp'
 export * from './components/atoms/forms/label'
+export * from './components/atoms/forms/multi-select'
 export * from './components/atoms/forms/number-input'
 export * from './components/atoms/forms/password-input'
 export * from './components/atoms/forms/radio-group'
@@ -59,6 +68,7 @@ export * from './components/atoms/navigation/pagination'
 export * from './components/atoms/navigation/sidebar'
 export * from './components/atoms/navigation/stepper'
 export * from './components/atoms/navigation/tabs'
+export * from './components/atoms/navigation/text-link'
 
 export * from './components/atoms/overlay/alert-dialog'
 export * from './components/atoms/overlay/confirm-popover'
@@ -71,7 +81,8 @@ export * from './components/atoms/overlay/popover'
 export * from './components/atoms/overlay/sheet'
 export * from './components/atoms/overlay/tooltip'
 
-// Fragments — ported from packages/ui-patterns ("Fragment components")
+// Fragments: ready-made, opinionated compositions of atoms for a specific use — form
+// field layouts, data table, metric card, error display, code block, theme toggle, …
 
 export * from './components/fragments/admonition'
 export * from './components/fragments/form-fields'
@@ -79,18 +90,11 @@ export * from './components/fragments/form-item-layout'
 export * from './components/fragments/info-tooltip'
 export * from './components/fragments/empty-state'
 export * from './components/fragments/error-display'
-export * from './components/fragments/shimmering-loader'
 export * from './components/fragments/metric-card'
-export * from './components/fragments/multi-select'
-export * from './components/fragments/combobox'
-export * from './components/fragments/file-upload'
 export * from './components/fragments/data-table'
-export * from './components/fragments/date-picker'
 export * from './components/fragments/code-block'
-export * from './components/fragments/data-input'
 export * from './components/fragments/timestamp-info'
 export * from './components/fragments/status-code'
-export * from './components/fragments/text-link'
 export * from './components/fragments/theme-toggle'
 export * from './components/fragments/glass-panel'
 export * from './components/fragments/row'

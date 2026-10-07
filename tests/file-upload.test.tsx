@@ -8,7 +8,7 @@ import {
   fileMatchesAccept,
   formatFileSize,
   validateFiles,
-} from '../src/components/fragments/file-upload'
+} from '../src/components/atoms/forms/file-upload'
 
 const file = (name: string, size: number, type: string) =>
   new File([new Uint8Array(size)], name, { type })

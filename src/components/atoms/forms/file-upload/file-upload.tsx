@@ -3,9 +3,9 @@
 import { FileIcon, Upload, X } from 'lucide-react'
 import * as React from 'react'
 
-import { Button } from '../../atoms/actions/button'
-import { useControllableState } from '../../../lib/use-controllable-state'
-import { cn } from '../../../lib/utils'
+import { Button } from '../../actions/button'
+import { useControllableState } from '../../../../lib/use-controllable-state'
+import { cn } from '../../../../lib/utils'
 import {
   formatFileSize,
   validateFiles,

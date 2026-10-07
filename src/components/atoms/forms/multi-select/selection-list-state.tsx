@@ -1,5 +1,5 @@
-import { cn } from '../../../lib/utils'
-import { GenericSelectionSkeletonLoader } from '../shimmering-loader'
+import { cn } from '../../../../lib/utils'
+import { GenericSelectionSkeletonLoader } from '../../feedback/shimmering-loader'
 
 interface SelectionListStateProps {
   className?: string

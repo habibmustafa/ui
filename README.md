@@ -8,8 +8,8 @@
 
 # ui
 
-React 19, TypeScript, Tailwind CSS v4 və Radix üzərində qurulmuş komponent kitabxanası — 60 atom
-və 21 fragment, OKLCH token sistemi və seçilmiş komponentlərdə həm **props-driven**, həm də
+React 19, TypeScript, Tailwind CSS v4 və Radix üzərində qurulmuş komponent kitabxanası — 68 atom
+və 14 fragment, OKLCH token sistemi və seçilmiş komponentlərdə həm **props-driven**, həm də
 **compound** API.
 
 **[Canlı playground →](https://ui.habibmustafa.me)**
@@ -20,8 +20,9 @@ npm i @habibmustafa/ui
 
 ## Xüsusiyyətlər
 
-- **81 komponent** — 60 atom (`Button`, `Dialog`, `Select`, `Table`, `Sidebar`, …) və 21 fragment
-  (`DatePicker`, `MultiSelect`, `CodeBlock`, `MetricCard`, `EmptyState`, …).
+- **82 komponent** — 68 atom (`Button`, `Dialog`, `Select`, `DatePicker`, `MultiSelect`, …) və
+  14 fragment (`FormFields`, `DataTable`, `CodeBlock`, `MetricCard`, `EmptyState`, …).
+  Bölgü qaydası aşağıda: [Layihə strukturu](#layihə-strukturu).
 - **Hibrid API** — seçilmiş komponentlər tək `props` ilə, ya da Radix tərzi
   `Component.Root`/`Component.Part` compound yazılışı ilə işlədilə bilər. Hansı komponentin
   hibrid olduğu və niyə: [docs/hybrid-api-migration.md](docs/hybrid-api-migration.md).
@@ -104,6 +105,30 @@ Rəng palitrini dəyişmək üçün CSS-i yenidən yazmaq lazım deyil — giri�
   --chroma: 0.02;  /* doyğunluq */
 }
 ```
+
+## Layihə strukturu
+
+```
+src/components/
+  atoms/
+    actions/       Button, CopyButton, Toggle, ToggleGroup
+    data-display/  Accordion, Avatar, Chart, Collapsible, Kbd, Table
+    feedback/      Alert, Badge, Banner, Progress, ShimmeringLoader, Skeleton, Sonner, Spinner
+    forms/         Input, Select, Combobox, MultiSelect, DatePicker, TimePicker, FileUpload, …
+    layout/        Box, Flex, Grid, Stack, Card, ScrollArea, …
+    navigation/    Breadcrumb, Command, Menubar, Pagination, Sidebar, Tabs, TextLink, …
+    overlay/       Dialog, Popover, Sheet, Tooltip, ConfirmPopover, …
+  fragments/       FormFields, FormItemLayout, DataTable, MetricCard, CodeBlock, …
+```
+
+- **Atom** — ümumi təyinatlı tikinti bloku: hər bir kontrol, overlay, naviqasiya, layout və
+  feedback komponenti, roluna görə qovluqlanır. Bir komponent bir iş görür, daxildə nə qədər
+  hissədən qurulmasından asılı olmayaraq. Məsələn, `DatePicker` (trigger + `Popover` +
+  `Calendar`) da `TimePicker` kimi bir kontroldur, ona görə hər ikisi `atoms/forms`-dadır.
+- **Fragment** — atomlardan konkret bir iş üçün yığılmış hazır, fikirli kompozisiya: forma
+  sahəsinin layout-u, data cədvəli, metrik kartı, xəta ekranı, kod bloku, tema düyməsi və s.
+- **Asılılıq istiqaməti** — fragment atomları import edə bilər, atom isə fragmenti heç vaxt.
+  Bunu `tests/structure.test.ts` yoxlayır.
 
 ## Sənədlər
 

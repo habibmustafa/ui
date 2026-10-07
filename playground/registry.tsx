@@ -424,6 +424,17 @@ const atoms: ComponentEntry[] = [
     ],
   },
   {
+    id: 'combobox',
+    title: 'Combobox',
+    icon: ChevronsUpDown,
+    description:
+      'Searchable single-value select: Select-styled trigger, Popover + Command list, options or groups.',
+    previews: [
+      { name: 'combobox-demo', label: 'Default' },
+      { name: 'combobox-groups', label: 'Groups' },
+    ],
+  },
+  {
     id: 'command',
     title: 'Command',
     icon: Terminal,
@@ -472,6 +483,27 @@ const atoms: ComponentEntry[] = [
     ],
   },
   {
+    id: 'copy-button',
+    title: 'Copy Button',
+    icon: Copy,
+    description: 'One-click copy with a check-mark confirmation and a screen-reader announcement; sync or async values.',
+    previews: [{ name: 'copy-button-demo' }],
+  },
+  {
+    id: 'data-input',
+    title: 'Data Input',
+    icon: Eye,
+    description:
+      'Input wrapped in an InputGroup with optional copy, password-style reveal and action slots.',
+    previews: [
+      { name: 'data-input-demo', label: 'Default' },
+      { name: 'data-input-with-copy', label: 'With copy' },
+      { name: 'data-input-with-copy-secret', label: 'With copy secret' },
+      { name: 'data-input-with-reveal-copy-editable', label: 'With reveal copy editable' },
+      { name: 'data-input-with-reveal-copy-editable-empty', label: 'With reveal copy editable empty' },
+    ],
+  },
+  {
     id: 'date-field',
     title: 'Date Field',
     icon: CalendarDays,
@@ -480,11 +512,45 @@ const atoms: ComponentEntry[] = [
     previews: [{ name: 'date-field-demo' }],
   },
   {
-    id: 'copy-button',
-    title: 'Copy Button',
-    icon: Copy,
-    description: 'One-click copy with a check-mark confirmation and a screen-reader announcement; sync or async values.',
-    previews: [{ name: 'copy-button-demo' }],
+    id: 'date-picker',
+    title: 'Date Picker',
+    icon: CalendarDays,
+    description:
+      'Typeable segmented field (day/month/year) with a calendar-icon button that opens a Popover-wrapped Calendar; range/multiple modes fall back to a text-label trigger button.',
+    previews: [
+      {
+        name: 'date-picker-props-demo',
+        label: 'Default',
+        codeVariants: [
+          { id: 'props', label: 'Props-driven', name: 'date-picker-props-demo' },
+          { id: 'compound', label: 'Compound', name: 'date-picker-demo' },
+        ],
+      },
+      {
+        name: 'date-picker-form-props-demo',
+        label: 'Form',
+        codeVariants: [
+          { id: 'props', label: 'Props-driven', name: 'date-picker-form-props-demo' },
+          { id: 'compound', label: 'Compound', name: 'date-picker-form' },
+        ],
+      },
+      {
+        name: 'date-picker-with-presets-props-demo',
+        label: 'With presets',
+        codeVariants: [
+          { id: 'props', label: 'Props-driven', name: 'date-picker-with-presets-props-demo' },
+          { id: 'compound', label: 'Compound', name: 'date-picker-with-presets' },
+        ],
+      },
+      {
+        name: 'date-picker-with-range-props-demo',
+        label: 'With range',
+        codeVariants: [
+          { id: 'props', label: 'Props-driven', name: 'date-picker-with-range-props-demo' },
+          { id: 'compound', label: 'Compound', name: 'date-picker-with-range' },
+        ],
+      },
+    ],
   },
   {
     id: 'dialog',
@@ -573,6 +639,17 @@ const atoms: ComponentEntry[] = [
           { id: 'compound', label: 'Compound', name: 'dropdown-menu-radio-group-demo' },
         ],
       },
+    ],
+  },
+  {
+    id: 'file-upload',
+    title: 'File Upload',
+    icon: Upload,
+    description:
+      'Drop zone + Browse button with accept / maxSize / maxFiles validation, a removable file list, and a real file input for forms.',
+    previews: [
+      { name: 'file-upload-demo', label: 'Multiple' },
+      { name: 'file-upload-single', label: 'Single file in a form' },
     ],
   },
   {
@@ -704,6 +781,107 @@ const atoms: ComponentEntry[] = [
     ],
   },
   {
+    id: 'multi-select',
+    title: 'Multi Select',
+    icon: ListChecks,
+    description:
+      'Command-driven combobox for picking several values, with badges, a creatable mode and an inline-search variant.',
+    previews: [
+      {
+        name: 'multi-select-props-demo',
+        label: 'Default',
+        codeVariants: [
+          { id: 'props', label: 'Props-driven', name: 'multi-select-props-demo' },
+          { id: 'compound', label: 'Compound', name: 'multi-select-demo' },
+        ],
+      },
+      {
+        name: 'multi-select-badge-limit-props-demo',
+        label: 'Badge limit',
+        codeVariants: [
+          { id: 'props', label: 'Props-driven', name: 'multi-select-badge-limit-props-demo' },
+          { id: 'compound', label: 'Compound', name: 'multi-select-badge-limit' },
+        ],
+      },
+      {
+        name: 'multi-select-badge-limit-wrap-props-demo',
+        label: 'Badge limit wrap',
+        codeVariants: [
+          {
+            id: 'props',
+            label: 'Props-driven',
+            name: 'multi-select-badge-limit-wrap-props-demo',
+          },
+          { id: 'compound', label: 'Compound', name: 'multi-select-badge-limit-wrap' },
+        ],
+      },
+      {
+        name: 'multi-select-combobox-props-demo',
+        label: 'Combobox',
+        codeVariants: [
+          { id: 'props', label: 'Props-driven', name: 'multi-select-combobox-props-demo' },
+          { id: 'compound', label: 'Compound', name: 'multi-select-combobox' },
+        ],
+      },
+      {
+        name: 'multi-select-combobox-creatable-props-demo',
+        label: 'Combobox creatable',
+        codeVariants: [
+          {
+            id: 'props',
+            label: 'Props-driven',
+            name: 'multi-select-combobox-creatable-props-demo',
+          },
+          { id: 'compound', label: 'Compound', name: 'multi-select-combobox-creatable' },
+        ],
+      },
+      {
+        name: 'multi-select-deletable-badge-props-demo',
+        label: 'Deletable badge',
+        codeVariants: [
+          { id: 'props', label: 'Props-driven', name: 'multi-select-deletable-badge-props-demo' },
+          { id: 'compound', label: 'Compound', name: 'multi-select-deletable-badge' },
+        ],
+      },
+      {
+        name: 'multi-select-disabled-props-demo',
+        label: 'Disabled',
+        codeVariants: [
+          { id: 'props', label: 'Props-driven', name: 'multi-select-disabled-props-demo' },
+          { id: 'compound', label: 'Compound', name: 'multi-select-disabled' },
+        ],
+      },
+      {
+        name: 'multi-select-in-dialog-props-demo',
+        label: 'In dialog',
+        codeVariants: [
+          { id: 'props', label: 'Props-driven', name: 'multi-select-in-dialog-props-demo' },
+          { id: 'compound', label: 'Compound', name: 'multi-select-in-dialog' },
+        ],
+      },
+      {
+        name: 'multi-select-inline-search-input-props-demo',
+        label: 'Inline search input',
+        codeVariants: [
+          {
+            id: 'props',
+            label: 'Props-driven',
+            name: 'multi-select-inline-search-input-props-demo',
+          },
+          { id: 'compound', label: 'Compound', name: 'multi-select-inline-search-input' },
+        ],
+      },
+      {
+        name: 'multi-select-without-icon-props-demo',
+        label: 'Without icon',
+        codeVariants: [
+          { id: 'props', label: 'Props-driven', name: 'multi-select-without-icon-props-demo' },
+          { id: 'compound', label: 'Compound', name: 'multi-select-without-icon' },
+        ],
+      },
+    ],
+  },
+  {
     id: 'navigation-menu',
     title: 'Navigation Menu',
     icon: Compass,
@@ -732,13 +910,6 @@ const atoms: ComponentEntry[] = [
     ],
   },
   {
-    id: 'password-input',
-    title: 'Password Input',
-    icon: KeyRound,
-    description: 'Password field with a show/hide toggle and an optional strength meter (text + colour).',
-    previews: [{ name: 'password-input-demo' }],
-  },
-  {
     id: 'pagination',
     title: 'Pagination',
     icon: ChevronsLeftRight,
@@ -762,6 +933,13 @@ const atoms: ComponentEntry[] = [
         ],
       },
     ],
+  },
+  {
+    id: 'password-input',
+    title: 'Password Input',
+    icon: KeyRound,
+    description: 'Password field with a show/hide toggle and an optional strength meter (text + colour).',
+    previews: [{ name: 'password-input-demo' }],
   },
   {
     id: 'popover',
@@ -982,6 +1160,16 @@ const atoms: ComponentEntry[] = [
     ],
   },
   {
+    id: 'shimmering-loader',
+    title: 'Shimmering Loader',
+    icon: Sparkles,
+    description:
+      'Animated skeleton bar and its generic list/table loading compositions.',
+    previews: [
+      { name: 'shimmering-loader-demo' },
+    ],
+  },
+  {
     id: 'sidebar',
     title: 'Sidebar',
     icon: PanelLeft,
@@ -1133,6 +1321,15 @@ const atoms: ComponentEntry[] = [
     ],
   },
   {
+    id: 'text-link',
+    title: 'Text Link',
+    icon: LinkIcon,
+    description: 'Inline link with an optional counter and an animated chevron.',
+    previews: [
+      { name: 'text-link-demo' },
+    ],
+  },
+  {
     id: 'textarea',
     title: 'Textarea',
     icon: AlignLeft,
@@ -1280,16 +1477,6 @@ const fragments: ComponentEntry[] = [
     ],
   },
   {
-    id: 'shimmering-loader',
-    title: 'Shimmering Loader',
-    icon: Sparkles,
-    description:
-      'Animated skeleton bar and its generic list/table loading compositions.',
-    previews: [
-      { name: 'shimmering-loader-demo' },
-    ],
-  },
-  {
     id: 'metric-card',
     title: 'Metric Card',
     icon: TrendingUp,
@@ -1339,129 +1526,6 @@ const fragments: ComponentEntry[] = [
     ],
   },
   {
-    id: 'multi-select',
-    title: 'Multi Select',
-    icon: ListChecks,
-    description:
-      'Command-driven combobox for picking several values, with badges, a creatable mode and an inline-search variant.',
-    previews: [
-      {
-        name: 'multi-select-props-demo',
-        label: 'Default',
-        codeVariants: [
-          { id: 'props', label: 'Props-driven', name: 'multi-select-props-demo' },
-          { id: 'compound', label: 'Compound', name: 'multi-select-demo' },
-        ],
-      },
-      {
-        name: 'multi-select-badge-limit-props-demo',
-        label: 'Badge limit',
-        codeVariants: [
-          { id: 'props', label: 'Props-driven', name: 'multi-select-badge-limit-props-demo' },
-          { id: 'compound', label: 'Compound', name: 'multi-select-badge-limit' },
-        ],
-      },
-      {
-        name: 'multi-select-badge-limit-wrap-props-demo',
-        label: 'Badge limit wrap',
-        codeVariants: [
-          {
-            id: 'props',
-            label: 'Props-driven',
-            name: 'multi-select-badge-limit-wrap-props-demo',
-          },
-          { id: 'compound', label: 'Compound', name: 'multi-select-badge-limit-wrap' },
-        ],
-      },
-      {
-        name: 'multi-select-combobox-props-demo',
-        label: 'Combobox',
-        codeVariants: [
-          { id: 'props', label: 'Props-driven', name: 'multi-select-combobox-props-demo' },
-          { id: 'compound', label: 'Compound', name: 'multi-select-combobox' },
-        ],
-      },
-      {
-        name: 'multi-select-combobox-creatable-props-demo',
-        label: 'Combobox creatable',
-        codeVariants: [
-          {
-            id: 'props',
-            label: 'Props-driven',
-            name: 'multi-select-combobox-creatable-props-demo',
-          },
-          { id: 'compound', label: 'Compound', name: 'multi-select-combobox-creatable' },
-        ],
-      },
-      {
-        name: 'multi-select-deletable-badge-props-demo',
-        label: 'Deletable badge',
-        codeVariants: [
-          { id: 'props', label: 'Props-driven', name: 'multi-select-deletable-badge-props-demo' },
-          { id: 'compound', label: 'Compound', name: 'multi-select-deletable-badge' },
-        ],
-      },
-      {
-        name: 'multi-select-disabled-props-demo',
-        label: 'Disabled',
-        codeVariants: [
-          { id: 'props', label: 'Props-driven', name: 'multi-select-disabled-props-demo' },
-          { id: 'compound', label: 'Compound', name: 'multi-select-disabled' },
-        ],
-      },
-      {
-        name: 'multi-select-in-dialog-props-demo',
-        label: 'In dialog',
-        codeVariants: [
-          { id: 'props', label: 'Props-driven', name: 'multi-select-in-dialog-props-demo' },
-          { id: 'compound', label: 'Compound', name: 'multi-select-in-dialog' },
-        ],
-      },
-      {
-        name: 'multi-select-inline-search-input-props-demo',
-        label: 'Inline search input',
-        codeVariants: [
-          {
-            id: 'props',
-            label: 'Props-driven',
-            name: 'multi-select-inline-search-input-props-demo',
-          },
-          { id: 'compound', label: 'Compound', name: 'multi-select-inline-search-input' },
-        ],
-      },
-      {
-        name: 'multi-select-without-icon-props-demo',
-        label: 'Without icon',
-        codeVariants: [
-          { id: 'props', label: 'Props-driven', name: 'multi-select-without-icon-props-demo' },
-          { id: 'compound', label: 'Compound', name: 'multi-select-without-icon' },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'combobox',
-    title: 'Combobox',
-    icon: ChevronsUpDown,
-    description:
-      'Searchable single-value select: Select-styled trigger, Popover + Command list, options or groups.',
-    previews: [
-      { name: 'combobox-demo', label: 'Default' },
-      { name: 'combobox-groups', label: 'Groups' },
-    ],
-  },
-  {
-    id: 'file-upload',
-    title: 'File Upload',
-    icon: Upload,
-    description:
-      'Drop zone + Browse button with accept / maxSize / maxFiles validation, a removable file list, and a real file input for forms.',
-    previews: [
-      { name: 'file-upload-demo', label: 'Multiple' },
-      { name: 'file-upload-single', label: 'Single file in a form' },
-    ],
-  },
-  {
     id: 'data-table',
     title: 'Data Table',
     icon: TableIcon,
@@ -1473,47 +1537,6 @@ const fragments: ComponentEntry[] = [
     ],
   },
   {
-    id: 'date-picker',
-    title: 'Date Picker',
-    icon: CalendarDays,
-    description:
-      'Typeable segmented field (day/month/year) with a calendar-icon button that opens a Popover-wrapped Calendar; range/multiple modes fall back to a text-label trigger button.',
-    previews: [
-      {
-        name: 'date-picker-props-demo',
-        label: 'Default',
-        codeVariants: [
-          { id: 'props', label: 'Props-driven', name: 'date-picker-props-demo' },
-          { id: 'compound', label: 'Compound', name: 'date-picker-demo' },
-        ],
-      },
-      {
-        name: 'date-picker-form-props-demo',
-        label: 'Form',
-        codeVariants: [
-          { id: 'props', label: 'Props-driven', name: 'date-picker-form-props-demo' },
-          { id: 'compound', label: 'Compound', name: 'date-picker-form' },
-        ],
-      },
-      {
-        name: 'date-picker-with-presets-props-demo',
-        label: 'With presets',
-        codeVariants: [
-          { id: 'props', label: 'Props-driven', name: 'date-picker-with-presets-props-demo' },
-          { id: 'compound', label: 'Compound', name: 'date-picker-with-presets' },
-        ],
-      },
-      {
-        name: 'date-picker-with-range-props-demo',
-        label: 'With range',
-        codeVariants: [
-          { id: 'props', label: 'Props-driven', name: 'date-picker-with-range-props-demo' },
-          { id: 'compound', label: 'Compound', name: 'date-picker-with-range' },
-        ],
-      },
-    ],
-  },
-  {
     id: 'code-block',
     title: 'Code Block',
     icon: Code,
@@ -1521,20 +1544,6 @@ const fragments: ComponentEntry[] = [
       'Syntax-highlighted code (react-syntax-highlighter, Monokai theme) with a hover-reveal copy button.',
     previews: [
       { name: 'code-block-demo' },
-    ],
-  },
-  {
-    id: 'data-input',
-    title: 'Data Input',
-    icon: Eye,
-    description:
-      'Input wrapped in an InputGroup with optional copy, password-style reveal and action slots.',
-    previews: [
-      { name: 'data-input-demo', label: 'Default' },
-      { name: 'data-input-with-copy', label: 'With copy' },
-      { name: 'data-input-with-copy-secret', label: 'With copy secret' },
-      { name: 'data-input-with-reveal-copy-editable', label: 'With reveal copy editable' },
-      { name: 'data-input-with-reveal-copy-editable-empty', label: 'With reveal copy editable empty' },
     ],
   },
   {
@@ -1554,15 +1563,6 @@ const fragments: ComponentEntry[] = [
     description: 'HTTP method + status pill, coloured by the response class (2xx/4xx/5xx).',
     previews: [
       { name: 'status-code-demo' },
-    ],
-  },
-  {
-    id: 'text-link',
-    title: 'Text Link',
-    icon: LinkIcon,
-    description: 'Inline link with an optional counter and an animated chevron.',
-    previews: [
-      { name: 'text-link-demo' },
     ],
   },
   {

@@ -3,10 +3,10 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useLayoutEffect, useRef, useState, type ComponentProps, type ReactNode } from 'react'
 
-import { EASE_SOFT_IN, EASE_SOFT_OUT } from '../../../lib/motion'
-import { cn } from '../../../lib/utils'
-import { buttonVariants } from '../../atoms/actions/button/shadcn-button'
-import { Calendar } from '../../atoms/forms/calendar'
+import { EASE_SOFT_IN, EASE_SOFT_OUT } from '../../../../lib/motion'
+import { cn } from '../../../../lib/utils'
+import { buttonVariants } from '../../actions/button/shadcn-button'
+import { Calendar } from '../calendar'
 
 type CalendarProps = ComponentProps<typeof Calendar>
 type SingleCalendarProps = Extract<CalendarProps, { mode: 'single' }>

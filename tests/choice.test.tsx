@@ -15,7 +15,7 @@ import {
   MultiSelectorList,
   MultiSelectorRoot,
   MultiSelectorTrigger,
-} from '../src/components/fragments/multi-select'
+} from '../src/components/atoms/forms/multi-select'
 
 const plans = [
   { value: 'free', label: 'Free' },

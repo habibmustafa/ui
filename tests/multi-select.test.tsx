@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { expect, test, vi } from 'vitest'
 
-import { MultiSelector } from '../src/components/fragments/multi-select'
+import { MultiSelector } from '../src/components/atoms/forms/multi-select'
 
 const options = [
   { value: 'react', label: 'React' },
