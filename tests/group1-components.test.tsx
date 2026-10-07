@@ -6,7 +6,7 @@ import { describe, expect, test, vi } from 'vitest'
 
 import { NumberInput } from '../src/components/atoms/forms/number-input'
 import { Stepper } from '../src/components/atoms/navigation/stepper'
-import { Combobox } from '../src/components/fragments/combobox'
+import { Combobox } from '../src/components/atoms/forms/combobox'
 
 test('NumberInput steps with keys and buttons and clamps to min/max', async () => {
   const user = userEvent.setup()

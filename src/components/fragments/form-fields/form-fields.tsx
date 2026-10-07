@@ -39,11 +39,11 @@ import { Slider, type SliderProps } from '../../atoms/forms/slider'
 import { Switch, type SwitchProps } from '../../atoms/forms/switch'
 import { Textarea, type TextareaProps } from '../../atoms/forms/textarea'
 import { TimePicker, type TimePickerProps } from '../../atoms/forms/time-picker'
-import { Combobox, type ComboboxProps } from '../combobox'
-import { DatePicker } from '../date-picker'
-import { FileUpload, type FileUploadProps } from '../file-upload'
+import { Combobox, type ComboboxProps } from '../../atoms/forms/combobox'
+import { DatePicker } from '../../atoms/forms/date-picker'
+import { FileUpload, type FileUploadProps } from '../../atoms/forms/file-upload'
 import { FormItemLayout } from '../form-item-layout'
-import { MultiSelector, type MultiSelectorOption, type MultiSelectorProps } from '../multi-select'
+import { MultiSelector, type MultiSelectorOption, type MultiSelectorProps } from '../../atoms/forms/multi-select'
 
 /**
  * The label/description/layout knobs every field shares, hand-picked from FormItemLayout's

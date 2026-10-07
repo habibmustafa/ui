@@ -4,22 +4,22 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { Check, ChevronDown, X as RemoveIcon } from 'lucide-react'
 import React, { Children, useEffect } from 'react'
 
-import { cn } from '../../../lib/utils'
-import { SIZE, SIZE_VARIANTS, SIZE_VARIANTS_DEFAULT } from '../../../lib/constants'
-import { Badge } from '../../atoms/feedback/badge'
+import { cn } from '../../../../lib/utils'
+import { SIZE, SIZE_VARIANTS, SIZE_VARIANTS_DEFAULT } from '../../../../lib/constants'
+import { Badge } from '../../feedback/badge'
 import {
   CommandEmpty,
   CommandInput,
   CommandItem,
   CommandList,
   CommandRoot as Command,
-} from '../../atoms/navigation/command'
+} from '../../navigation/command'
 import {
   PopoverAnchor,
   PopoverContent,
   PopoverRoot as Popover,
   type PopoverContentProps,
-} from '../../atoms/overlay/popover'
+} from '../../overlay/popover'
 import { SelectionListState } from './selection-list-state'
 
 interface MultiSelectContextProps {

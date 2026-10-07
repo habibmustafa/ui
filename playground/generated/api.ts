@@ -1219,6 +1219,76 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       }
     ]
   },
+  "shimmering-loader": {
+    "source": "src/components/atoms/feedback/shimmering-loader",
+    "components": [
+      {
+        "name": "ShimmeringLoader",
+        "props": [
+          {
+            "name": "className",
+            "type": "string"
+          },
+          {
+            "name": "style",
+            "type": "CSSProperties"
+          },
+          {
+            "name": "delayIndex",
+            "type": "number",
+            "default": "0"
+          },
+          {
+            "name": "animationDelay",
+            "type": "number",
+            "default": "150"
+          }
+        ],
+        "extends": []
+      },
+      {
+        "name": "GenericSkeletonLoader",
+        "props": [
+          {
+            "name": "className",
+            "type": "string"
+          }
+        ],
+        "extends": []
+      },
+      {
+        "name": "GenericSelectionSkeletonLoader",
+        "props": [
+          {
+            "name": "variant",
+            "type": "\"command\" | \"multi-select\" | \"select\"",
+            "default": "multi-select"
+          },
+          {
+            "name": "className",
+            "type": "string"
+          }
+        ],
+        "extends": []
+      },
+      {
+        "name": "GenericTableLoader",
+        "props": [
+          {
+            "name": "headers",
+            "type": "(string | null)[]",
+            "default": "[]"
+          },
+          {
+            "name": "numRows",
+            "type": "number",
+            "default": "3"
+          }
+        ],
+        "extends": []
+      }
+    ]
+  },
   "skeleton": {
     "source": "src/components/atoms/feedback/skeleton",
     "components": [
@@ -1344,6 +1414,186 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       }
     ]
   },
+  "combobox": {
+    "source": "src/components/atoms/forms/combobox",
+    "components": [
+      {
+        "name": "Combobox",
+        "props": [
+          {
+            "name": "options",
+            "type": "readonly ComboboxOption[]"
+          },
+          {
+            "name": "groups",
+            "type": "readonly ComboboxOptionGroup[]",
+            "description": "Grouped options; used instead of `options` when both are given."
+          },
+          {
+            "name": "value",
+            "type": "string | null",
+            "description": "Selected value, controlled; `null` for none."
+          },
+          {
+            "name": "defaultValue",
+            "type": "string | null",
+            "default": "null"
+          },
+          {
+            "name": "onValueChange",
+            "type": "((value: string | null) => void)"
+          },
+          {
+            "name": "open",
+            "type": "boolean"
+          },
+          {
+            "name": "defaultOpen",
+            "type": "boolean",
+            "default": "false"
+          },
+          {
+            "name": "onOpenChange",
+            "type": "((open: boolean) => void)"
+          },
+          {
+            "name": "placeholder",
+            "type": "ReactNode",
+            "default": "Select…",
+            "description": "Trigger text when nothing is selected."
+          },
+          {
+            "name": "searchPlaceholder",
+            "type": "string",
+            "default": "Search…"
+          },
+          {
+            "name": "emptyText",
+            "type": "ReactNode",
+            "default": "No results found.",
+            "description": "Shown when the search matches nothing."
+          },
+          {
+            "name": "clearable",
+            "type": "boolean",
+            "default": "false",
+            "description": "Picking the selected option again clears it."
+          },
+          {
+            "name": "disabled",
+            "type": "boolean"
+          },
+          {
+            "name": "size",
+            "type": "\"large\" | \"medium\" | \"small\" | \"tiny\" | \"xlarge\""
+          },
+          {
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "aria-label",
+            "type": "string"
+          },
+          {
+            "name": "aria-labelledby",
+            "type": "string"
+          },
+          {
+            "name": "aria-describedby",
+            "type": "string"
+          },
+          {
+            "name": "aria-invalid",
+            "type": "boolean | \"true\" | \"false\" | \"grammar\" | \"spelling\""
+          },
+          {
+            "name": "onBlur",
+            "type": "FocusEventHandler<HTMLButtonElement>",
+            "description": "Called when focus leaves the trigger for anywhere but the open list."
+          },
+          {
+            "name": "className",
+            "type": "string"
+          },
+          {
+            "name": "classNames",
+            "type": "ComboboxClassNames"
+          }
+        ],
+        "extends": []
+      }
+    ]
+  },
+  "data-input": {
+    "source": "src/components/atoms/forms/data-input",
+    "components": [
+      {
+        "name": "DataInput",
+        "props": [
+          {
+            "name": "size",
+            "type": "\"tiny\" | \"small\" | \"medium\" | \"large\" | \"xlarge\" | null",
+            "default": "small"
+          },
+          {
+            "name": "icon",
+            "type": "any"
+          },
+          {
+            "name": "prefix",
+            "type": "ReactNode",
+            "description": "Rendered inside the field's own border, before the value (e.g. an icon or \"$\")."
+          },
+          {
+            "name": "onCopy",
+            "type": "(ClipboardEventHandler<HTMLInputElement> & (() => void))"
+          },
+          {
+            "name": "copy",
+            "type": "boolean"
+          },
+          {
+            "name": "containerClassName",
+            "type": "string"
+          },
+          {
+            "name": "suffix",
+            "type": "ReactNode",
+            "description": "Rendered inside the field's own border, after the value (e.g. a unit or button)."
+          },
+          {
+            "name": "showCopyOnHover",
+            "type": "boolean",
+            "default": "false"
+          },
+          {
+            "name": "reveal",
+            "type": "boolean",
+            "default": "false"
+          },
+          {
+            "name": "actions",
+            "type": "ReactNode"
+          },
+          {
+            "name": "iconContainerClassName",
+            "type": "string"
+          }
+        ],
+        "extends": [
+          {
+            "name": "InputHTMLAttributes",
+            "package": "react"
+          }
+        ]
+      }
+    ]
+  },
   "date-field": {
     "source": "src/components/atoms/forms/date-field",
     "components": [
@@ -1434,6 +1684,422 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "description": "The underlying `<input>`."
           }
         ],
+        "extends": []
+      }
+    ]
+  },
+  "date-picker": {
+    "source": "src/components/atoms/forms/date-picker",
+    "components": [
+      {
+        "name": "DatePicker",
+        "props": [
+          {
+            "name": "calendarProps",
+            "type": "DayPickerProps",
+            "description": "Passed straight to Calendar — carries `mode`/`selected`/`onSelect` and everything else."
+          },
+          {
+            "name": "triggerLabel",
+            "type": "ReactNode",
+            "default": "\"Pick a date\"",
+            "description": "Trigger button label — only used when `calendarProps.mode !== 'single'`."
+          },
+          {
+            "name": "buttonProps",
+            "type": "Omit<DatePickerButtonProps, \"children\">"
+          },
+          {
+            "name": "contentClassName",
+            "type": "string"
+          },
+          {
+            "name": "beforeCalendar",
+            "type": "ReactNode",
+            "description": "Extra content rendered above the Calendar inside DatePickerContent, e.g. a presets Select."
+          },
+          {
+            "name": "format",
+            "type": "string",
+            "default": "'DD.MM.YYYY'",
+            "description": "Segment format for the typeable field, single-date mode only."
+          },
+          {
+            "name": "minDate",
+            "type": "Date",
+            "description": "Typed-field range check, single-date mode only — marks `aria-invalid`, doesn't block typing."
+          },
+          {
+            "name": "maxDate",
+            "type": "Date"
+          }
+        ],
+        "extends": [
+          {
+            "name": "PopoverProps",
+            "package": "@radix-ui/react-popover"
+          }
+        ]
+      },
+      {
+        "name": "DatePickerRoot",
+        "alias": "DatePicker.Root",
+        "props": [],
+        "extends": [
+          {
+            "name": "PopoverProps",
+            "package": "@radix-ui/react-popover"
+          }
+        ]
+      },
+      {
+        "name": "DatePickerTrigger",
+        "alias": "DatePicker.Trigger",
+        "props": [],
+        "extends": [
+          {
+            "name": "ButtonHTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "DatePickerButton",
+        "alias": "DatePicker.Button",
+        "props": [
+          {
+            "name": "asChild",
+            "type": "boolean",
+            "default": "true"
+          },
+          {
+            "name": "variant",
+            "type": "\"primary\" | \"default\" | \"secondary\" | \"outline\" | \"dashed\" | \"link\" | \"text\" | \"danger\" | \"warning\" | null",
+            "default": "default"
+          },
+          {
+            "name": "icon",
+            "type": "ReactNode",
+            "default": "<CalendarIcon className=\"h-4 w-4\" />"
+          },
+          {
+            "name": "iconLeft",
+            "type": "ReactNode"
+          },
+          {
+            "name": "iconRight",
+            "type": "ReactNode"
+          },
+          {
+            "name": "rounded",
+            "type": "boolean"
+          },
+          {
+            "name": "focusableWhenDisabled",
+            "type": "boolean",
+            "description": "Keeps a disabled button keyboard-focusable by using `aria-disabled`\ninstead of native `disabled`. Use this when the control needs a tooltip\nor other explanation."
+          },
+          {
+            "name": "block",
+            "type": "boolean | null"
+          },
+          {
+            "name": "size",
+            "type": "\"tiny\" | \"small\" | \"medium\" | \"large\" | \"xlarge\" | null"
+          },
+          {
+            "name": "overlay",
+            "type": "\"base\" | \"container\" | null"
+          },
+          {
+            "name": "loading",
+            "type": "boolean | \"default\" | null"
+          },
+          {
+            "name": "isInvalid",
+            "type": "boolean",
+            "default": "false"
+          }
+        ],
+        "extends": [
+          {
+            "name": "ButtonHTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "DatePickerField",
+        "alias": "DatePicker.Field",
+        "props": [
+          {
+            "name": "value",
+            "type": "Date | null"
+          },
+          {
+            "name": "defaultValue",
+            "type": "Date | null"
+          },
+          {
+            "name": "onChange",
+            "type": "((date: Date | null) => void)"
+          },
+          {
+            "name": "format",
+            "type": "string",
+            "description": "dayjs tokens; only `YYYY`, `MM`, `DD` and literal separators are supported."
+          },
+          {
+            "name": "minDate",
+            "type": "Date",
+            "description": "Range/predicate checks against a *complete* typed date. Never block typing — only\nmark `aria-invalid` once the date is fully formed, same as MUI's own DateField."
+          },
+          {
+            "name": "maxDate",
+            "type": "Date"
+          },
+          {
+            "name": "isDateInvalid",
+            "type": "((date: Date) => boolean)"
+          },
+          {
+            "name": "size",
+            "type": "\"large\" | \"medium\" | \"small\" | \"tiny\" | \"xlarge\""
+          },
+          {
+            "name": "disabled",
+            "type": "boolean"
+          },
+          {
+            "name": "readOnly",
+            "type": "boolean"
+          },
+          {
+            "name": "className",
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "name": "onBlur",
+            "type": "FocusEventHandler<HTMLInputElement>"
+          },
+          {
+            "name": "aria-label",
+            "type": "string"
+          },
+          {
+            "name": "aria-labelledby",
+            "type": "string"
+          },
+          {
+            "name": "aria-describedby",
+            "type": "string"
+          },
+          {
+            "name": "aria-invalid",
+            "type": "boolean"
+          },
+          {
+            "name": "ref",
+            "type": "Ref<HTMLInputElement>",
+            "description": "The underlying `<input>`."
+          },
+          {
+            "name": "isInvalid",
+            "type": "boolean",
+            "default": "false"
+          }
+        ],
+        "extends": []
+      },
+      {
+        "name": "DatePickerContent",
+        "alias": "DatePicker.Content",
+        "props": [
+          {
+            "name": "align",
+            "type": "\"center\" | \"end\" | \"start\"",
+            "default": "start"
+          },
+          {
+            "name": "sideOffset",
+            "type": "number"
+          },
+          {
+            "name": "sameWidthAsTrigger",
+            "type": "boolean"
+          }
+        ],
+        "extends": [
+          {
+            "name": "DismissableLayerProps",
+            "package": "@radix-ui/react-dismissable-layer"
+          },
+          {
+            "name": "PopoverContentProps",
+            "package": "@radix-ui/react-popover"
+          },
+          {
+            "name": "PopperContentProps",
+            "package": "@radix-ui/react-popper"
+          },
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "DatePickerFieldProps",
+        "description": "Field-mode trigger for single-date selection: a typeable `DateField` with a\ncalendar-icon button (the actual `PopoverTrigger`) overlaid at its end — MUI's own\n`DatePicker` composition, field + adornment button, rather than a text-label button.",
+        "props": [],
+        "extends": []
+      }
+    ]
+  },
+  "file-upload": {
+    "source": "src/components/atoms/forms/file-upload",
+    "components": [
+      {
+        "name": "FileUpload",
+        "props": [
+          {
+            "name": "value",
+            "type": "File[]",
+            "description": "Selected files, controlled."
+          },
+          {
+            "name": "defaultValue",
+            "type": "File[]",
+            "default": "[]"
+          },
+          {
+            "name": "onValueChange",
+            "type": "((files: File[]) => void)"
+          },
+          {
+            "name": "onReject",
+            "type": "((rejections: FileRejection[]) => void)",
+            "description": "Called with every rejected file and why (type / size / count)."
+          },
+          {
+            "name": "accept",
+            "type": "string",
+            "description": "Same syntax as <input accept>: \".pdf,image/*\"."
+          },
+          {
+            "name": "maxSize",
+            "type": "number",
+            "description": "Bytes."
+          },
+          {
+            "name": "maxFiles",
+            "type": "number"
+          },
+          {
+            "name": "multiple",
+            "type": "boolean",
+            "default": "true"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "default": "false"
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "description": "Submitted with forms via the underlying file input."
+          },
+          {
+            "name": "id",
+            "type": "string",
+            "description": "Goes on the Browse button — the accessible control — so `<label for>` names it."
+          },
+          {
+            "name": "label",
+            "type": "ReactNode",
+            "default": "Drag and drop files here",
+            "description": "Heading inside the drop zone."
+          },
+          {
+            "name": "description",
+            "type": "ReactNode",
+            "description": "Smaller text under the label, e.g. accepted types and limits."
+          },
+          {
+            "name": "browseText",
+            "type": "ReactNode",
+            "default": "Browse files"
+          },
+          {
+            "name": "showFileList",
+            "type": "boolean",
+            "default": "true",
+            "description": "Render the list of selected files below the zone."
+          },
+          {
+            "name": "rejectionMessages",
+            "type": "Partial<Record<FileRejectionReason, string>>",
+            "description": "Messages for rejected files."
+          },
+          {
+            "name": "aria-labelledby",
+            "type": "string",
+            "description": "Labels the Browse button (its own text is kept after the label)."
+          },
+          {
+            "name": "aria-describedby",
+            "type": "string"
+          },
+          {
+            "name": "aria-invalid",
+            "type": "boolean | \"true\" | \"false\" | \"grammar\" | \"spelling\""
+          },
+          {
+            "name": "onBlur",
+            "type": "FocusEventHandler<HTMLButtonElement>",
+            "description": "Called when the Browse button loses focus."
+          },
+          {
+            "name": "className",
+            "type": "string"
+          },
+          {
+            "name": "classNames",
+            "type": "FileUploadClassNames"
+          }
+        ],
+        "extends": []
+      },
+      {
+        "name": "formatFileSize",
+        "description": "1536 -> \"1.5 KB\". Binary units, one decimal under 10.",
+        "props": [],
+        "extends": [
+          {
+            "name": "Number",
+            "package": "typescript"
+          }
+        ]
+      },
+      {
+        "name": "fileMatchesAccept",
+        "description": "Whether `file` matches an `accept` string the way <input type=\"file\" accept> reads it:\ncomma-separated extensions (\".pdf\"), exact MIME types (\"image/png\") and wildcards\n(\"image/*\"). An empty/undefined accept takes everything.",
+        "props": [],
+        "extends": []
+      },
+      {
+        "name": "validateFiles",
+        "description": "Splits incoming files into accepted and rejected ones. `current` is how many files are\nalready selected, for the `maxFiles` count check (files beyond the limit are rejected\nin arrival order).",
+        "props": [],
         "extends": []
       }
     ]
@@ -1670,6 +2336,370 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "package": "react"
           }
         ]
+      }
+    ]
+  },
+  "multi-select": {
+    "source": "src/components/atoms/forms/multi-select",
+    "components": [
+      {
+        "name": "MultiSelector",
+        "props": [
+          {
+            "name": "size",
+            "type": "\"tiny\" | \"small\" | \"medium\" | \"large\" | \"xlarge\" | null"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "description": "Accessible label for this command menu. Not shown visibly."
+          },
+          {
+            "name": "values",
+            "type": "string[]",
+            "required": true
+          },
+          {
+            "name": "onOpenChange",
+            "type": "((open: boolean) => void)"
+          },
+          {
+            "name": "mode",
+            "type": "\"combobox\" | \"inline-combobox\""
+          },
+          {
+            "name": "onValuesChange",
+            "type": "(value: string[]) => void",
+            "required": true
+          },
+          {
+            "name": "persistLabel",
+            "type": "boolean"
+          },
+          {
+            "name": "badgeLimit",
+            "type": "number | \"wrap\""
+          },
+          {
+            "name": "wrapBadges",
+            "type": "boolean"
+          },
+          {
+            "name": "deletableBadge",
+            "type": "boolean"
+          },
+          {
+            "name": "showIcon",
+            "type": "boolean"
+          },
+          {
+            "name": "renderValue",
+            "type": "((value: string) => ReactNode)"
+          },
+          {
+            "name": "options",
+            "type": "readonly MultiSelectorOption[]"
+          },
+          {
+            "name": "creatable",
+            "type": "boolean",
+            "default": "9999 (no wrap)"
+          },
+          {
+            "name": "emptyLabel",
+            "type": "string"
+          },
+          {
+            "name": "error",
+            "type": "boolean"
+          },
+          {
+            "name": "errorLabel",
+            "type": "string"
+          },
+          {
+            "name": "loading",
+            "type": "boolean"
+          },
+          {
+            "name": "triggerClassName",
+            "type": "string"
+          },
+          {
+            "name": "searchable",
+            "type": "boolean",
+            "description": "Renders a MultiSelectorInput search field above the list (`mode=\"combobox\"`'s own\nfilter box) — not used with `mode: \"inline-combobox\"`, which searches inline in the\ntrigger instead."
+          },
+          {
+            "name": "searchPlaceholder",
+            "type": "string"
+          },
+          {
+            "name": "ref",
+            "type": "Ref<HTMLButtonElement>",
+            "description": "The trigger button — the focusable control. `aria-labelledby`, `aria-describedby`,\n`aria-invalid` and `onBlur` also go to the trigger in this mode (so a FormControl\naround it marks the control a user actually reaches), while `id` stays on the root."
+          }
+        ],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "MultiSelectorRoot",
+        "alias": "MultiSelector.Root",
+        "props": [
+          {
+            "name": "mode",
+            "type": "\"combobox\" | \"inline-combobox\"",
+            "default": "combobox"
+          },
+          {
+            "name": "values",
+            "type": "string[]",
+            "default": "[]"
+          },
+          {
+            "name": "onValuesChange",
+            "type": "(value: string[]) => void",
+            "required": true
+          },
+          {
+            "name": "onOpenChange",
+            "type": "((open: boolean) => void)"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean"
+          },
+          {
+            "name": "size",
+            "type": "\"tiny\" | \"small\" | \"medium\" | \"large\" | \"xlarge\" | null"
+          }
+        ],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "MultiSelectorContent",
+        "alias": "MultiSelector.Content",
+        "props": [
+          {
+            "name": "align",
+            "type": "\"center\" | \"end\" | \"start\""
+          },
+          {
+            "name": "sideOffset",
+            "type": "number"
+          },
+          {
+            "name": "sameWidthAsTrigger",
+            "type": "boolean"
+          }
+        ],
+        "extends": [
+          {
+            "name": "DismissableLayerProps",
+            "package": "@radix-ui/react-dismissable-layer"
+          },
+          {
+            "name": "PopoverContentProps",
+            "package": "@radix-ui/react-popover"
+          },
+          {
+            "name": "PopperContentProps",
+            "package": "@radix-ui/react-popper"
+          },
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "MultiSelectorInput",
+        "alias": "MultiSelector.Input",
+        "props": [
+          {
+            "name": "wrapperClassName",
+            "type": "string"
+          },
+          {
+            "name": "showResetIcon",
+            "type": "boolean"
+          },
+          {
+            "name": "showSearchIcon",
+            "type": "boolean"
+          },
+          {
+            "name": "handleReset",
+            "type": "(() => void)"
+          }
+        ],
+        "extends": [
+          {
+            "name": "InputHTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "MultiSelectorItem",
+        "alias": "MultiSelector.Item",
+        "props": [
+          {
+            "name": "value",
+            "type": "string",
+            "description": "A unique value for this item.\nIf no value is provided, it will be inferred from `children` or the rendered `textContent`. If your `textContent` changes between renders, you _must_ provide a stable, unique `value`."
+          }
+        ],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "MultiSelectorList",
+        "alias": "MultiSelector.List",
+        "props": [
+          {
+            "name": "creatable",
+            "type": "boolean",
+            "default": "false"
+          },
+          {
+            "name": "emptyLabel",
+            "type": "string",
+            "default": "No results found"
+          },
+          {
+            "name": "error",
+            "type": "boolean",
+            "default": "false"
+          },
+          {
+            "name": "errorLabel",
+            "type": "string"
+          },
+          {
+            "name": "loading",
+            "type": "boolean",
+            "default": "false"
+          }
+        ],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "MultiSelectorTrigger",
+        "alias": "MultiSelector.Trigger",
+        "props": [
+          {
+            "name": "label",
+            "type": "string"
+          },
+          {
+            "name": "persistLabel",
+            "type": "boolean",
+            "default": "false"
+          },
+          {
+            "name": "className",
+            "type": "string"
+          },
+          {
+            "name": "badgeLimit",
+            "type": "number | \"wrap\"",
+            "default": "9999"
+          },
+          {
+            "name": "wrapBadges",
+            "type": "boolean",
+            "default": "false"
+          },
+          {
+            "name": "deletableBadge",
+            "type": "boolean",
+            "default": "true"
+          },
+          {
+            "name": "showIcon",
+            "type": "boolean",
+            "default": "true"
+          },
+          {
+            "name": "mode",
+            "type": "\"combobox\" | \"inline-combobox\"",
+            "default": "combobox"
+          },
+          {
+            "name": "renderValue",
+            "type": "((value: string) => ReactNode)"
+          }
+        ],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "SelectionListState",
+        "props": [
+          {
+            "name": "className",
+            "type": "string"
+          },
+          {
+            "name": "emptyLabel",
+            "type": "string",
+            "default": "No options available"
+          },
+          {
+            "name": "errorLabel",
+            "type": "string",
+            "default": "Unable to load options"
+          },
+          {
+            "name": "isEmpty",
+            "type": "boolean",
+            "default": "false"
+          },
+          {
+            "name": "isError",
+            "type": "boolean",
+            "default": "false"
+          },
+          {
+            "name": "isLoading",
+            "type": "boolean",
+            "default": "false"
+          },
+          {
+            "name": "skeletonVariant",
+            "type": "\"command\" | \"multi-select\" | \"select\"",
+            "default": "select"
+          }
+        ],
+        "extends": []
       }
     ]
   },
@@ -4601,6 +5631,11 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "type": "string | (Omit<TooltipContentProps & RefAttributes<HTMLDivElement>, \"ref\"> & RefAttributes<HTMLDivElement>)"
           },
           {
+            "name": "isLoading",
+            "type": "boolean",
+            "default": "false"
+          },
+          {
             "name": "isActive",
             "type": "boolean",
             "default": "false"
@@ -4609,11 +5644,6 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "name": "hasIcon",
             "type": "boolean",
             "default": "true"
-          },
-          {
-            "name": "isLoading",
-            "type": "boolean",
-            "default": "false"
           }
         ],
         "extends": [
@@ -4934,6 +5964,54 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "package": "react"
           }
         ]
+      }
+    ]
+  },
+  "text-link": {
+    "source": "src/components/atoms/navigation/text-link",
+    "components": [
+      {
+        "name": "TextLink",
+        "props": [
+          {
+            "name": "label",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "url",
+            "type": "string",
+            "default": ""
+          },
+          {
+            "name": "className",
+            "type": "string"
+          },
+          {
+            "name": "counter",
+            "type": "number"
+          },
+          {
+            "name": "hasChevron",
+            "type": "boolean",
+            "default": "true"
+          },
+          {
+            "name": "chevronAnimation",
+            "type": "\"fadeIn\" | \"translate\"",
+            "default": "translate"
+          },
+          {
+            "name": "target",
+            "type": "\"_blank\" | \"_self\"",
+            "default": "_self"
+          },
+          {
+            "name": "onClick",
+            "type": "(() => void)"
+          }
+        ],
+        "extends": []
       }
     ]
   },
@@ -6964,186 +8042,6 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       }
     ]
   },
-  "combobox": {
-    "source": "src/components/fragments/combobox",
-    "components": [
-      {
-        "name": "Combobox",
-        "props": [
-          {
-            "name": "options",
-            "type": "readonly ComboboxOption[]"
-          },
-          {
-            "name": "groups",
-            "type": "readonly ComboboxOptionGroup[]",
-            "description": "Grouped options; used instead of `options` when both are given."
-          },
-          {
-            "name": "value",
-            "type": "string | null",
-            "description": "Selected value, controlled; `null` for none."
-          },
-          {
-            "name": "defaultValue",
-            "type": "string | null",
-            "default": "null"
-          },
-          {
-            "name": "onValueChange",
-            "type": "((value: string | null) => void)"
-          },
-          {
-            "name": "open",
-            "type": "boolean"
-          },
-          {
-            "name": "defaultOpen",
-            "type": "boolean",
-            "default": "false"
-          },
-          {
-            "name": "onOpenChange",
-            "type": "((open: boolean) => void)"
-          },
-          {
-            "name": "placeholder",
-            "type": "ReactNode",
-            "default": "Select…",
-            "description": "Trigger text when nothing is selected."
-          },
-          {
-            "name": "searchPlaceholder",
-            "type": "string",
-            "default": "Search…"
-          },
-          {
-            "name": "emptyText",
-            "type": "ReactNode",
-            "default": "No results found.",
-            "description": "Shown when the search matches nothing."
-          },
-          {
-            "name": "clearable",
-            "type": "boolean",
-            "default": "false",
-            "description": "Picking the selected option again clears it."
-          },
-          {
-            "name": "disabled",
-            "type": "boolean"
-          },
-          {
-            "name": "size",
-            "type": "\"large\" | \"medium\" | \"small\" | \"tiny\" | \"xlarge\""
-          },
-          {
-            "name": "id",
-            "type": "string"
-          },
-          {
-            "name": "name",
-            "type": "string"
-          },
-          {
-            "name": "aria-label",
-            "type": "string"
-          },
-          {
-            "name": "aria-labelledby",
-            "type": "string"
-          },
-          {
-            "name": "aria-describedby",
-            "type": "string"
-          },
-          {
-            "name": "aria-invalid",
-            "type": "boolean | \"true\" | \"false\" | \"grammar\" | \"spelling\""
-          },
-          {
-            "name": "onBlur",
-            "type": "FocusEventHandler<HTMLButtonElement>",
-            "description": "Called when focus leaves the trigger for anywhere but the open list."
-          },
-          {
-            "name": "className",
-            "type": "string"
-          },
-          {
-            "name": "classNames",
-            "type": "ComboboxClassNames"
-          }
-        ],
-        "extends": []
-      }
-    ]
-  },
-  "data-input": {
-    "source": "src/components/fragments/data-input",
-    "components": [
-      {
-        "name": "DataInput",
-        "props": [
-          {
-            "name": "size",
-            "type": "\"tiny\" | \"small\" | \"medium\" | \"large\" | \"xlarge\" | null",
-            "default": "small"
-          },
-          {
-            "name": "icon",
-            "type": "any"
-          },
-          {
-            "name": "prefix",
-            "type": "ReactNode",
-            "description": "Rendered inside the field's own border, before the value (e.g. an icon or \"$\")."
-          },
-          {
-            "name": "onCopy",
-            "type": "(ClipboardEventHandler<HTMLInputElement> & (() => void))"
-          },
-          {
-            "name": "copy",
-            "type": "boolean"
-          },
-          {
-            "name": "containerClassName",
-            "type": "string"
-          },
-          {
-            "name": "suffix",
-            "type": "ReactNode",
-            "description": "Rendered inside the field's own border, after the value (e.g. a unit or button)."
-          },
-          {
-            "name": "actions",
-            "type": "ReactNode"
-          },
-          {
-            "name": "showCopyOnHover",
-            "type": "boolean",
-            "default": "false"
-          },
-          {
-            "name": "reveal",
-            "type": "boolean",
-            "default": "false"
-          },
-          {
-            "name": "iconContainerClassName",
-            "type": "string"
-          }
-        ],
-        "extends": [
-          {
-            "name": "InputHTMLAttributes",
-            "package": "react"
-          }
-        ]
-      }
-    ]
-  },
   "data-table": {
     "source": "src/components/fragments/data-table",
     "components": [
@@ -7324,282 +8222,6 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       }
     ]
   },
-  "date-picker": {
-    "source": "src/components/fragments/date-picker",
-    "components": [
-      {
-        "name": "DatePicker",
-        "props": [
-          {
-            "name": "calendarProps",
-            "type": "DayPickerProps",
-            "description": "Passed straight to Calendar — carries `mode`/`selected`/`onSelect` and everything else."
-          },
-          {
-            "name": "triggerLabel",
-            "type": "ReactNode",
-            "default": "\"Pick a date\"",
-            "description": "Trigger button label — only used when `calendarProps.mode !== 'single'`."
-          },
-          {
-            "name": "buttonProps",
-            "type": "Omit<DatePickerButtonProps, \"children\">"
-          },
-          {
-            "name": "contentClassName",
-            "type": "string"
-          },
-          {
-            "name": "beforeCalendar",
-            "type": "ReactNode",
-            "description": "Extra content rendered above the Calendar inside DatePickerContent, e.g. a presets Select."
-          },
-          {
-            "name": "format",
-            "type": "string",
-            "default": "'DD.MM.YYYY'",
-            "description": "Segment format for the typeable field, single-date mode only."
-          },
-          {
-            "name": "minDate",
-            "type": "Date",
-            "description": "Typed-field range check, single-date mode only — marks `aria-invalid`, doesn't block typing."
-          },
-          {
-            "name": "maxDate",
-            "type": "Date"
-          }
-        ],
-        "extends": [
-          {
-            "name": "PopoverProps",
-            "package": "@radix-ui/react-popover"
-          }
-        ]
-      },
-      {
-        "name": "DatePickerRoot",
-        "alias": "DatePicker.Root",
-        "props": [],
-        "extends": [
-          {
-            "name": "PopoverProps",
-            "package": "@radix-ui/react-popover"
-          }
-        ]
-      },
-      {
-        "name": "DatePickerTrigger",
-        "alias": "DatePicker.Trigger",
-        "props": [],
-        "extends": [
-          {
-            "name": "ButtonHTMLAttributes",
-            "package": "react"
-          }
-        ]
-      },
-      {
-        "name": "DatePickerButton",
-        "alias": "DatePicker.Button",
-        "props": [
-          {
-            "name": "asChild",
-            "type": "boolean",
-            "default": "true"
-          },
-          {
-            "name": "variant",
-            "type": "\"primary\" | \"default\" | \"secondary\" | \"outline\" | \"dashed\" | \"link\" | \"text\" | \"danger\" | \"warning\" | null",
-            "default": "default"
-          },
-          {
-            "name": "icon",
-            "type": "ReactNode",
-            "default": "<CalendarIcon className=\"h-4 w-4\" />"
-          },
-          {
-            "name": "iconLeft",
-            "type": "ReactNode"
-          },
-          {
-            "name": "iconRight",
-            "type": "ReactNode"
-          },
-          {
-            "name": "rounded",
-            "type": "boolean"
-          },
-          {
-            "name": "focusableWhenDisabled",
-            "type": "boolean",
-            "description": "Keeps a disabled button keyboard-focusable by using `aria-disabled`\ninstead of native `disabled`. Use this when the control needs a tooltip\nor other explanation."
-          },
-          {
-            "name": "block",
-            "type": "boolean | null"
-          },
-          {
-            "name": "size",
-            "type": "\"tiny\" | \"small\" | \"medium\" | \"large\" | \"xlarge\" | null"
-          },
-          {
-            "name": "overlay",
-            "type": "\"base\" | \"container\" | null"
-          },
-          {
-            "name": "loading",
-            "type": "boolean | \"default\" | null"
-          },
-          {
-            "name": "isInvalid",
-            "type": "boolean",
-            "default": "false"
-          }
-        ],
-        "extends": [
-          {
-            "name": "ButtonHTMLAttributes",
-            "package": "react"
-          }
-        ]
-      },
-      {
-        "name": "DatePickerField",
-        "alias": "DatePicker.Field",
-        "props": [
-          {
-            "name": "value",
-            "type": "Date | null"
-          },
-          {
-            "name": "defaultValue",
-            "type": "Date | null"
-          },
-          {
-            "name": "onChange",
-            "type": "((date: Date | null) => void)"
-          },
-          {
-            "name": "format",
-            "type": "string",
-            "description": "dayjs tokens; only `YYYY`, `MM`, `DD` and literal separators are supported."
-          },
-          {
-            "name": "minDate",
-            "type": "Date",
-            "description": "Range/predicate checks against a *complete* typed date. Never block typing — only\nmark `aria-invalid` once the date is fully formed, same as MUI's own DateField."
-          },
-          {
-            "name": "maxDate",
-            "type": "Date"
-          },
-          {
-            "name": "isDateInvalid",
-            "type": "((date: Date) => boolean)"
-          },
-          {
-            "name": "size",
-            "type": "\"large\" | \"medium\" | \"small\" | \"tiny\" | \"xlarge\""
-          },
-          {
-            "name": "disabled",
-            "type": "boolean"
-          },
-          {
-            "name": "readOnly",
-            "type": "boolean"
-          },
-          {
-            "name": "className",
-            "type": "string"
-          },
-          {
-            "name": "name",
-            "type": "string"
-          },
-          {
-            "name": "id",
-            "type": "string"
-          },
-          {
-            "name": "onBlur",
-            "type": "FocusEventHandler<HTMLInputElement>"
-          },
-          {
-            "name": "aria-label",
-            "type": "string"
-          },
-          {
-            "name": "aria-labelledby",
-            "type": "string"
-          },
-          {
-            "name": "aria-describedby",
-            "type": "string"
-          },
-          {
-            "name": "aria-invalid",
-            "type": "boolean"
-          },
-          {
-            "name": "ref",
-            "type": "Ref<HTMLInputElement>",
-            "description": "The underlying `<input>`."
-          },
-          {
-            "name": "isInvalid",
-            "type": "boolean",
-            "default": "false"
-          }
-        ],
-        "extends": []
-      },
-      {
-        "name": "DatePickerContent",
-        "alias": "DatePicker.Content",
-        "props": [
-          {
-            "name": "align",
-            "type": "\"center\" | \"end\" | \"start\"",
-            "default": "start"
-          },
-          {
-            "name": "sideOffset",
-            "type": "number"
-          },
-          {
-            "name": "sameWidthAsTrigger",
-            "type": "boolean"
-          }
-        ],
-        "extends": [
-          {
-            "name": "DismissableLayerProps",
-            "package": "@radix-ui/react-dismissable-layer"
-          },
-          {
-            "name": "PopoverContentProps",
-            "package": "@radix-ui/react-popover"
-          },
-          {
-            "name": "PopperContentProps",
-            "package": "@radix-ui/react-popper"
-          },
-          {
-            "name": "HTMLAttributes",
-            "package": "react"
-          }
-        ]
-      },
-      {
-        "name": "DatePickerFieldProps",
-        "description": "Field-mode trigger for single-date selection: a typeable `DateField` with a\ncalendar-icon button (the actual `PopoverTrigger`) overlaid at its end — MUI's own\n`DatePicker` composition, field + adornment button, rather than a text-label button.",
-        "props": [],
-        "extends": []
-      }
-    ]
-  },
   "empty-state": {
     "source": "src/components/fragments/empty-state",
     "components": [
@@ -7703,146 +8325,6 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "package": "react"
           }
         ]
-      }
-    ]
-  },
-  "file-upload": {
-    "source": "src/components/fragments/file-upload",
-    "components": [
-      {
-        "name": "FileUpload",
-        "props": [
-          {
-            "name": "value",
-            "type": "File[]",
-            "description": "Selected files, controlled."
-          },
-          {
-            "name": "defaultValue",
-            "type": "File[]",
-            "default": "[]"
-          },
-          {
-            "name": "onValueChange",
-            "type": "((files: File[]) => void)"
-          },
-          {
-            "name": "onReject",
-            "type": "((rejections: FileRejection[]) => void)",
-            "description": "Called with every rejected file and why (type / size / count)."
-          },
-          {
-            "name": "accept",
-            "type": "string",
-            "description": "Same syntax as <input accept>: \".pdf,image/*\"."
-          },
-          {
-            "name": "maxSize",
-            "type": "number",
-            "description": "Bytes."
-          },
-          {
-            "name": "maxFiles",
-            "type": "number"
-          },
-          {
-            "name": "multiple",
-            "type": "boolean",
-            "default": "true"
-          },
-          {
-            "name": "disabled",
-            "type": "boolean",
-            "default": "false"
-          },
-          {
-            "name": "name",
-            "type": "string",
-            "description": "Submitted with forms via the underlying file input."
-          },
-          {
-            "name": "id",
-            "type": "string",
-            "description": "Goes on the Browse button — the accessible control — so `<label for>` names it."
-          },
-          {
-            "name": "label",
-            "type": "ReactNode",
-            "default": "Drag and drop files here",
-            "description": "Heading inside the drop zone."
-          },
-          {
-            "name": "description",
-            "type": "ReactNode",
-            "description": "Smaller text under the label, e.g. accepted types and limits."
-          },
-          {
-            "name": "browseText",
-            "type": "ReactNode",
-            "default": "Browse files"
-          },
-          {
-            "name": "showFileList",
-            "type": "boolean",
-            "default": "true",
-            "description": "Render the list of selected files below the zone."
-          },
-          {
-            "name": "rejectionMessages",
-            "type": "Partial<Record<FileRejectionReason, string>>",
-            "description": "Messages for rejected files."
-          },
-          {
-            "name": "aria-labelledby",
-            "type": "string",
-            "description": "Labels the Browse button (its own text is kept after the label)."
-          },
-          {
-            "name": "aria-describedby",
-            "type": "string"
-          },
-          {
-            "name": "aria-invalid",
-            "type": "boolean | \"true\" | \"false\" | \"grammar\" | \"spelling\""
-          },
-          {
-            "name": "onBlur",
-            "type": "FocusEventHandler<HTMLButtonElement>",
-            "description": "Called when the Browse button loses focus."
-          },
-          {
-            "name": "className",
-            "type": "string"
-          },
-          {
-            "name": "classNames",
-            "type": "FileUploadClassNames"
-          }
-        ],
-        "extends": []
-      },
-      {
-        "name": "formatFileSize",
-        "description": "1536 -> \"1.5 KB\". Binary units, one decimal under 10.",
-        "props": [],
-        "extends": [
-          {
-            "name": "Number",
-            "package": "typescript"
-          }
-        ]
-      },
-      {
-        "name": "fileMatchesAccept",
-        "description": "Whether `file` matches an `accept` string the way <input type=\"file\" accept> reads it:\ncomma-separated extensions (\".pdf\"), exact MIME types (\"image/png\") and wildcards\n(\"image/*\"). An empty/undefined accept takes everything.",
-        "props": [],
-        "extends": []
-      },
-      {
-        "name": "validateFiles",
-        "description": "Splits incoming files into accepted and rejected ones. `current` is how many files are\nalready selected, for the `maxFiles` count check (files beyond the limit are rejected\nin arrival order).",
-        "props": [],
-        "extends": []
       }
     ]
   },
@@ -8714,18 +9196,6 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "type": "ComboboxClassNames"
           },
           {
-            "name": "placeholder",
-            "type": "ReactNode",
-            "default": "\"Select…\"",
-            "description": "Trigger text when nothing is selected."
-          },
-          {
-            "name": "emptyText",
-            "type": "ReactNode",
-            "default": "\"No results found.\"",
-            "description": "Shown when the search matches nothing."
-          },
-          {
             "name": "options",
             "type": "readonly ComboboxOption[]"
           },
@@ -8735,9 +9205,21 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "description": "Grouped options; used instead of `options` when both are given."
           },
           {
+            "name": "placeholder",
+            "type": "ReactNode",
+            "default": "\"Select…\"",
+            "description": "Trigger text when nothing is selected."
+          },
+          {
             "name": "searchPlaceholder",
             "type": "string",
             "default": "\"Search…\""
+          },
+          {
+            "name": "emptyText",
+            "type": "ReactNode",
+            "default": "\"No results found.\"",
+            "description": "Shown when the search matches nothing."
           },
           {
             "name": "clearable",
@@ -8801,14 +9283,6 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "type": "\"combobox\" | \"inline-combobox\""
           },
           {
-            "name": "showIcon",
-            "type": "boolean"
-          },
-          {
-            "name": "triggerClassName",
-            "type": "string"
-          },
-          {
             "name": "options",
             "type": "readonly MultiSelectorOption[]",
             "required": true
@@ -8834,6 +9308,10 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "type": "boolean"
           },
           {
+            "name": "showIcon",
+            "type": "boolean"
+          },
+          {
             "name": "renderValue",
             "type": "((value: string) => ReactNode)"
           },
@@ -8848,6 +9326,10 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           },
           {
             "name": "errorLabel",
+            "type": "string"
+          },
+          {
+            "name": "triggerClassName",
             "type": "string"
           },
           {
@@ -8947,9 +9429,9 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "description": "Same syntax as <input accept>: \".pdf,image/*\"."
           },
           {
-            "name": "description",
-            "type": "ReactNode",
-            "description": "Smaller text under the label, e.g. accepted types and limits."
+            "name": "onReject",
+            "type": "((rejections: FileRejection[]) => void)",
+            "description": "Called with every rejected file and why (type / size / count)."
           },
           {
             "name": "maxSize",
@@ -8957,13 +9439,13 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "description": "Bytes."
           },
           {
-            "name": "onReject",
-            "type": "((rejections: FileRejection[]) => void)",
-            "description": "Called with every rejected file and why (type / size / count)."
-          },
-          {
             "name": "maxFiles",
             "type": "number"
+          },
+          {
+            "name": "description",
+            "type": "ReactNode",
+            "description": "Smaller text under the label, e.g. accepted types and limits."
           },
           {
             "name": "browseText",
@@ -9528,370 +10010,6 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       }
     ]
   },
-  "multi-select": {
-    "source": "src/components/fragments/multi-select",
-    "components": [
-      {
-        "name": "MultiSelector",
-        "props": [
-          {
-            "name": "size",
-            "type": "\"tiny\" | \"small\" | \"medium\" | \"large\" | \"xlarge\" | null"
-          },
-          {
-            "name": "disabled",
-            "type": "boolean"
-          },
-          {
-            "name": "label",
-            "type": "string",
-            "description": "Accessible label for this command menu. Not shown visibly."
-          },
-          {
-            "name": "values",
-            "type": "string[]",
-            "required": true
-          },
-          {
-            "name": "onOpenChange",
-            "type": "((open: boolean) => void)"
-          },
-          {
-            "name": "mode",
-            "type": "\"combobox\" | \"inline-combobox\""
-          },
-          {
-            "name": "onValuesChange",
-            "type": "(value: string[]) => void",
-            "required": true
-          },
-          {
-            "name": "showIcon",
-            "type": "boolean"
-          },
-          {
-            "name": "persistLabel",
-            "type": "boolean"
-          },
-          {
-            "name": "badgeLimit",
-            "type": "number | \"wrap\""
-          },
-          {
-            "name": "wrapBadges",
-            "type": "boolean"
-          },
-          {
-            "name": "deletableBadge",
-            "type": "boolean"
-          },
-          {
-            "name": "renderValue",
-            "type": "((value: string) => ReactNode)"
-          },
-          {
-            "name": "options",
-            "type": "readonly MultiSelectorOption[]"
-          },
-          {
-            "name": "creatable",
-            "type": "boolean",
-            "default": "9999 (no wrap)"
-          },
-          {
-            "name": "emptyLabel",
-            "type": "string"
-          },
-          {
-            "name": "error",
-            "type": "boolean"
-          },
-          {
-            "name": "errorLabel",
-            "type": "string"
-          },
-          {
-            "name": "loading",
-            "type": "boolean"
-          },
-          {
-            "name": "triggerClassName",
-            "type": "string"
-          },
-          {
-            "name": "searchable",
-            "type": "boolean",
-            "description": "Renders a MultiSelectorInput search field above the list (`mode=\"combobox\"`'s own\nfilter box) — not used with `mode: \"inline-combobox\"`, which searches inline in the\ntrigger instead."
-          },
-          {
-            "name": "searchPlaceholder",
-            "type": "string"
-          },
-          {
-            "name": "ref",
-            "type": "Ref<HTMLButtonElement>",
-            "description": "The trigger button — the focusable control. `aria-labelledby`, `aria-describedby`,\n`aria-invalid` and `onBlur` also go to the trigger in this mode (so a FormControl\naround it marks the control a user actually reaches), while `id` stays on the root."
-          }
-        ],
-        "extends": [
-          {
-            "name": "HTMLAttributes",
-            "package": "react"
-          }
-        ]
-      },
-      {
-        "name": "MultiSelectorRoot",
-        "alias": "MultiSelector.Root",
-        "props": [
-          {
-            "name": "mode",
-            "type": "\"combobox\" | \"inline-combobox\"",
-            "default": "combobox"
-          },
-          {
-            "name": "values",
-            "type": "string[]",
-            "default": "[]"
-          },
-          {
-            "name": "onValuesChange",
-            "type": "(value: string[]) => void",
-            "required": true
-          },
-          {
-            "name": "onOpenChange",
-            "type": "((open: boolean) => void)"
-          },
-          {
-            "name": "disabled",
-            "type": "boolean"
-          },
-          {
-            "name": "size",
-            "type": "\"tiny\" | \"small\" | \"medium\" | \"large\" | \"xlarge\" | null"
-          }
-        ],
-        "extends": [
-          {
-            "name": "HTMLAttributes",
-            "package": "react"
-          }
-        ]
-      },
-      {
-        "name": "MultiSelectorContent",
-        "alias": "MultiSelector.Content",
-        "props": [
-          {
-            "name": "align",
-            "type": "\"center\" | \"end\" | \"start\""
-          },
-          {
-            "name": "sideOffset",
-            "type": "number"
-          },
-          {
-            "name": "sameWidthAsTrigger",
-            "type": "boolean"
-          }
-        ],
-        "extends": [
-          {
-            "name": "DismissableLayerProps",
-            "package": "@radix-ui/react-dismissable-layer"
-          },
-          {
-            "name": "PopoverContentProps",
-            "package": "@radix-ui/react-popover"
-          },
-          {
-            "name": "PopperContentProps",
-            "package": "@radix-ui/react-popper"
-          },
-          {
-            "name": "HTMLAttributes",
-            "package": "react"
-          }
-        ]
-      },
-      {
-        "name": "MultiSelectorInput",
-        "alias": "MultiSelector.Input",
-        "props": [
-          {
-            "name": "wrapperClassName",
-            "type": "string"
-          },
-          {
-            "name": "showResetIcon",
-            "type": "boolean"
-          },
-          {
-            "name": "showSearchIcon",
-            "type": "boolean"
-          },
-          {
-            "name": "handleReset",
-            "type": "(() => void)"
-          }
-        ],
-        "extends": [
-          {
-            "name": "InputHTMLAttributes",
-            "package": "react"
-          }
-        ]
-      },
-      {
-        "name": "MultiSelectorItem",
-        "alias": "MultiSelector.Item",
-        "props": [
-          {
-            "name": "value",
-            "type": "string",
-            "description": "A unique value for this item.\nIf no value is provided, it will be inferred from `children` or the rendered `textContent`. If your `textContent` changes between renders, you _must_ provide a stable, unique `value`."
-          }
-        ],
-        "extends": [
-          {
-            "name": "HTMLAttributes",
-            "package": "react"
-          }
-        ]
-      },
-      {
-        "name": "MultiSelectorList",
-        "alias": "MultiSelector.List",
-        "props": [
-          {
-            "name": "creatable",
-            "type": "boolean",
-            "default": "false"
-          },
-          {
-            "name": "emptyLabel",
-            "type": "string",
-            "default": "No results found"
-          },
-          {
-            "name": "error",
-            "type": "boolean",
-            "default": "false"
-          },
-          {
-            "name": "errorLabel",
-            "type": "string"
-          },
-          {
-            "name": "loading",
-            "type": "boolean",
-            "default": "false"
-          }
-        ],
-        "extends": [
-          {
-            "name": "HTMLAttributes",
-            "package": "react"
-          }
-        ]
-      },
-      {
-        "name": "MultiSelectorTrigger",
-        "alias": "MultiSelector.Trigger",
-        "props": [
-          {
-            "name": "label",
-            "type": "string"
-          },
-          {
-            "name": "persistLabel",
-            "type": "boolean",
-            "default": "false"
-          },
-          {
-            "name": "className",
-            "type": "string"
-          },
-          {
-            "name": "badgeLimit",
-            "type": "number | \"wrap\"",
-            "default": "9999"
-          },
-          {
-            "name": "wrapBadges",
-            "type": "boolean",
-            "default": "false"
-          },
-          {
-            "name": "deletableBadge",
-            "type": "boolean",
-            "default": "true"
-          },
-          {
-            "name": "showIcon",
-            "type": "boolean",
-            "default": "true"
-          },
-          {
-            "name": "mode",
-            "type": "\"combobox\" | \"inline-combobox\"",
-            "default": "combobox"
-          },
-          {
-            "name": "renderValue",
-            "type": "((value: string) => ReactNode)"
-          }
-        ],
-        "extends": [
-          {
-            "name": "HTMLAttributes",
-            "package": "react"
-          }
-        ]
-      },
-      {
-        "name": "SelectionListState",
-        "props": [
-          {
-            "name": "className",
-            "type": "string"
-          },
-          {
-            "name": "emptyLabel",
-            "type": "string",
-            "default": "No options available"
-          },
-          {
-            "name": "errorLabel",
-            "type": "string",
-            "default": "Unable to load options"
-          },
-          {
-            "name": "isEmpty",
-            "type": "boolean",
-            "default": "false"
-          },
-          {
-            "name": "isError",
-            "type": "boolean",
-            "default": "false"
-          },
-          {
-            "name": "isLoading",
-            "type": "boolean",
-            "default": "false"
-          },
-          {
-            "name": "skeletonVariant",
-            "type": "\"command\" | \"multi-select\" | \"select\"",
-            "default": "select"
-          }
-        ],
-        "extends": []
-      }
-    ]
-  },
   "row": {
     "source": "src/components/fragments/row",
     "components": [
@@ -9966,76 +10084,6 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       }
     ]
   },
-  "shimmering-loader": {
-    "source": "src/components/fragments/shimmering-loader",
-    "components": [
-      {
-        "name": "ShimmeringLoader",
-        "props": [
-          {
-            "name": "className",
-            "type": "string"
-          },
-          {
-            "name": "style",
-            "type": "CSSProperties"
-          },
-          {
-            "name": "delayIndex",
-            "type": "number",
-            "default": "0"
-          },
-          {
-            "name": "animationDelay",
-            "type": "number",
-            "default": "150"
-          }
-        ],
-        "extends": []
-      },
-      {
-        "name": "GenericSkeletonLoader",
-        "props": [
-          {
-            "name": "className",
-            "type": "string"
-          }
-        ],
-        "extends": []
-      },
-      {
-        "name": "GenericSelectionSkeletonLoader",
-        "props": [
-          {
-            "name": "variant",
-            "type": "\"command\" | \"multi-select\" | \"select\"",
-            "default": "multi-select"
-          },
-          {
-            "name": "className",
-            "type": "string"
-          }
-        ],
-        "extends": []
-      },
-      {
-        "name": "GenericTableLoader",
-        "props": [
-          {
-            "name": "headers",
-            "type": "(string | null)[]",
-            "default": "[]"
-          },
-          {
-            "name": "numRows",
-            "type": "number",
-            "default": "3"
-          }
-        ],
-        "extends": []
-      }
-    ]
-  },
   "status-code": {
     "source": "src/components/fragments/status-code",
     "components": [
@@ -10054,54 +10102,6 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "className",
             "type": "string"
-          }
-        ],
-        "extends": []
-      }
-    ]
-  },
-  "text-link": {
-    "source": "src/components/fragments/text-link",
-    "components": [
-      {
-        "name": "TextLink",
-        "props": [
-          {
-            "name": "label",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "url",
-            "type": "string",
-            "default": ""
-          },
-          {
-            "name": "className",
-            "type": "string"
-          },
-          {
-            "name": "counter",
-            "type": "number"
-          },
-          {
-            "name": "hasChevron",
-            "type": "boolean",
-            "default": "true"
-          },
-          {
-            "name": "chevronAnimation",
-            "type": "\"fadeIn\" | \"translate\"",
-            "default": "translate"
-          },
-          {
-            "name": "target",
-            "type": "\"_blank\" | \"_self\"",
-            "default": "_self"
-          },
-          {
-            "name": "onClick",
-            "type": "(() => void)"
           }
         ],
         "extends": []

@@ -7,8 +7,8 @@
 import type { ComponentProps, ReactNode } from 'react'
 import { dateMatchModifiers } from 'react-day-picker'
 
-import { useControllableState } from '../../../lib/use-controllable-state'
-import { Calendar } from '../../atoms/forms/calendar'
+import { useControllableState } from '../../../../lib/use-controllable-state'
+import { Calendar } from '../calendar'
 import { DatePickerCalendar } from './date-picker-calendar-nav'
 import {
   DatePickerButton,

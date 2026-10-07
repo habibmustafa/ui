@@ -9,8 +9,8 @@ import React, {
   type ElementRef,
 } from 'react'
 
-import { cn } from '../../../lib/utils'
-import { copyToClipboard } from '../../../lib/copy-to-clipboard'
+import { cn } from '../../../../lib/utils'
+import { copyToClipboard } from '../../../../lib/copy-to-clipboard'
 // Imported from the file rather than the `form` barrel: the InputGroup family is an
 // internal building block for DataInput/Form, deliberately not part of the public API
 // (consumers get `Input`'s own `prefix`/`suffix` props instead).
@@ -19,7 +19,7 @@ import {
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput as BaseInput,
-} from '../../atoms/forms/form/input-group'
+} from '../form/input-group'
 
 export interface DataInputProps extends Omit<ComponentProps<typeof BaseInput>, 'onCopy'> {
   copy?: boolean

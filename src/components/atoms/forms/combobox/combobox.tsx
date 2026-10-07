@@ -11,11 +11,11 @@ import {
   CommandList,
   CommandRoot,
   CommandSeparator,
-} from '../../atoms/navigation/command'
-import { PopoverContent, PopoverRoot, PopoverTrigger } from '../../atoms/overlay/popover'
-import { selectTriggerVariants, type SelectTriggerSize } from '../../atoms/forms/select'
-import { useControllableState } from '../../../lib/use-controllable-state'
-import { cn } from '../../../lib/utils'
+} from '../../navigation/command'
+import { PopoverContent, PopoverRoot, PopoverTrigger } from '../../overlay/popover'
+import { selectTriggerVariants, type SelectTriggerSize } from '../select'
+import { useControllableState } from '../../../../lib/use-controllable-state'
+import { cn } from '../../../../lib/utils'
 
 /*
  * Single-value, searchable select: a Select-styled trigger opening a Popover with a

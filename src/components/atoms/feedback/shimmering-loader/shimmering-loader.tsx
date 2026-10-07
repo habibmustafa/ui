@@ -1,7 +1,7 @@
 import { forwardRef, type CSSProperties } from 'react'
 
-import { cn } from '../../../lib/utils'
-import { CardRoot } from '../../atoms/layout/card'
+import { cn } from '../../../../lib/utils'
+import { CardRoot } from '../../layout/card'
 import {
   TableBody,
   TableCell,
@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRoot,
   TableRow,
-} from '../../atoms/data-display/table'
+} from '../../data-display/table'
 
 export interface ShimmeringLoaderProps {
   className?: string
