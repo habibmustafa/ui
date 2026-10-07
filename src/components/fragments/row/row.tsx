@@ -3,7 +3,7 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import type React from 'react'
 import type { ReactNode } from 'react'
-import { forwardRef, useEffect, useMemo, useRef, useState } from 'react'
+import { forwardRef, useMemo, useRef, useState } from 'react'
 
 import { cn } from '../../../lib/utils'
 import { Button } from '../../atoms/actions/button'
@@ -74,22 +74,6 @@ export const Row = forwardRef<HTMLDivElement, RowProps>(function Row(
     [gap, maxColumns, measuredWidth, minWidth]
   )
 
-  const scrollByStep = (direction: -1 | 1) => {
-    const el = containerRef.current
-    if (!el) return
-    const widthLocal = measuredWidth ?? el.getBoundingClientRect().width
-    const colsLocal = numberOfColumns
-    const columnWidth = (widthLocal - (colsLocal - 1) * gap) / colsLocal
-    const scrollAmount = columnWidth + gap
-    setScrollPosition((prev) => {
-      const next = Math.max(0, Math.min(maxScroll, prev + direction * scrollAmount))
-      return next === prev ? prev : next
-    })
-  }
-
-  const scrollLeft = () => scrollByStep(-1)
-  const scrollRight = () => scrollByStep(1)
-
   const maxScroll = useMemo(() => {
     if (measuredWidth == null) return -1
     const colsLocal = numberOfColumns
@@ -98,8 +82,27 @@ export const Row = forwardRef<HTMLDivElement, RowProps>(function Row(
     return Math.max(0, totalWidth - measuredWidth)
   }, [measuredWidth, numberOfColumns, childrenArray.length, gap])
 
-  const canScrollLeft = scrollPosition > 0
-  const canScrollRight = scrollPosition < maxScroll
+
+  // Clamp during render instead of in an effect: when the container shrinks (maxScroll
+  // drops) the stored offset may be past the end, and it should snap back immediately.
+  const position = Math.max(0, Math.min(scrollPosition, maxScroll))
+  const clamp = (value: number) => Math.max(0, Math.min(maxScroll, value))
+
+  const scrollByStep = (direction: -1 | 1) => {
+    const el = containerRef.current
+    if (!el) return
+    const widthLocal = measuredWidth ?? el.getBoundingClientRect().width
+    const colsLocal = numberOfColumns
+    const columnWidth = (widthLocal - (colsLocal - 1) * gap) / colsLocal
+    const scrollAmount = columnWidth + gap
+    setScrollPosition((prev) => clamp(Math.min(prev, maxScroll) + direction * scrollAmount))
+  }
+
+  const scrollLeft = () => scrollByStep(-1)
+  const scrollRight = () => scrollByStep(1)
+
+  const canScrollLeft = position > 0
+  const canScrollRight = position < maxScroll
 
   const hasContentToScroll = childrenArray.length > numberOfColumns
 
@@ -119,21 +122,10 @@ export const Row = forwardRef<HTMLDivElement, RowProps>(function Row(
         rafIdRef.current = 0
         const accumulated = pendingDeltaRef.current
         pendingDeltaRef.current = 0
-        setScrollPosition((prev) => {
-          const target = prev + accumulated
-          const next = Math.max(0, Math.min(maxScroll, target))
-          return next === prev ? prev : next
-        })
+        setScrollPosition((prev) => clamp(Math.min(prev, maxScroll) + accumulated))
       })
     }
   }
-
-  useEffect(() => {
-    setScrollPosition((prev) => {
-      const next = Math.min(prev, maxScroll)
-      return next === prev ? prev : next
-    })
-  }, [maxScroll])
 
   const handleKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (e) => {
     if (e.key === 'ArrowLeft' && canScrollLeft) {
@@ -183,12 +175,16 @@ export const Row = forwardRef<HTMLDivElement, RowProps>(function Row(
         onKeyDown={handleKeyDown}
       >
         <div
-          className="flex items-stretch min-w-full transition-transform duration-300 ease-out"
+          className={cn(
+            'flex items-stretch min-w-full',
+            // `scrollBehavior="auto"` jumps; the default glides.
+            scrollBehavior === 'smooth' && 'transition-transform duration-300 ease-out'
+          )}
           style={
             {
               gap: `${gap}px`,
               '--column-width': `calc((100% - ${(numberOfColumns - 1) * gap}px) / ${numberOfColumns})`,
-              transform: `translateX(-${scrollPosition}px)`,
+              transform: `translateX(-${position}px)`,
               willChange: 'transform',
             } as React.CSSProperties
           }

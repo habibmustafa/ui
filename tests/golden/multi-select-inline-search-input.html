@@ -2,9 +2,9 @@
 <div class="h-full rounded-md text-foreground-light relative w-auto overflow-visible bg-transparent flex flex-col" cmdk-root="" id="ID" tabindex="-1">
 <label cmdk-label="" for="ID" id="ID" style="position: absolute; width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px;">
 </label>
-<button class="flex min-w-50 justify-between rounded-md border border-strong bg-field placeholder:text-muted-foreground ring-border-control focus-ring disabled:cursor-not-allowed disabled:opacity-50 hover:border-control-hover transition-colors duration-200 text-base md:text-sm leading-4 min-h-[34px] p-1.5 items-center w-72" role="combobox" type="button">
+<button aria-describedby="ID-remove-hint" aria-expanded="false" aria-haspopup="listbox" aria-label="Select fruits" class="flex min-w-50 justify-between rounded-md border border-strong bg-field placeholder:text-muted-foreground ring-border-control focus-ring disabled:cursor-not-allowed disabled:opacity-50 hover:border-control-hover transition-colors duration-200 aria-[invalid=true]:border-destructive-400 aria-[invalid=true]:bg-destructive-200 aria-[invalid=true]:hover:border-destructive text-base md:text-sm leading-4 min-h-[34px] p-1.5 items-center w-72" role="combobox" type="button">
 <div class="flex overflow-hidden flex-1 min-w-0 gap-1 flex-wrap">
-<div class="inline-flex items-center gap-1 justify-center whitespace-nowrap font-medium py-[3px] text-foreground-light border border-strong rounded-sm shrink-0 px-1.5 bg-surface-75 dark:bg-white/5 normal-case tracking-normal text-xs/none pr-0.5">Apple<div class="ml-1 p-0.5 rounded-xs cursor-pointer text-foreground-lighter hover:text-foreground-light hover:bg-surface-400 transition-colors pointer-events-auto">
+<div class="inline-flex items-center gap-1 justify-center whitespace-nowrap font-medium py-[3px] text-foreground-light border border-strong rounded-sm shrink-0 px-1.5 bg-surface-75 dark:bg-white/5 normal-case tracking-normal text-xs/none pr-0.5">Apple<div aria-hidden="true" class="ml-1 p-0.5 rounded-xs cursor-pointer text-foreground-lighter hover:text-foreground-light hover:bg-surface-400 transition-colors pointer-events-auto">
 <svg aria-hidden="true" class="lucide lucide-x" fill="none" height="12" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="12">
 <path d="M18 6 6 18">
 </path>
@@ -23,5 +23,8 @@
 </path>
 </svg>
 </button>
+<span class="sr-only" id="ID-remove-hint">Use left and right arrow keys to pick a selected item, then Backspace to remove it.</span>
+<span aria-live="polite" class="sr-only">
+</span>
 </div>
 </div>

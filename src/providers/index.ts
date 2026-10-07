@@ -1,4 +1,4 @@
-export { ThemeProvider, useTheme } from './theme-provider'
+export { ThemeProvider, ThemeStyle, useTheme } from './theme-provider'
 export type {
   ResolvedTheme,
   Theme,

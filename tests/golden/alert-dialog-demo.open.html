@@ -3,9 +3,8 @@
 <div aria-hidden="true" data-aria-hidden="true">
 <button aria-controls="ID" aria-expanded="true" aria-haspopup="dialog" class="relative inline-flex items-center justify-center cursor-pointer space-x-2 text-center font-regular ease-out duration-200 rounded-md transition-[background-color,border-color,color,scale] [&amp;:not([aria-haspopup])]:motion-safe:active:scale-[0.97] focus-ring border text-foreground bg-transparent border-strong hover:border-foreground-muted data-[state=open]:border-stronger text-xs px-2.5 py-1 h-[26px]" data-size="tiny" data-state="open" tabindex="0" type="button"> <span class="truncate">Show Alert Dialog</span> </button>
 </div>
-<div class="fixed inset-0 z-50 flex items-end justify-center sm:items-center">
-<div class="bg-black/40 backdrop-blur-xs z-50 fixed inset-0 grid place-items-center overflow-y-auto data-closed:animate-overlay-hide py-8" data-state="open" style="pointer-events: auto;">
-<div aria-describedby="ID" aria-labelledby="ID" class="relative z-50 w-full max-w-screen border shadow-md dark:shadow-xs data-open:animate-overlay-show data-closed:animate-overlay-hide sm:rounded-lg md:w-full bg-dash-sidebar sm:align-middle sm:w-full sm:max-w-sm" data-state="open" id="ID" role="alertdialog" style="pointer-events: auto;" tabindex="-1">
+<div class="before:pointer-events-none before:fixed before:inset-0 before:-z-10 before:bg-black/50 before:will-change-[opacity] data-[state=open]:before:animate-backdrop-show data-[state=closed]:animate-backdrop-hide z-50 fixed inset-0 grid place-items-center overflow-y-auto py-8" data-state="open" style="pointer-events: auto;">
+<div aria-describedby="ID" aria-labelledby="ID" class="relative z-50 w-full max-w-screen border shadow-md dark:shadow-xs data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=open]:zoom-in-97 data-[state=open]:slide-in-from-bottom-2 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-97 sm:rounded-lg md:w-full bg-dash-sidebar sm:align-middle sm:w-full sm:max-w-sm" data-state="open" id="ID" role="alertdialog" style="pointer-events: auto;" tabindex="-1">
 <div class="flex flex-col text-left">
 <h2 class="text-base text-foreground border-b px-5 py-3" id="ID">Create new API keys</h2>
 <p class="text-sm text-foreground-light px-5 pt-3.5 pb-4" id="ID">This will create a default publishable key and a default secret key both named <code class="text-code-inline">default</code>. These keys are required to connect your application to your Supabase project.</p>
@@ -13,7 +12,6 @@
 <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 border-t py-3 px-5 [[data-slot=alert-dialog-body]:has(>[role=alert])+&amp;]:border-t-0">
 <button class="relative inline-flex items-center justify-center cursor-pointer space-x-2 text-center font-regular ease-out duration-200 rounded-md transition-[background-color,border-color,color,scale] [&amp;:not([aria-haspopup])]:motion-safe:active:scale-[0.97] focus-ring border text-foreground bg-background dark:bg-card hover:bg-popover border-strong hover:border-control-hover data-[state=open]:bg-popover data-[state=open]:border-control-hover text-xs px-2.5 py-1 h-[26px] mt-2 sm:mt-0" type="button">Cancel</button>
 <button class="relative inline-flex items-center justify-center cursor-pointer space-x-2 text-center font-regular ease-out duration-200 rounded-md transition-[background-color,border-color,color,scale] [&amp;:not([aria-haspopup])]:motion-safe:active:scale-[0.97] focus-ring border bg-brand-400 dark:bg-brand-500 hover:bg-brand-default/80 dark:hover:bg-brand-default/50 text-foreground border-brand-500/75 dark:border-brand-default/30 hover:border-brand-600 dark:hover:border-brand-default data-[state=open]:bg-brand-400/80 dark:data-[state=open]:bg-brand-500/80 text-xs px-2.5 py-1 h-[26px]" data-size="tiny" tabindex="0" type="button"> <span class="truncate">Create keys</span> </button>
-</div>
 </div>
 </div>
 </div>

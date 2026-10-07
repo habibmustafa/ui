@@ -8,7 +8,7 @@ export default function InputOTPControlled() {
 
   return (
     <div className="space-y-2">
-      <InputOTP.Root maxLength={6} value={value} onChange={(value) => setValue(value)}>
+      <InputOTP.Root aria-label="One-time code" maxLength={6} value={value} onChange={(value) => setValue(value)}>
         <InputOTP.Group>
           <InputOTP.Slot index={0} />
           <InputOTP.Slot index={1} />

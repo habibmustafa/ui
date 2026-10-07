@@ -9,7 +9,7 @@ import { Button, Form, FormControl, FormDescription, FormField, FormItem, FormLa
 const FormSchema = z.object({
   email: z
     .string({
-      required_error: 'Please select an email to display.',
+      error: 'Please select an email to display.',
     })
     .email(),
 })

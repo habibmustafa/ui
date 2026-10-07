@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/src/styles/globals.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="application-name" content="ui" />
-    <meta name="description" content="ui — React komponent kitabxanası." />
+    <meta name="description" content="ui — an accessible React 19 component library built on Radix and Tailwind CSS v4." />
     <title>ui</title>
     <!--
       The design system site serves Inter and Source Code Pro through next/font;
@@ -15,10 +15,22 @@
     -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!--
+      Loaded without blocking the first paint: the page renders straight away with the
+      fallback stack (display=swap), then switches to Inter once it arrives.
+    -->
     <link
+      rel="preload"
+      as="style"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap"
-      rel="stylesheet"
+      onload="this.onload=null;this.rel='stylesheet'"
     />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap"
+      />
+    </noscript>
     <style>
       /* Async web-font swaps and lazily-highlighted code blocks can shift page
          height after first paint; scroll anchoring would otherwise "correct" the

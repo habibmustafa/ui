@@ -1,6 +1,6 @@
 'use client'
 
-import { Check } from 'lucide-react'
+import { Check, Minus } from 'lucide-react'
 import { Checkbox as CheckboxPrimitive } from 'radix-ui'
 import * as React from 'react'
 
@@ -18,10 +18,14 @@ const Checkbox = React.forwardRef<
       ref={ref}
       className={cn(
         'peer flex cursor-pointer items-center justify-center h-4 w-4 shrink-0 rounded-sm border border-control bg-control/25 ring-offset-background',
+        // 16px box, 24px hit area (WCAG 2.5.8): an invisible ::after extends the clickable
+        // target 4px on each side without changing the box or the layout.
+        'relative after:absolute after:-inset-1',
         'transition-colors duration-150 ease-in-out',
         'hover:border-strong',
         'focus-ring',
         'disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-foreground data-[state=checked]:text-background',
+        'data-[state=indeterminate]:bg-foreground data-[state=indeterminate]:text-background',
         className
       )}
       {...props}
@@ -29,7 +33,11 @@ const Checkbox = React.forwardRef<
       tabIndex={computedTabIndex}
     >
       <CheckboxPrimitive.Indicator className={cn('flex items-center justify-center text-current')}>
-        <Check className="h-3 w-3 text-background" strokeWidth={4} />
+        {props.checked === 'indeterminate' ? (
+          <Minus className="h-3 w-3 text-background" strokeWidth={4} />
+        ) : (
+          <Check className="h-3 w-3 text-background" strokeWidth={4} />
+        )}
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
   )

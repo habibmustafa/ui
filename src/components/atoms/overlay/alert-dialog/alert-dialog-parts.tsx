@@ -5,6 +5,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { AlertDialog as AlertDialogPrimitive } from 'radix-ui'
 import * as React from 'react'
 
+import { modalBackdropClass } from '../../../../lib/modal-backdrop'
 import { cn } from '../../../../lib/utils'
 import { getExplicitTabIndex } from '../../../../lib/get-explicit-tab-index'
 import { Button, buttonVariants, type ButtonVariantProps } from '../../actions/button'
@@ -98,11 +99,10 @@ const AlertDialogPortal = ({
   children,
   ...props
 }: AlertDialogPrimitive.AlertDialogPortalProps) => (
-  <AlertDialogPrimitive.Portal {...props}>
-    <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center">
-      {children}
-    </div>
-  </AlertDialogPrimitive.Portal>
+  // Children go straight into the portal: Radix keeps each direct child mounted until
+  // its exit animation ends, and a plain wrapper <div> (no animation) here made the
+  // whole dialog vanish instantly on close. The overlay already fills and centres.
+  <AlertDialogPrimitive.Portal {...props}>{children}</AlertDialogPrimitive.Portal>
 )
 AlertDialogPortal.displayName = AlertDialogPrimitive.Portal.displayName
 
@@ -113,8 +113,8 @@ const AlertDialogOverlay = React.forwardRef<
   <AlertDialogPrimitive.Overlay
     ref={ref}
     className={cn(
-      'bg-black/40 backdrop-blur-xs',
-      'z-50 fixed inset-0 grid place-items-center overflow-y-auto data-closed:animate-overlay-hide py-8',
+      modalBackdropClass,
+      'z-50 fixed inset-0 grid place-items-center overflow-y-auto py-8',
       !centered && 'flex flex-col flex-start pb-8 sm:pt-12 md:pt-20 lg:pt-32 xl:pt-40 px-5',
       className
     )}
@@ -126,7 +126,9 @@ AlertDialogOverlay.displayName = AlertDialogPrimitive.Overlay.displayName
 const AlertDialogContentVariants = cva(
   cn(
     'relative z-50 w-full max-w-screen border shadow-md dark:shadow-xs',
-    'data-open:animate-overlay-show data-closed:animate-overlay-hide',
+    'data-[state=open]:animate-in data-[state=closed]:animate-out',
+    'data-[state=open]:fade-in-0 data-[state=open]:zoom-in-97 data-[state=open]:slide-in-from-bottom-2',
+    'data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-97',
     'sm:rounded-lg md:w-full',
     'bg-dash-sidebar'
   ),
@@ -302,10 +304,11 @@ const AlertDialogAction = React.forwardRef<
     const isDisabled = disabled || loading || dialogLoading
 
     React.useEffect(() => {
-      setActionLoading?.(actionId.current, loading)
+      const id = actionId.current
+      setActionLoading?.(id, loading)
 
       return () => {
-        setActionLoading?.(actionId.current, false)
+        setActionLoading?.(id, false)
       }
     }, [loading, setActionLoading])
 

@@ -9,7 +9,7 @@ import {
   AreaChart,
   ResponsiveContainer,
   Tooltip as RechartsTooltip,
-  type TooltipProps as RechartsTooltipProps,
+  type TooltipContentProps as RechartsTooltipContentProps,
 } from 'recharts'
 
 import { cn } from '../../../lib/utils'
@@ -220,7 +220,7 @@ const MetricCardDifferential = React.forwardRef<HTMLDivElement, MetricCardDiffer
 
 MetricCardDifferential.displayName = 'MetricCardDifferential'
 
-const SparklineTooltip = ({ active, payload, label }: RechartsTooltipProps<any, any>) => {
+const SparklineTooltip = ({ active, payload, label }: Partial<RechartsTooltipContentProps<any, any>>) => {
   if (!active || !payload || !payload.length) return null
 
   const formatTimestamp = (timestamp: string) => {
@@ -239,7 +239,7 @@ const SparklineTooltip = ({ active, payload, label }: RechartsTooltipProps<any, 
           {formatTimestamp(payload[0].payload.timestamp)}
         </div>
       )}
-      <div>{payload[0].value.toLocaleString(undefined, { maximumFractionDigits: 0 })}</div>
+      <div>{payload[0].value?.toLocaleString(undefined, { maximumFractionDigits: 0 })}</div>
     </div>
   )
 }

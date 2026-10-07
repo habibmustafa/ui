@@ -3,7 +3,7 @@
 <div>
 <div class="relative text-base md:text-sm flex flex-col gap-2">
 <div class="transition-all duration-500 ease-in-out flex flex-row gap-2 justify-between" data-formlayout-id="labelContainer">
-<label class="text peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm transition-colors text-foreground flex gap-2 items-center wrap-break-word leading-normal" data-formlayout-id="formLabel" for="ID-form-item">
+<label class="text peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm transition-colors text-foreground flex gap-2 items-center wrap-break-word leading-normal" data-formlayout-id="formLabel" for="ID-form-item" id="ID-form-item-label">
 <span>Username</span>
 </label>
 </div>
@@ -17,7 +17,7 @@
 <div>
 <div class="relative text-base md:text-sm flex flex-col gap-2">
 <div class="transition-all duration-500 ease-in-out flex flex-row gap-2 justify-between" data-formlayout-id="labelContainer">
-<label class="text peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm transition-colors text-foreground flex gap-2 items-center wrap-break-word leading-normal" data-formlayout-id="formLabel" for="ID-form-item">
+<label class="text peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm transition-colors text-foreground flex gap-2 items-center wrap-break-word leading-normal" data-formlayout-id="formLabel" for="ID-form-item" id="ID-form-item-label">
 <span>Bio</span>
 </label>
 </div>
@@ -33,13 +33,13 @@
 <div>
 <div class="relative text-base md:text-sm flex flex-col gap-2">
 <div class="transition-all duration-500 ease-in-out flex flex-row gap-2 justify-between" data-formlayout-id="labelContainer">
-<label class="text peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm transition-colors text-foreground flex gap-2 items-center wrap-break-word leading-normal" data-formlayout-id="formLabel" for="ID-form-item">
+<label class="text peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm transition-colors text-foreground flex gap-2 items-center wrap-break-word leading-normal" data-formlayout-id="formLabel" for="ID-form-item" id="ID-form-item-label">
 <span>Role</span>
 </label>
 </div>
 <div class="transition-all duration-500 ease-in-out order-1 col-span-12" data-formlayout-id="dataContainer">
 <div class="" data-formlayout-id="nonBoxInputContainer">
-<button aria-autocomplete="none" aria-expanded="false" class="flex w-full cursor-pointer items-center justify-between rounded-md border border-strong hover:border-control-hover bg-control-raised data-[placeholder]:text-foreground-lighter ring-border-control focus-ring disabled:cursor-not-allowed disabled:opacity-50 transition-colors duration-200 data-[state=open]:border-control-hover gap-2 [&amp;>span]:truncate text-left text-base md:text-sm leading-4 px-3 py-2 h-[34px]" data-placeholder="" data-state="closed" dir="ltr" role="combobox" tabindex="0" type="button">
+<button aria-autocomplete="none" aria-describedby="ID-form-item-description" aria-expanded="false" aria-invalid="false" class="flex w-full cursor-pointer items-center justify-between rounded-md border border-strong hover:border-control-hover bg-control-raised data-[placeholder]:text-foreground-lighter ring-border-control focus-ring disabled:cursor-not-allowed disabled:opacity-50 transition-colors duration-200 data-[state=open]:border-control-hover aria-[invalid=true]:border-destructive-400 aria-[invalid=true]:bg-destructive-200 aria-[invalid=true]:hover:border-destructive gap-2 [&amp;>span]:truncate text-left text-base md:text-sm leading-4 px-3 py-2 h-[34px]" data-placeholder="" data-state="closed" dir="ltr" id="ID-form-item" role="combobox" tabindex="0" type="button">
 <span style="pointer-events: none;">
 <span>Select a role</span>
 </span>
@@ -62,7 +62,7 @@
 <div>
 <div class="relative text-base md:text-sm flex flex-col gap-2">
 <div class="transition-all duration-500 ease-in-out flex flex-row gap-2 justify-between" data-formlayout-id="labelContainer">
-<label class="text peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm transition-colors text-foreground flex gap-2 items-center wrap-break-word leading-normal" data-formlayout-id="formLabel" for="ID-form-item">
+<label class="text peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm transition-colors text-foreground flex gap-2 items-center wrap-break-word leading-normal" data-formlayout-id="formLabel" for="ID-form-item" id="ID-form-item-label">
 <span>Plan</span>
 </label>
 </div>
@@ -101,7 +101,7 @@
 <div>
 <div class="relative text-base md:text-sm flex flex-col gap-2">
 <div class="transition-all duration-500 ease-in-out flex flex-row gap-2 justify-between" data-formlayout-id="labelContainer">
-<label class="text peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm transition-colors text-foreground flex gap-2 items-center wrap-break-word leading-normal" data-formlayout-id="formLabel" for="ID-form-item">
+<label class="text peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm transition-colors text-foreground flex gap-2 items-center wrap-break-word leading-normal" data-formlayout-id="formLabel" for="ID-form-item" id="ID-form-item-label">
 <span>Renewal date</span>
 </label>
 </div>
@@ -127,22 +127,26 @@
 </div>
 </div>
 </div>
+<div>
 <div class="flex items-center gap-2">
-<button aria-checked="true" aria-describedby="undefined-form-item-description" aria-invalid="false" class="peer inline-flex shrink-0 cursor-pointer items-center rounded-full border transition-colors focus-ring disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-brand-default data-[state=checked]:hover:bg-brand-600/90 data-[state=unchecked]:bg-control data-[state=unchecked]:hover:bg-border h-[20px] w-[34px]" data-state="checked" id="undefined-form-item" role="switch" tabindex="0" type="button" value="on">
+<button aria-checked="true" aria-describedby="ID-form-item-description" aria-invalid="false" class="peer inline-flex shrink-0 cursor-pointer items-center rounded-full border transition-colors focus-ring disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-brand-default data-[state=checked]:hover:bg-brand-600/90 data-[state=unchecked]:bg-control data-[state=unchecked]:hover:bg-border h-[20px] w-[34px]" data-state="checked" id="ID-form-item" role="switch" tabindex="0" type="button" value="on">
 <span class="pointer-events-none block rounded-full bg-foreground-lighter data-[state=checked]:bg-white shadow-lg ring-0 transition-transform h-[16px] w-[16px] data-[state=checked]:translate-x-[15px] data-[state=unchecked]:translate-x-px" data-state="checked">
 </span>
 </button>
 <input aria-hidden="true" checked="" style="position: absolute; pointer-events: none; opacity: 0; margin: 0px; transform: translateX(-100%); width: 0px; height: 0px;" tabindex="-1" type="checkbox" value="on">
 <div class="grid gap-1 leading-none">
-<label class="text peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-foreground-light text-sm transition-colors font-normal leading-normal" for="undefined-form-item">Email notifications</label>
+<label class="text peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-foreground-light text-sm transition-colors font-normal leading-normal" for="ID-form-item" id="ID-form-item-label">Email notifications</label>
 </div>
 </div>
+</div>
+<div>
 <div class="items-top flex space-x-2">
-<button aria-checked="false" aria-describedby="undefined-form-item-description" aria-invalid="false" class="peer flex cursor-pointer items-center justify-center h-4 w-4 shrink-0 rounded-sm border border-control bg-control/25 ring-offset-background transition-colors duration-150 ease-in-out hover:border-strong focus-ring disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-foreground data-[state=checked]:text-background" data-state="unchecked" id="undefined-form-item" role="checkbox" tabindex="0" type="button" value="on">
+<button aria-checked="false" aria-describedby="ID-form-item-description" aria-invalid="false" class="peer flex cursor-pointer items-center justify-center h-4 w-4 shrink-0 rounded-sm border border-control bg-control/25 ring-offset-background relative after:absolute after:-inset-1 transition-colors duration-150 ease-in-out hover:border-strong focus-ring disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-foreground data-[state=checked]:text-background data-[state=indeterminate]:bg-foreground data-[state=indeterminate]:text-background" data-state="unchecked" id="ID-form-item" role="checkbox" tabindex="0" type="button" value="on">
 </button>
 <input aria-hidden="true" style="position: absolute; pointer-events: none; opacity: 0; margin: 0px; transform: translateX(-100%); width: 0px; height: 0px;" tabindex="-1" type="checkbox" value="on">
 <div class="grid gap-1.5 leading-none">
-<label class="text peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-foreground-light text-sm transition-colors font-normal leading-normal" for="undefined-form-item">I accept the terms and conditions</label>
+<label class="text peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-foreground-light text-sm transition-colors font-normal leading-normal" for="ID-form-item" id="ID-form-item-label">I accept the terms and conditions</label>
+</div>
 </div>
 </div>
 <button class="relative inline-flex items-center justify-center cursor-pointer space-x-2 text-center font-regular ease-out duration-200 rounded-md transition-[background-color,border-color,color,scale] [&amp;:not([aria-haspopup])]:motion-safe:active:scale-[0.97] focus-ring border bg-foreground text-background hover:text-background/80 border-foreground-light hover:border-foreground-lighter data-[state=open]:border-foreground-lighter text-xs px-2.5 py-1 h-[26px]" data-size="tiny" tabindex="0" type="submit"> <span class="truncate">Submit</span> </button>

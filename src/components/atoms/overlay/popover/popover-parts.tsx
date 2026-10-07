@@ -46,7 +46,7 @@ const PopoverContent = React.forwardRef<
         sideOffset={sideOffset}
         className={cn(
           sameWidthAsTrigger ? styles['popover-trigger-width'] : '',
-          'z-50 w-72 rounded-md border border-overlay bg-overlay p-4 text-popover-foreground shadow-md outline-hidden animate-in data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
+          'z-50 w-72 rounded-md border border-overlay bg-overlay p-4 text-popover-foreground shadow-md outline-hidden animate-in data-[side=bottom]:slide-in-from-top-1 data-[side=left]:slide-in-from-right-1 data-[side=right]:slide-in-from-left-1 data-[side=top]:slide-in-from-bottom-1',
           className
         )}
         {...props}
@@ -57,7 +57,7 @@ const PopoverContent = React.forwardRef<
 PopoverContent.displayName = 'PopoverContent'
 
 const PopoverSeparator = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, children, ...props }, ref) => (
+  ({ className, children: _children, ...props }, ref) => (
     <div ref={ref} {...props} className={cn('w-full h-px bg-border-overlay', className)} />
   )
 )

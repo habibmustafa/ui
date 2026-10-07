@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import * as RechartsPrimitive from 'recharts'
+import type { NameType, ValueType } from 'recharts/types/component/DefaultTooltipContent'
 
 import { cn } from '../../../../lib/utils'
 
@@ -64,7 +65,7 @@ const ChartContainer = React.forwardRef<
 ChartContainer.displayName = 'Chart'
 
 const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
-  const colorConfig = Object.entries(config).filter(([_, config]) => config.theme || config.color)
+  const colorConfig = Object.entries(config).filter(([, config]) => config.theme || config.color)
 
   if (!colorConfig.length) {
     return null
@@ -97,6 +98,8 @@ const ChartTooltip = RechartsPrimitive.Tooltip
 const ChartTooltipContent = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<typeof RechartsPrimitive.Tooltip> &
+    // Recharts 3 no longer lists the injected content props on <Tooltip>'s own props.
+    Partial<Pick<RechartsPrimitive.TooltipContentProps<ValueType, NameType>, 'payload' | 'label'>> &
     React.ComponentProps<'div'> & {
       hideLabel?: boolean
       hideIndicator?: boolean
@@ -176,7 +179,8 @@ const ChartTooltipContent = React.forwardRef<
 
             return (
               <div
-                key={item.dataKey}
+                // dataKey can be an accessor function in Recharts 3's types.
+                key={typeof item.dataKey === 'function' ? index : (item.dataKey ?? index)}
                 className={cn(
                   'flex w-full items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5 [&>svg]:text-foreground-muted',
                   indicator === 'dot' && 'items-center'
@@ -246,7 +250,9 @@ const ChartLegend = RechartsPrimitive.Legend
 const ChartLegendContent = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<'div'> &
-    Pick<RechartsPrimitive.LegendProps, 'payload' | 'verticalAlign'> & {
+    Pick<RechartsPrimitive.LegendProps, 'verticalAlign'> & {
+      // Injected by <Legend content={…}>; Recharts 3 no longer lists it on LegendProps.
+      payload?: readonly RechartsPrimitive.LegendPayload[]
       hideIcon?: boolean
       nameKey?: string
     }
