@@ -4,6 +4,8 @@ import { Clock } from 'lucide-react'
 import * as React from 'react'
 
 import { InputVariants } from '../input'
+import { PopoverContent, PopoverRoot, PopoverTrigger } from '../../overlay/popover'
+import { ClockFace, type ClockView } from './time-picker-clock'
 import { useControllableState } from '../../../../lib/use-controllable-state'
 import { cn } from '../../../../lib/utils'
 
@@ -56,6 +58,8 @@ export interface TimePickerProps {
   'aria-invalid'?: React.AriaAttributes['aria-invalid']
   /** @default "small" */
   size?: 'tiny' | 'small' | 'medium' | 'large'
+  /** Show the clock button that opens an analog clock picker. @default true */
+  clock?: boolean
   className?: string
 }
 
@@ -74,6 +78,7 @@ export function TimePicker({
   'aria-describedby': ariaDescribedby,
   'aria-invalid': ariaInvalid,
   size = 'small',
+  clock = true,
   className,
 }: TimePickerProps) {
   const [value, setValue] = useControllableState<string | null>({
@@ -192,6 +197,24 @@ export function TimePicker({
     commit({ ...parts, pm, hours })
   }
 
+  // Analog clock popover (MUI-style): hours first, then minutes (then seconds); each
+  // release / Enter moves on, and the last one closes it.
+  const [clockOpen, setClockOpen] = React.useState(false)
+  const [clockView, setClockView] = React.useState<ClockView>('hours')
+  const clockPanelRef = React.useRef<HTMLDivElement>(null)
+  const clockViews: ClockView[] = [
+    'hours',
+    'minutes',
+    ...(showSeconds ? (['seconds'] as const) : []),
+  ]
+  const onClockChange = (shown: number, final: boolean) => {
+    setSegment(clockView, shown)
+    if (!final) return
+    const nextView = clockViews[clockViews.indexOf(clockView) + 1]
+    if (nextView) setClockView(nextView)
+    else setClockOpen(false)
+  }
+
   const segmentClass =
     'rounded-xs px-0.5 tabular-nums caret-transparent outline-none text-center focus:bg-brand-400 focus:text-foreground dark:focus:bg-brand-500 data-[placeholder]:text-foreground-muted disabled:cursor-not-allowed'
 
@@ -279,11 +302,100 @@ export function TimePicker({
           {parts.pm ? 'PM' : 'AM'}
         </span>
       )}
-      <Clock
-        aria-hidden="true"
-        className="ml-2 h-4 w-4 shrink-0 text-foreground-lighter"
-        strokeWidth={1.5}
-      />
+      {clock ? (
+        <PopoverRoot
+          open={clockOpen}
+          onOpenChange={(open) => {
+            setClockOpen(open)
+            if (open) setClockView('hours')
+          }}
+        >
+          <PopoverTrigger asChild>
+            <button
+              type="button"
+              aria-label="Choose time"
+              disabled={disabled}
+              className="-mr-1 ml-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-sm text-foreground-lighter transition-colors hover:text-foreground focus-ring disabled:pointer-events-none"
+            >
+              <Clock aria-hidden="true" className="h-4 w-4" strokeWidth={1.5} />
+            </button>
+          </PopoverTrigger>
+          <PopoverContent
+            align="end"
+            aria-label="Choose time"
+            className="w-auto p-3 font-sans"
+            onOpenAutoFocus={(event) => {
+              // Land on the dial, not the first header button.
+              event.preventDefault()
+              clockPanelRef.current?.querySelector<HTMLElement>('[role="slider"]')?.focus()
+            }}
+          >
+            <div className="mb-3 flex items-center justify-center gap-1">
+              {clockViews.map((view, index) => {
+                const shown = getShown(view)
+                return (
+                  <React.Fragment key={view}>
+                    {index > 0 && <span className="text-3xl text-foreground-muted">:</span>}
+                    <button
+                      type="button"
+                      aria-label={`Edit ${view}`}
+                      aria-pressed={clockView === view}
+                      onClick={() => setClockView(view)}
+                      className={cn(
+                        'rounded-md px-1.5 text-3xl tabular-nums transition-colors focus-ring',
+                        clockView === view
+                          ? 'bg-brand-200 text-foreground'
+                          : 'text-foreground-light hover:text-foreground'
+                      )}
+                    >
+                      {shown === null ? '--' : pad(shown)}
+                    </button>
+                  </React.Fragment>
+                )
+              })}
+              {twelve && (
+                <div className="ml-2 flex flex-col gap-0.5">
+                  {(['AM', 'PM'] as const).map((period) => {
+                    const active = (period === 'PM') === parts.pm
+                    return (
+                      <button
+                        key={period}
+                        type="button"
+                        aria-pressed={active}
+                        onClick={() => togglePeriod(period === 'PM')}
+                        className={cn(
+                          'rounded-sm px-1.5 text-xs transition-colors focus-ring',
+                          active
+                            ? 'bg-brand-200 text-foreground'
+                            : 'text-foreground-light hover:text-foreground'
+                        )}
+                      >
+                        {period}
+                      </button>
+                    )
+                  })}
+                </div>
+              )}
+            </div>
+            <div ref={clockPanelRef}>
+              <ClockFace
+                view={clockView}
+                value={getShown(clockView)}
+                ampm={twelve}
+                step={clockView === 'minutes' ? minuteStep : 1}
+                onChange={onClockChange}
+                disabled={disabled}
+              />
+            </div>
+          </PopoverContent>
+        </PopoverRoot>
+      ) : (
+        <Clock
+          aria-hidden="true"
+          className="ml-2 h-4 w-4 shrink-0 text-foreground-lighter"
+          strokeWidth={1.5}
+        />
+      )}
       {name !== undefined && <input type="hidden" name={name} value={value ?? ''} />}
     </div>
   )
