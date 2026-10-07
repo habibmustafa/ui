@@ -33,6 +33,8 @@ type DatePickerPropsMode = Omit<RootProps, 'children'> & {
   beforeCalendar?: ReactNode
   /** Segment format for the typeable field, single-date mode only. @default 'DD.MM.YYYY' */
   format?: string
+  /** Classes for the typeable field's wrapper (single-date mode), e.g. `w-full` inside a form. */
+  fieldContainerClassName?: string
   /** Typed-field range check, single-date mode only — marks `aria-invalid`, doesn't block typing. */
   minDate?: Date
   maxDate?: Date
@@ -64,6 +66,7 @@ export function DatePickerHybrid(props: DatePickerProps) {
     contentClassName,
     beforeCalendar,
     format,
+    fieldContainerClassName,
     minDate,
     maxDate,
     open: _openProp,
@@ -97,6 +100,7 @@ export function DatePickerHybrid(props: DatePickerProps) {
           value={calendarProps.selected ?? null}
           onChange={(date) => handleSingleSelect?.(date, date ?? new Date(), undefined, undefined)}
           format={format}
+          containerClassName={fieldContainerClassName}
           minDate={minDate}
           maxDate={maxDate}
           isDateInvalid={
@@ -113,7 +117,7 @@ export function DatePickerHybrid(props: DatePickerProps) {
           </DatePickerButton>
         </DatePickerTrigger>
       )}
-      <DatePickerContent className={contentClassName}>
+      <DatePickerContent className={contentClassName} align={isSingleMode ? 'end' : 'start'}>
         {beforeCalendar}
         {isSingleMode && handleSingleSelect ? (
           <DatePickerCalendar

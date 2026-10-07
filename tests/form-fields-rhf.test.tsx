@@ -13,11 +13,13 @@ import { Form } from '../src/components/atoms/forms/form'
 import {
   FormCombobox,
   FormDateField,
+  FormDateRangePicker,
   FormFileUpload,
   FormInputOTP,
   FormMultiSelect,
   FormNumberInput,
   FormPasswordInput,
+  FormRating,
   FormSlider,
   FormTimePicker,
   FormToggleGroup,
@@ -118,6 +120,31 @@ const CASES: Case[] = [
       await user.keyboard('{Home}01022000')
     },
     expected: new Date(2000, 1, 1),
+  },
+  {
+    name: 'FormDateRangePicker',
+    schema: z.object({ from: z.date(), to: z.date() }, { error: MESSAGE }),
+    defaultValue: undefined,
+    field: <FormDateRangePicker name="value" label="Period" />,
+    control: () => screen.getByRole('button', { name: 'Period' }),
+    fill: async (user) => {
+      await user.click(screen.getByRole('button', { name: 'Period' }))
+      await user.click(screen.getByRole('button', { name: /^Saturday, September 12, 2026/ }))
+      await user.click(screen.getByRole('button', { name: /^Sunday, September 20, 2026/ }))
+    },
+    expected: { from: new Date(2026, 8, 12), to: new Date(2026, 8, 20) },
+  },
+  {
+    name: 'FormRating',
+    schema: z.number({ error: MESSAGE }).min(1, { error: MESSAGE }),
+    defaultValue: 0,
+    field: <FormRating name="value" label="Score" />,
+    control: () => screen.getByRole('radiogroup', { name: 'Score' }),
+    focusTarget: () => screen.getByRole('radio', { name: '1 star out of 5' }),
+    fill: async (user) => {
+      await user.click(screen.getByRole('radio', { name: '4 stars out of 5' }))
+    },
+    expected: 4,
   },
   {
     name: 'FormCombobox',

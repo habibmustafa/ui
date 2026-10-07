@@ -41,6 +41,19 @@
   to {
     opacity: 0;
   }
+}
+/* Marquee: the track slides by exactly its own length plus the gap, so the next copy
+   lands where this one started and the loop is seamless. */
+@keyframes marquee-x {
+  to {
+    transform: translateX(calc(-100% - var(--marquee-gap, 0px)));
+  }
+}
+
+@keyframes marquee-y {
+  to {
+    transform: translateY(calc(-100% - var(--marquee-gap, 0px)));
+  }
 }
 
 @layer base {

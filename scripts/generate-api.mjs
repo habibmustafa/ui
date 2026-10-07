@@ -105,11 +105,14 @@ const fullParser = docgen.withCustomConfig(join(root, 'tsconfig.app.json'), {
   shouldRemoveUndefinedFromOptional: true,
 })
 
+// docgen reports forward-slash paths; join() uses backslashes on Windows.
+const posix = (p) => p.split(sep).join('/')
+
 const dirs = componentDirs(join(root, 'src/components')).sort()
 const indexFiles = dirs.map((d) => join(d, 'index.ts'))
 const docs = parser.parse(indexFiles)
 const fullDocs = fullParser.parse(indexFiles)
-const fullByKey = new Map(fullDocs.map((d) => [`${d.filePath}#${d.displayName}`, d]))
+const fullByKey = new Map(fullDocs.map((d) => [`${posix(d.filePath)}#${d.displayName}`, d]))
 
 /**
  * `export const Tabs = Object.assign(TabsHybrid, { Root: TabsRoot, … })` → TabsRoot is
@@ -133,9 +136,9 @@ for (const dir of dirs) {
   const indexFile = join(dir, 'index.ts')
   const aliases = namespaceAliases(indexFile)
   const components = docs
-    .filter((d) => d.filePath === indexFile)
+    .filter((d) => posix(d.filePath) === posix(indexFile))
     .map((d) => {
-      const full = fullByKey.get(`${d.filePath}#${d.displayName}`)
+      const full = fullByKey.get(`${posix(d.filePath)}#${d.displayName}`)
       return {
         name: d.displayName,
         alias: aliases.get(d.displayName),

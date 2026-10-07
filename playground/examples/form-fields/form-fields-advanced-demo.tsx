@@ -9,7 +9,8 @@ import {
   Button,
   Form,
   FormCombobox,
-  FormDateField,
+  FormDatePicker,
+  FormDateRangePicker,
   FormFileUpload,
   FormInputOTP,
   FormMultiSelect,
@@ -25,7 +26,10 @@ const FormSchema = z.object({
   password: z.string().min(8, { error: 'Use at least 8 characters.' }),
   region: z.string({ error: 'Pick a region.' }),
   tags: z.array(z.string()).min(1, { error: 'Pick at least one tag.' }),
-  startDate: z.date({ error: 'Enter a start date.' }),
+  startDate: z.date({ error: 'Pick a start date.' }),
+  period: z
+    .object({ from: z.date().optional(), to: z.date().optional() }, { error: 'Pick a date range.' })
+    .refine((range) => range.from && range.to, { error: 'Pick both a start and an end date.' }),
   startTime: z.string({ error: 'Enter a start time.' }),
   budget: z.array(z.number()).refine(([value]) => value >= 10, { error: 'Budget must be at least 10.' }),
   billing: z.string().min(1, { error: 'Pick a billing period.' }),
@@ -85,7 +89,8 @@ export default function FormFieldsAdvancedDemo() {
             { value: 'beta', label: 'Beta' },
           ]}
         />
-        <FormDateField name="startDate" label="Start date" />
+        <FormDatePicker name="startDate" label="Start date" />
+        <FormDateRangePicker name="period" label="Reporting period" />
         <FormTimePicker name="startTime" label="Start time" />
         <FormSlider name="budget" label="Budget" description="In thousands." step={5} />
         <FormToggleGroup

@@ -55,10 +55,15 @@ export const DatePickerButton = ({
  * calendar-icon button (the actual `PopoverTrigger`) overlaid at its end — MUI's own
  * `DatePicker` composition, field + adornment button, rather than a text-label button.
  */
-export type DatePickerFieldProps = ComponentProps<typeof DateField> & { isInvalid?: boolean }
+export type DatePickerFieldProps = ComponentProps<typeof DateField> & {
+  isInvalid?: boolean
+  /** Classes for the wrapper around the field and its buttons, e.g. `w-full`. */
+  containerClassName?: string
+}
 
 export const DatePickerField = ({
   className,
+  containerClassName,
   isInvalid = false,
   disabled,
   value,
@@ -67,7 +72,7 @@ export const DatePickerField = ({
 }: DatePickerFieldProps) => {
   return (
     <PopoverAnchor asChild>
-      <div className="relative inline-flex">
+      <div className={cn('relative inline-flex', containerClassName)}>
         <DateField
           disabled={disabled}
           aria-invalid={isInvalid}

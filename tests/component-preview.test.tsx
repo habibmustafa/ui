@@ -43,7 +43,7 @@ test('every codeVariants preview has both source tabs and a props preview', () =
       }
     }
   }
-  expect(pairedPreviews).toBe(88)
+  expect(pairedPreviews).toBe(90)
 })
 
 test('Preview shows the props variant while source tabs stay separate', async () => {
