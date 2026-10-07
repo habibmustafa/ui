@@ -5,9 +5,10 @@ import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import axe from 'axe-core'
 import type { ComponentType } from 'react'
-import { beforeEach, describe, expect, test } from 'vitest'
+import { beforeEach, describe, expect, test, vi } from 'vitest'
 
 import { CATALOG } from '../playground/catalog'
+import { PageErrorBoundary } from '../playground/page-error-boundary'
 import ComponentsIndexPage from '../playground/pages/components-index'
 import GettingStartedPage from '../playground/pages/getting-started'
 import HomePage from '../playground/pages/home'
@@ -92,4 +93,25 @@ test('the install command follows the chosen package manager on every copy', asy
   expect(within(second).getByRole('radio', { name: 'pnpm' }).getAttribute('aria-checked')).toBe('true')
   expect(screen.getByText('pnpm add react-hook-form zod @hookform/resolvers')).toBeTruthy()
   expect(localStorage.getItem('ui-package-manager')).toBe('pnpm')
+})
+
+test('a page that throws shows an error in place, and a route change resets it', () => {
+  vi.spyOn(console, 'error').mockImplementation(() => {})
+  function Broken(): never {
+    throw new TypeError('z.email is not a function')
+  }
+  const { rerender } = render(
+    <PageErrorBoundary resetKey="/">
+      <Broken />
+    </PageErrorBoundary>
+  )
+  expect(screen.getByRole('alert').textContent).toContain('z.email is not a function')
+
+  rerender(
+    <PageErrorBoundary resetKey="/components">
+      <p>Komponentlər</p>
+    </PageErrorBoundary>
+  )
+  expect(screen.queryByRole('alert')).toBeNull()
+  expect(screen.getByText('Komponentlər')).toBeTruthy()
 })

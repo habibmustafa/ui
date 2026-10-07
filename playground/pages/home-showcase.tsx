@@ -71,7 +71,7 @@ function ShowcaseCard({
 }
 
 const inviteSchema = z.object({
-  email: z.email({ error: 'Düzgün e-poçt ünvanı yazın.' }),
+  email: z.string().email('Düzgün e-poçt ünvanı yazın.'),
   role: z.string({ error: 'Rol seçin.' }),
   notify: z.boolean(),
 })
