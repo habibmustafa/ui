@@ -1243,8 +1243,8 @@ const fragments: ComponentEntry[] = [
     title: 'Form Fields',
     icon: FileText,
     description:
-      "ui-specific: terser react-hook-form + zod fields (FormInput/FormSelect/FormCheckbox/FormSwitch/FormRadioGroup/FormTextarea/FormDatePicker) — each wraps the FormField/FormItem/FormLabel/FormControl/FormMessage ceremony behind a single `name`, so a field is one line instead of a whole render-prop tree.",
-    previews: [{ name: 'form-fields-demo' }],
+      "ui-specific: terser react-hook-form + zod fields (FormInput/FormSelect/FormCheckbox/FormSwitch/FormRadioGroup/FormTextarea/FormDatePicker, plus FormNumberInput/FormPasswordInput/FormCombobox/FormMultiSelect/FormDateField/FormTimePicker/FormSlider/FormToggleGroup/FormInputOTP/FormFileUpload) — each wraps the FormField/FormItem/FormLabel/FormControl/FormMessage ceremony behind a single `name`, so a field is one line instead of a whole render-prop tree. Every field is labelled, marked invalid, focused on a failed submit and touched on blur.",
+    previews: [{ name: 'form-fields-demo' }, { name: 'form-fields-advanced-demo' }],
   },
   {
     id: 'info-tooltip',

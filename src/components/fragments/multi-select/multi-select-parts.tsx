@@ -416,11 +416,6 @@ const MultiSelectorTrigger = React.forwardRef<HTMLButtonElement, MultiSelectorTr
             aria-haspopup="listbox"
             aria-expanded={open}
             aria-controls={open ? getContentId(id) : undefined}
-            aria-describedby={
-              [props['aria-describedby'], showRemoveHint ? getRemoveHintId(id) : null]
-                .filter(Boolean)
-                .join(' ') || undefined
-            }
             className={cn(
               'flex w-full min-w-50 justify-between rounded-md border',
               'border-strong',
@@ -431,10 +426,17 @@ const MultiSelectorTrigger = React.forwardRef<HTMLButtonElement, MultiSelectorTr
               'disabled:cursor-not-allowed disabled:opacity-50',
               'hover:border-control-hover transition-colors duration-200',
               open && 'border-control-hover',
+              'aria-[invalid=true]:border-destructive-400 aria-[invalid=true]:bg-destructive-200 aria-[invalid=true]:hover:border-destructive',
               MultiSelectorTriggerVariants({ size }),
               className
             )}
             {...props}
+            // After the spread: a consumer's description is kept *alongside* the hint.
+            aria-describedby={
+              [props['aria-describedby'], showRemoveHint ? getRemoveHintId(id) : null]
+                .filter(Boolean)
+                .join(' ') || undefined
+            }
           >
             <div
               ref={badgesRef}

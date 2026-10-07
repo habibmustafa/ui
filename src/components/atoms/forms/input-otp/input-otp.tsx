@@ -13,7 +13,8 @@ import {
   InputOTPSlot,
 } from './input-otp-parts'
 
-type RootProps = React.ComponentPropsWithoutRef<typeof InputOTPRoot>
+// With ref: React 19 passes `ref` through this function component to InputOTPRoot.
+type RootProps = React.ComponentPropsWithRef<typeof InputOTPRoot>
 
 type InputOTPPropsMode = Omit<RootProps, 'children' | 'maxLength' | 'render'> & {
   /** Number of character slots. Sets the underlying `maxLength`. */

@@ -71,6 +71,8 @@ export interface ComboboxProps {
   'aria-labelledby'?: string
   'aria-describedby'?: string
   'aria-invalid'?: React.AriaAttributes['aria-invalid']
+  /** Called when focus leaves the trigger for anywhere but the open list. */
+  onBlur?: React.FocusEventHandler<HTMLButtonElement>
   className?: string
   classNames?: ComboboxClassNames
 }
@@ -95,6 +97,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
       name,
       className,
       classNames,
+      onBlur,
       ...triggerProps
     },
     ref
@@ -110,6 +113,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
       onChange: onOpenChange,
     })
     const contentId = React.useId()
+    const contentRef = React.useRef<HTMLDivElement>(null)
 
     const resolvedGroups: readonly ComboboxOptionGroup[] = groups ?? [{ options: options ?? [] }]
     const selected = resolvedGroups.flatMap((g) => g.options).find((o) => o.value === value)
@@ -127,6 +131,11 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
             disabled={disabled}
             data-placeholder={selected ? undefined : ''}
             className={cn(selectTriggerVariants({ size }), className, classNames?.trigger)}
+            onBlur={(event) => {
+              // Opening the list moves focus into its search box; that's not leaving.
+              if (contentRef.current?.contains(event.relatedTarget as Node | null)) return
+              onBlur?.(event)
+            }}
             {...triggerProps}
           >
             <span className="flex min-w-0 items-center gap-2">
@@ -142,6 +151,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
         </PopoverTrigger>
         {name !== undefined && <input type="hidden" name={name} value={value ?? ''} />}
         <PopoverContent
+          ref={contentRef}
           id={contentId}
           align="start"
           sameWidthAsTrigger
