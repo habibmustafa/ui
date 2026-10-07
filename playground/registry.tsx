@@ -64,6 +64,9 @@ import {
   TrendingUp,
   Type,
   Upload,
+  Copy,
+  Megaphone,
+  ScrollText,
   type LucideIcon,
 } from 'lucide-react'
 
@@ -264,6 +267,13 @@ const atoms: ComponentEntry[] = [
     ],
   },
   {
+    id: 'banner',
+    title: 'Banner',
+    icon: Megaphone,
+    description: 'Full-width announcement strip with icon, action and optional dismiss; four tinted variants.',
+    previews: [{ name: 'banner-demo' }],
+  },
+  {
     id: 'breadcrumb',
     title: 'Breadcrumb',
     icon: ChevronRight,
@@ -459,6 +469,13 @@ const atoms: ComponentEntry[] = [
     description:
       "ui-specific: a single typeable date input with MUI-style segments (day/month/year), not a port. Type digits, use arrow up/down to step a segment, arrow left/right to move between segments, backspace to clear, or paste a full date; optional minDate/maxDate mark aria-invalid without blocking typing. Standalone here — DatePicker composes it with a calendar popover.",
     previews: [{ name: 'date-field-demo' }],
+  },
+  {
+    id: 'copy-button',
+    title: 'Copy Button',
+    icon: Copy,
+    description: 'One-click copy with a check-mark confirmation and a screen-reader announcement; sync or async values.',
+    previews: [{ name: 'copy-button-demo' }],
   },
   {
     id: 'dialog',
@@ -840,6 +857,16 @@ const atoms: ComponentEntry[] = [
     ],
   },
   {
+    id: 'scroll-area',
+    title: 'Scroll Area',
+    icon: ScrollText,
+    description: 'Radix ScrollArea: native scrolling with thin themed scrollbars and a keyboard-focusable viewport.',
+    previews: [
+      { name: 'scroll-area-demo', label: 'Vertical' },
+      { name: 'scroll-area-horizontal', label: 'Horizontal' },
+    ],
+  },
+  {
     id: 'select',
     title: 'Select',
     icon: ListFilter,
@@ -978,6 +1005,13 @@ const atoms: ComponentEntry[] = [
       { name: 'sonner-types', label: 'Types' },
       { name: 'sonner-upload', label: 'Upload' },
     ],
+  },
+  {
+    id: 'spinner',
+    title: 'Spinner',
+    icon: Loader2,
+    description: 'Loading indicator announced as a polite status, or decorative when something else announces it.',
+    previews: [{ name: 'spinner-demo' }],
   },
   {
     id: 'stepper',

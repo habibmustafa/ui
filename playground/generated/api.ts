@@ -85,6 +85,102 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       }
     ]
   },
+  "copy-button": {
+    "source": "src/components/atoms/actions/copy-button",
+    "components": [
+      {
+        "name": "CopyButton",
+        "props": [
+          {
+            "name": "value",
+            "type": "string | (() => string | Promise<string>)",
+            "required": true,
+            "description": "Text to copy, or a function returning it (sync or async, e.g. fetch a signed URL)."
+          },
+          {
+            "name": "label",
+            "type": "ReactNode",
+            "description": "Visible label; omit for an icon-only button."
+          },
+          {
+            "name": "copiedLabel",
+            "type": "ReactNode",
+            "default": "Copied",
+            "description": "Label while in the copied state."
+          },
+          {
+            "name": "aria-label",
+            "type": "string",
+            "default": "Copy",
+            "description": "Accessible name when icon-only."
+          },
+          {
+            "name": "onCopied",
+            "type": "(() => void)",
+            "description": "Called after a successful copy."
+          },
+          {
+            "name": "timeout",
+            "type": "number",
+            "default": "1500",
+            "description": "How long the copied state lasts."
+          },
+          {
+            "name": "variant",
+            "type": "\"primary\" | \"default\" | \"secondary\" | \"outline\" | \"dashed\" | \"link\" | \"text\" | \"danger\" | \"warning\" | null",
+            "default": "default"
+          },
+          {
+            "name": "block",
+            "type": "boolean | null"
+          },
+          {
+            "name": "size",
+            "type": "\"tiny\" | \"small\" | \"medium\" | \"large\" | \"xlarge\" | null"
+          },
+          {
+            "name": "overlay",
+            "type": "\"base\" | \"container\" | null"
+          },
+          {
+            "name": "focusableWhenDisabled",
+            "type": "boolean",
+            "description": "Keeps a disabled button keyboard-focusable by using `aria-disabled`\ninstead of native `disabled`. Use this when the control needs a tooltip\nor other explanation."
+          },
+          {
+            "name": "rounded",
+            "type": "boolean"
+          },
+          {
+            "name": "loading",
+            "type": "boolean | \"default\" | null"
+          },
+          {
+            "name": "asChild",
+            "type": "boolean"
+          },
+          {
+            "name": "icon",
+            "type": "ReactNode"
+          },
+          {
+            "name": "iconLeft",
+            "type": "ReactNode"
+          },
+          {
+            "name": "iconRight",
+            "type": "ReactNode"
+          }
+        ],
+        "extends": [
+          {
+            "name": "ButtonHTMLAttributes",
+            "package": "react"
+          }
+        ]
+      }
+    ]
+  },
   "toggle": {
     "source": "src/components/atoms/actions/toggle",
     "components": [
@@ -1041,6 +1137,69 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       }
     ]
   },
+  "banner": {
+    "source": "src/components/atoms/feedback/banner",
+    "components": [
+      {
+        "name": "Banner",
+        "props": [
+          {
+            "name": "icon",
+            "type": "ReactNode"
+          },
+          {
+            "name": "title",
+            "type": "ReactNode"
+          },
+          {
+            "name": "action",
+            "type": "ReactNode",
+            "description": "Buttons/links shown at the end (e.g. \"Learn more\")."
+          },
+          {
+            "name": "dismissible",
+            "type": "boolean",
+            "default": "false",
+            "description": "Show a close button."
+          },
+          {
+            "name": "open",
+            "type": "boolean"
+          },
+          {
+            "name": "defaultOpen",
+            "type": "boolean",
+            "default": "true"
+          },
+          {
+            "name": "onOpenChange",
+            "type": "((open: boolean) => void)"
+          },
+          {
+            "name": "aria-label",
+            "type": "string",
+            "description": "Accessible name of the region. Defaults to the `title` (or \"Announcement\" without\none), so several banners on a page stay distinguishable landmarks."
+          },
+          {
+            "name": "dismissLabel",
+            "type": "string",
+            "default": "Dismiss",
+            "description": "Accessible name of the close button."
+          },
+          {
+            "name": "variant",
+            "type": "\"default\" | \"warning\" | \"destructive\" | \"brand\" | null"
+          }
+        ],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      }
+    ]
+  },
   "progress": {
     "source": "src/components/atoms/feedback/progress",
     "components": [
@@ -1090,6 +1249,38 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "ToasterProps",
             "package": "sonner"
+          }
+        ]
+      }
+    ]
+  },
+  "spinner": {
+    "source": "src/components/atoms/feedback/spinner",
+    "components": [
+      {
+        "name": "Spinner",
+        "props": [
+          {
+            "name": "label",
+            "type": "string",
+            "default": "Loading",
+            "description": "Screen-reader text."
+          },
+          {
+            "name": "decorative",
+            "type": "boolean",
+            "default": "false",
+            "description": "Hide from assistive tech (when the busy state is announced elsewhere)."
+          },
+          {
+            "name": "size",
+            "type": "\"small\" | \"medium\" | \"large\" | null"
+          }
+        ],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
           }
         ]
       }
@@ -2884,6 +3075,60 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
         "description": "Convenience hook to return a properly typed ref for the Panel component.",
         "props": [],
         "extends": []
+      }
+    ]
+  },
+  "scroll-area": {
+    "source": "src/components/atoms/layout/scroll-area",
+    "components": [
+      {
+        "name": "ScrollArea",
+        "props": [
+          {
+            "name": "orientation",
+            "type": "\"both\" | \"horizontal\" | \"vertical\"",
+            "default": "vertical",
+            "description": "Which scrollbars to render."
+          },
+          {
+            "name": "viewportClassName",
+            "type": "string",
+            "description": "Class for the scrolling viewport (e.g. a max height)."
+          },
+          {
+            "name": "aria-label",
+            "type": "string",
+            "description": "Accessible name for the scrollable region."
+          }
+        ],
+        "extends": [
+          {
+            "name": "ScrollAreaProps",
+            "package": "@radix-ui/react-scroll-area"
+          },
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "ScrollBar",
+        "props": [],
+        "extends": [
+          {
+            "name": "ScrollAreaScrollbarProps",
+            "package": "@radix-ui/react-scroll-area"
+          },
+          {
+            "name": "ScrollAreaScrollbarVisibleProps",
+            "package": "@radix-ui/react-scroll-area"
+          },
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
       }
     ]
   },
@@ -8108,14 +8353,14 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "type": "boolean"
           },
           {
-            "name": "values",
-            "type": "string[]",
-            "required": true
-          },
-          {
             "name": "label",
             "type": "string",
             "description": "Accessible label for this command menu. Not shown visibly."
+          },
+          {
+            "name": "values",
+            "type": "string[]",
+            "required": true
           },
           {
             "name": "onOpenChange",
