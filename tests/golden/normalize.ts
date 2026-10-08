@@ -15,6 +15,9 @@
 //   same attribute set.
 // - `xmlns` on inline SVGs (lucide icons, mostly) is dropped outright: it carries no
 //   information a snapshot diff should care about here.
+// - Line endings are folded to `\n`. A Windows checkout with `core.autocrlf=true` has CRLF
+//   in the sources, so a multi-line class string (RadioGroupCard's indicator) renders with
+//   `\r\n` inside the attribute, while the snapshots, committed from LF, have `\n`.
 const RADIX_ID_PATTERN = /(?:radix-)?_r_[a-z0-9]+_|(?:radix-)?:r[a-z0-9]+:/gi;
 const TAG_PATTERN = /<([a-zA-Z][\w:-]*)((?:\s+[\w:-]+(?:="[^"]*")?)*)(\s*\/?)>/g;
 const ATTR_PATTERN = /([\w:-]+)(?:="([^"]*)")?/g;
@@ -43,6 +46,7 @@ export function normalizeMarkup(container: Element): string {
   }
 
   return sortTagAttributes(clone.innerHTML)
+    .replace(/\r\n/g, "\n")
     .replace(RADIX_ID_PATTERN, "ID")
     .split(/(?<=>)(?=<)/) // one tag per line, so file diffs are readable
     .join("\n");

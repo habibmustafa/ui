@@ -70,7 +70,8 @@ describe('component structure', () => {
   })
 
   test('the playground groups each component by its folder', () => {
-    const registry = readFileSync(join(ROOT, 'playground/registry.tsx'), 'utf8')
+    // CRLF in a Windows checkout (core.autocrlf) would hide the '\n]\n' that ends each group.
+    const registry = readFileSync(join(ROOT, 'playground/registry.tsx'), 'utf8').replace(/\r\n/g, '\n')
     const ids = (group: string) => {
       const start = registry.indexOf(`const ${group}: ComponentEntry[] = [`)
       const end = registry.indexOf('\n]\n', start)
