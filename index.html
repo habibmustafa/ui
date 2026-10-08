@@ -9,29 +9,21 @@
     <meta name="description" content="ui — an accessible React 19 component library built on Radix and Tailwind CSS v4." />
     <title>ui</title>
     <!--
-      The design system site serves Inter and Source Code Pro through next/font;
-      here they come from Google Fonts. The stacks themselves are defined in the
-      library CSS (vendor/supabase/design-system-base.css).
+      Inter, Archivo and Source Code Pro are self-hosted (public/fonts, variable woff2, latin +
+      latin-ext). Serving them from our own origin skips the DNS + TLS handshake to
+      Google's two font hosts, and the hashed-version filenames let them cache forever.
+      The stacks themselves are defined in the library CSS
+      (vendor/theme/design-system-base.css). Deliberately not preloaded: with
+      font-display: swap the text paints in the fallback stack straight away, and a
+      48 kB preload would compete with the JS/CSS the first paint depends on.
     -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!--
-      Loaded without blocking the first paint: the page renders straight away with the
-      fallback stack (display=swap), then switches to Inter once it arrives.
-    -->
-    <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..800&family=Inter:wght@400;450;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap"
-      onload="this.onload=null;this.rel='stylesheet'"
-    />
-    <noscript>
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..800&family=Inter:wght@400;450;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap"
-      />
-    </noscript>
     <style>
+      @font-face{font-family:'Inter';font-style:normal;font-weight:100 900;font-display:swap;src:url(/fonts/inter-latin-ext-v5.3.0.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+      @font-face{font-family:'Inter';font-style:normal;font-weight:100 900;font-display:swap;src:url(/fonts/inter-latin-v5.3.0.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+      @font-face{font-family:'Source Code Pro';font-style:normal;font-weight:100 900;font-display:swap;src:url(/fonts/source-code-pro-latin-ext-v5.3.0.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+      @font-face{font-family:'Source Code Pro';font-style:normal;font-weight:100 900;font-display:swap;src:url(/fonts/source-code-pro-latin-v5.3.0.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+      @font-face{font-family:'Archivo';font-style:normal;font-weight:100 900;font-stretch:62% 125%;font-display:swap;src:url(/fonts/archivo-latin-ext-v5.3.0.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+      @font-face{font-family:'Archivo';font-style:normal;font-weight:100 900;font-stretch:62% 125%;font-display:swap;src:url(/fonts/archivo-latin-v5.3.0.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
       /* Async web-font swaps and lazily-highlighted code blocks can shift page
          height after first paint; scroll anchoring would otherwise "correct" the
          scroll position toward whatever moved under the viewport, which looks like

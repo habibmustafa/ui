@@ -1,4 +1,5 @@
 import { ArrowRight } from 'lucide-react'
+import { lazy, Suspense } from 'react'
 
 import { Button, Dialog, Tabs, THEME_PRESETS, cn } from '../../src'
 import { version } from '../../package.json'
@@ -7,7 +8,11 @@ import { CodeSnippet } from '../code-snippet'
 import { Link } from '../router'
 import { fromConfig, stateToQuery } from '../theme-store'
 import { DISPLAY, Hero } from './home-hero'
-import { Showcase } from './home-showcase'
+
+// The live examples pull in react-hook-form, zod, the date/time pickers and framer-motion
+// (~400 kB raw) — none of which the hero needs. Splitting them out lets the hero paint
+// first instead of waiting on that whole graph.
+const Showcase = lazy(() => import('./home-showcase').then((m) => ({ default: m.Showcase })))
 
 const GITHUB_URL = 'https://github.com/habibmustafa/ui'
 
@@ -189,7 +194,9 @@ export default function HomePage() {
           title="Live examples"
           description="These cards are built only from the library's own components. Fill them in and submit them."
         />
-        <Showcase />
+        <Suspense fallback={<div aria-hidden="true" className="min-h-[1380px] md:min-h-[900px] xl:min-h-[470px]" />}>
+          <Showcase />
+        </Suspense>
       </section>
       <HybridApi />
       <ThemeTeaser />

@@ -413,19 +413,51 @@ export function App() {
   const { path } = useRouter();
   const { resolvedTheme } = useTheme();
 
-  // Once the first page is up, quietly fetch the routes people go to next.
+  // Once the first page is fully loaded, quietly fetch the routes people go to next.
+  // requestIdleCallback only waits for the main thread, not the network, so on its own
+  // it fired while the current page's demos were still downloading and the warm-up
+  // (the getting-started page drags in zod, framer-motion and the form components)
+  // competed with them for bandwidth. Instead wait until no new resource has started
+  // for a moment, and skip it entirely on Save-Data / 2G connections.
   useEffect(() => {
+    const connection = (
+      navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }
+    ).connection;
+    if (connection?.saveData || /2g/.test(connection?.effectiveType ?? "")) return;
+
+    let quietTimer: ReturnType<typeof setTimeout> | undefined;
+    let idleId: number | undefined;
+    let observer: PerformanceObserver | undefined;
     const warm = () => {
+      observer?.disconnect();
       void loadComponentPage();
       void loadComponentsIndex();
       void loadGettingStarted();
     };
-    if ("requestIdleCallback" in window) {
-      const id = window.requestIdleCallback(warm, { timeout: 4000 });
-      return () => window.cancelIdleCallback(id);
+    const onQuiet = () => {
+      if ("requestIdleCallback" in window) {
+        idleId = window.requestIdleCallback(warm, { timeout: 4000 });
+      } else {
+        warm();
+      }
+    };
+    const rearm = () => {
+      clearTimeout(quietTimer);
+      quietTimer = setTimeout(onQuiet, 1500);
+    };
+
+    rearm();
+    try {
+      observer = new PerformanceObserver(rearm);
+      observer.observe({ type: "resource" });
+    } catch {
+      // No resource-timing observer (old browsers, test DOMs): the single timer is enough.
     }
-    const timer = setTimeout(warm, 2000);
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(quietTimer);
+      observer?.disconnect();
+      if (idleId !== undefined) window.cancelIdleCallback(idleId);
+    };
   }, []);
 
   // Route change → scroll to top (the router does this on push, but a back/forward

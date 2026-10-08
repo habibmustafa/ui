@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import { AnimatePresence, domAnimation, LazyMotion, m, useReducedMotion } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useLayoutEffect, useRef, useState, type ComponentProps, type ReactNode } from 'react'
 
@@ -56,20 +56,22 @@ function GridView({ viewKey, children }: { viewKey: string; children: ReactNode 
       className="overflow-hidden transition-[height] duration-[260ms] ease-soft-in-out"
     >
       <div ref={innerRef} className="relative">
-        <AnimatePresence mode="popLayout" initial={false}>
-          <motion.div
-            key={viewKey}
-            initial={{ opacity: 0, scale: reduceMotion ? 1 : 0.98 }}
-            animate={{ opacity: 1, scale: 1, transition: { duration: 0.24, ease: EASE_SOFT_OUT } }}
-            exit={{
-              opacity: 0,
-              scale: reduceMotion ? 1 : 1.01,
-              transition: { duration: 0.16, ease: EASE_SOFT_IN },
-            }}
-          >
-            {children}
-          </motion.div>
-        </AnimatePresence>
+        <LazyMotion features={domAnimation}>
+          <AnimatePresence mode="popLayout" initial={false}>
+            <m.div
+              key={viewKey}
+              initial={{ opacity: 0, scale: reduceMotion ? 1 : 0.98 }}
+              animate={{ opacity: 1, scale: 1, transition: { duration: 0.24, ease: EASE_SOFT_OUT } }}
+              exit={{
+                opacity: 0,
+                scale: reduceMotion ? 1 : 1.01,
+                transition: { duration: 0.16, ease: EASE_SOFT_IN },
+              }}
+            >
+              {children}
+            </m.div>
+          </AnimatePresence>
+        </LazyMotion>
       </div>
     </div>
   )

@@ -1,6 +1,6 @@
 'use client'
 
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, domAnimation, LazyMotion, m } from 'framer-motion'
 import { Label as LabelPrimitive, Slot as SlotPrimitive } from 'radix-ui'
 import * as React from 'react'
 import {
@@ -167,26 +167,28 @@ const FormMessage = React.forwardRef<
   const body = error ? String(error?.message) : children
 
   return (
-    <AnimatePresence initial={false}>
-      {body ? ( // Only animate if there is a message body
-        <motion.div
-          key={formMessageId} // Use a unique key to help with animations
-          initial={{ opacity: 0, y: -5, height: 0 }} // Start slightly hidden
-          animate={{ opacity: 1, y: 0, height: 'auto' }} // Fade in and slide up
-          exit={{ opacity: 0, y: -5, height: 0 }} // Fade out and slide back up
-          transition={{ duration: DURATION_ENTER, ease: EASE_SOFT_IN_OUT }}
-        >
-          <p
-            ref={ref}
-            id={formMessageId}
-            className={cn('text-sm text-destructive', className)}
-            {...props}
+    <LazyMotion features={domAnimation}>
+      <AnimatePresence initial={false}>
+        {body ? ( // Only animate if there is a message body
+          <m.div
+            key={formMessageId} // Use a unique key to help with animations
+            initial={{ opacity: 0, y: -5, height: 0 }} // Start slightly hidden
+            animate={{ opacity: 1, y: 0, height: 'auto' }} // Fade in and slide up
+            exit={{ opacity: 0, y: -5, height: 0 }} // Fade out and slide back up
+            transition={{ duration: DURATION_ENTER, ease: EASE_SOFT_IN_OUT }}
           >
-            {body}
-          </p>
-        </motion.div>
-      ) : null}
-    </AnimatePresence>
+            <p
+              ref={ref}
+              id={formMessageId}
+              className={cn('text-sm text-destructive', className)}
+              {...props}
+            >
+              {body}
+            </p>
+          </m.div>
+        ) : null}
+      </AnimatePresence>
+    </LazyMotion>
   )
 })
 
