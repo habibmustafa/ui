@@ -1,5 +1,108 @@
 # Changelog
 
+## 0.4.0
+
+### Minor Changes
+
+- c39705e: The default chart series 2 now follows the default accent (violet) instead of staying blue.
+  `--chart-2`, `--chart-2-fill` and, through `--chart-in`, the "in" series use exactly the colours
+  `createTheme({ accent })` generates for the default accent, in light and dark. Before, the
+  default theme only matched the theme builder's accent swatch once a colour was changed. A test
+  keeps `charts.css` and the generator in step.
+- c1afdc7: Sixteen new components.
+  
+  - `Carousel`: dependency-free scroll-snap slides. Props mode (`items`, with `arrows={null}` /
+    `dots={null}` to hide parts) and compound mode (`Carousel.Root` / `Content` / `Item` /
+    `Previous` / `Next` / `Dots`). Supports `loop`, `autoPlay` (pauses on hover and focus, and
+    for reduced-motion users), vertical orientation, a controlled `index`, arrow-key
+    navigation and several slides per view with `slidesPerView` and `gap`.
+  - `Rating`: star rating exposed as a radio group (arrow keys, Home/End, roving tabindex).
+    `allowHalf`, `allowClear`, `readOnly`, `disabled`, `size`, a custom `renderIcon` and a
+    `name` for native forms. New `FormRating` field wrapper for react-hook-form.
+  - `Statistic`: a headline number with `prefix`/`suffix`, `precision` and locale formatting,
+    `loading` skeleton and an optional count-up `animated` mode that respects reduced motion
+    and keeps the final value for screen readers.
+  - `Countdown`: counts down to a deadline through `Statistic`. `format` takes `D`, `H`, `m`,
+    `s`, `S` tokens (omitted larger units fold into the next one, `[literal]` text is kept),
+    with `paused`, `onChange` and `onFinish`. `role="timer"` with a stable label. The
+    `formatCountdown` helper is exported.
+  - `Image`: an `<img>` with a loading skeleton, a `fallback` for failed or missing sources,
+    `aspectRatio`/`fit`/`radius`, and an optional `preview` lightbox (Radix Dialog) that can
+    point at a larger file.
+  - `CircularProgress`: ring-shaped progress. Determinate (`value`/`max`, `role="progressbar"`)
+    or, without a `value`, an indeterminate spinner. `size`, `thickness`, `tone`, `showValue`
+    or any centred `children`.
+  - `Gauge`: a dial for a value in a range (`role="meter"`). `angle` for a half circle or an
+    open ring, `thresholds` to colour the arc by value, `formatValue`, `label` and `showRange`.
+  - `DateRangePicker`: a `{ from, to }` picker in one line: two months, `presets`, `minDate` /
+    `maxDate`, a Clear button and closing once the range is complete. Built on `DatePicker`,
+    whose "With range" example stays as the hand-assembled version. New `FormDateRangePicker`
+    field wrapper for react-hook-form.
+  - `Mentions`: a textarea that suggests options after a trigger character (`@` by default,
+    several allowed). Focus stays in the textarea; `aria-activedescendant` points at the
+    highlighted suggestion, arrow keys move, Enter or Tab picks, Escape closes. Custom
+    `filterOption`, `separator`, `onSelect`, disabled options and a not-found message.
+  - `Descriptions`: label/value pairs as a `<dl>` with `columns`, per-item `span`, a vertical
+    layout, `bordered` grid, a title with `extra` actions and a placeholder for empty values.
+  - `Result`: a full-section outcome with a status icon, title, description and `extra`
+    actions. `success`, `error`, `warning`, `info`, plus `403`, `404` and `500` pages.
+  - `TableOfContents`: on-this-page navigation with scroll-spy, nested levels, smooth
+    scrolling and hash updates. Watches the window or a `scrollRoot`; `activeId` can be
+    controlled.
+  - `ScrollProgress`: a thin bar that fills with page or container scroll. `fixed`, `absolute`
+    or `static` placement, top or bottom edge. Uses a transform, so scrolling never lays out.
+  - `Marquee`: an endlessly scrolling strip, horizontal or vertical, with `reverse`,
+    `pauseOnHover`, `fade` and `gap`. Copies are `aria-hidden`; honours reduced motion.
+  - `QRCode`: a dependency-free QR encoder rendered as one SVG path. Byte mode, versions
+    1-10, error-correction levels L/M/Q/H (up to 271 bytes at L). Black on white by default so
+    it stays scannable in any theme. `qrCapacity` is exported; input that does not fit
+    renders `fallback` and calls `onError`.
+  - `VirtualList`: renders only the visible rows. Fixed or per-row `itemHeight`, `overscan`,
+    `onEndReached` for infinite loading, `aria-posinset` / `aria-setsize` on every row.
+- c39705e: Touch targets and translatable labels.
+  
+  - On a coarse pointer (a finger), buttons, tabs, switches, checkboxes, radios and
+    `role="button"` elements get a 44px hit area. An invisible `::after` grows each small
+    control in the direction it falls short, so nothing changes visually or moves in the
+    layout and mouse users are unaffected. It sits in `@layer base` behind `:where()`, so a
+    utility class on a component wins, and controls that draw their own `after:` pseudo-element
+    are left alone.
+  - New `LocaleProvider` and `useLabels()` for the words the newer components speak: the
+    carousel's button and slide names, the image lightbox, mentions' empty state, the date
+    range placeholder and Clear, the table of contents label, Rating's value text, the
+    Countdown's time left and others. Labels that depend on a number or a name are functions,
+    so plurals and word order stay with the translator. Any subset can be overridden, providers
+    nest, and a component's own prop (`closeLabel`, `placeholder`, `aria-label`, ...) still wins.
+    Without a provider everything stays English.
+
+### Patch Changes
+
+- 5de84c8: `DatePicker` and `TimePicker` fields: the calendar and clock buttons now share one style. Same
+  24px button, 4px from the field's edge (the clock sat about 8px in), the same 16px icon drawn
+  with a 1.5 stroke (the calendar used 2), and the same hover: a soft background and the
+  foreground colour (the clock only changed colour). The clear button of the date field matches too.
+- e3f01f6: `Form` (the animated `FormMessage`) and `DatePicker` (the day/month/year view switch) now use
+  `LazyMotion` with the `domAnimation` feature set and the `m` component instead of the full
+  `motion` component. The animations are unchanged; the framer-motion code a consumer ships for
+  these two components drops from about 123 kB to about 77 kB (raw, before gzip).
+- c39705e: `MetricCard`: the content no longer claims `h-full`. Inside a CSS grid row that stretches the
+  card, that made the content as tall as the whole card and pushed the sparkline below it, where
+  the card's `overflow-hidden` clipped it. The sparkline now stays inside the card in any layout.
+- c39705e: Two small fixes found while building the playground's Blocks.
+  
+  - `Table`: the horizontal scroll container is now `position: relative`. An absolutely
+    positioned child, such as the `sr-only` text of an icon-only header, used to escape the
+    scroller's clipping and widen the whole page on narrow screens.
+  - `EmptyStatePresentational` renders a `<div>` instead of an `<aside>`. An empty state is
+    not complementary content, and several of them on a page produced unnamed duplicate
+    `complementary` landmarks.
+- 5cf1949: `ThemeProvider` is safe to hydrate. The stored theme and the system preference are now read
+  with `useSyncExternalStore`, so server-rendered HTML and the first client render agree (both
+  start from `defaultTheme` and a light system theme) and the real values apply right after
+  hydration, before the browser paints. Before, a stored `dark` choice made the first client
+  render differ from the server's and React reported a hydration mismatch. Client-only apps
+  behave as before: they read the stored theme on the first render.
+
 ## 0.3.0
 
 ### Minor Changes
