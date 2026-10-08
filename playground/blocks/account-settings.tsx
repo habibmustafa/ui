@@ -29,9 +29,11 @@ export default function AccountSettings() {
   const { isDirty } = form.formState
 
   return (
-    <div className="w-full max-w-xl">
-      <h3 className="text-xl font-semibold text-foreground">Account settings</h3>
-      <p className="mt-1 text-sm text-foreground-light">How you appear to others, and what we email you about.</p>
+    <div className="w-full max-w-2xl overflow-hidden rounded-xl border bg-surface-100 shadow-sm">
+      <div className="border-b px-6 py-5">
+        <h3 className="text-lg font-semibold tracking-tight text-foreground">Account settings</h3>
+        <p className="mt-0.5 text-sm text-foreground-light">How you appear to others, and what we email you about.</p>
+      </div>
 
       <Form {...form}>
         <form
@@ -40,38 +42,56 @@ export default function AccountSettings() {
             toast.success('Changes saved')
             form.reset(values)
           })}
-          className="mt-6 flex flex-col gap-6"
         >
-          <div className="flex items-center gap-4">
-            <Avatar fallback="AL" className="h-14 w-14 text-base" />
-            <div className="flex flex-col items-start gap-1">
-              <Button type="button" size="small">
-                Change photo
-              </Button>
-              <p className="text-xs text-foreground-lighter">JPG or PNG, up to 2 MB.</p>
+          <section aria-labelledby="account-profile" className="flex flex-col gap-5 px-6 py-6">
+            <h4 id="account-profile" className="text-sm font-medium text-foreground">
+              Profile
+            </h4>
+            <div className="flex items-center gap-4">
+              <Avatar fallback="AL" className="h-16 w-16 text-lg font-medium" />
+              <div className="flex flex-col items-start gap-1.5">
+                <Button type="button" size="small">
+                  Change photo
+                </Button>
+                <p className="text-xs text-foreground-lighter">JPG or PNG, up to 2 MB.</p>
+              </div>
             </div>
-          </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <FormInput name="name" label="Name" autoComplete="name" />
+              <FormInput name="email" label="Email" type="email" autoComplete="email" />
+            </div>
+            <FormTextarea name="bio" label="Bio" description="Shown on your public profile." rows={3} />
+          </section>
 
-          <div className="grid gap-4 sm:grid-cols-2">
-            <FormInput name="name" label="Name" autoComplete="name" />
-            <FormInput name="email" label="Email" type="email" autoComplete="email" />
-          </div>
-          <FormTextarea name="bio" label="Bio" description="Shown on your public profile." rows={3} />
+          <section aria-labelledby="account-email" className="border-t px-6 py-6">
+            <h4 id="account-email" className="text-sm font-medium text-foreground">
+              Email me about
+            </h4>
+            <div className="mt-4 flex flex-col divide-y rounded-lg border bg-surface-75">
+              <div className="px-4 py-3.5">
+                <FormSwitch name="productUpdates" label="New features and releases" />
+              </div>
+              <div className="px-4 py-3.5">
+                <FormSwitch name="mentions" label="Mentions and replies" />
+              </div>
+              <div className="px-4 py-3.5">
+                <FormSwitch name="weeklyDigest" label="A weekly summary" />
+              </div>
+            </div>
+          </section>
 
-          <fieldset className="flex flex-col gap-3 border-t pt-5">
-            <legend className="mb-1 text-sm font-medium text-foreground">Email me about</legend>
-            <FormSwitch name="productUpdates" label="New features and releases" />
-            <FormSwitch name="mentions" label="Mentions and replies" />
-            <FormSwitch name="weeklyDigest" label="A weekly summary" />
-          </fieldset>
-
-          <div className="flex justify-end gap-2 border-t pt-5">
-            <Button type="button" disabled={!isDirty} onClick={() => form.reset(saved)}>
-              Cancel
-            </Button>
-            <Button type="submit" variant="primary" disabled={!isDirty} loading={form.formState.isSubmitting}>
-              Save changes
-            </Button>
+          <div className="flex items-center justify-between gap-3 border-t bg-surface-75 px-6 py-3.5">
+            <p className="text-sm text-foreground-light" aria-live="polite">
+              {isDirty ? 'You have unsaved changes.' : 'All changes saved.'}
+            </p>
+            <div className="flex gap-2">
+              <Button type="button" disabled={!isDirty} onClick={() => form.reset(saved)}>
+                Cancel
+              </Button>
+              <Button type="submit" variant="primary" disabled={!isDirty} loading={form.formState.isSubmitting}>
+                Save changes
+              </Button>
+            </div>
           </div>
         </form>
       </Form>

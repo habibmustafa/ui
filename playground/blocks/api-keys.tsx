@@ -8,11 +8,12 @@ interface ApiKey {
   name: string
   hint: string
   created: string
+  used: string
 }
 
 const initial: ApiKey[] = [
-  { id: 'k1', name: 'Production server', hint: 'a41c', created: 'Aug 12, 2026' },
-  { id: 'k2', name: 'CI pipeline', hint: '7be0', created: 'Jul 3, 2026' },
+  { id: 'k1', name: 'Production server', hint: 'a41c', created: 'Aug 12, 2026', used: '2 hours ago' },
+  { id: 'k2', name: 'CI pipeline', hint: '7be0', created: 'Jul 3, 2026', used: 'Sep 28, 2026' },
 ]
 
 /** A made-up secret: shown once, in full, and never stored in the list. */
@@ -26,7 +27,7 @@ export default function ApiKeys() {
   const create = () => {
     const value = makeSecret()
     setKeys((current) => [
-      { id: value, name: name.trim() || 'Untitled key', hint: value.slice(-4), created: 'Today' },
+      { id: value, name: name.trim() || 'Untitled key', hint: value.slice(-4), created: 'Today', used: 'Never' },
       ...current,
     ])
     setSecret(value)
@@ -34,13 +35,18 @@ export default function ApiKeys() {
   }
 
   const columns: TableColumn<ApiKey>[] = [
-    { key: 'name', header: 'Name', render: (key) => <span className="text-foreground">{key.name}</span> },
+    { key: 'name', header: 'Name', render: (key) => <span className="font-medium text-foreground">{key.name}</span> },
     {
       key: 'key',
       header: 'Key',
-      render: (key) => <code className="font-mono text-xs text-foreground-light">sk_live_••••{key.hint}</code>,
+      render: (key) => (
+        <code className="rounded-sm border bg-surface-75 px-1.5 py-0.5 font-mono text-xs text-foreground-light">
+          sk_live_••••{key.hint}
+        </code>
+      ),
     },
     { key: 'created', header: 'Created', render: (key) => key.created },
+    { key: 'used', header: 'Last used', render: (key) => key.used },
     {
       key: 'actions',
       header: <span className="sr-only">Actions</span>,
@@ -66,11 +72,11 @@ export default function ApiKeys() {
   ]
 
   return (
-    <div className="flex w-full max-w-2xl flex-col gap-5">
-      <div className="flex items-start justify-between gap-4">
+    <div className="w-full max-w-3xl overflow-hidden rounded-xl border bg-surface-100 shadow-sm">
+      <div className="flex items-start justify-between gap-4 border-b px-6 py-5">
         <div>
-          <h3 className="text-xl font-semibold text-foreground">API keys</h3>
-          <p className="mt-1 text-sm text-foreground-light">Keys let a server act on behalf of this project.</p>
+          <h3 className="text-lg font-semibold tracking-tight text-foreground">API keys</h3>
+          <p className="mt-0.5 text-sm text-foreground-light">Keys let a server act on behalf of this project.</p>
         </div>
         <Dialog
           trigger={
@@ -97,27 +103,31 @@ export default function ApiKeys() {
         </Dialog>
       </div>
 
-      {secret && (
-        <Banner
-          variant="brand"
-          title="Copy your new key now"
-          dismissible
-          open
-          onOpenChange={(open) => !open && setSecret(null)}
-          action={<CopyButton value={secret} label="Copy key" copiedLabel="Copied" size="tiny" />}
-        >
-          <code className="font-mono text-xs">{secret}</code>
-          <span className="block text-xs">You will not be able to see it again.</span>
-        </Banner>
-      )}
+      <div className="flex flex-col gap-5 p-6">
+        {secret && (
+          <Banner
+            variant="brand"
+            title="Copy your new key now"
+            dismissible
+            open
+            onOpenChange={(open) => !open && setSecret(null)}
+            action={<CopyButton value={secret} label="Copy key" copiedLabel="Copied" size="tiny" />}
+          >
+            <code className="font-mono text-xs">{secret}</code>
+            <span className="block text-xs">You will not be able to see it again.</span>
+          </Banner>
+        )}
 
-      {keys.length === 0 ? (
-        <p className="rounded-md border border-dashed p-8 text-center text-sm text-foreground-light">
-          No keys yet. Create one to connect a server.
-        </p>
-      ) : (
-        <Table columns={columns} data={keys} rowKey={(key) => key.id} caption="API keys" />
-      )}
+        {keys.length === 0 ? (
+          <p className="rounded-lg border border-dashed bg-surface-75 p-10 text-center text-sm text-foreground-light">
+            No keys yet. Create one to connect a server.
+          </p>
+        ) : (
+          <div className="overflow-hidden rounded-lg border">
+            <Table columns={columns} data={keys} rowKey={(key) => key.id} caption="API keys" classNames={{ caption: 'sr-only' }} />
+          </div>
+        )}
+      </div>
     </div>
   )
 }

@@ -1,4 +1,6 @@
-import { Avatar, Badge, Chart, MetricCard } from '../../src'
+import { Download } from 'lucide-react'
+
+import { Avatar, Badge, Button, Chart, MetricCard } from '../../src'
 
 const day = (offset: number) => `2026-09-${String(offset).padStart(2, '0')}T12:00:00.000Z`
 
@@ -46,43 +48,61 @@ const activity = [
   { who: 'Ada Lovelace', initials: 'AL', what: 'exported a report', when: 'Yesterday' },
 ]
 
+const metrics = [
+  { label: 'Revenue', value: '$54.0k', differential: '+12.4%', variant: 'positive', data: revenue },
+  { label: 'Active users', value: '1,384', differential: '+17.3%', variant: 'positive', data: users },
+  { label: 'Churn', value: '2.9%', differential: '+0.5%', variant: 'negative', data: churn },
+] as const
+
 export default function Dashboard() {
   return (
-    <div className="flex w-full max-w-4xl flex-col gap-6">
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <MetricCard
-          label="Revenue"
-          value="$54.0k"
-          differential="+12.4%"
-          differentialVariant="positive"
-          sparklineData={revenue}
-          sparklineDataKey="value"
-        />
-        <MetricCard
-          label="Active users"
-          value="1,384"
-          differential="+17.3%"
-          differentialVariant="positive"
-          sparklineData={users}
-          sparklineDataKey="value"
-        />
-        <MetricCard
-          label="Churn"
-          value="2.9%"
-          differential="+0.5%"
-          differentialVariant="negative"
-          sparklineData={churn}
-          sparklineDataKey="value"
-        />
+    <div className="w-full max-w-5xl overflow-hidden rounded-xl border bg-surface-100 shadow-sm">
+      <div className="flex items-center justify-between gap-4 border-b px-6 py-4">
+        <div>
+          <h3 className="text-lg font-semibold tracking-tight text-foreground">Overview</h3>
+          <p className="text-sm text-foreground-light">Sep 1 to Sep 7, 2026, against the week before.</p>
+        </div>
+        <Button icon={<Download />}>Export</Button>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
-        <section aria-labelledby="dash-revenue" className="rounded-lg border bg-surface-75 p-5">
-          <h3 id="dash-revenue" className="text-sm font-medium text-foreground">
-            Revenue against target, in thousands
-          </h3>
+      <div className="grid grid-cols-1 divide-y sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+        {metrics.map((metric) => (
+          <div key={metric.label}>
+            <MetricCard
+              className="rounded-none border-0 bg-transparent px-6 py-5 shadow-none"
+              label={metric.label}
+              value={metric.value}
+              differential={metric.differential}
+              differentialVariant={metric.variant}
+              sparklineData={metric.data}
+              sparklineDataKey="value"
+            />
+          </div>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-1 border-t lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:divide-x">
+        <section aria-labelledby="dash-revenue" className="p-6">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <h4 id="dash-revenue" className="text-sm font-medium text-foreground">
+                Revenue against target
+              </h4>
+              <p className="text-xs text-foreground-lighter">In thousands of dollars, by month.</p>
+            </div>
+            <ul className="flex items-center gap-4 text-xs text-foreground-light" aria-label="Legend">
+              <li className="flex items-center gap-1.5">
+                <span aria-hidden="true" className="h-2 w-2 rounded-full" style={{ background: 'var(--chart-1)' }} />
+                Revenue
+              </li>
+              <li className="flex items-center gap-1.5">
+                <span aria-hidden="true" className="h-2 w-2 rounded-full" style={{ background: 'var(--chart-2)' }} />
+                Target
+              </li>
+            </ul>
+          </div>
           <Chart
-            className="mt-4 min-h-[220px] w-full"
+            className="mt-5 aspect-auto h-60 w-full"
             data={monthly}
             xKey="month"
             series={[
@@ -92,22 +112,22 @@ export default function Dashboard() {
           />
         </section>
 
-        <section aria-labelledby="dash-activity" className="rounded-lg border bg-surface-75 p-5">
-          <h3 id="dash-activity" className="text-sm font-medium text-foreground">
+        <section aria-labelledby="dash-activity" className="border-t p-6 lg:border-t-0">
+          <h4 id="dash-activity" className="text-sm font-medium text-foreground">
             Latest activity
-          </h3>
-          <ul className="mt-4 flex flex-col gap-4">
+          </h4>
+          <ul className="mt-5 flex flex-col gap-5">
             {activity.map((item) => (
               <li key={item.who} className="flex items-start gap-3 text-sm">
-                <Avatar fallback={item.initials} className="h-8 w-8 text-xs" />
+                <Avatar fallback={item.initials} className="h-8 w-8 text-xs font-medium" />
                 <div className="min-w-0 flex-1">
-                  <p className="text-foreground">
-                    <span className="font-medium">{item.who}</span> {item.what}
+                  <p className="text-foreground-light">
+                    <span className="font-medium text-foreground">{item.who}</span> {item.what}
                   </p>
-                  <p className="text-xs text-foreground-lighter">{item.when}</p>
+                  <p className="mt-0.5 text-xs text-foreground-lighter">{item.when}</p>
                 </div>
                 {item.alert && (
-                  <Badge variant="warning" className="normal-case">
+                  <Badge variant="warning" className="px-2 py-1 text-[11px] font-medium normal-case tracking-normal">
                     At risk
                   </Badge>
                 )}
