@@ -167,13 +167,17 @@ const Image = React.forwardRef<HTMLImageElement, ImageProps>(
         {showSkeleton && status === 'loading' && (
           <Skeleton aria-hidden="true" className="absolute inset-0 h-full w-full rounded-none" />
         )}
-        {canPreview ? (
-          <DialogPrimitive.Root open={open} onOpenChange={setOpen}>
+        {/* With `preview`, the trigger is there from the first render and only enabled once
+            the image has loaded: wrapping the <img> at that point would remount it, load it
+            again and call onLoad twice. */}
+        {preview ? (
+          <DialogPrimitive.Root open={canPreview && open} onOpenChange={setOpen}>
             <DialogPrimitive.Trigger asChild>
               <button
                 type="button"
+                disabled={!canPreview}
                 aria-label={labels.imagePreview(alt)}
-                className="block h-full w-full cursor-zoom-in focus-ring"
+                className="block h-full w-full cursor-zoom-in focus-ring disabled:cursor-default"
               >
                 {image}
               </button>

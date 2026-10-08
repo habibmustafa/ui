@@ -175,7 +175,8 @@ describe('Image', () => {
     const user = userEvent.setup()
     render(<Image src="/a.png" alt="Sunset" preview />)
     // Not previewable until the image has loaded.
-    expect(screen.queryByRole('button', { name: /preview image/i })).toBeNull()
+    const trigger = screen.getByRole('button', { name: 'Preview image: Sunset' }) as HTMLButtonElement
+    expect(trigger.disabled).toBe(true)
 
     fireEvent.load(screen.getByAltText('Sunset'))
     await user.click(screen.getByRole('button', { name: 'Preview image: Sunset' }))
@@ -193,10 +194,72 @@ describe('Image', () => {
     const images = screen.getAllByAltText('Map')
     expect(images.map((img) => img.getAttribute('src'))).toContain('/large.png')
   })
+
+  test('preview keeps the same <img> once loaded, so onLoad runs once', () => {
+    const onLoad = vi.fn()
+    render(<Image src="/a.png" alt="Sunset" preview onLoad={onLoad} />)
+    const img = screen.getByAltText('Sunset')
+    fireEvent.load(img)
+    // Enabling the preview must not remount (and so reload) the image.
+    expect(screen.getByAltText('Sunset')).toBe(img)
+    expect(onLoad).toHaveBeenCalledTimes(1)
+  })
 })
 
 describe('Carousel', () => {
   const slides = ['One', 'Two', 'Three']
+
+  /** jsdom has no layout: slide i sits at i * 100px, and every track move is recorded. */
+  function stubTrack() {
+    const moves: number[] = []
+    vi.spyOn(HTMLElement.prototype, 'offsetLeft', 'get').mockImplementation(function (this: HTMLElement) {
+      return this.hasAttribute('data-carousel-item') ? [...this.parentElement!.children].indexOf(this) * 100 : 0
+    })
+    const original = Element.prototype.scrollTo
+    Element.prototype.scrollTo = function (options?: ScrollToOptions | number) {
+      if (typeof options === 'object') moves.push(options.left ?? 0)
+    } as typeof Element.prototype.scrollTo
+    return { moves, restore: () => void (Element.prototype.scrollTo = original) }
+  }
+
+  test('the track follows a controlled index and a non-zero defaultIndex', () => {
+    const track = stubTrack()
+    try {
+      const { rerender, unmount } = render(<Carousel items={slides} index={0} aria-label="Demo" />)
+      rerender(<Carousel items={slides} index={2} aria-label="Demo" />)
+      expect(track.moves.at(-1)).toBe(200)
+      unmount()
+
+      render(<Carousel items={slides} defaultIndex={1} aria-label="Demo" />)
+      expect(track.moves.at(-1)).toBe(100)
+    } finally {
+      track.restore()
+    }
+  })
+
+  test("a consumer's onScroll runs alongside the carousel's own index sync", async () => {
+    const onScroll = vi.fn()
+    const onIndexChange = vi.fn()
+    const track = stubTrack()
+    try {
+      const { container } = render(
+        <Carousel.Root onIndexChange={onIndexChange} aria-label="Compound">
+          <Carousel.Content onScroll={onScroll}>
+            <Carousel.Item>A</Carousel.Item>
+            <Carousel.Item>B</Carousel.Item>
+          </Carousel.Content>
+        </Carousel.Root>
+      )
+      const content = container.querySelector('[data-carousel-item]')!.parentElement!
+      Object.defineProperty(content, 'scrollLeft', { configurable: true, value: 100 })
+      fireEvent.scroll(content)
+      await act(() => new Promise<void>((resolve) => requestAnimationFrame(() => resolve())))
+      expect(onScroll).toHaveBeenCalledTimes(1)
+      expect(onIndexChange).toHaveBeenLastCalledWith(1)
+    } finally {
+      track.restore()
+    }
+  })
 
   test('props mode renders labelled slides and moves with the buttons', async () => {
     const user = userEvent.setup()
@@ -315,6 +378,14 @@ describe('CircularProgress', () => {
 })
 
 describe('Gauge', () => {
+  test('a full circle still draws its track and, at 100%, its indicator', () => {
+    const { container } = render(<Gauge value={100} angle={360} aria-label="Full" />)
+    const paths = [...container.querySelectorAll('path')]
+    expect(paths).toHaveLength(2)
+    // An arc whose two ends coincide draws nothing, so each is two half arcs.
+    for (const path of paths) expect(path.getAttribute('d')!.match(/ A /g)).toHaveLength(2)
+  })
+
   test('is a meter with value, min and max', () => {
     render(<Gauge value={42} aria-label="CPU" />)
     const meter = screen.getByRole('meter', { name: 'CPU' })

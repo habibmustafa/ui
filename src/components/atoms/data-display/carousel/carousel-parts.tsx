@@ -109,14 +109,21 @@ const CarouselRoot = React.forwardRef<HTMLDivElement, CarouselRootProps>(
 
     const registerCount = React.useCallback((next: number) => setCount(next), [])
 
+    // The slide the track was last moved to, or scrolled to by the user. When `index`
+    // changes any other way (a controlled `index`, a non-zero `defaultIndex`), the effect
+    // below moves the track to follow it.
+    const trackIndex = React.useRef(0)
+    const positioned = React.useRef(false)
+
     const moveTrack = React.useCallback(
-      (target: number) => {
+      (target: number, instant = false) => {
         const content = contentRef.current
         const slide = content?.querySelectorAll<HTMLElement>('[data-carousel-item]')[target]
         if (!content || !slide) return
+        trackIndex.current = target
         const top = vertical ? slide.offsetTop : 0
         const left = vertical ? 0 : slide.offsetLeft
-        const behavior = prefersReducedMotion() ? 'auto' : 'smooth'
+        const behavior = instant || prefersReducedMotion() ? 'auto' : 'smooth'
         if (typeof content.scrollTo === 'function') content.scrollTo({ top, left, behavior })
         else {
           content.scrollTop = top
@@ -148,10 +155,19 @@ const CarouselRoot = React.forwardRef<HTMLDivElement, CarouselRootProps>(
 
     const syncIndex = React.useCallback(
       (next: number) => {
+        trackIndex.current = next
         if (next !== index) setIndex(next)
       },
       [index, setIndex]
     )
+
+    React.useLayoutEffect(() => {
+      if (count === 0) return
+      const target = Math.min(maxIndex, Math.max(0, index))
+      // The first placement happens before paint, without animating from slide 1.
+      if (target !== trackIndex.current) moveTrack(target, !positioned.current)
+      positioned.current = true
+    }, [index, count, maxIndex, moveTrack])
 
     React.useEffect(() => {
       if (!autoPlay || paused || maxIndex < 1 || prefersReducedMotion()) return
@@ -238,7 +254,7 @@ CarouselRoot.displayName = 'CarouselRoot'
 export type CarouselContentProps = React.HTMLAttributes<HTMLDivElement>
 
 const CarouselContent = React.forwardRef<HTMLDivElement, CarouselContentProps>(
-  ({ className, style, children, ...props }, ref) => {
+  ({ className, style, children, onScroll: onScrollProp, ...props }, ref) => {
     const { orientation, count, gap, registerCount, syncIndex, contentRef } = useCarousel()
     const vertical = orientation === 'vertical'
     const slides = React.Children.toArray(children)
@@ -250,7 +266,8 @@ const CarouselContent = React.forwardRef<HTMLDivElement, CarouselContentProps>(
     const frame = React.useRef(0)
     React.useEffect(() => () => cancelAnimationFrame(frame.current), [])
 
-    const onScroll = () => {
+    const onScroll = (event: React.UIEvent<HTMLDivElement>) => {
+      onScrollProp?.(event)
       cancelAnimationFrame(frame.current)
       frame.current = requestAnimationFrame(() => {
         const content = contentRef.current

@@ -68,8 +68,17 @@ function point(angle: number) {
 
 function arcPath(start: number, sweep: number) {
   const [x1, y1] = point(start)
-  const [x2, y2] = point(start + sweep)
-  return `M ${x1.toFixed(3)} ${y1.toFixed(3)} A ${R} ${R} 0 ${sweep > 180 ? 1 : 0} 1 ${x2.toFixed(3)} ${y2.toFixed(3)}`
+  let d = `M ${x1.toFixed(3)} ${y1.toFixed(3)}`
+  // An arc whose two ends coincide draws nothing, so a full circle (`angle={360}`, and its
+  // indicator at 100%) goes round in two halves.
+  const stops = sweep >= 360 ? [start + sweep / 2, start + sweep] : [start + sweep]
+  let from = start
+  for (const to of stops) {
+    const [x, y] = point(to)
+    d += ` A ${R} ${R} 0 ${to - from > 180 ? 1 : 0} 1 ${x.toFixed(3)} ${y.toFixed(3)}`
+    from = to
+  }
+  return d
 }
 
 const Gauge = React.forwardRef<HTMLDivElement, GaugeProps>(
