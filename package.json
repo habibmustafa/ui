@@ -52,7 +52,7 @@
   "scripts": {
     "dev": "vite",
     "build:lib": "tsc -b && vite build",
-    "build:playground": "vite build --config vite.playground.config.ts && node -e \"require('fs').copyFileSync('playground-dist/index.html','playground-dist/404.html')\"",
+    "build:playground": "vite build --config vite.playground.config.ts && vite build --config vite.playground.config.ts --ssr playground/entry-server.tsx && node scripts/prerender.mjs",
     "lint": "oxlint",
     "preview": "vite preview",
     "check:classes": "node scripts/check-classes.mjs",

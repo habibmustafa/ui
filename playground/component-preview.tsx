@@ -102,15 +102,20 @@ export interface ComponentPreviewCodeVariant {
  * True once the element is within ~1.5 screens of the viewport (and from then on).
  * Long component pages mount a dozen live demos; rendering only the ones near the
  * screen keeps navigation and first paint fast. Without IntersectionObserver (tests,
- * old browsers) everything renders immediately.
+ * old browsers) everything renders as soon as it mounts. Always false on the first
+ * render, so prerendered HTML and the hydrating client agree.
  */
 export function useNearViewport(): [(element: HTMLElement | null) => void, boolean] {
-  const [near, setNear] = useState(() => typeof IntersectionObserver === 'undefined')
+  const [near, setNear] = useState(false)
   const observer = useRef<IntersectionObserver | null>(null)
   const ref = useCallback(
     (element: HTMLElement | null) => {
       observer.current?.disconnect()
       if (!element || near) return
+      if (typeof IntersectionObserver === 'undefined') {
+        setNear(true)
+        return
+      }
       observer.current = new IntersectionObserver(
         ([entry]) => {
           if (entry.isIntersecting) {

@@ -10,9 +10,11 @@ import {
 
 import {
   Badge,
+  createTheme,
   Sheet,
   SonnerToaster,
   ThemeStyle,
+  themeToCss,
   ThemeToggle,
   useTheme,
 } from "../src";
@@ -22,9 +24,11 @@ import { Preview, Swatch } from "./docs";
 import { GithubIcon } from "./icons";
 import { PageErrorBoundary } from "./page-error-boundary";
 import {
+  EARLY_STYLE_ID,
   ensureFontLoaded,
   monoFont,
   sansFont,
+  saveEarlyCss,
   setApplyEverywhere,
   toConfig,
   useThemeBuilder,
@@ -385,7 +389,20 @@ function SiteTheme({ active }: { active: boolean }) {
     ensureFontLoaded(monoFont(state));
   }, [active, state]);
 
-  return active ? <ThemeStyle tokens={config} /> : null;
+  const tokens = useMemo(() => createTheme(config), [config]);
+
+  // Keep the pre-paint copy of this theme (see saveEarlyCss) current for the next visit…
+  useEffect(() => {
+    saveEarlyCss(themeToCss(tokens));
+  }, [tokens]);
+
+  // …and drop it once the live <ThemeStyle> below has taken over. Not before: while
+  // hydrating, `active` still reflects the server's defaults.
+  useEffect(() => {
+    if (active) document.getElementById(EARLY_STYLE_ID)?.remove();
+  }, [active]);
+
+  return active ? <ThemeStyle tokens={tokens} /> : null;
 }
 
 function CustomThemeNotice() {
@@ -407,6 +424,25 @@ function CustomThemeNotice() {
       </button>
     </div>
   );
+}
+
+const PAGE_TITLES: Record<string, string> = {
+  "/getting-started": "Getting started",
+  "/theme": "Theme builder",
+  "/components": "Components",
+  "/blocks": "Blocks",
+  "/colors": "Colors",
+  "/typography": "Typography",
+};
+
+/** The <title> for a path; shared with the prerender (playground/entry-server.tsx). */
+export function documentTitle(pathname: string) {
+  const title =
+    PAGE_TITLES[pathname] ??
+    (pathname.startsWith("/components/")
+      ? findComponent(pathname.slice("/components/".length))?.title
+      : undefined);
+  return title ? `${title} — ui` : "ui — React 19 component library";
 }
 
 export function App() {
@@ -468,38 +504,29 @@ export function App() {
 
   const pathname = path.split("?")[0];
   let page: ReactNode;
-  let title: string | undefined;
   if (pathname === "/") {
     page = <HomePage />;
   } else if (pathname === "/getting-started") {
     page = <GettingStartedPage />;
-    title = "Getting started";
   } else if (pathname === "/theme") {
     page = <ThemeBuilderPage />;
-    title = "Theme builder";
   } else if (pathname === "/components") {
     page = <ComponentsIndexPage />;
-    title = "Components";
   } else if (pathname === "/blocks") {
     page = <BlocksPage />;
-    title = "Blocks";
   } else if (pathname === "/colors") {
     page = <ColorsPage />;
-    title = "Colors";
   } else if (pathname === "/typography") {
     page = <TypographyPage />;
-    title = "Typography";
   } else if (pathname.startsWith("/components/")) {
-    const id = pathname.slice("/components/".length);
-    page = <ComponentPage id={id} />;
-    title = findComponent(id)?.title;
+    page = <ComponentPage id={pathname.slice("/components/".length)} />;
   } else {
     page = <Navigate to="/" />;
   }
 
   useEffect(() => {
-    document.title = title ? `${title} — ui` : "ui — React 19 component library";
-  }, [title]);
+    document.title = documentTitle(pathname);
+  }, [pathname]);
 
   // The landing page runs full width; every other page reads next to the sidebar.
   const isHome = pathname === "/";

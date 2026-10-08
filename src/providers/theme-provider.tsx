@@ -7,6 +7,7 @@ import {
   useEffect,
   useMemo,
   useState,
+  useSyncExternalStore,
   type ReactNode,
 } from 'react'
 
@@ -41,6 +42,36 @@ function readStoredTheme(storageKey: string): Theme | null {
   }
 }
 
+/*
+ * The stored choice and the OS preference are read through useSyncExternalStore rather
+ * than a useState initializer. On the server, and while hydrating server-rendered HTML,
+ * React uses the server snapshots (nothing stored, light system theme), so the first
+ * client render matches the markup; it then re-renders with the real values before the
+ * browser paints. A purely client-rendered app reads the real values straight away.
+ */
+const storedThemeListeners = new Set<() => void>()
+
+function subscribeStoredTheme(listener: () => void) {
+  storedThemeListeners.add(listener)
+  // Another tab changing the theme.
+  window.addEventListener('storage', listener)
+  return () => {
+    storedThemeListeners.delete(listener)
+    window.removeEventListener('storage', listener)
+  }
+}
+
+function subscribeSystemTheme(listener: () => void) {
+  const query = window.matchMedia(DARK_QUERY)
+  query.addEventListener('change', listener)
+  return () => query.removeEventListener('change', listener)
+}
+
+const getSystemTheme = (): ResolvedTheme =>
+  window.matchMedia(DARK_QUERY).matches ? 'dark' : 'light'
+const getServerSystemTheme = (): ResolvedTheme => 'light'
+const getServerStoredTheme = (): Theme | null => null
+
 export interface ThemeProviderProps {
   children: ReactNode
   defaultTheme?: Theme
@@ -72,32 +103,20 @@ export function ThemeProvider({
   storageKey = 'theme',
   tokens,
 }: ThemeProviderProps) {
-  const [theme, setThemeState] = useState<Theme>(
-    () => (typeof window === 'undefined' ? null : readStoredTheme(storageKey)) ?? defaultTheme
+  const storedTheme = useSyncExternalStore(
+    subscribeStoredTheme,
+    () => readStoredTheme(storageKey),
+    getServerStoredTheme
   )
-  const [systemTheme, setSystemTheme] = useState<ResolvedTheme>(() =>
-    typeof window === 'undefined' || !window.matchMedia(DARK_QUERY).matches ? 'light' : 'dark'
+  const systemTheme = useSyncExternalStore(
+    subscribeSystemTheme,
+    getSystemTheme,
+    getServerSystemTheme
   )
-
-  useEffect(() => {
-    const query = window.matchMedia(DARK_QUERY)
-    const sync = () => setSystemTheme(query.matches ? 'dark' : 'light')
-
-    sync()
-    query.addEventListener('change', sync)
-    return () => query.removeEventListener('change', sync)
-  }, [])
-
-  useEffect(() => {
-    const sync = (event: StorageEvent) => {
-      if (event.key === storageKey) {
-        setThemeState(readStoredTheme(storageKey) ?? defaultTheme)
-      }
-    }
-
-    window.addEventListener('storage', sync)
-    return () => window.removeEventListener('storage', sync)
-  }, [storageKey, defaultTheme])
+  // Only used when the choice could not be persisted (blocked storage): the theme still
+  // applies for this visit.
+  const [unsavedTheme, setUnsavedTheme] = useState<Theme | null>(null)
+  const theme = unsavedTheme ?? storedTheme ?? defaultTheme
 
   const resolvedTheme: ResolvedTheme = theme === 'system' ? systemTheme : theme
 
@@ -114,12 +133,15 @@ export function ThemeProvider({
 
   const setTheme = useCallback(
     (next: Theme) => {
-      setThemeState(next)
+      let saved = false
       try {
         localStorage.setItem(storageKey, next)
+        saved = true
       } catch {
         // Persisting is best-effort; the in-memory theme still applies.
       }
+      setUnsavedTheme(saved ? null : next)
+      storedThemeListeners.forEach((listener) => listener())
     },
     [storageKey]
   )

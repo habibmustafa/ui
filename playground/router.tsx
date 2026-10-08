@@ -34,8 +34,27 @@ function currentPath() {
   return normalizePath(window.location.pathname + window.location.search)
 }
 
-export function RouterProvider({ children }: { children: ReactNode }) {
-  const [path, setPath] = useState(currentPath)
+export function RouterProvider({
+  children,
+  initialPath,
+}: {
+  children: ReactNode
+  /**
+   * The path to render first instead of reading window.location: the route being
+   * prerendered on the server, or, when hydrating, the path that HTML was rendered for
+   * (it has no query string). The real location is applied right after mount.
+   */
+  initialPath?: string
+}) {
+  const [path, setPath] = useState(() =>
+    initialPath === undefined ? currentPath() : normalizePath(initialPath)
+  )
+
+  useEffect(() => {
+    const actual = currentPath()
+    if (actual !== path) setPath(actual)
+    // Mount only: afterwards navigate() and popstate keep the path in sync.
+  }, [])
 
   useEffect(() => {
     const onPop = () => setPath(currentPath())

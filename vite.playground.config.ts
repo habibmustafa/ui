@@ -7,9 +7,14 @@ import { defineConfig } from "vite";
 // from vite.config.ts which is always a library build. Shares the react/tailwind/
 // react-compiler plugins so the deployed playground behaves like `npm run dev`;
 // skips the dts plugin and the lib-only rollup options (external, preserveModules).
-export default defineConfig({
+//
+// `--ssr playground/entry-server.tsx` builds the server entry the prerender step
+// (scripts/prerender.mjs) renders every route with; it goes to playground-ssr/ and
+// leaves the static assets alone.
+export default defineConfig(({ isSsrBuild }) => ({
   plugins: [react(), babel({ presets: [reactCompilerPreset()] }), tailwindcss()],
   build: {
-    outDir: "playground-dist",
+    outDir: isSsrBuild ? "playground-ssr" : "playground-dist",
+    copyPublicDir: !isSsrBuild,
   },
-});
+}));

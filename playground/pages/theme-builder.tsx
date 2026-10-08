@@ -1,5 +1,13 @@
 import { Check, Download, Link2, Moon, RotateCcw, Sun, Upload } from 'lucide-react'
-import { useEffect, useId, useLayoutEffect, useMemo, useState, type ReactNode } from 'react'
+import {
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useMemo,
+  useState,
+  useSyncExternalStore,
+  type ReactNode,
+} from 'react'
 
 import {
   Badge,
@@ -363,6 +371,9 @@ function ExportDialog({ state, link }: { state: BuilderState; link: string }) {
 
 /* ------------------------------------------------------------ page */
 
+// window.location.origin never changes; read it only on the client (the page is prerendered).
+const subscribeNever = () => () => {}
+
 export default function ThemeBuilderPage() {
   const { state, everywhere } = useThemeBuilder()
   const { resolvedTheme, setTheme } = useTheme()
@@ -375,7 +386,8 @@ export default function ThemeBuilderPage() {
   }, [])
 
   const query = stateToQuery(state)
-  const link = `${window.location.origin}/theme${query ? `?${query}` : ''}`
+  const origin = useSyncExternalStore(subscribeNever, () => window.location.origin, () => '')
+  const link = `${origin}/theme${query ? `?${query}` : ''}`
 
   // Mirror the state into the URL (replace, so the back button isn't flooded).
   useEffect(() => {
