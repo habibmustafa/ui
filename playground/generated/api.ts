@@ -2008,7 +2008,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
         "props": [
           {
             "name": "variant",
-            "type": "\"default\" | \"secondary\" | \"warning\" | \"destructive\" | \"success\" | null",
+            "type": "\"default\" | \"secondary\" | \"warning\" | \"success\" | \"destructive\" | null",
             "default": "default"
           }
         ],
@@ -2072,7 +2072,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           },
           {
             "name": "variant",
-            "type": "\"default\" | \"warning\" | \"destructive\" | \"brand\" | null"
+            "type": "\"default\" | \"warning\" | \"brand\" | \"destructive\" | null"
           }
         ],
         "extends": [
@@ -2610,13 +2610,13 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "type": "boolean"
           },
           {
-            "name": "containerClassName",
-            "type": "string"
-          },
-          {
             "name": "suffix",
             "type": "ReactNode",
             "description": "Rendered inside the field's own border, after the value (e.g. a unit or button)."
+          },
+          {
+            "name": "containerClassName",
+            "type": "string"
           },
           {
             "name": "showCopyOnHover",
@@ -2775,6 +2775,11 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "type": "string",
             "default": "'DD.MM.YYYY'",
             "description": "Segment format for the typeable field, single-date mode only."
+          },
+          {
+            "name": "fieldContainerClassName",
+            "type": "string",
+            "description": "Classes for the typeable field's wrapper (single-date mode), e.g. `w-full` inside a form."
           },
           {
             "name": "minDate",
@@ -2967,6 +2972,11 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "name": "isInvalid",
             "type": "boolean",
             "default": "false"
+          },
+          {
+            "name": "containerClassName",
+            "type": "string",
+            "description": "Classes for the wrapper around the field and its buttons, e.g. `w-full`."
           }
         ],
         "extends": []
@@ -8947,7 +8957,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           },
           {
             "name": "size",
-            "type": "\"default\" | \"content\" | \"sm\" | \"lg\" | \"xl\" | \"full\" | \"xxl\" | null",
+            "type": "\"default\" | \"content\" | \"sm\" | \"lg\" | \"full\" | \"xl\" | \"xxl\" | null",
             "default": "\"default\"",
             "description": "Sheet width/height."
           },
@@ -9004,7 +9014,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           },
           {
             "name": "size",
-            "type": "\"default\" | \"content\" | \"sm\" | \"lg\" | \"xl\" | \"full\" | \"xxl\" | null"
+            "type": "\"default\" | \"content\" | \"sm\" | \"lg\" | \"full\" | \"xl\" | \"xxl\" | null"
           },
           {
             "name": "side",
