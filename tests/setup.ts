@@ -80,3 +80,14 @@ if (typeof PointerEvent === "undefined") {
   // @ts-expect-error — test-only stub
   window.PointerEvent = PointerEventStub;
 }
+
+// jsdom ignores the `inert` attribute. In a browser nothing inside an inert subtree can take
+// focus, so `focus()` on it is a no-op; the gallery thumbnails on /components rely on that.
+// Without it, a thumbnail demo that mounted late moved focus onto its own element (the
+// resizable demo's handle) in the middle of `user.type` on the filter box, so the keys went
+// elsewhere and the components-index test failed whenever the machine was busy.
+const nativeFocus = HTMLElement.prototype.focus;
+HTMLElement.prototype.focus = function focus(this: HTMLElement, options?: FocusOptions) {
+  if (this.closest("[inert]")) return;
+  nativeFocus.call(this, options);
+};

@@ -114,16 +114,31 @@ command = "npm run build:playground"
 [assets]
 directory = "./playground-dist"
 not_found_handling = "404-page"
+
+[previews]
 ```
 
 - `[build].command` — Cloudflare runs this itself and creates the `playground-dist/`
-  folder.
+  folder. The script builds the client, then the server entry
+  (`playground/entry-server.tsx` → `playground-ssr/`), then `scripts/prerender.mjs`
+  writes a prerendered HTML file for every route: `/` → `index.html`,
+  `/components/button` → `components/button.html`, and so on. The browser paints that
+  HTML before any JavaScript loads and `playground/main.tsx` hydrates it. The file names
+  rely on the default `html_handling` (`auto-trailing-slash`), which serves
+  `components/button.html` for `/components/button`. A route that is not in
+  `ROUTES` (entry-server.tsx) is not prerendered and falls through to `404.html`.
 - `[assets].directory` — which folder to upload.
 - `not_found_handling = "404-page"` — so that the SPA's client-side router (e.g. `/components/dialog`)
   works on hard refresh. **DO NOT WRITE `"single-page-application"`** —
   for this specific project, Cloudflare's internal `_redirects` validator rejects it as an "infinite
-  loop" (see §5, "Known issues"). `"404-page"` + the `build:playground`
-  script copying `index.html` to `404.html` is the replacement for it.
+  loop" (see §5, "Known issues"). `"404-page"` + `404.html` (the unrendered app
+  shell, written by `scripts/prerender.mjs`) is the replacement for it.
+- `[previews]` — builds of branches other than `main` (e.g. a PR) deploy with
+  `npx wrangler preview`, which fails with "missing a `previews` block" without it.
+  It stays empty; assets and compatibility settings are read from the top level.
+- `public/_headers` — content-hashed `/assets/*` and the versioned `/fonts/*` are cached
+  for a year (`immutable`); HTML keeps Cloudflare's default (revalidated on every
+  visit), so a deploy shows up immediately.
 
 **Domain**: `ui.habibmustafa.me` → added in the **Custom domains** section of the Cloudflare Pages/Workers project.
 The domain is already on Cloudflare's own

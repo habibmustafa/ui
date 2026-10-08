@@ -10,9 +10,11 @@ import {
 
 import {
   Badge,
+  createTheme,
   Sheet,
   SonnerToaster,
   ThemeStyle,
+  themeToCss,
   ThemeToggle,
   useTheme,
 } from "../src";
@@ -22,9 +24,11 @@ import { Preview, Swatch } from "./docs";
 import { GithubIcon } from "./icons";
 import { PageErrorBoundary } from "./page-error-boundary";
 import {
+  EARLY_STYLE_ID,
   ensureFontLoaded,
   monoFont,
   sansFont,
+  saveEarlyCss,
   setApplyEverywhere,
   toConfig,
   useThemeBuilder,
@@ -42,16 +46,19 @@ const loadHome = () => import("./pages/home");
 const loadGettingStarted = () => import("./pages/getting-started");
 const loadComponentsIndex = () => import("./pages/components-index");
 const loadThemeBuilder = () => import("./pages/theme-builder");
+const loadBlocks = () => import("./pages/blocks");
 const HomePage = lazy(loadHome);
 const GettingStartedPage = lazy(loadGettingStarted);
 const ComponentsIndexPage = lazy(loadComponentsIndex);
 const ThemeBuilderPage = lazy(loadThemeBuilder);
+const BlocksPage = lazy(loadBlocks);
 
 const ROUTE_LOADERS: Record<string, () => Promise<unknown>> = {
   "/": loadHome,
   "/getting-started": loadGettingStarted,
   "/components": loadComponentsIndex,
   "/theme": loadThemeBuilder,
+  "/blocks": loadBlocks,
 };
 
 /**
@@ -270,7 +277,7 @@ function Header() {
         </div>
 
         <nav aria-label="Main" className="ml-4 hidden items-center gap-5 md:flex">
-          {PAGES.slice(1, 4).map((page) => (
+          {PAGES.slice(1, 5).map((page) => (
             <Link
               key={page.to}
               to={page.to}
@@ -369,7 +376,8 @@ function TypographyPage() {
 
 /**
  * The theme builder's tokens, rendered with the library's own <ThemeStyle>: always on
- * /theme, and on every page once "apply everywhere" is switched on.
+ * /theme, on the landing page (whose hero edits them) and on /blocks, and on every page
+ * once "apply everywhere" is switched on.
  */
 function SiteTheme({ active }: { active: boolean }) {
   const { state } = useThemeBuilder();
@@ -381,7 +389,20 @@ function SiteTheme({ active }: { active: boolean }) {
     ensureFontLoaded(monoFont(state));
   }, [active, state]);
 
-  return active ? <ThemeStyle tokens={config} /> : null;
+  const tokens = useMemo(() => createTheme(config), [config]);
+
+  // Keep the pre-paint copy of this theme (see saveEarlyCss) current for the next visit…
+  useEffect(() => {
+    saveEarlyCss(themeToCss(tokens));
+  }, [tokens]);
+
+  // …and drop it once the live <ThemeStyle> below has taken over. Not before: while
+  // hydrating, `active` still reflects the server's defaults.
+  useEffect(() => {
+    if (active) document.getElementById(EARLY_STYLE_ID)?.remove();
+  }, [active]);
+
+  return active ? <ThemeStyle tokens={tokens} /> : null;
 }
 
 function CustomThemeNotice() {
@@ -405,23 +426,74 @@ function CustomThemeNotice() {
   );
 }
 
+const PAGE_TITLES: Record<string, string> = {
+  "/getting-started": "Getting started",
+  "/theme": "Theme builder",
+  "/components": "Components",
+  "/blocks": "Blocks",
+  "/colors": "Colors",
+  "/typography": "Typography",
+};
+
+/** The <title> for a path; shared with the prerender (playground/entry-server.tsx). */
+export function documentTitle(pathname: string) {
+  const title =
+    PAGE_TITLES[pathname] ??
+    (pathname.startsWith("/components/")
+      ? findComponent(pathname.slice("/components/".length))?.title
+      : undefined);
+  return title ? `${title} — ui` : "ui — React 19 component library";
+}
+
 export function App() {
   const { path } = useRouter();
   const { resolvedTheme } = useTheme();
 
-  // Once the first page is up, quietly fetch the routes people go to next.
+  // Once the first page is fully loaded, quietly fetch the routes people go to next.
+  // requestIdleCallback only waits for the main thread, not the network, so on its own
+  // it fired while the current page's demos were still downloading and the warm-up
+  // (the getting-started page drags in zod, framer-motion and the form components)
+  // competed with them for bandwidth. Instead wait until no new resource has started
+  // for a moment, and skip it entirely on Save-Data / 2G connections.
   useEffect(() => {
+    const connection = (
+      navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }
+    ).connection;
+    if (connection?.saveData || /2g/.test(connection?.effectiveType ?? "")) return;
+
+    let quietTimer: ReturnType<typeof setTimeout> | undefined;
+    let idleId: number | undefined;
+    let observer: PerformanceObserver | undefined;
     const warm = () => {
+      observer?.disconnect();
       void loadComponentPage();
       void loadComponentsIndex();
       void loadGettingStarted();
     };
-    if ("requestIdleCallback" in window) {
-      const id = window.requestIdleCallback(warm, { timeout: 4000 });
-      return () => window.cancelIdleCallback(id);
+    const onQuiet = () => {
+      if ("requestIdleCallback" in window) {
+        idleId = window.requestIdleCallback(warm, { timeout: 4000 });
+      } else {
+        warm();
+      }
+    };
+    const rearm = () => {
+      clearTimeout(quietTimer);
+      quietTimer = setTimeout(onQuiet, 1500);
+    };
+
+    rearm();
+    try {
+      observer = new PerformanceObserver(rearm);
+      observer.observe({ type: "resource" });
+    } catch {
+      // No resource-timing observer (old browsers, test DOMs): the single timer is enough.
     }
-    const timer = setTimeout(warm, 2000);
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(quietTimer);
+      observer?.disconnect();
+      if (idleId !== undefined) window.cancelIdleCallback(idleId);
+    };
   }, []);
 
   // Route change → scroll to top (the router does this on push, but a back/forward
@@ -432,51 +504,45 @@ export function App() {
 
   const pathname = path.split("?")[0];
   let page: ReactNode;
-  let title: string | undefined;
   if (pathname === "/") {
     page = <HomePage />;
   } else if (pathname === "/getting-started") {
     page = <GettingStartedPage />;
-    title = "Getting started";
   } else if (pathname === "/theme") {
     page = <ThemeBuilderPage />;
-    title = "Theme builder";
   } else if (pathname === "/components") {
     page = <ComponentsIndexPage />;
-    title = "Components";
+  } else if (pathname === "/blocks") {
+    page = <BlocksPage />;
   } else if (pathname === "/colors") {
     page = <ColorsPage />;
-    title = "Colors";
   } else if (pathname === "/typography") {
     page = <TypographyPage />;
-    title = "Typography";
   } else if (pathname.startsWith("/components/")) {
-    const id = pathname.slice("/components/".length);
-    page = <ComponentPage id={id} />;
-    title = findComponent(id)?.title;
+    page = <ComponentPage id={pathname.slice("/components/".length)} />;
   } else {
     page = <Navigate to="/" />;
   }
 
   useEffect(() => {
-    document.title = title ? `${title} — ui` : "ui — React 19 component library";
-  }, [title]);
+    document.title = documentTitle(pathname);
+  }, [pathname]);
 
   // The landing page runs full width; every other page reads next to the sidebar.
   const isHome = pathname === "/";
   // Wide pages run without the sidebar.
-  const isWide = isHome || pathname === "/theme";
+  const isWide = isHome || pathname === "/theme" || pathname === "/blocks";
   const { everywhere } = useThemeBuilder();
 
   return (
     <div className="min-h-screen bg-studio text-foreground">
-      <SiteTheme active={pathname === "/theme" || everywhere} />
+      <SiteTheme active={pathname === "/" || pathname === "/theme" || pathname === "/blocks" || everywhere} />
       <Header />
       <CustomThemeNotice />
       <div className="flex">
         {!isWide && <Sidebar />}
         <main className="min-w-0 flex-1 scroll-mt-14 px-6 py-8 outline-hidden md:px-10">
-          <div className={isHome ? "mx-auto max-w-6xl" : isWide ? "mx-auto max-w-7xl" : "mx-auto max-w-4xl"}>
+          <div className={isHome || pathname === "/blocks" ? "mx-auto max-w-6xl" : isWide ? "mx-auto max-w-7xl" : "mx-auto max-w-4xl"}>
             <PageErrorBoundary resetKey={pathname}>
               <Suspense fallback={<div className="min-h-[60vh]" />}>{page}</Suspense>
             </PageErrorBoundary>

@@ -1,6 +1,11 @@
+/*
+ * Series 2 follows the default accent, like createTheme({ accent }) does for any other:
+ * these are exactly the values it generates for DEFAULT_THEME.accent (tests/chart-defaults
+ * checks them), so the default theme, the theme builder's accent swatch and the chart agree.
+ */
 :root {
   --chart-1: var(--color-brand-800);
-  --chart-2: var(--color-blue-900);
+  --chart-2: oklch(0.6 0.2249 284.19);
   --chart-3: var(--color-pink-1000);
   --chart-4: var(--color-violet-900);
   --chart-5: var(--color-tomato-1000);
@@ -9,7 +14,7 @@
   --chart-8: var(--color-purple-1000);
 
   --chart-1-fill: var(--color-brand-500);
-  --chart-2-fill: var(--color-blue-500);
+  --chart-2-fill: oklch(0.86 0.0714 284.19);
   --chart-3-fill: var(--color-pink-500);
   --chart-4-fill: var(--color-violet-500);
   --chart-5-fill: var(--color-tomato-500);
@@ -36,7 +41,8 @@
 
 [data-theme*='dark'] {
   --chart-1: var(--color-brand-900);
-  --chart-2: var(--color-blue-1100);
+  --chart-2: oklch(0.72 0.1513 284.19);
+  --chart-2-fill: oklch(0.38 0.1125 284.19);
   --chart-3: var(--color-pink-1100);
   --chart-4: var(--color-violet-1100);
   --chart-5: var(--color-tomato-1100);

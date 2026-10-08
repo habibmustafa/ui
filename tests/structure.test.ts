@@ -60,6 +60,15 @@ describe('component structure', () => {
     expect(missing).toEqual([])
   })
 
+  test('the README quotes the real component counts', () => {
+    const readme = readFileSync(join(ROOT, 'README.md'), 'utf8')
+    const atoms = atomDirs.length
+    const fragments = fragmentDirs.length
+    expect(readme).toContain(`${atoms} atoms and`)
+    expect(readme).toContain(`**${atoms + fragments} components**: ${atoms} atoms`)
+    expect(readme).toContain(`${fragments} fragments`)
+  })
+
   test('the playground groups each component by its folder', () => {
     const registry = readFileSync(join(ROOT, 'playground/registry.tsx'), 'utf8')
     const ids = (group: string) => {

@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react'
 
 import { cn } from '../../src'
 import { CATALOG, COMPONENT_COUNT } from '../catalog'
+import { ComponentThumbnail } from '../component-thumbnail'
 import { Link, useRouter } from '../router'
 
 /*
@@ -15,6 +16,20 @@ function groupFromPath(path: string) {
   const group = new URLSearchParams(query).get('group')
   return CATALOG.some((g) => g.key === group) ? group : null
 }
+
+/** Examples that read better with a wider cell. */
+const WIDE = new Set([
+  'data-table',
+  'table',
+  'chart',
+  'form-fields',
+  'carousel',
+  'resizable',
+  'sidebar',
+  'code-block',
+  'descriptions',
+  'virtual-list',
+])
 
 const chip =
   'focus-ring inline-flex h-7 cursor-pointer items-center gap-1.5 rounded-full border px-3 text-xs transition-colors'
@@ -125,31 +140,42 @@ export default function ComponentsIndexPage() {
         </div>
       ) : (
         groups.map((group) => (
-          <section key={group.key} aria-labelledby={`group-${group.key}`} className="mb-10">
-            <h2 id={`group-${group.key}`} className="font-mono text-xs uppercase text-foreground-muted">
-              {group.title}
-            </h2>
-            <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {group.entries.map((entry) => {
-                const Icon = entry.icon
-                return (
-                  <Link
-                    key={entry.id}
-                    to={`/components/${entry.id}`}
-                    className="focus-ring group flex gap-3 rounded-md border bg-studio p-4 transition-colors hover:border-foreground-lighter"
-                  >
-                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border bg-surface-100 text-foreground-muted transition-colors group-hover:text-foreground">
-                      <Icon className="h-4 w-4" aria-hidden="true" />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-sm font-medium">{entry.title}</p>
-                      <p className="mt-1 line-clamp-2 text-xs text-foreground-light">
-                        {entry.description}
-                      </p>
-                    </div>
-                  </Link>
-                )
-              })}
+          <section key={group.key} aria-labelledby={`group-${group.key}`} className="mb-12">
+            <div className="flex items-baseline gap-2">
+              <h2 id={`group-${group.key}`} className="text-base font-medium text-foreground">
+                {group.title}
+              </h2>
+              <span aria-hidden="true" className="text-sm tabular-nums text-foreground-muted">
+                {group.entries.length}
+              </span>
+            </div>
+            <div className="mt-4 grid grid-flow-dense gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {group.entries.map((entry) => (
+                // The card is not itself a link: the live example inside can contain links
+                // (a breadcrumb, a text link), and an <a> cannot nest in an <a>. The title is
+                // the link, and its ::after stretches over the whole card.
+                <article
+                  key={entry.id}
+                  className={cn(
+                    'group relative flex flex-col overflow-hidden rounded-lg border bg-studio transition-colors hover:border-foreground-lighter',
+                    'has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-ring has-[a:focus-visible]:ring-offset-2 has-[a:focus-visible]:ring-offset-background',
+                    WIDE.has(entry.id) && 'lg:col-span-2'
+                  )}
+                >
+                  <ComponentThumbnail id={entry.id} name={entry.previews[0].name} />
+                  <div className="p-4">
+                    <h3 className="text-sm font-medium">
+                      <Link
+                        to={`/components/${entry.id}`}
+                        className="outline-hidden after:absolute after:inset-0 after:content-['']"
+                      >
+                        {entry.title}
+                      </Link>
+                    </h3>
+                    <p className="mt-1 line-clamp-2 text-xs text-foreground-light">{entry.description}</p>
+                  </div>
+                </article>
+              ))}
             </div>
           </section>
         ))

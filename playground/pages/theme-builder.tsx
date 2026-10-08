@@ -1,11 +1,18 @@
 import { Check, Download, Link2, Moon, RotateCcw, Sun, Upload } from 'lucide-react'
-import { useEffect, useId, useLayoutEffect, useMemo, useState, type ReactNode } from 'react'
+import {
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useMemo,
+  useState,
+  useSyncExternalStore,
+  type ReactNode,
+} from 'react'
 
 import {
   Badge,
   Button,
   Dialog,
-  Input,
   Label,
   Select,
   Slider,
@@ -18,12 +25,12 @@ import {
   contrastRatio,
   parseColor,
   themeToCss,
-  toHex,
   toast,
   useTheme,
   type ThemeConfig,
 } from '../../src'
 import { CodeSnippet } from '../code-snippet'
+import { ColorField } from '../color-field'
 import {
   DEFAULT_STATE,
   MONO_FONTS,
@@ -59,60 +66,6 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
       <h2 className="font-mono text-xs uppercase text-foreground-muted">{title}</h2>
       {children}
     </section>
-  )
-}
-
-function ColorField({
-  label,
-  description,
-  value,
-  onChange,
-}: {
-  label: string
-  description: string
-  value: string
-  onChange: (value: string) => void
-}) {
-  const id = useId()
-  const [draft, setDraft] = useState(value)
-  const [lastValue, setLastValue] = useState(value)
-  if (value !== lastValue) {
-    setLastValue(value)
-    setDraft(value)
-  }
-  const parsed = parseColor(value)
-  const hex = parsed ? toHex(parsed) : '#000000'
-  const invalid = draft !== value && !parseColor(draft)
-
-  return (
-    <div className="flex flex-col gap-2">
-      <Label htmlFor={`${id}-text`}>{label}</Label>
-      <div className="flex items-center gap-2">
-        <input
-          type="color"
-          aria-label={`${label}: colour picker`}
-          value={hex}
-          onChange={(event) => onChange(event.target.value)}
-          className="h-[34px] w-10 shrink-0 cursor-pointer rounded-md border border-control bg-transparent p-0.5 [&::-webkit-color-swatch]:rounded-sm [&::-webkit-color-swatch]:border-none [&::-webkit-color-swatch-wrapper]:p-0"
-        />
-        <Input
-          id={`${id}-text`}
-          value={draft}
-          aria-invalid={invalid || undefined}
-          aria-describedby={`${id}-hint`}
-          spellCheck={false}
-          onChange={(event) => {
-            setDraft(event.target.value)
-            if (parseColor(event.target.value)) onChange(event.target.value.trim())
-          }}
-          onBlur={() => setDraft(value)}
-          className="font-mono"
-        />
-      </div>
-      <p id={`${id}-hint`} className={cn('text-xs', invalid ? 'text-destructive' : 'text-foreground-lighter')}>
-        {invalid ? 'Unrecognised colour. Use HEX, rgb(), hsl() or oklch().' : description}
-      </p>
-    </div>
   )
 }
 
@@ -418,6 +371,9 @@ function ExportDialog({ state, link }: { state: BuilderState; link: string }) {
 
 /* ------------------------------------------------------------ page */
 
+// window.location.origin never changes; read it only on the client (the page is prerendered).
+const subscribeNever = () => () => {}
+
 export default function ThemeBuilderPage() {
   const { state, everywhere } = useThemeBuilder()
   const { resolvedTheme, setTheme } = useTheme()
@@ -430,7 +386,8 @@ export default function ThemeBuilderPage() {
   }, [])
 
   const query = stateToQuery(state)
-  const link = `${window.location.origin}/theme${query ? `?${query}` : ''}`
+  const origin = useSyncExternalStore(subscribeNever, () => window.location.origin, () => '')
+  const link = `${origin}/theme${query ? `?${query}` : ''}`
 
   // Mirror the state into the URL (replace, so the back button isn't flooded).
   useEffect(() => {
@@ -507,7 +464,7 @@ export default function ThemeBuilderPage() {
         })}
       </div>
 
-      <div className="grid items-start gap-6 lg:grid-cols-[320px_minmax(0,1fr)]">
+      <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[320px_minmax(0,1fr)]">
         <aside
           aria-label="Theme settings"
           className="rounded-lg border bg-surface-75 p-5 lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto"

@@ -24,6 +24,8 @@ const EXPECTED_DIFFERENCES = new Map([
   ['--animate-accordion-up', 'softer motion system: longer, symmetric ease (src/styles/motion.css)'],
   ['--surface-hue', 'a separate input that defaults to --hue, so the theme builder can tint neutrals independently'],
   ['--destructive-lightness', 'dark-mode destructive text raised 0.55 -> 0.62: it measured 3.4:1 on cards, now 4.5:1'],
+  ['--chart-2', 'follows the default accent (violet) like createTheme({ accent }) does, instead of a fixed blue; tests/chart-defaults.test.ts'],
+  ['--chart-2-fill', 'same: the soft fill the generator produces for the default accent'],
 ])
 
 // Only compare declarations from theme blocks. Variables declared inside ordinary

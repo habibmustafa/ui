@@ -191,7 +191,11 @@ function load(): Snapshot {
   return { state: DEFAULT_STATE, everywhere: false }
 }
 
-let snapshot: Snapshot = typeof window === 'undefined' ? { state: DEFAULT_STATE, everywhere: false } : load()
+// What the server renders and what hydration starts from; the stored state takes over right
+// after hydration (see useThemeBuilder).
+const SERVER_SNAPSHOT: Snapshot = { state: DEFAULT_STATE, everywhere: false }
+
+let snapshot: Snapshot = typeof window === 'undefined' ? SERVER_SNAPSHOT : load()
 
 function commit(next: Snapshot) {
   snapshot = next
@@ -218,8 +222,28 @@ export function useThemeBuilder(): Snapshot {
       return () => listeners.delete(listener)
     },
     () => snapshot,
-    () => snapshot
+    () => SERVER_SNAPSHOT
   )
+}
+
+/* ---------------------------------------------------------- early paint */
+
+/*
+ * Prerendered pages come with the default builder theme. To keep a visitor's own theme
+ * from flashing in only after hydration, the CSS it generates is cached here and an
+ * inline script in index.html injects it (as <style id="ui-theme-early">) before first
+ * paint. The live <ThemeStyle> replaces it once the app has hydrated.
+ */
+export const EARLY_CSS_KEY = 'ui-theme-builder-css'
+export const EARLY_STYLE_ID = 'ui-theme-early'
+
+export function saveEarlyCss(css: string) {
+  try {
+    if (css) localStorage.setItem(EARLY_CSS_KEY, css)
+    else localStorage.removeItem(EARLY_CSS_KEY)
+  } catch {
+    // Not cached: the theme then appears at hydration instead of first paint.
+  }
 }
 
 /* ---------------------------------------------------------------- fonts */

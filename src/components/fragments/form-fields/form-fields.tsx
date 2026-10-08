@@ -34,6 +34,7 @@ import { InputOTP } from '../../atoms/forms/input-otp'
 import { NumberInput, type NumberInputProps } from '../../atoms/forms/number-input'
 import { PasswordInput, type PasswordInputProps } from '../../atoms/forms/password-input'
 import { RadioGroup, type RadioOption } from '../../atoms/forms/radio-group'
+import { Rating, type RatingProps } from '../../atoms/forms/rating'
 import { Select, type SelectOption, type SelectOptionGroup } from '../../atoms/forms/select'
 import { Slider, type SliderProps } from '../../atoms/forms/slider'
 import { Switch, type SwitchProps } from '../../atoms/forms/switch'
@@ -41,6 +42,7 @@ import { Textarea, type TextareaProps } from '../../atoms/forms/textarea'
 import { TimePicker, type TimePickerProps } from '../../atoms/forms/time-picker'
 import { Combobox, type ComboboxProps } from '../../atoms/forms/combobox'
 import { DatePicker } from '../../atoms/forms/date-picker'
+import { DateRangePicker, type DateRangePickerProps } from '../../atoms/forms/date-range-picker'
 import { FileUpload, type FileUploadProps } from '../../atoms/forms/file-upload'
 import { FormItemLayout } from '../form-item-layout'
 import { MultiSelector, type MultiSelectorOption, type MultiSelectorProps } from '../../atoms/forms/multi-select'
@@ -345,10 +347,8 @@ export interface FormDatePickerProps extends LayoutProps {
 }
 
 /**
- * Single-date only — react-day-picker's mode: 'range' needs a `selected`/`onSelect`
- * shape RHF's single `field.value`/`field.onChange` doesn't map onto cleanly (a range field
- * would want its own `{ from, to }` value type). Compose a range picker by hand with
- * `DatePicker`'s own `calendarProps` for that case — see date-picker-with-range-props-demo.
+ * Single-date only. For a `{ from, to }` value use `FormDateRangePicker`; to assemble a
+ * range picker by hand see date-picker-with-range-props-demo.
  */
 export function FormDatePicker({
   name,
@@ -380,6 +380,7 @@ export function FormDatePicker({
           <FormControl>
             <DatePicker
               format={format}
+              fieldContainerClassName="w-full"
               minDate={minDate}
               maxDate={maxDate}
               calendarProps={{
@@ -502,6 +503,70 @@ export function FormSlider({ name, ...props }: FormSliderProps) {
               <Slider
                 {...sliderProps}
                 ref={focusDescendant(field.ref, '[role="slider"]')}
+                aria-labelledby={labelId}
+                value={field.value}
+                onValueChange={field.onChange}
+                onBlur={field.onBlur}
+              />
+            )}
+          </LabelledControl>
+        </FormItemLayout>
+      )}
+    />
+  )
+}
+
+export interface FormRatingProps
+  extends Omit<RatingProps, 'name' | 'value' | 'defaultValue' | 'onValueChange' | 'onBlur'>,
+    FieldLayoutProps {
+  name: string
+}
+
+/** Value is the rating as a number (`0` when unrated). */
+export function FormRating({ name, ...props }: FormRatingProps) {
+  const [layoutProps, ratingProps] = splitLayout(props)
+  return (
+    <FormField
+      name={name}
+      render={({ field }) => (
+        <FormItemLayout {...layoutProps}>
+          <LabelledControl labelled={layoutProps.label != null}>
+            {(labelId) => (
+              <Rating
+                {...ratingProps}
+                ref={focusDescendant(field.ref, '[role="radio"]')}
+                aria-labelledby={labelId}
+                value={field.value ?? 0}
+                onValueChange={field.onChange}
+                onBlur={field.onBlur}
+              />
+            )}
+          </LabelledControl>
+        </FormItemLayout>
+      )}
+    />
+  )
+}
+
+export interface FormDateRangePickerProps
+  extends Omit<DateRangePickerProps, 'name' | 'value' | 'defaultValue' | 'onValueChange' | 'onBlur'>,
+    FieldLayoutProps {
+  name: string
+}
+
+/** Value is a `{ from, to }` range, or `undefined` while nothing is picked. */
+export function FormDateRangePicker({ name, ...props }: FormDateRangePickerProps) {
+  const [layoutProps, pickerProps] = splitLayout(props)
+  return (
+    <FormField
+      name={name}
+      render={({ field }) => (
+        <FormItemLayout {...layoutProps}>
+          <LabelledControl labelled={layoutProps.label != null}>
+            {(labelId) => (
+              <DateRangePicker
+                {...pickerProps}
+                ref={field.ref}
                 aria-labelledby={labelId}
                 value={field.value}
                 onValueChange={field.onChange}

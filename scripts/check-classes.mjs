@@ -40,6 +40,26 @@ const NOT_CLASSES = new Set([
   'aria-label=',
   'aria-labelledby',
   'aria-valuetext',
+  // Countdown format string (a prop value), not a class.
+  'mm:ss',
+  // Marquee: CSS keyframe names and a mask-image gradient string, not classes.
+  'linear-gradient(to',
+  'marquee-x',
+  'marquee-y',
+  // Mentions: a CSS value passed through style, not a class.
+  'var(--radix-popover-trigger-width)',
+  // Dashboard block: CSS variables passed to the chart, not classes.
+  'var(--chart-1)',
+  'var(--chart-2)',
+  // Blocks: ids that name a region or field (aria-labelledby / htmlFor), not classes.
+  'api-key-name',
+  'billing-invoices',
+  'billing-plan',
+  'billing-usage',
+  'dash-activity',
+  'dash-revenue',
+  'onboarding-size',
+  'onboarding-workspace',
   // Theme builder preview: an anchor id and Recharts fill values, not classes.
   'theme-preview',
   'var(--color-actual)',

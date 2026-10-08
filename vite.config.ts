@@ -9,6 +9,10 @@ export default defineConfig({
   server: {
     host: "0.0.0.0",
     port: 3000,
+    // Transform the playground's module graph as soon as the server starts instead of on
+    // the first page load. Every library file goes through the React Compiler (babel),
+    // which made the first page after `npm run dev` take ~11s; warmed up, it takes ~2.5s.
+    warmup: { clientFiles: ["./playground/main.tsx"] },
   },
   plugins: [
     react(),

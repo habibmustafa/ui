@@ -65,6 +65,14 @@ import {
   TrendingUp,
   Type,
   Upload,
+  Star,
+  ArrowDownToLine,
+  CheckCircle2,
+  QrCode,
+  AtSign,
+  Gauge,
+  Timer,
+  Image as ImageIcon,
   Copy,
   Megaphone,
   ScrollText,
@@ -104,14 +112,14 @@ export interface ComponentGroup {
   entries: ComponentEntry[]
 }
 
-/* ui-specific additions — not part of the upstream Supabase design system. */
+/* Layout primitives: ours, not part of the upstream Supabase design system. */
 const layoutPrimitives: ComponentEntry[] = [
   {
     id: 'box',
     title: 'Box',
     icon: Box,
     description:
-      'ui-specific primitive: one component that renders any element via `as`, merged through cn().',
+      'Renders any element you choose with `as`, and merges class names for you.',
     previews: [
       { name: 'box-demo' },
     ],
@@ -121,7 +129,7 @@ const layoutPrimitives: ComponentEntry[] = [
     title: 'Container',
     icon: Frame,
     description:
-      'ui-specific primitive: centred, bounded page-width wrapper (sm/md/lg/full).',
+      'Centres content and limits it to a page width: sm, md, lg or full.',
     previews: [
       { name: 'container-demo' },
     ],
@@ -131,7 +139,7 @@ const layoutPrimitives: ComponentEntry[] = [
     title: 'Flex',
     icon: Columns3,
     description:
-      'ui-specific primitive: flex container with direction, align, justify, wrap and token gaps.',
+      'Flex container with direction, alignment, wrapping and token-based gaps.',
     previews: [
       { name: 'flex-demo' },
     ],
@@ -141,7 +149,7 @@ const layoutPrimitives: ComponentEntry[] = [
     title: 'Grid',
     icon: LayoutGrid,
     description:
-      'ui-specific primitive: CSS grid with columns, rows, flow and independent axis gaps.',
+      'CSS grid with columns, rows, flow and separate row and column gaps.',
     previews: [
       { name: 'grid-demo' },
     ],
@@ -151,7 +159,7 @@ const layoutPrimitives: ComponentEntry[] = [
     title: 'Stack',
     icon: Rows3,
     description:
-      'ui-specific primitive: the opinionated 1-dimensional preset of Flex — vertical by default, always gapped.',
+      'Lays children out in one direction with even spacing; vertical by default.',
     previews: [
       { name: 'stack-demo' },
     ],
@@ -374,6 +382,30 @@ const atoms: ComponentEntry[] = [
     ],
   },
   {
+    id: 'carousel',
+    title: 'Carousel',
+    icon: GalleryHorizontal,
+    description: 'Scroll-snap slides with previous/next buttons, dots, looping and autoplay. Dependency-free.',
+    previews: [
+      {
+        name: 'carousel-props-demo',
+        label: 'Default',
+        codeVariants: [
+          { id: 'props', label: 'Props-driven', name: 'carousel-props-demo' },
+          { id: 'compound', label: 'Compound', name: 'carousel-demo' },
+        ],
+      },
+      {
+        name: 'carousel-multiple-props-demo',
+        label: 'Several slides per view',
+        codeVariants: [
+          { id: 'props', label: 'Props-driven', name: 'carousel-multiple-props-demo' },
+          { id: 'compound', label: 'Compound', name: 'carousel-multiple' },
+        ],
+      },
+    ],
+  },
+  {
     id: 'chart',
     title: 'Chart',
     icon: BarChart3,
@@ -399,7 +431,7 @@ const atoms: ComponentEntry[] = [
     title: 'Checkbox',
     icon: CheckSquare,
     description:
-      'Sunk control surface that inverts to the foreground colour when checked.',
+      'Checkbox that fills with the foreground colour when checked.',
     previews: [
       { name: 'checkbox-demo', label: 'Default' },
       { name: 'checkbox-disabled', label: 'Disabled' },
@@ -407,6 +439,13 @@ const atoms: ComponentEntry[] = [
       { name: 'checkbox-form-single', label: 'Form single' },
       { name: 'checkbox-with-text', label: 'With text' },
     ],
+  },
+  {
+    id: 'circular-progress',
+    title: 'Circular Progress',
+    icon: Loader,
+    description: 'Ring-shaped progress with centred content; spins when no value is given.',
+    previews: [{ name: 'circular-progress-demo' }],
   },
   {
     id: 'collapsible',
@@ -490,6 +529,13 @@ const atoms: ComponentEntry[] = [
     previews: [{ name: 'copy-button-demo' }],
   },
   {
+    id: 'countdown',
+    title: 'Countdown',
+    icon: Timer,
+    description: 'Counts down to a deadline using Statistic; formats with D/H/m/s/S tokens and reports when it finishes.',
+    previews: [{ name: 'countdown-demo' }],
+  },
+  {
     id: 'data-input',
     title: 'Data Input',
     icon: Eye,
@@ -508,7 +554,7 @@ const atoms: ComponentEntry[] = [
     title: 'Date Field',
     icon: CalendarDays,
     description:
-      "ui-specific: a single typeable date input with MUI-style segments (day/month/year), not a port. Type digits, use arrow up/down to step a segment, arrow left/right to move between segments, backspace to clear, or paste a full date; optional minDate/maxDate mark aria-invalid without blocking typing. Standalone here — DatePicker composes it with a calendar popover.",
+      'Type a date by day, month and year, step each part with the arrow keys, or paste a full date. minDate and maxDate mark the field invalid without blocking typing. DatePicker adds a calendar popover on top.',
     previews: [{ name: 'date-field-demo' }],
   },
   {
@@ -551,6 +597,21 @@ const atoms: ComponentEntry[] = [
         ],
       },
     ],
+  },
+  {
+    id: 'date-range-picker',
+    title: 'Date Range Picker',
+    icon: CalendarDays,
+    description: 'Pick a from/to range in one line: two months, presets, min/max and a Clear button.',
+    previews: [{ name: 'date-range-picker-demo' }],
+  },
+  {
+    id: 'descriptions',
+    title: 'Descriptions',
+    icon: FileText,
+    description:
+      'Label/value pairs as a definition list: columns, spans, vertical layout and a bordered grid.',
+    previews: [{ name: 'descriptions-demo', label: 'Default' }, { name: 'descriptions-bordered', label: 'Bordered, vertical' }],
   },
   {
     id: 'dialog',
@@ -673,6 +734,13 @@ const atoms: ComponentEntry[] = [
     ],
   },
   {
+    id: 'gauge',
+    title: 'Gauge',
+    icon: Gauge,
+    description: 'A dial for a value in a range: half or open ring, with threshold colours.',
+    previews: [{ name: 'gauge-demo' }],
+  },
+  {
     id: 'hover-card',
     title: 'Hover Card',
     icon: MousePointer,
@@ -688,11 +756,18 @@ const atoms: ComponentEntry[] = [
     ],
   },
   {
+    id: 'image',
+    title: 'Image',
+    icon: ImageIcon,
+    description: 'An img with a loading skeleton, a fallback for failed loads and an optional lightbox preview.',
+    previews: [{ name: 'image-demo' }],
+  },
+  {
     id: 'input',
     title: 'Input',
     icon: TextCursorInput,
     description:
-      'Sunk field surface with the shared size scale and an aria-invalid state; optional prefix/suffix (ui-specific) glue an icon or short label inside the same border.',
+      'Single-line text field with a shared size scale and an invalid state. Optional prefix and suffix place an icon or short label inside the border.',
     previews: [
       { name: 'input-sizes', label: 'Sizes' },
       { name: 'input-states', label: 'States' },
@@ -765,6 +840,14 @@ const atoms: ComponentEntry[] = [
     ],
   },
   {
+    id: 'marquee',
+    title: 'Marquee',
+    icon: MoveHorizontal,
+    description:
+      'An endlessly scrolling strip, horizontal or vertical; pauses on hover and for reduced motion.',
+    previews: [{ name: 'marquee-demo', label: 'Horizontal' }, { name: 'marquee-vertical', label: 'Vertical' }],
+  },
+  {
     id: 'menubar',
     title: 'Menubar',
     icon: Menu,
@@ -779,6 +862,14 @@ const atoms: ComponentEntry[] = [
         ],
       },
     ],
+  },
+  {
+    id: 'mentions',
+    title: 'Mentions',
+    icon: AtSign,
+    description:
+      'A textarea that suggests options after a trigger character such as @; keyboard-driven combobox.',
+    previews: [{ name: 'mentions-demo' }],
   },
   {
     id: 'multi-select',
@@ -966,6 +1057,14 @@ const atoms: ComponentEntry[] = [
     ],
   },
   {
+    id: 'qr-code',
+    title: 'QR Code',
+    icon: QrCode,
+    description:
+      'Dependency-free QR code in SVG: byte mode, four error-correction levels, up to 271 bytes.',
+    previews: [{ name: 'qr-code-demo' }],
+  },
+  {
     id: 'radio-group',
     title: 'Radio Group',
     icon: CircleDot,
@@ -1019,6 +1118,17 @@ const atoms: ComponentEntry[] = [
     ],
   },
   {
+    id: 'rating',
+    title: 'Rating',
+    icon: Star,
+    description: 'Star rating exposed as a radio group; supports half steps, clearing and a read-only display.',
+    previews: [
+      { name: 'rating-demo', label: 'Interactive' },
+      { name: 'rating-half', label: 'Half steps' },
+      { name: 'rating-readonly', label: 'Read-only' },
+    ],
+  },
+  {
     id: 'resizable',
     title: 'Resizable',
     icon: MoveHorizontal,
@@ -1052,6 +1162,14 @@ const atoms: ComponentEntry[] = [
     ],
   },
   {
+    id: 'result',
+    title: 'Result',
+    icon: CheckCircle2,
+    description:
+      'A full-section outcome: status icon, title, description and actions; covers 403, 404 and 500.',
+    previews: [{ name: 'result-demo', label: 'Success' }, { name: 'result-statuses', label: 'Statuses' }],
+  },
+  {
     id: 'scroll-area',
     title: 'Scroll Area',
     icon: ScrollText,
@@ -1060,6 +1178,14 @@ const atoms: ComponentEntry[] = [
       { name: 'scroll-area-demo', label: 'Vertical' },
       { name: 'scroll-area-horizontal', label: 'Horizontal' },
     ],
+  },
+  {
+    id: 'scroll-progress',
+    title: 'Scroll Progress',
+    icon: ArrowDownToLine,
+    description:
+      'A thin bar that fills as the page or a scroll container is scrolled.',
+    previews: [{ name: 'scroll-progress-demo' }],
   },
   {
     id: 'select',
@@ -1219,6 +1345,13 @@ const atoms: ComponentEntry[] = [
     previews: [{ name: 'spinner-demo' }],
   },
   {
+    id: 'statistic',
+    title: 'Statistic',
+    icon: TrendingUp,
+    description: 'A headline number with prefix/suffix, locale formatting and an optional count-up animation.',
+    previews: [{ name: 'statistic-demo' }],
+  },
+  {
     id: 'stepper',
     title: 'Stepper',
     icon: ListOrdered,
@@ -1304,6 +1437,14 @@ const atoms: ComponentEntry[] = [
         ],
       },
     ],
+  },
+  {
+    id: 'table-of-contents',
+    title: 'Table of Contents',
+    icon: AlignLeft,
+    description:
+      'On-this-page navigation with scroll-spy, nested levels and smooth scrolling.',
+    previews: [{ name: 'table-of-contents-demo' }],
   },
   {
     id: 'tabs',
@@ -1398,6 +1539,14 @@ const atoms: ComponentEntry[] = [
       },
     ],
   },
+  {
+    id: 'virtual-list',
+    title: 'Virtual List',
+    icon: Rows3,
+    description:
+      'Renders only the visible rows, so 100,000 items scroll like 20; fixed or per-row heights.',
+    previews: [{ name: 'virtual-list-demo', label: 'Fixed height' }, { name: 'virtual-list-variable', label: 'Variable height' }],
+  },
 ]
 
 const fragments: ComponentEntry[] = [
@@ -1441,7 +1590,7 @@ const fragments: ComponentEntry[] = [
     title: 'Form Fields',
     icon: FileText,
     description:
-      "ui-specific: terser react-hook-form + zod fields (FormInput/FormSelect/FormCheckbox/FormSwitch/FormRadioGroup/FormTextarea/FormDatePicker, plus FormNumberInput/FormPasswordInput/FormCombobox/FormMultiSelect/FormDateField/FormTimePicker/FormSlider/FormToggleGroup/FormInputOTP/FormFileUpload) — each wraps the FormField/FormItem/FormLabel/FormControl/FormMessage ceremony behind a single `name`, so a field is one line instead of a whole render-prop tree. Every field is labelled, marked invalid, focused on a failed submit and touched on blur.",
+      'Short react-hook-form fields: one line per field (FormInput, FormSelect, FormCheckbox, FormDatePicker, FormDateRangePicker, FormRating and more) instead of the whole label, control and message tree. Every field is labelled, marked invalid, focused on a failed submit and touched on blur.',
     previews: [{ name: 'form-fields-demo' }, { name: 'form-fields-advanced-demo' }],
   },
   {

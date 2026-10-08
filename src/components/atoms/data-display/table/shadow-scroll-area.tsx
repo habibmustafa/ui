@@ -54,7 +54,9 @@ const ShadowScrollArea = React.forwardRef<HTMLDivElement, ShadowScrollAreaProps>
         <div
           ref={containerRef}
           className={cn(
-            'w-full overflow-auto',
+            // relative: an absolutely positioned child (an sr-only header) must be clipped by this
+            // scroller, not escape it and widen the page.
+            'relative w-full overflow-auto',
             stickyLastColumn && [
               '[&_tr>*:last-child]:sticky [&_tr>*:last-child]:z-38 [&_tr>*:last-child]:right-0',
               '[&_tr:hover>*:last-child]:bg-transparent',

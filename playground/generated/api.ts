@@ -575,6 +575,284 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       }
     ]
   },
+  "carousel": {
+    "source": "src/components/atoms/data-display/carousel",
+    "components": [
+      {
+        "name": "Carousel",
+        "props": [
+          {
+            "name": "loop",
+            "type": "boolean",
+            "default": "false",
+            "description": "Wraps from the last slide to the first and back."
+          },
+          {
+            "name": "orientation",
+            "type": "\"horizontal\" | \"vertical\"",
+            "default": "\"horizontal\""
+          },
+          {
+            "name": "index",
+            "type": "number",
+            "description": "Current slide (controlled)."
+          },
+          {
+            "name": "defaultIndex",
+            "type": "number",
+            "default": "0"
+          },
+          {
+            "name": "onIndexChange",
+            "type": "((index: number) => void)"
+          },
+          {
+            "name": "slidesPerView",
+            "type": "number",
+            "default": "1",
+            "description": "Slides visible at once."
+          },
+          {
+            "name": "gap",
+            "type": "number",
+            "default": "0",
+            "description": "Space between slides, in px."
+          },
+          {
+            "name": "autoPlay",
+            "type": "number",
+            "description": "Advances every N ms; pauses on hover/focus and for reduced-motion users."
+          },
+          {
+            "name": "items",
+            "type": "readonly ReactNode[]",
+            "description": "One slide per entry."
+          },
+          {
+            "name": "arrows",
+            "type": "false | null",
+            "description": "`null` hides the previous/next buttons."
+          },
+          {
+            "name": "dots",
+            "type": "false | null",
+            "description": "`null` hides the dot indicator."
+          },
+          {
+            "name": "classNames",
+            "type": "{ content?: string; item?: string; dots?: string | undefined; } | undefined"
+          }
+        ],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "CarouselRoot",
+        "alias": "Carousel.Root",
+        "props": [
+          {
+            "name": "index",
+            "type": "number",
+            "description": "Current slide (controlled)."
+          },
+          {
+            "name": "defaultIndex",
+            "type": "number",
+            "default": "0"
+          },
+          {
+            "name": "onIndexChange",
+            "type": "((index: number) => void)"
+          },
+          {
+            "name": "orientation",
+            "type": "\"horizontal\" | \"vertical\"",
+            "default": "horizontal"
+          },
+          {
+            "name": "loop",
+            "type": "boolean",
+            "default": "false",
+            "description": "Wraps from the last slide to the first and back."
+          },
+          {
+            "name": "slidesPerView",
+            "type": "number",
+            "default": "1",
+            "description": "Slides visible at once."
+          },
+          {
+            "name": "gap",
+            "type": "number",
+            "default": "0",
+            "description": "Space between slides, in px."
+          },
+          {
+            "name": "autoPlay",
+            "type": "number",
+            "description": "Advances every N ms; pauses on hover/focus and for reduced-motion users."
+          }
+        ],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "CarouselContent",
+        "alias": "Carousel.Content",
+        "props": [],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "CarouselItem",
+        "alias": "Carousel.Item",
+        "props": [],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "CarouselPrevious",
+        "alias": "Carousel.Previous",
+        "props": [
+          {
+            "name": "variant",
+            "type": "\"primary\" | \"default\" | \"secondary\" | \"outline\" | \"dashed\" | \"link\" | \"text\" | \"danger\" | \"warning\" | null"
+          },
+          {
+            "name": "block",
+            "type": "boolean | null"
+          },
+          {
+            "name": "size",
+            "type": "\"tiny\" | \"small\" | \"medium\" | \"large\" | \"xlarge\" | null"
+          },
+          {
+            "name": "overlay",
+            "type": "\"base\" | \"container\" | null"
+          },
+          {
+            "name": "focusableWhenDisabled",
+            "type": "boolean",
+            "description": "Keeps a disabled button keyboard-focusable by using `aria-disabled`\ninstead of native `disabled`. Use this when the control needs a tooltip\nor other explanation."
+          },
+          {
+            "name": "rounded",
+            "type": "boolean"
+          },
+          {
+            "name": "loading",
+            "type": "boolean | \"default\" | null"
+          },
+          {
+            "name": "asChild",
+            "type": "boolean"
+          },
+          {
+            "name": "icon",
+            "type": "ReactNode"
+          },
+          {
+            "name": "iconLeft",
+            "type": "ReactNode"
+          },
+          {
+            "name": "iconRight",
+            "type": "ReactNode"
+          }
+        ],
+        "extends": [
+          {
+            "name": "ButtonHTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "CarouselNext",
+        "alias": "Carousel.Next",
+        "props": [
+          {
+            "name": "variant",
+            "type": "\"primary\" | \"default\" | \"secondary\" | \"outline\" | \"dashed\" | \"link\" | \"text\" | \"danger\" | \"warning\" | null"
+          },
+          {
+            "name": "block",
+            "type": "boolean | null"
+          },
+          {
+            "name": "size",
+            "type": "\"tiny\" | \"small\" | \"medium\" | \"large\" | \"xlarge\" | null"
+          },
+          {
+            "name": "overlay",
+            "type": "\"base\" | \"container\" | null"
+          },
+          {
+            "name": "focusableWhenDisabled",
+            "type": "boolean",
+            "description": "Keeps a disabled button keyboard-focusable by using `aria-disabled`\ninstead of native `disabled`. Use this when the control needs a tooltip\nor other explanation."
+          },
+          {
+            "name": "rounded",
+            "type": "boolean"
+          },
+          {
+            "name": "loading",
+            "type": "boolean | \"default\" | null"
+          },
+          {
+            "name": "asChild",
+            "type": "boolean"
+          },
+          {
+            "name": "icon",
+            "type": "ReactNode"
+          },
+          {
+            "name": "iconLeft",
+            "type": "ReactNode"
+          },
+          {
+            "name": "iconRight",
+            "type": "ReactNode"
+          }
+        ],
+        "extends": [
+          {
+            "name": "ButtonHTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "CarouselDots",
+        "alias": "Carousel.Dots",
+        "props": [],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      }
+    ]
+  },
   "chart": {
     "source": "src/components/atoms/data-display/chart",
     "components": [
@@ -835,6 +1113,320 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       }
     ]
   },
+  "countdown": {
+    "source": "src/components/atoms/data-display/countdown",
+    "components": [
+      {
+        "name": "Countdown",
+        "props": [
+          {
+            "name": "value",
+            "type": "string | number | Date",
+            "required": true,
+            "description": "The deadline: a Date, a timestamp in ms, or anything `new Date()` accepts."
+          },
+          {
+            "name": "format",
+            "type": "string",
+            "default": "HH:mm:ss",
+            "description": "Tokens: `D` days, `H` hours, `m` minutes, `s` seconds, `S` milliseconds."
+          },
+          {
+            "name": "interval",
+            "type": "number",
+            "description": "Tick length in ms. Defaults to 1000, or 50 when `format` includes `S`."
+          },
+          {
+            "name": "paused",
+            "type": "boolean",
+            "default": "false",
+            "description": "Stops ticking and freezes the display."
+          },
+          {
+            "name": "onFinish",
+            "type": "(() => void)"
+          },
+          {
+            "name": "onChange",
+            "type": "((remaining: number) => void)",
+            "description": "Called on every tick with the remaining ms."
+          },
+          {
+            "name": "getAccessibleLabel",
+            "type": "((remaining: number) => string)",
+            "description": "Replaces the time-left string given to screen readers."
+          },
+          {
+            "name": "size",
+            "type": "\"small\" | \"medium\" | \"large\" | null"
+          },
+          {
+            "name": "loading",
+            "type": "boolean",
+            "default": "false",
+            "description": "Shows a skeleton in place of the value."
+          },
+          {
+            "name": "title",
+            "type": "ReactNode"
+          },
+          {
+            "name": "prefix",
+            "type": "ReactNode"
+          },
+          {
+            "name": "classNames",
+            "type": "{ title?: string; value?: string; prefix?: string | undefined; suffix?: string | undefined; description?: string | undefined; } | undefined"
+          },
+          {
+            "name": "suffix",
+            "type": "ReactNode"
+          },
+          {
+            "name": "description",
+            "type": "ReactNode",
+            "description": "Small line under the value (e.g. a comparison)."
+          }
+        ],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      }
+    ]
+  },
+  "descriptions": {
+    "source": "src/components/atoms/data-display/descriptions",
+    "components": [
+      {
+        "name": "Descriptions",
+        "props": [
+          {
+            "name": "items",
+            "type": "readonly DescriptionsItem[]",
+            "required": true
+          },
+          {
+            "name": "title",
+            "type": "ReactNode"
+          },
+          {
+            "name": "extra",
+            "type": "ReactNode",
+            "description": "Rendered at the right of the title row."
+          },
+          {
+            "name": "columns",
+            "type": "1 | 2 | 3 | 4",
+            "default": "3"
+          },
+          {
+            "name": "layout",
+            "type": "\"horizontal\" | \"vertical\"",
+            "default": "horizontal"
+          },
+          {
+            "name": "bordered",
+            "type": "boolean",
+            "default": "false",
+            "description": "Draws borders around every cell."
+          },
+          {
+            "name": "emptyValue",
+            "type": "ReactNode",
+            "default": "—",
+            "description": "Shown for a missing value."
+          },
+          {
+            "name": "level",
+            "type": "2 | 3 | 4",
+            "default": "3",
+            "description": "Heading level of the title."
+          },
+          {
+            "name": "classNames",
+            "type": "{ title?: string; item?: string; label?: string | undefined; value?: string | undefined; } | undefined"
+          }
+        ],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      }
+    ]
+  },
+  "gauge": {
+    "source": "src/components/atoms/data-display/gauge",
+    "components": [
+      {
+        "name": "Gauge",
+        "props": [
+          {
+            "name": "value",
+            "type": "number",
+            "required": true
+          },
+          {
+            "name": "min",
+            "type": "number",
+            "default": "0"
+          },
+          {
+            "name": "max",
+            "type": "number",
+            "default": "100"
+          },
+          {
+            "name": "angle",
+            "type": "number",
+            "default": "180",
+            "description": "Sweep of the arc in degrees, 90 to 360."
+          },
+          {
+            "name": "size",
+            "type": "number",
+            "default": "160",
+            "description": "Width in px; height follows the arc."
+          },
+          {
+            "name": "thickness",
+            "type": "number",
+            "default": "10",
+            "description": "Stroke width in the 100-unit drawing space."
+          },
+          {
+            "name": "tone",
+            "type": "\"brand\" | \"destructive\" | \"neutral\" | \"success\" | \"warning\"",
+            "default": "brand"
+          },
+          {
+            "name": "thresholds",
+            "type": "readonly GaugeThreshold[]",
+            "description": "Colours by value; overrides `tone`. Order doesn't matter."
+          },
+          {
+            "name": "showValue",
+            "type": "boolean",
+            "default": "true",
+            "description": "Prints the value in the centre."
+          },
+          {
+            "name": "formatValue",
+            "type": "((value: number) => ReactNode)",
+            "description": "Formats the printed value."
+          },
+          {
+            "name": "label",
+            "type": "ReactNode",
+            "description": "Small caption under the value."
+          },
+          {
+            "name": "showRange",
+            "type": "boolean",
+            "default": "false",
+            "description": "Prints `min` and `max` under the arc ends (half circles)."
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "description": "Replaces the centre content."
+          },
+          {
+            "name": "classNames",
+            "type": "{ track?: string; indicator?: string; value?: string | undefined; label?: string | undefined; } | undefined"
+          }
+        ],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      }
+    ]
+  },
+  "image": {
+    "source": "src/components/atoms/data-display/image",
+    "components": [
+      {
+        "name": "Image",
+        "props": [
+          {
+            "name": "src",
+            "type": "string"
+          },
+          {
+            "name": "alt",
+            "type": "string",
+            "required": true,
+            "description": "Required: describes the image, and names the preview button and dialog."
+          },
+          {
+            "name": "fallback",
+            "type": "ReactNode",
+            "description": "Shown instead of the image when it fails to load or `src` is missing."
+          },
+          {
+            "name": "preview",
+            "type": "string | boolean",
+            "default": "false",
+            "description": "Click to open the image in a lightbox. Pass a string to preview a larger file."
+          },
+          {
+            "name": "previewOpen",
+            "type": "boolean",
+            "description": "Controlled lightbox state."
+          },
+          {
+            "name": "onPreviewOpenChange",
+            "type": "((open: boolean) => void)"
+          },
+          {
+            "name": "showSkeleton",
+            "type": "boolean",
+            "default": "true",
+            "description": "Shows a skeleton until the image has loaded."
+          },
+          {
+            "name": "aspectRatio",
+            "type": "string | number",
+            "description": "CSS aspect ratio of the frame, e.g. `16 / 9`."
+          },
+          {
+            "name": "fit",
+            "type": "\"contain\" | \"cover\" | \"fill\" | \"none\"",
+            "default": "cover"
+          },
+          {
+            "name": "radius",
+            "type": "\"full\" | \"lg\" | \"md\" | \"none\" | \"sm\"",
+            "default": "md"
+          },
+          {
+            "name": "wrapperClassName",
+            "type": "string",
+            "description": "Classes for the wrapper; `className` goes on the <img>."
+          },
+          {
+            "name": "closeLabel",
+            "type": "string",
+            "default": "\"Close preview\"",
+            "description": "Label of the lightbox close button."
+          }
+        ],
+        "extends": [
+          {
+            "name": "ImgHTMLAttributes",
+            "package": "react"
+          }
+        ]
+      }
+    ]
+  },
   "kbd": {
     "source": "src/components/atoms/data-display/kbd",
     "components": [
@@ -856,6 +1448,224 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       {
         "name": "KbdGroup",
         "props": [],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      }
+    ]
+  },
+  "marquee": {
+    "source": "src/components/atoms/data-display/marquee",
+    "components": [
+      {
+        "name": "Marquee",
+        "props": [
+          {
+            "name": "duration",
+            "type": "number",
+            "default": "30",
+            "description": "Seconds for one full pass."
+          },
+          {
+            "name": "reverse",
+            "type": "boolean",
+            "default": "false",
+            "description": "Scroll the other way."
+          },
+          {
+            "name": "vertical",
+            "type": "boolean",
+            "default": "false",
+            "description": "Scroll vertically (give the marquee a height)."
+          },
+          {
+            "name": "pauseOnHover",
+            "type": "boolean",
+            "default": "false",
+            "description": "Pauses while hovered or focused."
+          },
+          {
+            "name": "gap",
+            "type": "number",
+            "default": "16",
+            "description": "Gap between items, in px."
+          },
+          {
+            "name": "repeat",
+            "type": "number",
+            "description": "Copies of the content. Defaults to as many as it takes to always fill the box."
+          },
+          {
+            "name": "fade",
+            "type": "boolean",
+            "default": "false",
+            "description": "Fades the edges out."
+          },
+          {
+            "name": "classNames",
+            "type": "{ track?: string; }"
+          }
+        ],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      }
+    ]
+  },
+  "qr-code": {
+    "source": "src/components/atoms/data-display/qr-code",
+    "components": [
+      {
+        "name": "QRCode",
+        "props": [
+          {
+            "name": "value",
+            "type": "string",
+            "required": true,
+            "description": "The text to encode, UTF-8. A URL is the common case."
+          },
+          {
+            "name": "size",
+            "type": "number",
+            "default": "160",
+            "description": "Width and height in px."
+          },
+          {
+            "name": "level",
+            "type": "\"H\" | \"L\" | \"M\" | \"Q\"",
+            "default": "M",
+            "description": "Error correction: L ~7%, M ~15%, Q ~25%, H ~30% of the code can be damaged."
+          },
+          {
+            "name": "margin",
+            "type": "number",
+            "default": "4",
+            "description": "Quiet zone around the code, in modules. Scanners want 4."
+          },
+          {
+            "name": "color",
+            "type": "string",
+            "default": "#000",
+            "description": "Dark module colour."
+          },
+          {
+            "name": "background",
+            "type": "string",
+            "default": "#fff",
+            "description": "Background (and quiet zone) colour."
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "default": "\"QR code\"",
+            "description": "Accessible name."
+          },
+          {
+            "name": "fallback",
+            "type": "ReactNode",
+            "description": "Rendered when `value` is too long to encode."
+          },
+          {
+            "name": "onError",
+            "type": "((error: Error) => void)"
+          }
+        ],
+        "extends": [
+          {
+            "name": "SVGAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "qrCapacity",
+        "description": "How many bytes of text fit at a level (the largest supported version).",
+        "props": [],
+        "extends": [
+          {
+            "name": "String",
+            "package": "typescript"
+          }
+        ]
+      }
+    ]
+  },
+  "statistic": {
+    "source": "src/components/atoms/data-display/statistic",
+    "components": [
+      {
+        "name": "Statistic",
+        "props": [
+          {
+            "name": "title",
+            "type": "ReactNode"
+          },
+          {
+            "name": "value",
+            "type": "string | number",
+            "description": "A number is formatted with `locale`/`precision`; a string is shown as is."
+          },
+          {
+            "name": "precision",
+            "type": "number",
+            "description": "Fraction digits shown for a numeric `value`."
+          },
+          {
+            "name": "locale",
+            "type": "string | string[]",
+            "description": "BCP 47 tag(s) passed to `Intl.NumberFormat`. Defaults to the runtime locale."
+          },
+          {
+            "name": "formatter",
+            "type": "((value: number) => string)",
+            "description": "Replaces the default number formatting. Also used for every animation frame."
+          },
+          {
+            "name": "prefix",
+            "type": "ReactNode"
+          },
+          {
+            "name": "suffix",
+            "type": "ReactNode"
+          },
+          {
+            "name": "description",
+            "type": "ReactNode",
+            "description": "Small line under the value (e.g. a comparison)."
+          },
+          {
+            "name": "animated",
+            "type": "boolean",
+            "default": "false",
+            "description": "Counts up/down to a changed numeric `value`."
+          },
+          {
+            "name": "duration",
+            "type": "number",
+            "default": "800",
+            "description": "Animation length in ms."
+          },
+          {
+            "name": "loading",
+            "type": "boolean",
+            "default": "false",
+            "description": "Shows a skeleton in place of the value."
+          },
+          {
+            "name": "classNames",
+            "type": "{ title?: string; value?: string; prefix?: string | undefined; suffix?: string | undefined; description?: string | undefined; } | undefined"
+          },
+          {
+            "name": "size",
+            "type": "\"small\" | \"medium\" | \"large\" | null"
+          }
+        ],
         "extends": [
           {
             "name": "HTMLAttributes",
@@ -1046,6 +1856,80 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       }
     ]
   },
+  "virtual-list": {
+    "source": "src/components/atoms/data-display/virtual-list",
+    "components": [
+      {
+        "name": "VirtualList",
+        "description": "A plain function component (React 19 passes `ref` as a prop), so it stays generic in `T`.",
+        "props": [
+          {
+            "name": "items",
+            "type": "readonly T[]",
+            "required": true
+          },
+          {
+            "name": "itemHeight",
+            "type": "number | ((index: number) => number)",
+            "required": true,
+            "description": "Row height in px: a number for equal rows, or a function of the index."
+          },
+          {
+            "name": "renderItem",
+            "type": "(item: T, index: number) => ReactNode",
+            "required": true
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "default": "320",
+            "description": "Viewport height in px."
+          },
+          {
+            "name": "overscan",
+            "type": "number",
+            "default": "4",
+            "description": "Extra rows rendered above and below the viewport."
+          },
+          {
+            "name": "getKey",
+            "type": "((item: T, index: number) => Key)",
+            "description": "Stable key per item; defaults to the index."
+          },
+          {
+            "name": "empty",
+            "type": "ReactNode",
+            "description": "Shown when `items` is empty."
+          },
+          {
+            "name": "onEndReached",
+            "type": "(() => void)",
+            "description": "Fires when the user scrolls within `threshold` px of the end (infinite loading)."
+          },
+          {
+            "name": "threshold",
+            "type": "number",
+            "default": "120"
+          },
+          {
+            "name": "classNames",
+            "type": "{ row?: string; }"
+          },
+          {
+            "name": "ref",
+            "type": "Ref<HTMLDivElement>",
+            "description": "Ref to the scroll container."
+          }
+        ],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      }
+    ]
+  },
   "alert": {
     "source": "src/components/atoms/feedback/alert",
     "components": [
@@ -1124,7 +2008,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
         "props": [
           {
             "name": "variant",
-            "type": "\"default\" | \"secondary\" | \"warning\" | \"destructive\" | \"success\" | null",
+            "type": "\"default\" | \"secondary\" | \"warning\" | \"success\" | \"destructive\" | null",
             "default": "default"
           }
         ],
@@ -1188,7 +2072,71 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           },
           {
             "name": "variant",
-            "type": "\"default\" | \"warning\" | \"destructive\" | \"brand\" | null"
+            "type": "\"default\" | \"warning\" | \"brand\" | \"destructive\" | null"
+          }
+        ],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      }
+    ]
+  },
+  "circular-progress": {
+    "source": "src/components/atoms/feedback/circular-progress",
+    "components": [
+      {
+        "name": "CircularProgress",
+        "props": [
+          {
+            "name": "value",
+            "type": "number",
+            "description": "Current value between 0 and `max`. Leave it out for an indeterminate spinner."
+          },
+          {
+            "name": "max",
+            "type": "number",
+            "default": "100"
+          },
+          {
+            "name": "size",
+            "type": "number",
+            "default": "64",
+            "description": "Diameter in px."
+          },
+          {
+            "name": "thickness",
+            "type": "number",
+            "default": "6",
+            "description": "Ring thickness in px."
+          },
+          {
+            "name": "tone",
+            "type": "\"brand\" | \"destructive\" | \"neutral\" | \"success\" | \"warning\"",
+            "default": "brand"
+          },
+          {
+            "name": "showValue",
+            "type": "boolean",
+            "default": "false",
+            "description": "Prints the rounded percentage in the centre."
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "description": "Centre content; replaces `showValue`."
+          },
+          {
+            "name": "rounded",
+            "type": "boolean",
+            "default": "true",
+            "description": "Rounded line ends."
+          },
+          {
+            "name": "classNames",
+            "type": "{ track?: string; indicator?: string; content?: string | undefined; } | undefined"
           }
         ],
         "extends": [
@@ -1211,6 +2159,110 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "name": "ProgressProps",
             "package": "@radix-ui/react-progress"
           },
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      }
+    ]
+  },
+  "result": {
+    "source": "src/components/atoms/feedback/result",
+    "components": [
+      {
+        "name": "Result",
+        "props": [
+          {
+            "name": "status",
+            "type": "\"403\" | \"404\" | \"500\" | \"error\" | \"info\" | \"success\" | \"warning\"",
+            "default": "info"
+          },
+          {
+            "name": "title",
+            "type": "ReactNode",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "ReactNode"
+          },
+          {
+            "name": "icon",
+            "type": "ReactNode",
+            "description": "Replaces the status icon."
+          },
+          {
+            "name": "extra",
+            "type": "ReactNode",
+            "description": "Actions under the text, e.g. buttons."
+          },
+          {
+            "name": "size",
+            "type": "\"large\" | \"medium\" | \"small\"",
+            "default": "medium"
+          },
+          {
+            "name": "level",
+            "type": "1 | 2 | 3 | 4",
+            "default": "2",
+            "description": "Heading level of the title."
+          },
+          {
+            "name": "classNames",
+            "type": "{ icon?: string; title?: string; description?: string | undefined; extra?: string | undefined; } | undefined"
+          }
+        ],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      }
+    ]
+  },
+  "scroll-progress": {
+    "source": "src/components/atoms/feedback/scroll-progress",
+    "components": [
+      {
+        "name": "ScrollProgress",
+        "props": [
+          {
+            "name": "target",
+            "type": "RefObject<HTMLElement | null>",
+            "description": "Scrollable element to follow. Defaults to the window."
+          },
+          {
+            "name": "position",
+            "type": "\"absolute\" | \"fixed\" | \"static\"",
+            "default": "fixed",
+            "description": "`fixed` pins to the viewport; `absolute` to the nearest positioned ancestor."
+          },
+          {
+            "name": "edge",
+            "type": "\"bottom\" | \"top\"",
+            "default": "top",
+            "description": "Edge it sticks to when `fixed` or `absolute`."
+          },
+          {
+            "name": "thickness",
+            "type": "number",
+            "default": "3",
+            "description": "Thickness in px."
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "default": "\"Reading progress\"",
+            "description": "Accessible name."
+          },
+          {
+            "name": "classNames",
+            "type": "{ bar?: string; }"
+          }
+        ],
+        "extends": [
           {
             "name": "HTMLAttributes",
             "package": "react"
@@ -1558,13 +2610,13 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "type": "boolean"
           },
           {
-            "name": "containerClassName",
-            "type": "string"
-          },
-          {
             "name": "suffix",
             "type": "ReactNode",
             "description": "Rendered inside the field's own border, after the value (e.g. a unit or button)."
+          },
+          {
+            "name": "containerClassName",
+            "type": "string"
           },
           {
             "name": "showCopyOnHover",
@@ -1723,6 +2775,11 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "type": "string",
             "default": "'DD.MM.YYYY'",
             "description": "Segment format for the typeable field, single-date mode only."
+          },
+          {
+            "name": "fieldContainerClassName",
+            "type": "string",
+            "description": "Classes for the typeable field's wrapper (single-date mode), e.g. `w-full` inside a form."
           },
           {
             "name": "minDate",
@@ -1915,6 +2972,11 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "name": "isInvalid",
             "type": "boolean",
             "default": "false"
+          },
+          {
+            "name": "containerClassName",
+            "type": "string",
+            "description": "Classes for the wrapper around the field and its buttons, e.g. `w-full`."
           }
         ],
         "extends": []
@@ -1959,6 +3021,99 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       {
         "name": "DatePickerFieldProps",
         "description": "Field-mode trigger for single-date selection: a typeable `DateField` with a\ncalendar-icon button (the actual `PopoverTrigger`) overlaid at its end — MUI's own\n`DatePicker` composition, field + adornment button, rather than a text-label button.",
+        "props": [],
+        "extends": []
+      }
+    ]
+  },
+  "date-range-picker": {
+    "source": "src/components/atoms/forms/date-range-picker",
+    "components": [
+      {
+        "name": "DateRangePicker",
+        "props": [
+          {
+            "name": "value",
+            "type": "DateRange"
+          },
+          {
+            "name": "defaultValue",
+            "type": "DateRange"
+          },
+          {
+            "name": "onValueChange",
+            "type": "((range: DateRange) => void)"
+          },
+          {
+            "name": "placeholder",
+            "type": "ReactNode",
+            "default": "\"Pick a date range\"",
+            "description": "Shown while nothing is selected."
+          },
+          {
+            "name": "format",
+            "type": "string",
+            "default": "MMM DD, YYYY",
+            "description": "dayjs format for the trigger label."
+          },
+          {
+            "name": "numberOfMonths",
+            "type": "number",
+            "default": "2"
+          },
+          {
+            "name": "minDate",
+            "type": "Date",
+            "description": "Dates before this can't be picked."
+          },
+          {
+            "name": "maxDate",
+            "type": "Date",
+            "description": "Dates after this can't be picked."
+          },
+          {
+            "name": "presets",
+            "type": "readonly DateRangePreset[]",
+            "description": "Quick ranges listed above the calendar."
+          },
+          {
+            "name": "clearable",
+            "type": "boolean",
+            "default": "true",
+            "description": "Shows a Clear button in the popover."
+          },
+          {
+            "name": "closeOnComplete",
+            "type": "boolean",
+            "default": "true",
+            "description": "Closes the popover once both ends are chosen."
+          },
+          {
+            "name": "aria-invalid",
+            "type": "boolean | \"true\" | \"false\"",
+            "description": "Marks the trigger invalid."
+          },
+          {
+            "name": "contentClassName",
+            "type": "string"
+          },
+          {
+            "name": "clearLabel",
+            "type": "string",
+            "default": "\"Clear\"",
+            "description": "Label of the Clear button."
+          }
+        ],
+        "extends": [
+          {
+            "name": "ButtonHTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "DateRange",
+        "description": "A range of dates. Unlike {@link DateInterval}, the range ends are included.",
         "props": [],
         "extends": []
       }
@@ -2333,6 +3488,72 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
         "extends": [
           {
             "name": "LabelHTMLAttributes",
+            "package": "react"
+          }
+        ]
+      }
+    ]
+  },
+  "mentions": {
+    "source": "src/components/atoms/forms/mentions",
+    "components": [
+      {
+        "name": "Mentions",
+        "props": [
+          {
+            "name": "options",
+            "type": "readonly MentionOption[]",
+            "required": true
+          },
+          {
+            "name": "value",
+            "type": "string"
+          },
+          {
+            "name": "defaultValue",
+            "type": "string",
+            "default": ""
+          },
+          {
+            "name": "onValueChange",
+            "type": "((value: string) => void)"
+          },
+          {
+            "name": "prefix",
+            "type": "string | readonly string[]",
+            "default": "@",
+            "description": "Trigger character(s)."
+          },
+          {
+            "name": "separator",
+            "type": "string",
+            "default": "",
+            "description": "Text inserted after the mention."
+          },
+          {
+            "name": "filterOption",
+            "type": "((query: string, option: MentionOption, prefix: string) => boolean)",
+            "description": "Custom matching; the default is a case-insensitive \"contains\" on value and label text."
+          },
+          {
+            "name": "onSelect",
+            "type": "((option: MentionOption, prefix: string) => void)"
+          },
+          {
+            "name": "notFoundContent",
+            "type": "ReactNode",
+            "default": "\"No matches\"",
+            "description": "Shown when nothing matches."
+          },
+          {
+            "name": "containerClassName",
+            "type": "string",
+            "description": "Classes for the wrapper; `className` goes to the textarea."
+          }
+        ],
+        "extends": [
+          {
+            "name": "TextareaHTMLAttributes",
             "package": "react"
           }
         ]
@@ -3101,6 +4322,91 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           },
           {
             "name": "ButtonHTMLAttributes",
+            "package": "react"
+          }
+        ]
+      }
+    ]
+  },
+  "rating": {
+    "source": "src/components/atoms/forms/rating",
+    "components": [
+      {
+        "name": "Rating",
+        "props": [
+          {
+            "name": "value",
+            "type": "number"
+          },
+          {
+            "name": "defaultValue",
+            "type": "number",
+            "default": "0"
+          },
+          {
+            "name": "onValueChange",
+            "type": "((value: number) => void)"
+          },
+          {
+            "name": "max",
+            "type": "number",
+            "default": "5",
+            "description": "Number of stars."
+          },
+          {
+            "name": "allowHalf",
+            "type": "boolean",
+            "default": "false",
+            "description": "Allows half-star values (0.5 steps)."
+          },
+          {
+            "name": "allowClear",
+            "type": "boolean",
+            "default": "false",
+            "description": "Clicking the current value again resets it to 0."
+          },
+          {
+            "name": "readOnly",
+            "type": "boolean",
+            "default": "false",
+            "description": "Static display: not focusable, not clickable."
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "default": "false"
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "description": "Form field name; renders a hidden input with the value."
+          },
+          {
+            "name": "onBlur",
+            "type": "FocusEventHandler<HTMLDivElement>"
+          },
+          {
+            "name": "getValueText",
+            "type": "((value: number, max: number) => string)",
+            "description": "Accessible text for a value, e.g. `(v, max) => v + \" of \" + max`."
+          },
+          {
+            "name": "renderIcon",
+            "type": "((props: { filled: boolean; className: string; }) => ReactNode)",
+            "description": "Custom icon; receives the className that sizes and colours it."
+          },
+          {
+            "name": "classNames",
+            "type": "{ item?: string; icon?: string; } | undefined"
+          },
+          {
+            "name": "size",
+            "type": "\"small\" | \"medium\" | \"large\" | null"
+          }
+        ],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
             "package": "react"
           }
         ]
@@ -5847,6 +7153,66 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       }
     ]
   },
+  "table-of-contents": {
+    "source": "src/components/atoms/navigation/table-of-contents",
+    "components": [
+      {
+        "name": "TableOfContents",
+        "props": [
+          {
+            "name": "items",
+            "type": "readonly TableOfContentsItem[]",
+            "required": true
+          },
+          {
+            "name": "activeId",
+            "type": "string",
+            "description": "Active id (controlled)."
+          },
+          {
+            "name": "defaultActiveId",
+            "type": "string"
+          },
+          {
+            "name": "onActiveChange",
+            "type": "((id: string) => void)"
+          },
+          {
+            "name": "offset",
+            "type": "number",
+            "default": "0",
+            "description": "Distance in px from the top of the scroll area at which a heading counts as reached."
+          },
+          {
+            "name": "scrollRoot",
+            "type": "HTMLElement | null",
+            "description": "Scroll container to watch instead of the window."
+          },
+          {
+            "name": "updateHash",
+            "type": "boolean",
+            "default": "true",
+            "description": "Writes `#id` to the URL when a link is clicked."
+          },
+          {
+            "name": "title",
+            "type": "ReactNode",
+            "description": "Heading above the list."
+          },
+          {
+            "name": "classNames",
+            "type": "{ title?: string; list?: string; link?: string | undefined; } | undefined"
+          }
+        ],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      }
+    ]
+  },
   "tabs": {
     "source": "src/components/atoms/navigation/tabs",
     "components": [
@@ -7591,7 +8957,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           },
           {
             "name": "size",
-            "type": "\"default\" | \"content\" | \"sm\" | \"lg\" | \"xl\" | \"full\" | \"xxl\" | null",
+            "type": "\"default\" | \"content\" | \"sm\" | \"lg\" | \"full\" | \"xl\" | \"xxl\" | null",
             "default": "\"default\"",
             "description": "Sheet width/height."
           },
@@ -7648,7 +9014,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           },
           {
             "name": "size",
-            "type": "\"default\" | \"content\" | \"sm\" | \"lg\" | \"xl\" | \"full\" | \"xxl\" | null"
+            "type": "\"default\" | \"content\" | \"sm\" | \"lg\" | \"full\" | \"xl\" | \"xxl\" | null"
           },
           {
             "name": "side",
@@ -8602,7 +9968,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       },
       {
         "name": "FormDatePicker",
-        "description": "Single-date only — react-day-picker's mode: 'range' needs a `selected`/`onSelect`\nshape RHF's single `field.value`/`field.onChange` doesn't map onto cleanly (a range field\nwould want its own `{ from, to }` value type). Compose a range picker by hand with\n`DatePicker`'s own `calendarProps` for that case — see date-picker-with-range-props-demo.",
+        "description": "Single-date only. For a `{ from, to }` value use `FormDateRangePicker`; to assemble a\nrange picker by hand see date-picker-with-range-props-demo.",
         "props": [
           {
             "name": "name",
@@ -8976,6 +10342,193 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           },
           {
             "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "FormRating",
+        "description": "Value is the rating as a number (`0` when unrated).",
+        "props": [
+          {
+            "name": "name",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "size",
+            "type": "\"small\" | \"medium\" | \"large\" | null"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean"
+          },
+          {
+            "name": "classNames",
+            "type": "{ item?: string; icon?: string; } | undefined"
+          },
+          {
+            "name": "max",
+            "type": "number",
+            "default": "5",
+            "description": "Number of stars."
+          },
+          {
+            "name": "readOnly",
+            "type": "boolean",
+            "default": "false",
+            "description": "Static display: not focusable, not clickable."
+          },
+          {
+            "name": "allowHalf",
+            "type": "boolean",
+            "default": "false",
+            "description": "Allows half-star values (0.5 steps)."
+          },
+          {
+            "name": "allowClear",
+            "type": "boolean",
+            "default": "false",
+            "description": "Clicking the current value again resets it to 0."
+          },
+          {
+            "name": "getValueText",
+            "type": "((value: number, max: number) => string)",
+            "description": "Accessible text for a value, e.g. `(v, max) => v + \" of \" + max`."
+          },
+          {
+            "name": "renderIcon",
+            "type": "((props: { filled: boolean; className: string; }) => ReactNode)",
+            "description": "Custom icon; receives the className that sizes and colours it."
+          },
+          {
+            "name": "label",
+            "type": "ReactNode"
+          },
+          {
+            "name": "layout",
+            "type": "\"flex-row-reverse\" | \"flex\" | \"horizontal\" | \"vertical\""
+          },
+          {
+            "name": "align",
+            "type": "\"left\" | \"right\""
+          },
+          {
+            "name": "description",
+            "type": "ReactNode"
+          },
+          {
+            "name": "labelOptional",
+            "type": "ReactNode"
+          },
+          {
+            "name": "labelLayout",
+            "type": "\"horizontal\" | \"vertical\""
+          }
+        ],
+        "extends": [
+          {
+            "name": "HTMLAttributes",
+            "package": "react"
+          }
+        ]
+      },
+      {
+        "name": "FormDateRangePicker",
+        "description": "Value is a `{ from, to }` range, or `undefined` while nothing is picked.",
+        "props": [
+          {
+            "name": "name",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "aria-invalid",
+            "type": "boolean | \"true\" | \"false\"",
+            "description": "Marks the trigger invalid."
+          },
+          {
+            "name": "format",
+            "type": "string",
+            "default": "\"MMM DD, YYYY\"",
+            "description": "dayjs format for the trigger label."
+          },
+          {
+            "name": "placeholder",
+            "type": "ReactNode",
+            "default": "\"Pick a date range\"",
+            "description": "Shown while nothing is selected."
+          },
+          {
+            "name": "clearable",
+            "type": "boolean",
+            "default": "true",
+            "description": "Shows a Clear button in the popover."
+          },
+          {
+            "name": "minDate",
+            "type": "Date",
+            "description": "Dates before this can't be picked."
+          },
+          {
+            "name": "maxDate",
+            "type": "Date",
+            "description": "Dates after this can't be picked."
+          },
+          {
+            "name": "contentClassName",
+            "type": "string"
+          },
+          {
+            "name": "numberOfMonths",
+            "type": "number",
+            "default": "2"
+          },
+          {
+            "name": "presets",
+            "type": "readonly DateRangePreset[]",
+            "description": "Quick ranges listed above the calendar."
+          },
+          {
+            "name": "closeOnComplete",
+            "type": "boolean",
+            "default": "true",
+            "description": "Closes the popover once both ends are chosen."
+          },
+          {
+            "name": "clearLabel",
+            "type": "string",
+            "default": "\"Clear\"",
+            "description": "Label of the Clear button."
+          },
+          {
+            "name": "label",
+            "type": "ReactNode"
+          },
+          {
+            "name": "layout",
+            "type": "\"flex-row-reverse\" | \"flex\" | \"horizontal\" | \"vertical\""
+          },
+          {
+            "name": "align",
+            "type": "\"left\" | \"right\""
+          },
+          {
+            "name": "description",
+            "type": "ReactNode"
+          },
+          {
+            "name": "labelOptional",
+            "type": "ReactNode"
+          },
+          {
+            "name": "labelLayout",
+            "type": "\"horizontal\" | \"vertical\""
+          }
+        ],
+        "extends": [
+          {
+            "name": "ButtonHTMLAttributes",
             "package": "react"
           }
         ]
@@ -9424,6 +10977,11 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "type": "FileUploadClassNames"
           },
           {
+            "name": "description",
+            "type": "ReactNode",
+            "description": "Smaller text under the label, e.g. accepted types and limits."
+          },
+          {
             "name": "accept",
             "type": "string",
             "description": "Same syntax as <input accept>: \".pdf,image/*\"."
@@ -9441,11 +10999,6 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "maxFiles",
             "type": "number"
-          },
-          {
-            "name": "description",
-            "type": "ReactNode",
-            "description": "Smaller text under the label, e.g. accepted types and limits."
           },
           {
             "name": "browseText",
