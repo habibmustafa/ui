@@ -53,6 +53,12 @@ const NOT_CLASSES = new Set([
   'var(--chart-2)',
   // Blocks: ids that name a region or field (aria-labelledby / htmlFor), not classes.
   'account-email',
+  'contact-message',
+  'notify-quiet',
+  'project-mode',
+  'project-region',
+  'billing-api',
+  'at:desc',
   'help-contact',
   'product-size',
   'security-2fa-label',
