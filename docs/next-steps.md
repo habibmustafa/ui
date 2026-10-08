@@ -13,7 +13,7 @@ Branch: `release/0.4.0`. Bitmiş mərhələlər (hamısı commit olunub):
 | A. Düzəlişlər | Mobil daşma, 44 px toxunma hədəfi, `LocaleProvider`, README sayları, mətn düzəlişləri |
 | B. Hero | Landing-də canlı tema aləti (rəng, hue, presetlər, ölçülmüş kontrast, real komponentlər) |
 | C. Qalereya | `/components` səhifəsində 98 canlı, qeyri-interaktiv kiçik önizləmə |
-| E. Blocks | `/blocks`: 12 hazır ekran, hər biri Preview və Code ilə |
+| E. Blocks | `/blocks`: 30 hazır ekran (Authentication, Application, Data, Commerce, Marketing kateqoriyaları), hər biri Preview və Code ilə |
 | Əlavə | Defolt qrafik rəngi aksentə bağlandı, Date/Time ikonları eynilədi, bir neçə kitabxana düzəlişi |
 
 Qalan iki iş **D** və **F**-dir. Biri digərindən asılı deyil. Tövsiyə olunan sıra: D, sonra F.

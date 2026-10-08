@@ -1,7 +1,7 @@
 import { Suspense, lazy, useEffect, useState, type ComponentType, type LazyExoticComponent } from 'react'
 
 import { Skeleton, Tabs, cn } from '../../src'
-import { BLOCKS, type BlockMeta } from '../blocks/registry'
+import { BLOCKS, BLOCK_CATEGORIES, type BlockCategory, type BlockMeta } from '../blocks/registry'
 import { CodeSnippet } from '../code-snippet'
 import { useNearViewport } from '../component-preview'
 import { findComponent } from '../registry'
@@ -51,11 +51,16 @@ function BlockCode({ id }: { id: string }) {
 
 function Stage({ Block, near }: { Block: ComponentType; near: boolean }) {
   return (
-    <div className="flex min-h-80 w-full justify-center rounded-lg border bg-studio p-5 sm:p-10">
+    <div className="relative flex min-h-80 w-full items-center justify-center overflow-hidden rounded-lg border bg-studio p-4 sm:p-10">
+      {/* A faint dot grid so each screen reads as a surface lifted off a canvas. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(oklch(from_var(--foreground-default)_l_c_h_/_0.09)_1px,transparent_1px)] bg-size-[18px_18px] mask-[radial-gradient(ellipse_90%_90%_at_50%_50%,#000_45%,transparent_100%)]"
+      />
       {near ? (
         <Suspense fallback={<Skeleton className="h-64 w-full max-w-md" />}>
           {/* min-w-0: a flex item never shrinks below its content (a table) otherwise. */}
-          <div className="flex min-w-0 flex-1 justify-center">
+          <div className="relative flex min-w-0 flex-1 justify-center">
             <Block />
           </div>
         </Suspense>
@@ -102,6 +107,11 @@ function BlockSection({ block }: { block: BlockMeta }) {
 }
 
 export default function BlocksPage() {
+  const [category, setCategory] = useState<BlockCategory | 'All'>('All')
+  const shown = category === 'All' ? BLOCKS : BLOCKS.filter((block) => block.category === category)
+  const countOf = (name: BlockCategory | 'All') =>
+    name === 'All' ? BLOCKS.length : BLOCKS.filter((block) => block.category === name).length
+
   return (
     <div>
       <h1 className={cn('max-w-2xl text-balance text-4xl font-bold leading-[1.05] text-foreground sm:text-5xl', DISPLAY)}>
@@ -111,8 +121,29 @@ export default function BlocksPage() {
         {BLOCKS.length} screens built only from the library. Each one is real code that follows your theme, in light
         and dark.
       </p>
-      <nav aria-label="Blocks" className="mt-6 flex flex-wrap gap-1.5">
-        {BLOCKS.map((block) => (
+
+      <div role="group" aria-label="Filter by kind" className="mt-6 flex flex-wrap gap-1.5">
+        {(['All', ...BLOCK_CATEGORIES] as const).map((name) => (
+          <button
+            key={name}
+            type="button"
+            aria-pressed={category === name}
+            onClick={() => setCategory(name)}
+            className={cn(
+              'focus-ring inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-full border px-3.5 text-sm transition-colors',
+              category === name
+                ? 'border-foreground bg-foreground text-background'
+                : 'border-default text-foreground-light hover:border-foreground-muted hover:text-foreground'
+            )}
+          >
+            {name}
+            <span className="text-xs tabular-nums opacity-70">{countOf(name)}</span>
+          </button>
+        ))}
+      </div>
+
+      <nav aria-label="Blocks" className="mt-4 flex flex-wrap gap-1.5">
+        {shown.map((block) => (
           <a
             key={block.id}
             href={`#${block.id}`}
@@ -123,7 +154,7 @@ export default function BlocksPage() {
         ))}
       </nav>
       <div className="mt-4 divide-y">
-        {BLOCKS.map((block) => (
+        {shown.map((block) => (
           <BlockSection key={block.id} block={block} />
         ))}
       </div>

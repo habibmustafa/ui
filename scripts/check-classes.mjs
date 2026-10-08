@@ -52,8 +52,24 @@ const NOT_CLASSES = new Set([
   'var(--chart-1)',
   'var(--chart-2)',
   // Blocks: ids that name a region or field (aria-labelledby / htmlFor), not classes.
+  'account-email',
+  'help-contact',
+  'product-size',
+  'security-2fa-label',
+  'security-danger',
+  'security-sessions',
+  'security-signin',
+  'share-access',
+  'share-link',
+  'survey-comment',
+  'sign-in',
+  'account-profile',
   'api-key-name',
   'billing-invoices',
+  'checkout-contact',
+  'checkout-delivery',
+  'checkout-payment',
+  'checkout-summary',
   'billing-plan',
   'billing-usage',
   'dash-activity',
@@ -66,7 +82,10 @@ const NOT_CLASSES = new Set([
   'var(--color-plan)',
   // DataTable demo: a `"<column>:<direction>"` sort string, not a variant-prefixed class.
   'name:asc',
-  // PasswordInput: autocomplete tokens, not classes.
+  // PasswordInput and the checkout block: autocomplete tokens, not classes.
+  'address-level2',
+  'postal-code',
+  'street-address',
   'current-password',
   'new-password',
   // DropdownMenu checkbox demo: MenuItem `key` values, not classes.
@@ -116,6 +135,7 @@ const NOT_CLASSES = new Set([
   // system bundle (Studio-dashboard-only styling, out of reach for this port).
   'border-surface',
   'code-block',
+  'language-json',
   'language-pgsql',
   'var(--background-selection)',
   // TimestampInfo/StatusCode: same category as font-italic/border-surface above — upstream
