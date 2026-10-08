@@ -114,6 +114,8 @@ command = "npm run build:playground"
 [assets]
 directory = "./playground-dist"
 not_found_handling = "404-page"
+
+[previews]
 ```
 
 - `[build].command` — Cloudflare runs this itself and creates the `playground-dist/`
@@ -131,6 +133,9 @@ not_found_handling = "404-page"
   for this specific project, Cloudflare's internal `_redirects` validator rejects it as an "infinite
   loop" (see §5, "Known issues"). `"404-page"` + `404.html` (the unrendered app
   shell, written by `scripts/prerender.mjs`) is the replacement for it.
+- `[previews]` — builds of branches other than `main` (e.g. a PR) deploy with
+  `npx wrangler preview`, which fails with "missing a `previews` block" without it.
+  It stays empty; assets and compatibility settings are read from the top level.
 - `public/_headers` — content-hashed `/assets/*` and the versioned `/fonts/*` are cached
   for a year (`immutable`); HTML keeps Cloudflare's default (revalidated on every
   visit), so a deploy shows up immediately.

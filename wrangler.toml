@@ -10,7 +10,13 @@ directory = "./playground-dist"
 # from Cloudflare's _redirects validator for this project (code 100324) even
 # with no _redirects file in the upload -- it seems to come from Cloudflare's
 # own internal translation of that setting, not anything we control. "404-page"
-# sidesteps it: build:playground copies index.html to 404.html, so any
-# unmatched path still serves the app shell (client router takes over from
-# window.location.pathname), just with a 404 status instead of 200.
+# sidesteps it: scripts/prerender.mjs (run by build:playground) writes the empty
+# app shell to 404.html, so any path without a prerendered page still serves the
+# app (client router takes over from window.location.pathname), just with a 404
+# status instead of 200.
 not_found_handling = "404-page"
+
+# Builds of branches other than main deploy with `npx wrangler preview`, which
+# refuses to run without this block. It can stay empty: assets and compatibility
+# settings are read from the top level.
+[previews]
