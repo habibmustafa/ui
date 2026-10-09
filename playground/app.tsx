@@ -22,7 +22,9 @@ import { Preview, Swatch } from "./docs";
 import { GithubIcon } from "./icons";
 import { PageErrorBoundary } from "./page-error-boundary";
 import {
-  setApplyEverywhere,
+  DEFAULT_STATE,
+  setBuilderState,
+  stateToQuery,
   useThemeBuilder,
 } from "./theme-store";
 import { Link, Navigate, setPrefetcher, useRouter } from "./router";
@@ -449,26 +451,27 @@ function TypographyPage() {
 }
 
 /**
- * The theme builder's tokens, rendered with the library's own <ThemeStyle>: always on
- * /theme, on the landing page (whose hero edits them) and on /blocks, and on every page
- * once "apply everywhere" is switched on.
+ * The theme picked on the landing page or in the builder styles every page. Away from
+ * those two editors, a bar says so and offers the way back to the default look.
  */
 function CustomThemeNotice() {
-  const { everywhere } = useThemeBuilder();
+  const { state } = useThemeBuilder();
   const { path } = useRouter();
-  if (!everywhere || path.split("?")[0] === "/theme") return null;
+  const pathname = path.split("?")[0];
+  // stateToQuery lists only what differs from the default, so empty means "default".
+  if (!stateToQuery(state) || pathname === "/" || pathname === "/theme") return null;
   return (
     <div className="flex items-center justify-center gap-3 border-b bg-surface-100 px-6 py-1.5 text-xs text-foreground-light">
-      <span>Your theme from the theme builder is applied.</span>
+      <span>Your theme is applied.</span>
       <Link to="/theme" className="focus-ring rounded-xs text-foreground underline underline-offset-2">
         Edit
       </Link>
       <button
         type="button"
-        onClick={() => setApplyEverywhere(false)}
+        onClick={() => setBuilderState(DEFAULT_STATE)}
         className="focus-ring cursor-pointer rounded-xs text-foreground underline underline-offset-2"
       >
-        Turn off
+        Reset
       </button>
     </div>
   );
@@ -562,12 +565,11 @@ export function App() {
   // Wide pages run without the sidebar.
   const isBlocks = pathname === "/blocks" || pathname.startsWith("/blocks/");
   const isWide = isHome || pathname === "/theme" || isBlocks;
-  const { everywhere } = useThemeBuilder();
   const blockPreview = pathname === '/blocks' ? new URLSearchParams(path.split('?')[1]).get('preview') : null;
 
   if (blockPreview) {
     return <>
-      <SiteTheme active />
+      <SiteTheme />
       <PageErrorBoundary resetKey={blockPreview}>
         <Suspense fallback={<div className="min-h-screen bg-background" />}><BlockPreviewPage id={blockPreview} /></Suspense>
       </PageErrorBoundary>
@@ -577,7 +579,7 @@ export function App() {
 
   return (
     <div className="min-h-screen bg-studio text-foreground">
-      <SiteTheme active={pathname === "/" || pathname === "/theme" || isBlocks || everywhere} />
+      <SiteTheme />
       <Header />
       <CustomThemeNotice />
       <div className="mx-auto flex max-w-[1600px]">

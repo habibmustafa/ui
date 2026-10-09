@@ -1,7 +1,7 @@
 import { ArrowRight, Check, ChevronDown, Layers, RotateCcw, SlidersHorizontal } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
-import { Avatar, Badge, Button, Checkbox, Label, Progress, Slider, Tabs, THEME_PRESETS, cn, parseColor, toHex, useTheme } from '../../src'
+import { Avatar, Badge, Button, Checkbox, Label, Progress, Select, Slider, Tabs, THEME_PRESETS, cn, parseColor, toHex, useTheme } from '../../src'
 import { COMPONENT_COUNT } from '../catalog'
 import { ColorField } from '../color-field'
 import { DISPLAY } from '../design'
@@ -129,6 +129,11 @@ const ACTIVITY = [
   { initials: 'JL', title: 'Jordan shared a new prototype', time: '2 hours ago' },
 ]
 
+const PERIODS = [
+  { value: 'week', label: 'This week' },
+  { value: 'previous', label: 'Last week' },
+]
+
 function Specimen() {
   const [completed, setCompleted] = useState([true, true, false])
   const [period, setPeriod] = useState('week')
@@ -172,10 +177,7 @@ function Specimen() {
             <figure className="mt-6 rounded-lg border bg-surface-75 p-4">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <figcaption className="text-xs font-medium">Completed tasks</figcaption>
-                <select aria-label="Activity period" value={period} onChange={(event) => setPeriod(event.target.value)} className="focus-ring rounded-md border bg-background py-1 pl-2 pr-7 text-xs text-foreground-light">
-                  <option value="week">This week</option>
-                  <option value="previous">Last week</option>
-                </select>
+                <Select size="tiny" aria-label="Activity period" value={period} onValueChange={setPeriod} options={PERIODS} className="w-auto min-w-24 text-foreground-light" />
               </div>
               <div className="mt-4 grid h-28 grid-cols-7 items-end gap-3" role="img" aria-label={'Completed tasks, Monday to Sunday: ' + bars.join(', ')}>
                 {bars.map((value, index) => (

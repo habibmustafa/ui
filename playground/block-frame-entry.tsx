@@ -10,7 +10,7 @@ const id = new URLSearchParams(window.location.search).get('preview') ?? ''
 function Frame() {
   const { resolvedTheme } = useTheme()
   return <>
-    <SiteTheme active />
+    <SiteTheme />
     <PageErrorBoundary resetKey={id}><BlockPreviewPage id={id} /></PageErrorBoundary>
     <SonnerToaster theme={resolvedTheme} />
   </>

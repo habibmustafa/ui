@@ -117,9 +117,7 @@ export function ComponentPlayground({ id }: { id: string }) {
           <PreviewSurface onReset={() => { setValues(definition.initial); setRevision((value) => value + 1) }} controls={<>
             {definition.choices?.map((choice) => <label key={choice.prop} className="flex items-center gap-2 text-xs text-foreground-light">
               {choice.label}
-              <select aria-label={choice.label} value={str(values, choice.prop)} onChange={(event) => update(choice.prop, event.target.value)} className="focus-ring h-8 rounded-md border bg-background py-1 pl-2 pr-7 text-xs text-foreground">
-                {choice.options.map((option) => <option key={option} value={option}>{option}</option>)}
-              </select>
+              <Select size="tiny" aria-label={choice.label} value={str(values, choice.prop)} onValueChange={(value) => update(choice.prop, value)} options={choice.options.map((option) => ({ value: option, label: option }))} className="w-auto min-w-24 text-foreground" />
             </label>)}
             {definition.flags?.map((field) => <label key={field.prop} className="flex cursor-pointer items-center gap-2 py-1 text-xs text-foreground-light"><Checkbox checked={flag(values, field.prop)} onCheckedChange={(value) => update(field.prop, value === true)} />{field.label}</label>)}
           </>}>

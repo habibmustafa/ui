@@ -39,7 +39,6 @@ import {
   fromConfig,
   monoFont,
   sansFont,
-  setApplyEverywhere,
   setBuilderState,
   stateFromQuery,
   stateToQuery,
@@ -376,9 +375,9 @@ function ExportDialog({ state, link }: { state: BuilderState; link: string }) {
 const subscribeNever = () => () => {}
 
 export default function ThemeBuilderPage() {
-  const { state, everywhere } = useThemeBuilder()
+  const { state } = useThemeBuilder()
   const { resolvedTheme, setTheme } = useTheme()
-  const everywhereId = useId()
+  const fieldId = useId()
 
   // A shared link wins over what this browser remembered (before first paint).
   useLayoutEffect(() => {
@@ -490,9 +489,9 @@ export default function ThemeBuilderPage() {
               onChange={(tint) => update({ tint })}
             />
             <div className="flex items-center justify-between gap-2">
-              <Label htmlFor={`${everywhereId}-follow`}>Follow brand hue</Label>
+              <Label htmlFor={`${fieldId}-follow`}>Follow brand hue</Label>
               <Switch
-                id={`${everywhereId}-follow`}
+                id={`${fieldId}-follow`}
                 checked={state.neutralHue === null}
                 onCheckedChange={(follow) => update({ neutralHue: follow ? null : Math.round(brandHue) })}
               />
@@ -550,18 +549,18 @@ export default function ThemeBuilderPage() {
               onChange={(radius) => update({ radius })}
             />
             <div className="flex flex-col gap-2">
-              <Label id={`${everywhereId}-sans`}>Body font</Label>
+              <Label id={`${fieldId}-sans`}>Body font</Label>
               <Select
-                aria-labelledby={`${everywhereId}-sans`}
+                aria-labelledby={`${fieldId}-sans`}
                 value={state.sans}
                 onValueChange={(sans) => update({ sans })}
                 options={SANS_FONTS.map((font) => ({ value: font.id, label: font.label }))}
               />
             </div>
             <div className="flex flex-col gap-2">
-              <Label id={`${everywhereId}-mono`}>Code font</Label>
+              <Label id={`${fieldId}-mono`}>Code font</Label>
               <Select
-                aria-labelledby={`${everywhereId}-mono`}
+                aria-labelledby={`${fieldId}-mono`}
                 value={state.mono}
                 onValueChange={(mono) => update({ mono })}
                 options={MONO_FONTS.map((font) => ({ value: font.id, label: font.label }))}
@@ -571,16 +570,6 @@ export default function ThemeBuilderPage() {
 
           <Section title="Contrast check">
             <ContrastPanel rows={rows} />
-          </Section>
-
-          <Section title="Site">
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <Label htmlFor={everywhereId}>Apply across the site</Label>
-                <p className="mt-1 text-xs text-foreground-lighter">Browse the component pages in this theme too.</p>
-              </div>
-              <Switch id={everywhereId} checked={everywhere} onCheckedChange={setApplyEverywhere} />
-            </div>
           </Section>
         </aside>
 

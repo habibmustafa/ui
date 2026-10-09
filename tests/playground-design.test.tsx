@@ -10,6 +10,7 @@ import BlockDetailPage from '../playground/pages/block-detail'
 import BlocksPage from '../playground/pages/blocks'
 import { Hero } from '../playground/pages/home-hero'
 import { RouterProvider } from '../playground/router'
+import { DEFAULT_STATE, setBuilderState } from '../playground/theme-store'
 import { ThemeProvider } from '../src'
 
 function renderPage(children: ReactNode, path = '/') {
@@ -32,6 +33,9 @@ test('the hero keeps advanced theme controls collapsed and project views are int
   expect(container.querySelector('details')?.open).toBe(true)
   expect(screen.getByRole('textbox', { name: 'Brand color' })).toBeTruthy()
 
+  await choose(user, 'Activity period', 'Last week')
+  expect(screen.getByText('32.0')).toBeTruthy()
+  await choose(user, 'Activity period', 'This week')
   await user.click(screen.getByRole('checkbox', { name: 'Review the first prototype' }))
   expect(screen.getByRole('progressbar', { name: 'Project completion' }).getAttribute('aria-valuenow')).toBe('78.125')
   await user.click(screen.getByRole('tab', { name: 'Activity' }))
@@ -40,11 +44,16 @@ test('the hero keeps advanced theme controls collapsed and project views are int
   expect(screen.getByText('Frontend engineer')).toBeTruthy()
 })
 
+async function choose(user: ReturnType<typeof userEvent.setup>, select: string, option: string) {
+  await user.click(screen.getByRole('combobox', { name: select }))
+  await user.click(await screen.findByRole('option', { name: option }))
+}
+
 test('playground settings change the component, its code and reset together', async () => {
   const user = userEvent.setup()
   renderPage(<ComponentPlayground id="button" />)
-  await user.selectOptions(screen.getByRole('combobox', { name: 'Variant' }), 'danger')
-  await user.selectOptions(screen.getByRole('combobox', { name: 'Size' }), 'large')
+  await choose(user, 'Variant', 'danger')
+  await choose(user, 'Size', 'large')
   await user.click(screen.getByRole('checkbox', { name: 'Loading' }))
   expect(screen.getByRole('button', { name: 'Continue' })).toHaveProperty('disabled', true)
   await user.click(screen.getByRole('tab', { name: 'Your code' }))
@@ -54,10 +63,10 @@ test('playground settings change the component, its code and reset together', as
   expect(code).toContain('loading')
 
   await user.click(screen.getByRole('tab', { name: 'Playground' }))
-  await user.selectOptions(screen.getByRole('combobox', { name: 'Preview background' }), 'muted')
+  await choose(user, 'Preview background', 'Muted')
   await user.click(screen.getByRole('button', { name: 'Reset preview' }))
-  expect(screen.getByRole('combobox', { name: 'Preview background' })).toHaveProperty('value', 'grid')
-  expect(screen.getByRole('combobox', { name: 'Variant' })).toHaveProperty('value', 'primary')
+  expect(screen.getByRole('combobox', { name: 'Preview background' }).textContent).toBe('Grid')
+  expect(screen.getByRole('combobox', { name: 'Variant' }).textContent).toBe('primary')
   expect(screen.getByRole('button', { name: 'Continue' })).toHaveProperty('disabled', false)
 })
 
@@ -68,6 +77,17 @@ test('input playground uses real disabled and invalid states', async () => {
   expect(screen.getByRole('textbox', { name: 'Email' }).getAttribute('aria-invalid')).toBe('true')
   await user.click(screen.getByRole('checkbox', { name: 'Disabled' }))
   expect(screen.getByRole('textbox', { name: 'Email' })).toHaveProperty('disabled', true)
+})
+
+test('a custom theme carries over to component pages and can be reset there', async () => {
+  const user = userEvent.setup()
+  setBuilderState({ brand: '#7c3aed' })
+  const { container } = renderPage(<App />, '/components/input')
+  expect(screen.getByText('Your theme is applied.')).toBeTruthy()
+  expect(document.head.innerHTML + container.innerHTML).toContain('--brand-default')
+  await user.click(screen.getByRole('button', { name: 'Reset' }))
+  expect(screen.queryByText('Your theme is applied.')).toBeNull()
+  setBuilderState(DEFAULT_STATE)
 })
 
 test('sidebar opens the active group and retains clear navigation after collapsing it', async () => {

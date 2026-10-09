@@ -51,14 +51,12 @@
         root.classList.toggle('light', resolved === 'light')
         root.style.colorScheme = resolved
       } catch (e) {}
-      // The theme builder's theme, when it applies to this page: the CSS it last generated
-      // (cached by the app, see saveEarlyCss in playground/theme-store.ts), so a prerendered
-      // page paints in the visitor's theme instead of switching to it at hydration.
+      // The theme builder's theme: the CSS it last generated (cached by the app, see
+      // saveEarlyCss in playground/theme-store.ts), so a prerendered page paints in the
+      // visitor's theme instead of switching to it at hydration.
       try {
         var css = localStorage.getItem('ui-theme-builder-css')
-        var builder = JSON.parse(localStorage.getItem('ui-theme-builder') || '{}')
-        var path = location.pathname.replace(/\/+$/, '') || '/'
-        if (css && (builder.everywhere === true || path === '/' || path === '/theme' || path === '/blocks')) {
+        if (css) {
           var style = document.createElement('style')
           style.id = 'ui-theme-early'
           style.textContent = css

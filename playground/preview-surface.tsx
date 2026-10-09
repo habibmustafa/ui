@@ -1,7 +1,13 @@
 import { RotateCcw } from 'lucide-react'
 import { Fragment, useState, type ReactNode } from 'react'
 
-import { cn } from '../src'
+import { Select, cn } from '../src'
+
+const BACKGROUNDS = [
+  { value: 'grid', label: 'Grid' },
+  { value: 'plain', label: 'Plain' },
+  { value: 'muted', label: 'Muted' },
+]
 
 /** Shared canvas controls. A reset remounts only the example, leaving the page in place. */
 export function PreviewSurface({ children, controls, onReset }: { children: ReactNode; controls?: ReactNode; onReset?: () => void }) {
@@ -15,11 +21,7 @@ export function PreviewSurface({ children, controls, onReset }: { children: Reac
         <div className="ml-auto flex shrink-0 items-center gap-2">
           <label className="flex items-center gap-2 text-xs text-foreground-light">
             <span className={controls ? 'hidden sm:inline' : undefined}>Background</span>
-            <select aria-label="Preview background" value={background} onChange={(event) => setBackground(event.target.value)} className="focus-ring h-8 rounded-md border bg-background py-1 pl-2 pr-7 text-xs text-foreground">
-              <option value="grid">Grid</option>
-              <option value="plain">Plain</option>
-              <option value="muted">Muted</option>
-            </select>
+            <Select size="tiny" aria-label="Preview background" value={background} onValueChange={setBackground} options={BACKGROUNDS} className="w-auto min-w-20 text-foreground" />
           </label>
           <button type="button" aria-label="Reset preview" title="Reset preview" onClick={() => { setBackground('grid'); setRevision((value) => value + 1); onReset?.() }} className="focus-ring inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-md text-foreground-light hover:bg-surface-200 hover:text-foreground">
             <RotateCcw aria-hidden="true" className="h-3.5 w-3.5" />
