@@ -1,7 +1,7 @@
 import { CopyButton, Input } from '../../../src'
 
 export default function CopyButtonDemo() {
-  const url = 'https://xyzcompany.supabase.co'
+  const url = 'https://ui.habibmustafa.me'
 
   return (
     <div className="flex w-full max-w-md flex-col gap-4">

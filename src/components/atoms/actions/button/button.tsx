@@ -29,12 +29,12 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary: `
-          bg-brand-400 dark:bg-brand-500
-          hover:bg-brand-default/80 dark:hover:bg-brand-default/50
-          text-foreground
-          border-brand-500/75 dark:border-brand-default/30
-          hover:border-brand-600 dark:hover:border-brand-default
-          data-[state=open]:bg-brand-400/80 dark:data-[state=open]:bg-brand-500/80
+          bg-primary dark:bg-brand-500
+          hover:bg-primary/90 dark:hover:bg-brand-default/50
+          text-primary-foreground dark:text-foreground
+          border-primary dark:border-brand-default/30
+          hover:border-primary dark:hover:border-brand-default
+          data-[state=open]:bg-primary/90 dark:data-[state=open]:bg-brand-500/80
           `,
         default: `
           text-foreground
@@ -134,7 +134,7 @@ const IconContainerVariants = cva('inline-flex items-center justify-center shrin
       xxxlarge: '[&_svg]:h-[42px] [&_svg]:w-[42px]',
     },
     variant: {
-      primary: 'text-brand-600',
+      primary: 'text-primary-foreground/80 dark:text-brand-600',
       default: 'text-foreground-lighter',
       secondary: 'text-background',
       alternative: 'text-foreground-lighter',
@@ -152,7 +152,7 @@ export type LoadingVariantProps = VariantProps<typeof loadingVariants>
 const loadingVariants = cva('', {
   variants: {
     variant: {
-      primary: 'text-brand-600',
+      primary: 'text-primary-foreground/80 dark:text-brand-600',
       default: 'text-foreground-lighter',
       secondary: 'text-background',
       alternative: 'text-foreground-lighter',
