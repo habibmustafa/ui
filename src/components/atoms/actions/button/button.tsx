@@ -29,12 +29,12 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary: `
-          bg-primary dark:bg-[oklch(0.56_0.17_var(--primary-hue))]
-          hover:bg-primary/90 dark:hover:bg-[oklch(0.6_0.17_var(--primary-hue))]
+          bg-primary dark:bg-primary-solid
+          hover:bg-primary/90 dark:hover:bg-[oklch(from_var(--primary-solid)_0.6_c_h)]
           text-primary-foreground dark:text-white
-          border-primary dark:border-[oklch(0.62_0.17_var(--primary-hue))]
-          hover:border-primary dark:hover:border-[oklch(0.68_0.17_var(--primary-hue))]
-          data-[state=open]:bg-primary/90 dark:data-[state=open]:bg-[oklch(0.6_0.17_var(--primary-hue))]
+          border-primary dark:border-[oklch(from_var(--primary-solid)_0.62_c_h)]
+          hover:border-primary dark:hover:border-[oklch(from_var(--primary-solid)_0.68_c_h)]
+          data-[state=open]:bg-primary/90 dark:data-[state=open]:bg-[oklch(from_var(--primary-solid)_0.6_c_h)]
           `,
         default: `
           text-foreground

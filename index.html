@@ -56,7 +56,7 @@
       // visitor's theme instead of switching to it at hydration.
       try {
         var css = localStorage.getItem('ui-theme-builder-css')
-        if (css) {
+        if (css && !/[<\\@]|url\(/i.test(css)) {
           var style = document.createElement('style')
           style.id = 'ui-theme-early'
           style.textContent = css
