@@ -6,7 +6,7 @@ import * as React from 'react'
 import { cn } from '../../../../lib/utils'
 
 /*
- * Radix ScrollArea: native scrolling with thin, theme-coloured scrollbars that look the
+ * Radix ScrollArea: native scrolling with thin, theme-colored scrollbars that look the
  * same on every OS. The viewport is focusable (tabIndex 0) so keyboard users can scroll it
  * with the arrow keys — a scrollable region with no focusable content otherwise traps them.
  */

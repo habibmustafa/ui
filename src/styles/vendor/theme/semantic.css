@@ -14,10 +14,10 @@
    * theme can run, say, a cool-gray surface against the green brand:
    *   --surface-hue  tints backgrounds, text and borders (the neutral ramp)
    *   --primary-hue  is the brand hue that --primary is built from
-   * Both default to --hue (brand green ≈157.5° in OKLCH), so a theme that only
+   * Both default to --hue (brand violet ≈292.7° in OKLCH), so a theme that only
    * sets --hue keeps surfaces and brand locked together as before; override
    * either one to let them diverge. */
-  --hue: 157.5;
+  --hue: 292.7;
   --surface-hue: var(--hue);
   --primary-hue: var(--hue);
   /* Root defaults mirror the dark theme (the app's default appearance). */
@@ -104,7 +104,7 @@
    * (matching the "no additional charge" badge); like the others it pulls a touch
    * with the brand --primary-hue but clamps so it always reads violet.
    */
-  --brand-hue-reference: 157.5;
+  --brand-hue-reference: 292.7;
   --status-hue-pull: 0.15;
   --warning-hue: clamp(
     65,
@@ -149,7 +149,7 @@
     calc(var(--surface) + var(--tone-span) * var(--contrast-text)) var(--foreground-chroma)
       var(--surface-hue)
   );
-  /* Inverse of --foreground: canvas-coloured text for use on inverted fills
+  /* Inverse of --foreground: canvas-colored text for use on inverted fills
      (bg-foreground, bg-black / dark:bg-white, etc). Not the same as
      --primary-foreground, which stays dark for the vivid primary fill. */
   --foreground-contrast: oklch(var(--surface) calc(var(--chroma) * 0.55) var(--surface-hue));
@@ -162,6 +162,8 @@
   /* Primary is the accessible functional green (text, controls). Bright
      expressive fills use brand-default. Light theme overrides --primary for AA text. */
   --primary: oklch(0.76 0.15 var(--primary-hue));
+  /* Solid brand fill that holds 4.5:1 against white text in both modes (Stepper, TimePicker, dark Button). */
+  --primary-solid: oklch(0.56 0.17 var(--primary-hue));
   --primary-bright: oklch(from var(--primary) max(l, 0.7) max(c, 0.15) h);
   --primary-foreground: oklch(
     min(var(--surface), var(--foreground-lightness)) calc(var(--chroma) * 0.45) var(--primary-hue)

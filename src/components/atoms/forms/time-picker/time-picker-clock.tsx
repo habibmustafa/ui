@@ -212,7 +212,7 @@ export function ClockFace({ view, value, ampm, step, onChange, disabled }: Clock
             className={cn(
               'absolute flex items-center justify-center rounded-full tabular-nums transition-colors duration-200',
               inner ? 'text-[11px] text-foreground-light' : 'text-[13px] text-foreground',
-              selected && 'bg-brand-default font-medium text-black'
+              selected && 'bg-primary-solid font-medium text-white'
             )}
             style={{
               width: size,

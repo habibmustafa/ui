@@ -1,10 +1,18 @@
-/* Shared page anatomy: every route gets an h1 title, a lede and a divider. */
-export function PageHeader({ title, description }: { title: string; description: string }) {
+import { cn } from '../src'
+import { PAGE_TITLE } from './design'
+
+/* Shared page anatomy: every route gets the same title and comfortable reading width. */
+export function PageHeader({ title, description, eyebrow, divider = true }: {
+  title: string
+  description: string
+  eyebrow?: string
+  divider?: boolean
+}) {
   return (
-    <>
-      <h1 className="scroll-m-20 text-3xl tracking-tight">{title}</h1>
-      <p className="mt-2 text-lg text-foreground-light">{description}</p>
-      <div role="none" className="mt-6 mb-6 h-px w-full shrink-0 bg-border-muted" />
-    </>
+    <header className={divider ? 'mb-6 border-b pb-7' : undefined}>
+      {eyebrow && <p className="mb-3 text-xs font-medium uppercase tracking-widest text-foreground-lighter">{eyebrow}</p>}
+      <h1 className={cn('max-w-3xl scroll-m-28', PAGE_TITLE)}>{title}</h1>
+      <p className="mt-3 max-w-2xl text-base leading-relaxed text-foreground-light sm:text-lg">{description}</p>
+    </header>
   )
 }

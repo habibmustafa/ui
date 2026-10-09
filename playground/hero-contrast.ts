@@ -1,14 +1,14 @@
 import { contrastRatio, parseColor } from '../src'
 
 /*
- * Measures the contrast of real, rendered elements: whatever colour the theme resolved
+ * Measures the contrast of real, rendered elements: whatever color the theme resolved
  * to (an oklch() token, an hsl() variable) is read back from the DOM, so the number on
  * the landing page is the number a user's eyes get, not a calculation about a token.
  */
 
 let context: CanvasRenderingContext2D | null | undefined
 
-/** Any CSS colour → "#rrggbb". The canvas does the colour-space conversion. */
+/** Any CSS color → "#rrggbb". The canvas does the color-space conversion. */
 function toHexString(css: string): string | null {
   if (context === undefined) {
     context = typeof document === 'undefined' ? null : document.createElement('canvas').getContext('2d', { willReadFrequently: true })
@@ -31,7 +31,7 @@ function backgroundOf(el: Element): string | null {
   return toHexString(getComputedStyle(document.body).backgroundColor) ?? '#ffffff'
 }
 
-/** WCAG contrast of an element's text colour against its own (or inherited) background. */
+/** WCAG contrast of an element's text color against its own (or inherited) background. */
 export function measureContrast(el: Element | null): number | null {
   if (!el) return null
   const fg = toHexString(getComputedStyle(el).color)

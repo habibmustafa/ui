@@ -7,9 +7,9 @@ export default function StatisticDemo() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap gap-10">
-        <Statistic title="Active users" value={users} animated description="+12% vs last month" />
-        <Statistic title="Revenue" value={93_210.5} precision={2} prefix="$" />
-        <Statistic title="Uptime" value={99.98} precision={2} suffix="%" size="large" />
+        <Statistic title="Active users" value={users} animated locale="en-US" description="+12% vs last month" />
+        <Statistic title="Revenue" value={93_210.5} precision={2} locale="en-US" prefix="$" />
+        <Statistic title="Uptime" value={99.98} precision={2} locale="en-US" suffix="%" size="large" />
         <Statistic title="Pending" loading />
       </div>
       <div>

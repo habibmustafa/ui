@@ -1,7 +1,7 @@
 [data-theme='dark'],
 .dark {
   --helpers-os-appearance: Dark;
-  --hue: 157.5;
+  --hue: 292.7;
   --chroma: 0.005;
   --surface: 0.19;
   --elevation-step: 0.025;
@@ -19,15 +19,15 @@
   --code-block-1: 170.8deg 43.1% 61.4%;
 
   /* Stepped numeric scales (per-theme literals; mapped in theme.css) */
-  --secondary-default: 247.8deg 100% 70%;
-  --secondary-400: 248.3deg 54.5% 25.9%;
-  --secondary-200: 248deg 53.6% 11%;
-  --brand-default: 153.1deg 60.2% 52.7%;
-  --brand-600: 154.9deg 59.5% 70%;
-  --brand-500: 154.9deg 100% 19.2%;
-  --brand-400: 155.5deg 100% 9.6%;
-  --brand-300: 155.1deg 100% 8%;
-  --brand-200: 162deg 100% 2%;
+  --secondary-default: 174deg 100% 30%;
+  --secondary-400: 173deg 100% 10.5%;
+  --secondary-200: 171.1deg 100% 4.6%;
+  --brand-default: 258.3deg 89.5% 66.3%;
+  --brand-600: 250.9deg 100% 87.7%;
+  --brand-500: 257.5deg 44.3% 41.7%;
+  --brand-400: 256.9deg 46.5% 20.9%;
+  --brand-300: 256.8deg 48% 17.5%;
+  --brand-200: 252.4deg 59.9% 4.8%;
   --warning-default: 38.9deg 100% 42.9%;
   --warning-600: 38.9deg 100% 42.9%;
   --warning-500: 34.8deg 90.9% 21.6%;

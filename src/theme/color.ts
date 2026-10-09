@@ -1,5 +1,5 @@
 /*
- * Small colour toolkit for the theme generator: parse a CSS colour, work in OKLCH,
+ * Small color toolkit for the theme generator: parse a CSS color, work in OKLCH,
  * map back into sRGB, and measure WCAG contrast. No dependencies; the conversions
  * are Björn Ottosson's OKLab matrices.
  */
@@ -51,7 +51,7 @@ function oklchToRgbRaw({ l: L, c, h }: Oklch): Rgb {
 
 const inGamut = (rgb: Rgb) => rgb.every((v) => v >= -1e-4 && v <= 1 + 1e-4)
 
-/** Reduces chroma (keeping lightness and hue) until the colour fits in sRGB. */
+/** Reduces chroma (keeping lightness and hue) until the color fits in sRGB. */
 export function toGamut(color: Oklch): Oklch {
   const l = clamp(color.l, 0, 1)
   if (inGamut(oklchToRgbRaw({ ...color, l }))) return { ...color, l }
@@ -126,7 +126,7 @@ export function toHex(color: Oklch): string {
     .join('')}`
 }
 
-/** `oklch(L C H)` with the colour already mapped into sRGB. */
+/** `oklch(L C H)` with the color already mapped into sRGB. */
 export function toOklchCss(color: Oklch): string {
   const { l, c, h } = toGamut(color)
   return `oklch(${round(l, 4)} ${round(c, 4)} ${round(h, 2)})`
@@ -156,7 +156,7 @@ function luminance(rgb: Rgb) {
   return 0.2126 * r + 0.7152 * g + 0.0722 * b
 }
 
-/** WCAG 2 contrast ratio between two colours (1 – 21). */
+/** WCAG 2 contrast ratio between two colors (1 – 21). */
 export function contrastRatio(a: Oklch | Rgb, b: Oklch | Rgb): number {
   const rgb = (x: Oklch | Rgb) => (Array.isArray(x) ? x : oklchToRgb(x))
   const [la, lb] = [luminance(rgb(a)), luminance(rgb(b))].sort((x, y) => y - x)

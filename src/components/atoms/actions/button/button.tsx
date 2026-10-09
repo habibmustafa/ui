@@ -29,12 +29,12 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary: `
-          bg-brand-400 dark:bg-brand-500
-          hover:bg-brand-default/80 dark:hover:bg-brand-default/50
-          text-foreground
-          border-brand-500/75 dark:border-brand-default/30
-          hover:border-brand-600 dark:hover:border-brand-default
-          data-[state=open]:bg-brand-400/80 dark:data-[state=open]:bg-brand-500/80
+          bg-primary dark:bg-[oklch(0.56_0.17_var(--primary-hue))]
+          hover:bg-primary/90 dark:hover:bg-[oklch(0.6_0.17_var(--primary-hue))]
+          text-primary-foreground dark:text-white
+          border-primary dark:border-[oklch(0.62_0.17_var(--primary-hue))]
+          hover:border-primary dark:hover:border-[oklch(0.68_0.17_var(--primary-hue))]
+          data-[state=open]:bg-primary/90 dark:data-[state=open]:bg-[oklch(0.6_0.17_var(--primary-hue))]
           `,
         default: `
           text-foreground
@@ -115,7 +115,7 @@ const buttonVariants = cva(
         true: 'rounded-full',
       },
     },
-    // No cva-level defaults: Button itself defaults `size` to "tiny" and `variant` to
+    // No cva-level defaults: Button itself defaults `size` to "small" and `variant` to
     // "default". (Upstream nested a `defaultVariants` block inside `variants`, which cva
     // read as a variant *named* defaultVariants — it leaked into ButtonProps as a bogus
     // `defaultVariants` prop and set no defaults.)
@@ -134,7 +134,7 @@ const IconContainerVariants = cva('inline-flex items-center justify-center shrin
       xxxlarge: '[&_svg]:h-[42px] [&_svg]:w-[42px]',
     },
     variant: {
-      primary: 'text-brand-600',
+      primary: 'text-primary-foreground/80 dark:text-white/80',
       default: 'text-foreground-lighter',
       secondary: 'text-background',
       alternative: 'text-foreground-lighter',
@@ -152,7 +152,7 @@ export type LoadingVariantProps = VariantProps<typeof loadingVariants>
 const loadingVariants = cva('', {
   variants: {
     variant: {
-      primary: 'text-brand-600',
+      primary: 'text-primary-foreground/80 dark:text-white/80',
       default: 'text-foreground-lighter',
       secondary: 'text-background',
       alternative: 'text-foreground-lighter',
@@ -195,7 +195,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
       asChild = false,
-      size = 'tiny',
+      size = 'small',
       variant = 'default',
       children,
       loading,

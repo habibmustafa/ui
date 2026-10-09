@@ -13,7 +13,12 @@ import { defineConfig } from "vite";
 // leaves the static assets alone.
 export default defineConfig(({ isSsrBuild }) => ({
   plugins: [react(), babel({ presets: [reactCompilerPreset()] }), tailwindcss()],
+  // Its ESM entry uses extensionless internal imports that Node cannot resolve
+  // directly. Bundle those imports when rendering the first code-block example.
+  ssr: { noExternal: ['react-syntax-highlighter'] },
   build: {
+    manifest: !isSsrBuild,
+    ...(!isSsrBuild && { rolldownOptions: { input: ['index.html', 'playground/block-frame.html'] } }),
     outDir: isSsrBuild ? "playground-ssr" : "playground-dist",
     copyPublicDir: !isSsrBuild,
   },

@@ -50,7 +50,7 @@ export interface RatingProps
   onBlur?: React.FocusEventHandler<HTMLDivElement>
   /** Accessible text for a value, e.g. `(v, max) => v + " of " + max`. */
   getValueText?: (value: number, max: number) => string
-  /** Custom icon; receives the className that sizes and colours it. */
+  /** Custom icon; receives the className that sizes and colors it. */
   renderIcon?: (props: { filled: boolean; className: string }) => React.ReactNode
   classNames?: { item?: string; icon?: string }
 }

@@ -1,8 +1,8 @@
 /*
  * Shared types for the ui-specific layout primitives.
  *
- * These components have no upstream counterpart — Supabase's design system composes layout
- * with Tailwind utilities directly — so this vocabulary is ui's own.
+ * These components have no upstream counterpart (upstream composes layout
+ * with Tailwind utilities directly), so this vocabulary is ui's own.
  */
 
 /** Breakpoints supported by every responsive prop. `base` is the unprefixed value. */

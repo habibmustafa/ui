@@ -20,7 +20,7 @@
 }
 
 @utility heading-meta {
-  @apply text-xs font-mono uppercase tracking-wider font-medium;
+  @apply text-xs font-medium tracking-wide;
 }
 
 /* Text */

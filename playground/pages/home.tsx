@@ -5,9 +5,11 @@ import { Button, Dialog, Tabs, THEME_PRESETS, cn } from '../../src'
 import { version } from '../../package.json'
 import { CATALOG } from '../catalog'
 import { CodeSnippet } from '../code-snippet'
+import { DISPLAY, PANEL, SECTION_TITLE } from '../design'
 import { Link } from '../router'
 import { fromConfig, stateToQuery } from '../theme-store'
-import { DISPLAY, Hero } from './home-hero'
+import { Hero } from './home-hero'
+import { useNearViewport } from '../near-viewport'
 
 // The live examples pull in react-hook-form, zod, the date/time pickers and framer-motion
 // (~400 kB raw) — none of which the hero needs. Splitting them out lets the hero paint
@@ -46,21 +48,21 @@ const COMPOUND_CODE = `<Dialog.Root>
 function SectionHeading({ title, description }: { title: string; description: string }) {
   return (
     <div className="mb-6 max-w-2xl">
-      <h2 className={cn('text-2xl font-semibold text-foreground', DISPLAY)}>{title}</h2>
-      <p className="mt-2 text-foreground-light">{description}</p>
+      <h2 className={SECTION_TITLE}>{title}</h2>
+      <p className="mt-3 leading-relaxed text-foreground-light">{description}</p>
     </div>
   )
 }
 
 function HybridApi() {
   return (
-    <section className="py-14">
+    <section className="border-t py-14 sm:py-20">
       <SectionHeading
         title="One component, two ways to write it"
         description="Common components are a single element driven by props. When you need your own layout, the same component splits into parts. Both open the same dialog."
       />
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)]">
-        <div className="flex min-h-48 flex-col items-center justify-center gap-3 rounded-md border bg-surface-75 p-8">
+        <div className="flex min-h-48 flex-col items-center justify-center gap-3 rounded-xl border bg-surface-75 p-8">
           <Dialog
             trigger={<Button variant="danger">Delete project</Button>}
             title="Delete this project?"
@@ -95,12 +97,12 @@ function HybridApi() {
 
 function ThemeTeaser() {
   return (
-    <section className="py-14">
+    <section className="border-t py-14 sm:py-20">
       <SectionHeading
         title="Make it yours"
-        description="Pick a brand colour and the full scale for light and dark themes is generated, with contrast checks. Take the result as CSS or code."
+        description="Pick a brand color and the full scale for light and dark themes is generated, with contrast checks. Take the result as CSS or code."
       />
-      <div className="flex flex-col gap-4 rounded-md border bg-surface-75 p-5 md:flex-row md:items-center md:justify-between">
+      <div className="flex flex-col gap-6 rounded-xl border bg-surface-75 p-6 md:flex-row md:items-center md:justify-between">
         <ul className="flex flex-wrap gap-2" aria-label="Theme presets">
           {THEME_PRESETS.map((preset) => {
             const query = stateToQuery(fromConfig(preset.config))
@@ -130,7 +132,7 @@ function ThemeTeaser() {
 
 function Catalog() {
   return (
-    <section className="py-14">
+    <section className="border-t py-14 sm:py-20">
       <SectionHeading
         title="Find what you need"
         description="Components are grouped by role. Every page has live examples, code and a props table."
@@ -140,10 +142,10 @@ function Catalog() {
           <Link
             key={group.key}
             to={`/components?group=${group.key}`}
-            className="focus-ring group flex flex-col rounded-md border bg-studio p-4 transition-colors hover:border-foreground-lighter"
+            className={cn(PANEL, 'focus-ring group flex flex-col p-5 transition-colors hover:border-brand-500 hover:bg-surface-75')}
           >
             <span className="flex items-baseline justify-between gap-2">
-              <span className="text-sm font-medium text-foreground">{group.title}</span>
+              <span className={cn('text-sm font-semibold text-foreground', DISPLAY)}>{group.title}</span>
               <span className="font-mono text-xs text-foreground-muted">{group.entries.length}</span>
             </span>
             <span className="mt-2 line-clamp-2 text-xs text-foreground-light">
@@ -186,16 +188,17 @@ function Footer() {
 }
 
 export default function HomePage() {
+  const [showcaseRef, showcaseNear] = useNearViewport({ margin: '600px 0px' })
   return (
     <div>
       <Hero />
-      <section className="pb-14">
+      <section ref={showcaseRef} className="border-t py-14 sm:py-20">
         <SectionHeading
           title="Live examples"
           description="These cards are built only from the library's own components. Fill them in and submit them."
         />
         <Suspense fallback={<div aria-hidden="true" className="min-h-[1380px] md:min-h-[900px] xl:min-h-[470px]" />}>
-          <Showcase />
+          {showcaseNear ? <Showcase /> : <div aria-hidden="true" className="min-h-[1380px] md:min-h-[900px] xl:min-h-[470px]" />}
         </Suspense>
       </section>
       <HybridApi />

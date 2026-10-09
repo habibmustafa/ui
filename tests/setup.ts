@@ -1,5 +1,9 @@
-import { cleanup } from "@testing-library/react";
+import { cleanup, configure } from "@testing-library/react";
 import { afterEach, beforeEach, vi } from "vitest";
+
+// Previews and pages load their demos lazily. Under a full parallel run a chunk can take
+// longer than Testing Library's default 1s to arrive, which made findBy/waitFor flaky.
+configure({ asyncUtilTimeout: 5000 });
 
 // Deterministic timezone: components that format a timestamp for display (TimestampInfo)
 // render it in the local zone. Without pinning this, the same frozen instant renders

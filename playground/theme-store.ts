@@ -166,10 +166,9 @@ export function stateFromQuery(query: string): BuilderState | null {
 
 /* ---------------------------------------------------------------- store */
 
+/** The builder's theme styles every page of the site. */
 interface Snapshot {
   state: BuilderState
-  /** Keep the theme on every page, not just /theme. */
-  everywhere: boolean
 }
 
 const STORAGE_KEY = 'ui-theme-builder'
@@ -180,20 +179,17 @@ function load(): Snapshot {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (raw) {
       const parsed = JSON.parse(raw) as Partial<Snapshot>
-      return {
-        state: { ...DEFAULT_STATE, ...parsed.state },
-        everywhere: parsed.everywhere === true,
-      }
+      return { state: { ...DEFAULT_STATE, ...parsed.state } }
     }
   } catch {
     // Blocked or corrupt storage: start from the defaults.
   }
-  return { state: DEFAULT_STATE, everywhere: false }
+  return { state: DEFAULT_STATE }
 }
 
 // What the server renders and what hydration starts from; the stored state takes over right
 // after hydration (see useThemeBuilder).
-const SERVER_SNAPSHOT: Snapshot = { state: DEFAULT_STATE, everywhere: false }
+const SERVER_SNAPSHOT: Snapshot = { state: DEFAULT_STATE }
 
 let snapshot: Snapshot = typeof window === 'undefined' ? SERVER_SNAPSHOT : load()
 
@@ -208,11 +204,7 @@ function commit(next: Snapshot) {
 }
 
 export function setBuilderState(update: Partial<BuilderState> | BuilderState) {
-  commit({ ...snapshot, state: { ...snapshot.state, ...update } })
-}
-
-export function setApplyEverywhere(everywhere: boolean) {
-  commit({ ...snapshot, everywhere })
+  commit({ state: { ...snapshot.state, ...update } })
 }
 
 export function useThemeBuilder(): Snapshot {

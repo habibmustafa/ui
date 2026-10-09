@@ -2,16 +2,16 @@
 .dark {
   --code-token-keyword: #bda4ff;
   --code-foreground: #ffffff;
-  --code-token-constant: #3ecf8e;
+  --code-token-constant: #5eead4;
   --code-token-string: #ffcda1;
   --code-token-comment: #7e7e7e;
   --code-token-parameter: #ffffff;
-  --code-token-function: #3ecf8e;
+  --code-token-function: #5eead4;
   --code-token-string-expression: #ffcda1;
   --code-token-punctuation: #ffffff;
   --code-token-link: #ffffff;
   --code-token-number: #ffffff;
-  --code-token-property: #3ecf8e;
+  --code-token-property: #5eead4;
   --code-highlight-color: #232323;
 }
 
@@ -19,15 +19,15 @@
 .light {
   --code-token-keyword: #6b35dc;
   --code-foreground: oklch(from var(--foreground-light) l c h / 1);
-  --code-token-constant: #15593b;
+  --code-token-constant: #0f766e;
   --code-token-string: #c46a0a;
   --code-token-comment: #7e7e7e;
   --code-token-parameter: oklch(from var(--foreground-light) l c h / 1);
-  --code-token-function: #15593b;
+  --code-token-function: #0f766e;
   --code-token-string-expression: #c46a0a;
   --code-token-punctuation: oklch(from var(--foreground-light) l c h / 1);
   --code-token-link: oklch(from var(--foreground-light) l c h / 1);
   --code-token-number: oklch(from var(--foreground-light) l c h / 1);
-  --code-token-property: #15593b;
+  --code-token-property: #0f766e;
   --code-highlight-color: #1c1c1c;
 }

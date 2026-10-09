@@ -112,7 +112,7 @@ export interface ComponentGroup {
   entries: ComponentEntry[]
 }
 
-/* Layout primitives: ours, not part of the upstream Supabase design system. */
+/* Layout primitives: ours, with no upstream counterpart. */
 const layoutPrimitives: ComponentEntry[] = [
   {
     id: 'box',
@@ -410,7 +410,7 @@ const atoms: ComponentEntry[] = [
     title: 'Chart',
     icon: BarChart3,
     description:
-      'Responsive Recharts wrapper with theme-aware colour configuration, tooltips and legends.',
+      'Responsive Recharts wrapper with theme-aware color configuration, tooltips and legends.',
     previews: [
       {
         name: 'chart-props-demo',
@@ -431,7 +431,7 @@ const atoms: ComponentEntry[] = [
     title: 'Checkbox',
     icon: CheckSquare,
     description:
-      'Checkbox that fills with the foreground colour when checked.',
+      'Checkbox that fills with the foreground color when checked.',
     previews: [
       { name: 'checkbox-demo', label: 'Default' },
       { name: 'checkbox-disabled', label: 'Disabled' },
@@ -737,7 +737,7 @@ const atoms: ComponentEntry[] = [
     id: 'gauge',
     title: 'Gauge',
     icon: Gauge,
-    description: 'A dial for a value in a range: half or open ring, with threshold colours.',
+    description: 'A dial for a value in a range: half or open ring, with threshold colors.',
     previews: [{ name: 'gauge-demo' }],
   },
   {
@@ -1029,7 +1029,7 @@ const atoms: ComponentEntry[] = [
     id: 'password-input',
     title: 'Password Input',
     icon: KeyRound,
-    description: 'Password field with a show/hide toggle and an optional strength meter (text + colour).',
+    description: 'Password field with a show/hide toggle and an optional strength meter (text + color).',
     previews: [{ name: 'password-input-demo' }],
   },
   {
@@ -1051,7 +1051,7 @@ const atoms: ComponentEntry[] = [
     id: 'progress',
     title: 'Progress',
     icon: Loader,
-    description: 'Determinate bar filled with the foreground colour.',
+    description: 'Determinate bar filled with the foreground color.',
     previews: [
       { name: 'progress-demo' },
     ],
@@ -1709,7 +1709,7 @@ const fragments: ComponentEntry[] = [
     id: 'status-code',
     title: 'Status Code',
     icon: Hash,
-    description: 'HTTP method + status pill, coloured by the response class (2xx/4xx/5xx).',
+    description: 'HTTP method + status pill, colored by the response class (2xx/4xx/5xx).',
     previews: [
       { name: 'status-code-demo' },
     ],

@@ -15,6 +15,7 @@
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-primary-solid: var(--primary-solid);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-tertiary: var(--tertiary);
@@ -370,9 +371,20 @@
   --font-mono: var(--font-source-code-pro, Source Code Pro, Office Code Pro, Menlo, monospace);
   --breakpoint-xs: 480px;
   --width-listbox: 320px;
-  --radius-panel: 6px;
   --spacing-content: 21px;
   --spacing-card: var(--card-padding-x);
   --transform-origin-dropdown: var(--radix-dropdown-menu-content-transform-origin);
   --transform-origin-popover: var(--radix-popover-menu-content-transform-origin);
+}
+
+/* Corner radii: the library default is 8px for `rounded-md`, the other steps scale with
+   it. Not `inline`, so createTheme({ radius }) can still override them at runtime. Keep in
+   sync with DEFAULT_THEME.radius in src/theme/create-theme.ts. */
+@theme {
+  --radius-xs: 2.67px;
+  --radius-sm: 5.33px;
+  --radius-md: 8px;
+  --radius-lg: 10.67px;
+  --radius-xl: 16px;
+  --radius-panel: 8px;
 }

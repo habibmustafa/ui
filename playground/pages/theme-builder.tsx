@@ -31,6 +31,7 @@ import {
 } from '../../src'
 import { CodeSnippet } from '../code-snippet'
 import { ColorField } from '../color-field'
+import { PageHeader } from '../page-header'
 import {
   DEFAULT_STATE,
   MONO_FONTS,
@@ -38,7 +39,6 @@ import {
   fromConfig,
   monoFont,
   sansFont,
-  setApplyEverywhere,
   setBuilderState,
   stateFromQuery,
   stateToQuery,
@@ -85,7 +85,7 @@ function SliderField({
   max: number
   step?: number
   format: (value: number) => string
-  /** Small colour chip next to the value (hue sliders). */
+  /** Small color chip next to the value (hue sliders). */
   swatch?: string
   onChange: (value: number) => void
 }) {
@@ -129,7 +129,7 @@ const CONTRAST_ROWS: { key: string; label: string }[] = [
   { key: 'warning', label: 'Warning text' },
 ]
 
-/** Resolves any computed CSS colour (oklch(), color-mix, …) to sRGB via a 1px canvas. */
+/** Resolves any computed CSS color (oklch(), color-mix, …) to sRGB via a 1px canvas. */
 function makeColorReader() {
   let ctx: CanvasRenderingContext2D | null = null
   try {
@@ -265,7 +265,7 @@ function ImportTab({ onDone }: { onDone: () => void }) {
         const config = parsed as ThemeConfig
         for (const key of ['brand', 'accent'] as const) {
           if (config[key] !== undefined && (typeof config[key] !== 'string' || !parseColor(config[key]))) {
-            return setError(`"${key}" is not a readable colour.`)
+            return setError(`"${key}" is not a readable color.`)
           }
         }
         next = fromConfig(config)
@@ -375,9 +375,9 @@ function ExportDialog({ state, link }: { state: BuilderState; link: string }) {
 const subscribeNever = () => () => {}
 
 export default function ThemeBuilderPage() {
-  const { state, everywhere } = useThemeBuilder()
+  const { state } = useThemeBuilder()
   const { resolvedTheme, setTheme } = useTheme()
-  const everywhereId = useId()
+  const fieldId = useId()
 
   // A shared link wins over what this browser remembered (before first paint).
   useLayoutEffect(() => {
@@ -408,13 +408,7 @@ export default function ThemeBuilderPage() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-        <div>
-          <h1 className="scroll-m-20 text-3xl tracking-tight">Theme builder</h1>
-          <p className="mt-2 max-w-2xl text-lg text-foreground-light">
-            Pick colours, contrast, radius and fonts — the whole page updates as you go. When you're happy, take
-            it as CSS or code.
-          </p>
-        </div>
+        <PageHeader title="Theme builder" eyebrow="Make it yours" description="Pick colors, contrast, radius and fonts. See your choices across a real screen, then take the theme as CSS or code." divider={false} />
         <div className="flex flex-wrap items-center gap-2">
           <Button
             variant="text"
@@ -469,16 +463,16 @@ export default function ThemeBuilderPage() {
           aria-label="Theme settings"
           className="rounded-lg border bg-surface-75 p-5 lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto"
         >
-          <Section title="Colours">
+          <Section title="Colors">
             <ColorField
-              label="Brand colour"
+              label="Brand color"
               description="Buttons, links, focus, first chart series."
               value={state.brand}
               onChange={(brand) => update({ brand })}
             />
             <ColorField
-              label="Accent colour"
-              description="Info colour and the second chart series."
+              label="Accent color"
+              description="Info color and the second chart series."
               value={state.accent}
               onChange={(accent) => update({ accent })}
             />
@@ -495,9 +489,9 @@ export default function ThemeBuilderPage() {
               onChange={(tint) => update({ tint })}
             />
             <div className="flex items-center justify-between gap-2">
-              <Label htmlFor={`${everywhereId}-follow`}>Follow brand hue</Label>
+              <Label htmlFor={`${fieldId}-follow`}>Follow brand hue</Label>
               <Switch
-                id={`${everywhereId}-follow`}
+                id={`${fieldId}-follow`}
                 checked={state.neutralHue === null}
                 onCheckedChange={(follow) => update({ neutralHue: follow ? null : Math.round(brandHue) })}
               />
@@ -524,7 +518,7 @@ export default function ThemeBuilderPage() {
             />
           </Section>
 
-          <Section title="Status colours">
+          <Section title="Status colors">
             <SliderField
               label="Warning hue"
               value={state.warningHue}
@@ -555,18 +549,18 @@ export default function ThemeBuilderPage() {
               onChange={(radius) => update({ radius })}
             />
             <div className="flex flex-col gap-2">
-              <Label id={`${everywhereId}-sans`}>Body font</Label>
+              <Label id={`${fieldId}-sans`}>Body font</Label>
               <Select
-                aria-labelledby={`${everywhereId}-sans`}
+                aria-labelledby={`${fieldId}-sans`}
                 value={state.sans}
                 onValueChange={(sans) => update({ sans })}
                 options={SANS_FONTS.map((font) => ({ value: font.id, label: font.label }))}
               />
             </div>
             <div className="flex flex-col gap-2">
-              <Label id={`${everywhereId}-mono`}>Code font</Label>
+              <Label id={`${fieldId}-mono`}>Code font</Label>
               <Select
-                aria-labelledby={`${everywhereId}-mono`}
+                aria-labelledby={`${fieldId}-mono`}
                 value={state.mono}
                 onValueChange={(mono) => update({ mono })}
                 options={MONO_FONTS.map((font) => ({ value: font.id, label: font.label }))}
@@ -576,16 +570,6 @@ export default function ThemeBuilderPage() {
 
           <Section title="Contrast check">
             <ContrastPanel rows={rows} />
-          </Section>
-
-          <Section title="Site">
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <Label htmlFor={everywhereId}>Apply across the site</Label>
-                <p className="mt-1 text-xs text-foreground-lighter">Browse the component pages in this theme too.</p>
-              </div>
-              <Switch id={everywhereId} checked={everywhere} onCheckedChange={setApplyEverywhere} />
-            </div>
           </Section>
         </aside>
 

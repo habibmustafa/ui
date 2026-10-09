@@ -67,12 +67,18 @@ export const useTabIndicator = (
       }
     }
 
+    // Measured from ResizeObserver callbacks, which run after the browser's own layout
+    // and before paint: reading offsets there is free, and the bar still sits on the
+    // active item in the first frame. Measuring straight from this layout effect forced
+    // an extra full-page layout on every mount (over a second on a heavy page).
+    // Observing anew also reports every target once, so a new active item or a label
+    // that widens when a webfont lands is picked up the same way.
     const resizes = typeof ResizeObserver === 'undefined' ? undefined : new ResizeObserver(measure)
     const sync = () => {
-      resizes?.disconnect()
-      resizes?.observe(list)
-      Array.from(list.children).forEach((child) => resizes?.observe(child))
-      measure()
+      if (!resizes) return measure()
+      resizes.disconnect()
+      resizes.observe(list)
+      Array.from(list.children).forEach((child) => resizes.observe(child))
     }
 
     sync()
@@ -85,9 +91,6 @@ export const useTabIndicator = (
       subtree: true,
       childList: true,
     })
-
-    // label widths shift when webfonts land
-    document.fonts?.ready.then(measure).catch(() => {})
 
     return () => {
       cancelled = true

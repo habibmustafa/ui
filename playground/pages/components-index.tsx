@@ -4,6 +4,8 @@ import { useMemo, useState } from 'react'
 import { cn } from '../../src'
 import { CATALOG, COMPONENT_COUNT } from '../catalog'
 import { ComponentThumbnail } from '../component-thumbnail'
+import { FILTER_ACTIVE, FILTER_CHIP, FILTER_IDLE, PANEL, SECTION_TITLE } from '../design'
+import { PageHeader } from '../page-header'
 import { Link, useRouter } from '../router'
 
 /*
@@ -31,14 +33,11 @@ const WIDE = new Set([
   'virtual-list',
 ])
 
-const chip =
-  'focus-ring inline-flex h-7 cursor-pointer items-center gap-1.5 rounded-full border px-3 text-xs transition-colors'
-
 export default function ComponentsIndexPage() {
   const { path, navigate } = useRouter()
   const activeGroup = groupFromPath(path)
   const [query, setQuery] = useState('')
-  const needle = query.trim().toLocaleLowerCase()
+  const needle = query.trim().toLowerCase()
 
   const groups = useMemo(
     () =>
@@ -48,8 +47,8 @@ export default function ComponentsIndexPage() {
           entries: group.entries.filter(
             (entry) =>
               !needle ||
-              entry.title.toLocaleLowerCase().includes(needle) ||
-              entry.description.toLocaleLowerCase().includes(needle)
+              entry.title.toLowerCase().includes(needle) ||
+              entry.description.toLowerCase().includes(needle)
           ),
         }))
         .filter((group) => group.entries.length > 0),
@@ -62,13 +61,9 @@ export default function ComponentsIndexPage() {
 
   return (
     <div className="flex flex-col">
-      <h1 className="scroll-m-20 text-3xl tracking-tight">Components</h1>
-      <p className="mt-2 text-lg text-foreground-light">
-        {COMPONENT_COUNT} components, grouped by role. Every page has live examples, code and a
-        props table.
-      </p>
+      <PageHeader title="Components" eyebrow="The building blocks" description={`${COMPONENT_COUNT} components, grouped by role. Explore a preview, make it yours, and take the code.`} divider={false} />
 
-      <div className="mt-6 flex flex-col gap-3">
+      <div className="mt-7 flex flex-col gap-4 rounded-xl border bg-surface-75 p-4 sm:p-5">
         <div className="relative max-w-md">
           <Search
             aria-hidden="true"
@@ -102,12 +97,11 @@ export default function ComponentsIndexPage() {
                   key={item.key ?? 'all'}
                   type="button"
                   aria-pressed={active}
+                  aria-label={`${item.title}, ${item.count} components`}
                   onClick={() => selectGroup(item.key)}
                   className={cn(
-                    chip,
-                    active
-                      ? 'border-foreground-lighter bg-surface-200 text-foreground'
-                      : 'border-default text-foreground-light hover:border-foreground-muted hover:text-foreground'
+                    FILTER_CHIP,
+                    active ? FILTER_ACTIVE : FILTER_IDLE
                   )}
                 >
                   {item.title}
@@ -119,8 +113,8 @@ export default function ComponentsIndexPage() {
         </div>
       </div>
 
-      <p className="sr-only" aria-live="polite">
-        {shown} components shown
+      <p className="mt-5 text-xs text-foreground-lighter" aria-live="polite">
+        Showing {shown} of {COMPONENT_COUNT} components
       </p>
       <div role="none" className="mt-6 mb-6 h-px w-full shrink-0 bg-border-muted" />
 
@@ -139,10 +133,10 @@ export default function ComponentsIndexPage() {
           </button>
         </div>
       ) : (
-        groups.map((group) => (
+        groups.map((group, groupIndex) => (
           <section key={group.key} aria-labelledby={`group-${group.key}`} className="mb-12">
             <div className="flex items-baseline gap-2">
-              <h2 id={`group-${group.key}`} className="text-base font-medium text-foreground">
+              <h2 id={`group-${group.key}`} className={cn(SECTION_TITLE, 'text-lg')}>
                 {group.title}
               </h2>
               <span aria-hidden="true" className="text-sm tabular-nums text-foreground-muted">
@@ -150,20 +144,20 @@ export default function ComponentsIndexPage() {
               </span>
             </div>
             <div className="mt-4 grid grid-flow-dense gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {group.entries.map((entry) => (
+              {group.entries.map((entry, index) => (
                 // The card is not itself a link: the live example inside can contain links
                 // (a breadcrumb, a text link), and an <a> cannot nest in an <a>. The title is
                 // the link, and its ::after stretches over the whole card.
                 <article
                   key={entry.id}
                   className={cn(
-                    'group relative flex flex-col overflow-hidden rounded-lg border bg-studio transition-colors hover:border-foreground-lighter',
+                    PANEL, 'group relative flex flex-col overflow-hidden transition-colors hover:border-brand-500',
                     'has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-ring has-[a:focus-visible]:ring-offset-2 has-[a:focus-visible]:ring-offset-background',
                     WIDE.has(entry.id) && 'lg:col-span-2'
                   )}
                 >
-                  <ComponentThumbnail id={entry.id} name={entry.previews[0].name} />
-                  <div className="p-4">
+                  <ComponentThumbnail id={entry.id} name={entry.previews[0].name} eager={groupIndex === 0 && index < 3} />
+                  <div className="p-5">
                     <h3 className="text-sm font-medium">
                       <Link
                         to={`/components/${entry.id}`}

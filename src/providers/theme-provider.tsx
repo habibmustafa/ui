@@ -5,7 +5,9 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useLayoutEffect,
   useMemo,
+  useRef,
   useState,
   useSyncExternalStore,
   type ReactNode,
@@ -71,16 +73,34 @@ const getSystemTheme = (): ResolvedTheme =>
   window.matchMedia(DARK_QUERY).matches ? 'dark' : 'light'
 const getServerSystemTheme = (): ResolvedTheme => 'light'
 const getServerStoredTheme = (): Theme | null => null
+const subscribeNothing = () => () => {}
 
 export interface ThemeProviderProps {
   children: ReactNode
   defaultTheme?: Theme
   storageKey?: string
   /**
-   * Custom colours, radius and fonts: a `createTheme()` result or the config itself.
+   * Custom colors, radius and fonts: a `createTheme()` result or the config itself.
    * Rendered as a <style> next to the children, so it also works when server-rendered.
    */
   tokens?: ThemeTokens | ThemeConfig
+}
+
+/*
+ * A theme swap changes every color at once. Without this, each element's own
+ * `transition-colors` animates that change, and the browser restyles the whole page on
+ * every frame of it: changing the brand color took about a second on a mid-range laptop.
+ * Call it after the new theme is in the DOM but before the browser has styled it, and only
+ * for a change: the first theme has nothing to animate from, and forcing a restyle while
+ * hydrating would only slow the page down.
+ */
+function applyWithoutTransitions() {
+  const style = document.createElement('style')
+  style.textContent = '*,*::before,*::after{transition:none!important}'
+  document.head.appendChild(style)
+  // Style the page now, with transitions off, so the new colors land without animating.
+  void window.getComputedStyle(document.body).color
+  style.remove()
 }
 
 /**
@@ -93,6 +113,11 @@ export function ThemeStyle({ tokens }: { tokens: ThemeTokens | ThemeConfig }) {
     () => themeToCss('shared' in tokens ? tokens : createTheme(tokens)),
     [tokens]
   )
+  const appliedCss = useRef(css)
+  useLayoutEffect(() => {
+    if (appliedCss.current !== css) applyWithoutTransitions()
+    appliedCss.current = css
+  }, [css])
   if (!css) return null
   return <style data-ui-theme="">{css}</style>
 }
@@ -119,9 +144,15 @@ export function ThemeProvider({
   const theme = unsavedTheme ?? storedTheme ?? defaultTheme
 
   const resolvedTheme: ResolvedTheme = theme === 'system' ? systemTheme : theme
+  // False only while hydrating, when resolvedTheme is still the server's guess.
+  const hydrated = useSyncExternalStore(subscribeNothing, () => true, () => false)
 
   useEffect(() => {
+    // Writing the server's guess would flip a dark page to light and straight back.
+    if (!hydrated) return
     const root = document.documentElement
+    // Usually already set before first paint by the app's inline script.
+    const changed = root.getAttribute('data-theme') !== resolvedTheme
 
     // The token blocks key off `.light` / `.dark`, while the `dark:` variant keys
     // off `data-theme*="dark"` — both have to be set for utilities and tokens to agree.
@@ -129,7 +160,8 @@ export function ThemeProvider({
     root.classList.toggle('dark', resolvedTheme === 'dark')
     root.classList.toggle('light', resolvedTheme === 'light')
     root.style.colorScheme = resolvedTheme
-  }, [resolvedTheme])
+    if (changed) applyWithoutTransitions()
+  }, [resolvedTheme, hydrated])
 
   const setTheme = useCallback(
     (next: Theme) => {

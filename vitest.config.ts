@@ -13,6 +13,8 @@ export default defineConfig({
     globals: true,
     setupFiles: ["./tests/setup.ts"],
     css: false,
+    // Matches the 5s asyncUtilTimeout in tests/setup.ts with room for the rest of a test.
+    testTimeout: 20000,
     // Keep transformed modules (React Compiler included) in node_modules/.vitest-cache
     // between runs: transforms were a quarter of every run, now they are ~4%.
     fsModuleCache: true,

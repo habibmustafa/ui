@@ -120,9 +120,7 @@ const CommandGroup = React.forwardRef<
     ref={ref}
     className={cn(
       'overflow-hidden p-1 text-foreground-light **:[[cmdk-group-heading]]:px-2 **:[[cmdk-group-heading]]:py-1.5 **:[[cmdk-group-heading]]:text-xs **:[[cmdk-group-heading]]:font-normal [&_[cmdk-group-heading]]:text-foreground-muted',
-      '**:[[cmdk-group-heading]]:font-mono',
-      '**:[[cmdk-group-heading]]:uppercase',
-      '**:[[cmdk-group-heading]]:tracking-wider',
+      '**:[[cmdk-group-heading]]:font-medium',
       className
     )}
     {...props}

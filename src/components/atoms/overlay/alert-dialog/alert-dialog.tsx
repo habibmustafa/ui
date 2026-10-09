@@ -1,4 +1,4 @@
-// Modified from the Supabase Alert Dialog to add a props-driven composition.
+// Adapted from upstream Alert Dialog (see THIRD-PARTY-NOTICES.md); modified to add a props-driven composition.
 import * as React from 'react'
 
 import { cn } from '../../../../lib/utils'

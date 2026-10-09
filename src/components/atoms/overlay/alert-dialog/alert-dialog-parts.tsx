@@ -1,4 +1,4 @@
-// Modified from the Supabase Alert Dialog: the compound root is exported as AlertDialogRoot.
+// Adapted from upstream Alert Dialog (see THIRD-PARTY-NOTICES.md); modified: the compound root is exported as AlertDialogRoot.
 'use client'
 
 import { cva, type VariantProps } from 'class-variance-authority'
@@ -342,7 +342,7 @@ const AlertDialogAction = React.forwardRef<
         <AlertDialogPrimitive.Action
           ref={ref}
           asChild
-          className={cn(buttonVariants({ variant: variant, size: 'tiny' }), className)}
+          className={cn(buttonVariants({ variant: variant, size: 'small' }), className)}
           disabled={isDisabled}
           onClick={handleClick}
           type={type}
@@ -381,7 +381,7 @@ const AlertDialogCancel = React.forwardRef<
     <AlertDialogPrimitive.Cancel
       ref={ref}
       className={cn(
-        buttonVariants({ variant: 'default', size: 'tiny' }),
+        buttonVariants({ variant: 'default', size: 'small' }),
         'mt-2 sm:mt-0',
         className
       )}

@@ -12,7 +12,7 @@ import { readFileSync } from 'node:fs'
 import { globSync } from 'node:fs'
 
 const CSS = 'dist/styles.css'
-const SOURCES = ['src/**/*.tsx', 'playground/**/*.tsx', 'src/components/atoms/layout/layout-classes.ts']
+const SOURCES = ['src/**/*.tsx', 'playground/**/*.tsx', 'playground/design.ts', 'src/components/atoms/layout/layout-classes.ts']
 
 // Files whose class names live in lookup tables rather than next to a `className`, so the
 // `className`-proximity heuristic below would miss every one of them. Full-scanned instead.
@@ -51,11 +51,39 @@ const NOT_CLASSES = new Set([
   // Dashboard block: CSS variables passed to the chart, not classes.
   'var(--chart-1)',
   'var(--chart-2)',
+  // Route progress bar: inline transition values, not classes.
+  'cubic-bezier(0.1,',
+  'ease-out,',
   // Blocks: ids that name a region or field (aria-labelledby / htmlFor), not classes.
+  'account-email',
+  'contact-message',
+  'notify-quiet',
+  'project-mode',
+  'project-region',
+  'billing-api',
+  'at:desc',
+  'help-contact',
+  'product-size',
+  'security-2fa-label',
+  'security-danger',
+  'security-sessions',
+  'security-signin',
+  'share-access',
+  'share-link',
+  'survey-comment',
+  'sign-in',
+  'account-profile',
   'api-key-name',
   'billing-invoices',
+  'checkout-contact',
+  'checkout-delivery',
+  'checkout-payment',
+  'checkout-summary',
   'billing-plan',
   'billing-usage',
+  // Gallery search element and iframe theme message type, not CSS utilities.
+  'blocks-search',
+  'ui:block-theme',
   'dash-activity',
   'dash-revenue',
   'onboarding-size',
@@ -66,7 +94,10 @@ const NOT_CLASSES = new Set([
   'var(--color-plan)',
   // DataTable demo: a `"<column>:<direction>"` sort string, not a variant-prefixed class.
   'name:asc',
-  // PasswordInput: autocomplete tokens, not classes.
+  // PasswordInput and the checkout block: autocomplete tokens, not classes.
+  'address-level2',
+  'postal-code',
+  'street-address',
   'current-password',
   'new-password',
   // DropdownMenu checkbox demo: MenuItem `key` values, not classes.
@@ -111,11 +142,12 @@ const NOT_CLASSES = new Set([
   // utility on their site either, kept verbatim for fidelity to the ported markup.
   'font-italic',
   // CodeBlock: `--color-surface` (unsuffixed, distinct from the `surface-75..400` scale we do
-  // have) isn't a token check-tokens.mjs finds on the live site either — a dead class there
+  // have) isn't a defined token either — a dead class there
   // too, kept verbatim. `code-block` is a bare CSS hook with no rule in the public design
   // system bundle (Studio-dashboard-only styling, out of reach for this port).
   'border-surface',
   'code-block',
+  'language-json',
   'language-pgsql',
   'var(--background-selection)',
   // TimestampInfo/StatusCode: same category as font-italic/border-surface above — upstream

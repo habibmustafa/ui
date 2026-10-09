@@ -27,7 +27,7 @@ export default function MetricCardWithIconLinkTooltipPropsDemo() {
     <div className="w-1/2">
       <MetricCard
         isLoading={!data.length}
-        href="https://www.supabase.io"
+        href="https://example.com"
         icon={<User2 size={14} strokeWidth={1.5} />}
         iconPlacement="header"
         label="Active Users"

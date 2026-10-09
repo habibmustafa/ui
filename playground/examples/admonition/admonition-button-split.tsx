@@ -30,7 +30,7 @@ export default function AdmonitionButtonSplitDemo() {
                 <div className="flex flex-col gap-y-0.5">
                   <p className="block text-foreground">Upgrade to Pro</p>
                   <p className="block text-foreground-lighter text-balance">
-                    Customize templates while using Supabase’s email service
+                    Customize templates while using our email service
                   </p>
                 </div>
               </DropdownMenu.Item>

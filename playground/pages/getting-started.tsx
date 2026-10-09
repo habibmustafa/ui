@@ -7,6 +7,7 @@ import { z } from 'zod'
 import { Button, Dialog, Form, FormInput, FormSelect, toast } from '../../src'
 import { CodeSnippet } from '../code-snippet'
 import { InstallCommand } from '../install-command'
+import { PageHeader } from '../page-header'
 import { Link } from '../router'
 
 /*
@@ -130,10 +131,10 @@ export function SignupForm() {
 
 const THEMING_CODE = `import { ThemeProvider, createTheme } from '@habibmustafa/ui'
 
-// The whole brand scale (light and dark) is generated from one colour.
+// The whole brand scale (light and dark) is generated from one color.
 const theme = createTheme({
   brand: '#6366f1',     // buttons, links, focus
-  accent: '#ec4899',    // info colour, second chart series
+  accent: '#ec4899',    // info color, second chart series
   neutral: { tint: 0.2 }, // a light brand tint on surfaces (0 = gray)
   radius: 8,            // rounded-md; the other sizes scale with it
 })
@@ -189,11 +190,7 @@ function SignupFormDemo() {
 export default function GettingStartedPage() {
   return (
     <div>
-      <h1 className="scroll-m-20 text-3xl tracking-tight">Getting started</h1>
-      <p className="mt-2 text-lg text-foreground-light">
-        Seven steps from install to a working, validated form. Each step shows its result live next
-        to the code.
-      </p>
+      <PageHeader title="Getting started" eyebrow="From idea to interface" description="Seven steps from install to a working, validated form. Each step shows its result live next to the code." divider={false} />
       <nav aria-label="Steps" className="mt-6 mb-10 flex flex-wrap gap-x-4 gap-y-1 border-b pb-4 text-sm">
         {STEPS.map((step, index) => (
           <a
@@ -291,7 +288,7 @@ export default function GettingStartedPage() {
           <Link to="/theme" className="focus-ring rounded-xs text-foreground underline underline-offset-2">
             theme builder
           </Link>
-          : pick colours, contrast, radius and fonts, see the result live, then take it as a CSS file or
+          : pick colors, contrast, radius and fonts, see the result live, then take it as a CSS file or
           as code. The same generator ships in the library:
         </p>
         <CodeSnippet code={THEMING_CODE} />

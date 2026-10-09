@@ -8,7 +8,7 @@ import { encodeQR, qrCapacity, type QRLevel } from './qr-encoder'
 
 /*
  * Renders `value` as a QR code in an SVG: one <path> for all dark modules, so it stays
- * crisp at any size and prints well. Colours default to black on white on purpose: scanners
+ * crisp at any size and prints well. Colors default to black on white on purpose: scanners
  * need dark-on-light contrast, so the code does not follow the theme. Input that does not
  * fit (see `qrCapacity`) renders `fallback` and calls `onError` instead of throwing.
  */
@@ -25,9 +25,9 @@ export interface QRCodeProps extends Omit<React.SVGAttributes<SVGSVGElement>, 'c
   level?: QRLevel
   /** Quiet zone around the code, in modules. Scanners want 4. @default 4 */
   margin?: number
-  /** Dark module colour. @default "#000" */
+  /** Dark module color. @default "#000" */
   color?: string
-  /** Background (and quiet zone) colour. @default "#fff" */
+  /** Background (and quiet zone) color. @default "#fff" */
   background?: string
   /** Accessible name. @default "QR code" */
   label?: string
