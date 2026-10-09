@@ -12,7 +12,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const dist = join(root, 'playground-dist')
-const { render, ROUTES } = await import(
+const { render, ROUTES, criticalModules } = await import(
   pathToFileURL(join(root, 'playground-ssr', 'entry-server.js')).href
 )
 
@@ -29,10 +29,24 @@ if (!shell.includes(ROOT) || !/<title>[^<]*<\/title>/.test(shell)) {
 const escapeHtml = (text) =>
   text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 
+const manifest = JSON.parse(readFileSync(join(dist, '.vite', 'manifest.json'), 'utf8'))
+function preloads(route) {
+  const files = new Set()
+  const visit = key => {
+    const chunk = manifest[key]
+    if (!chunk || files.has(chunk.file)) return
+    files.add(chunk.file)
+    for (const dependency of chunk.imports ?? []) visit(dependency)
+  }
+  for (const key of criticalModules(route)) visit(key)
+  return [...files].filter(file => !shell.includes(`href="/${file}"`)).map(file => `<link rel="modulepreload" crossorigin href="/${file}">`).join('')
+}
+
 const started = Date.now()
 for (const route of ROUTES) {
   const { html, title } = await render(route)
   const page = shell
+    .replace('</head>', () => `${preloads(route)}</head>`)
     .replace(ROOT, () => `<div id="root">${html}</div>`)
     .replace(/<title>[^<]*<\/title>/, () => `<title>${escapeHtml(title)}</title>`)
   const file = join(dist, route === '/' ? 'index.html' : `${route.slice(1)}.html`)

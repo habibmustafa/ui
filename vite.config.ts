@@ -5,18 +5,18 @@ import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   server: {
     host: "0.0.0.0",
     port: 3000,
-    // Transform the playground's module graph as soon as the server starts instead of on
-    // the first page load. Every library file goes through the React Compiler (babel),
-    // which made the first page after `npm run dev` take ~11s; warmed up, it takes ~2.5s.
+    // Warm the application shell while the development server starts.
     warmup: { clientFiles: ["./playground/main.tsx"] },
   },
   plugins: [
     react(),
-    babel({ presets: [reactCompilerPreset()] }),
+    // Keep compiler optimization in production; compiling every library module
+    // on demand adds seconds to cold dev navigation and provides no HMR benefit.
+    ...(command === 'build' ? [babel({ presets: [reactCompilerPreset()] })] : []),
     tailwindcss(),
     dts({ include: ["src"], bundleTypes: true, tsconfigPath: "./tsconfig.app.json" }),
   ],
@@ -79,4 +79,4 @@ export default defineConfig({
       ],
     },
   },
-});
+}));

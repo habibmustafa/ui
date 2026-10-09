@@ -8,9 +8,9 @@ import { parseColor, toGamut, toHslTriplet, toOklchCss, type Oklch } from './col
  * stepped scales (--brand-200…600, --secondary-*, --warning-*, --destructive-*) are
  * per-theme literals. This generator fills both: it sets the inputs, and rebuilds
  * each scale from a *profile* measured off the original theme (the lightness and
- * relative chroma of every step, per mode) with the chosen colour's hue and
+ * relative chroma of every step, per mode) with the chosen color's hue and
  * saturation. So the default config reproduces the shipped palette, and any other
- * colour keeps the same light/dark contrast structure (button text stays readable,
+ * color keeps the same light/dark contrast structure (button text stays readable,
  * hover steps stay distinct).
  *
  * Only keys present in the config are emitted: createTheme({ brand }) touches the
@@ -18,9 +18,9 @@ import { parseColor, toGamut, toHslTriplet, toOklchCss, type Oklch } from './col
  */
 
 export interface ThemeConfig {
-  /** Main brand colour, as any CSS colour (hex, rgb(), hsl(), oklch()). */
+  /** Main brand color, as any CSS color (hex, rgb(), hsl(), oklch()). */
   brand?: string
-  /** Second accent: the info colour, the second chart series and the secondary scale. */
+  /** Second accent: the info color, the second chart series and the secondary scale. */
   accent?: string
   neutral?: {
     /** Hue (0–360) of the neutral tint. Defaults to the brand hue. */
@@ -31,9 +31,9 @@ export interface ThemeConfig {
   /** 0 – 1; 0.5 is the default. Higher = stronger text, borders and dividers. */
   contrast?: number
   status?: {
-    /** Hue of warning colours (default ≈ 75, amber). */
+    /** Hue of warning colors (default ≈ 75, amber). */
     warningHue?: number
-    /** Hue of destructive colours (default ≈ 25, red). */
+    /** Hue of destructive colors (default ≈ 25, red). */
     destructiveHue?: number
   }
   /** Corner radius of `rounded-md` in px (default 6); the other sizes scale with it. */
@@ -94,7 +94,7 @@ const BRAND: Record<Mode, Record<string, Step>> = {
     '200': { l: 0.13, c: 0.024 },
   },
 }
-/* Accessible text / control colour (`text-primary`), per mode. */
+/* Accessible text / control color (`text-primary`), per mode. */
 const PRIMARY: Record<Mode, Step> = {
   light: { l: 0.525, c: 0.12 },
   dark: { l: 0.76, c: 0.15 },
@@ -150,7 +150,7 @@ const MODES: Mode[] = ['light', 'dark']
 const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n))
 const hue = (h: number) => ((h % 360) + 360) % 360
 
-/** Scales the profile's chroma by how saturated the chosen colour is. */
+/** Scales the profile's chroma by how saturated the chosen color is. */
 function chromaFactor(color: Oklch, reference: number) {
   return clamp(color.c / reference, 0, 1.6)
 }
@@ -161,7 +161,7 @@ function step(profile: Step, h: number, factor = 1): Oklch {
 
 function requireColor(value: string, key: string): Oklch {
   const color = parseColor(value)
-  if (!color) throw new Error(`createTheme: "${value}" is not a colour this generator can read (${key}).`)
+  if (!color) throw new Error(`createTheme: "${value}" is not a color this generator can read (${key}).`)
   return color
 }
 
@@ -175,7 +175,7 @@ export function createTheme(config: ThemeConfig = {}): ThemeTokens {
   const brand = config.brand ? requireColor(config.brand, 'brand') : null
   if (brand) {
     const factor = chromaFactor(brand, BRAND_REF_C)
-    // The picked colour itself is the solid fill (switches, slider range, checked
+    // The picked color itself is the solid fill (switches, slider range, checked
     // states), kept in a lightness band where it holds 3:1 against the canvas: on
     // light surfaces no lighter than 0.63, on dark ones no darker than 0.5.
     const fills: Record<Mode, Oklch> = {

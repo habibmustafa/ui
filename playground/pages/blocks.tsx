@@ -1,163 +1,90 @@
-import { Suspense, lazy, useEffect, useState, type ComponentType, type LazyExoticComponent } from 'react'
+import { ArrowUpRight, Search, X } from 'lucide-react'
+import { useCallback, useEffect } from 'react'
 
-import { Skeleton, Tabs, cn } from '../../src'
-import { BLOCKS, BLOCK_CATEGORIES, type BlockCategory, type BlockMeta } from '../blocks/registry'
-import { CodeSnippet } from '../code-snippet'
-import { useNearViewport } from '../component-preview'
-import { findComponent } from '../registry'
-import { Link } from '../router'
-import { DISPLAY } from './home-hero'
-
-/*
- * /blocks: every block as a live screen and as the code that makes it. Blocks mount only
- * when they are near the screen, like the previews on a component page, and take the
- * current theme, so a colour picked on the landing page or in the theme builder shows up
- * here too.
- */
-
-const loaders = import.meta.glob<{ default: ComponentType }>('../blocks/*.tsx')
-const sources = import.meta.glob<string>('../blocks/*.tsx', { query: '?raw', import: 'default' })
-
-const lazyBlocks = new Map<string, LazyExoticComponent<ComponentType>>()
-function getBlock(id: string) {
-  let Block = lazyBlocks.get(id)
-  if (!Block) {
-    Block = lazy(loaders[`../blocks/${id}.tsx`] as () => Promise<{ default: ComponentType }>)
-    lazyBlocks.set(id, Block)
-  }
-  return Block
-}
-
-// The blocks import from the library source; show the package name instead so the code
-// reads the way a consumer would write it.
-const presentSource = (source: string) =>
-  source.replace(/(['"])(?:\.\.\/)+src\1/g, "'@habibmustafa/ui'").trim()
-
-function BlockCode({ id }: { id: string }) {
-  const [source, setSource] = useState<string | null>(null)
-
-  useEffect(() => {
-    let active = true
-    sources[`../blocks/${id}.tsx`]?.().then((raw) => {
-      if (active) setSource(presentSource(raw))
-    })
-    return () => {
-      active = false
-    }
-  }, [id])
-
-  return <CodeSnippet code={source ?? ''} maxHeight={560} />
-}
-
-function Stage({ Block, near }: { Block: ComponentType; near: boolean }) {
-  return (
-    <div className="relative flex min-h-80 w-full items-center justify-center overflow-hidden rounded-lg border bg-studio p-4 sm:p-10">
-      {/* A faint dot grid so each screen reads as a surface lifted off a canvas. */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(oklch(from_var(--foreground-default)_l_c_h_/_0.09)_1px,transparent_1px)] bg-size-[18px_18px] mask-[radial-gradient(ellipse_90%_90%_at_50%_50%,#000_45%,transparent_100%)]"
-      />
-      {near ? (
-        <Suspense fallback={<Skeleton className="h-64 w-full max-w-md" />}>
-          {/* min-w-0: a flex item never shrinks below its content (a table) otherwise. */}
-          <div className="relative flex min-w-0 flex-1 justify-center">
-            <Block />
-          </div>
-        </Suspense>
-      ) : null}
-    </div>
-  )
-}
-
-function BlockSection({ block }: { block: BlockMeta }) {
-  const [ref, near] = useNearViewport()
-  const Block = getBlock(block.id)
-
-  return (
-    <section id={block.id} aria-labelledby={`${block.id}-title`} className="scroll-mt-20 py-10" ref={ref}>
-      <div className="mb-5 flex flex-col gap-2">
-        <h2 id={`${block.id}-title`} className={cn('text-2xl font-semibold text-foreground', DISPLAY)}>
-          {block.title}
-        </h2>
-        <p className="max-w-2xl text-foreground-light">{block.description}</p>
-        <p className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-sm text-foreground-lighter">
-          <span>Built with</span>
-          {block.uses.map((id, index) => (
-            <span key={id} className="inline-flex items-center gap-1.5">
-              <Link
-                to={`/components/${id}`}
-                className="focus-ring rounded-xs text-foreground-light underline decoration-border-stronger underline-offset-2 transition-colors hover:text-foreground"
-              >
-                {findComponent(id)?.title ?? id}
-              </Link>
-              {index < block.uses.length - 1 && <span aria-hidden="true">,</span>}
-            </span>
-          ))}
-        </p>
-      </div>
-      <Tabs
-        classNames={{ list: 'w-fit gap-6', trigger: 'flex-none px-0' }}
-        items={[
-          { value: 'preview', label: 'Preview', content: <Stage Block={Block} near={near} /> },
-          { value: 'code', label: 'Code', content: <BlockCode id={block.id} /> },
-        ]}
-      />
-    </section>
-  )
-}
+import { cn } from '../../src'
+import { BlockThumbnail } from '../block-preview'
+import { BLOCKS, BLOCK_CATEGORIES } from '../blocks/registry'
+import { FILTER_ACTIVE, FILTER_CHIP, FILTER_IDLE, PANEL } from '../design'
+import { PageHeader } from '../page-header'
+import { Link, useRouter } from '../router'
 
 export default function BlocksPage() {
-  const [category, setCategory] = useState<BlockCategory | 'All'>('All')
-  const shown = category === 'All' ? BLOCKS : BLOCKS.filter((block) => block.category === category)
-  const countOf = (name: BlockCategory | 'All') =>
-    name === 'All' ? BLOCKS.length : BLOCKS.filter((block) => block.category === name).length
+  const { path, navigate } = useRouter()
+  const params = new URLSearchParams(path.split('?')[1])
+  const rawCategory = params.get('category')
+  const category = BLOCK_CATEGORIES.find((name) => name === rawCategory) ?? 'All'
+  const query = params.get('q') ?? ''
+  const needle = query.trim().toLowerCase()
+  const shown = BLOCKS.filter((block) => (category === 'All' || block.category === category) && (!needle || (block.title + ' ' + block.description).toLowerCase().includes(needle)))
+
+  const updateQuery = useCallback((updates: Record<string, string | null>, replace = false) => {
+    const next = new URLSearchParams(path.split('?')[1])
+    for (const [key, value] of Object.entries(updates)) {
+      if (value) next.set(key, value)
+      else next.delete(key)
+    }
+    const search = next.toString()
+    navigate('/blocks' + (search ? '?' + search : ''), { replace })
+  }, [path, navigate])
+
+  // Keep previously shared /blocks#dashboard and /blocks?block=dashboard links working
+  // now that every block has its own page.
+  useEffect(() => {
+    const legacy = () => {
+      const id = new URLSearchParams(window.location.search).get('block') ?? window.location.hash.slice(1)
+      if (BLOCKS.some((block) => block.id === id)) navigate('/blocks/' + id, { replace: true })
+    }
+    legacy()
+    window.addEventListener('hashchange', legacy)
+    return () => window.removeEventListener('hashchange', legacy)
+  }, [navigate])
 
   return (
     <div>
-      <h1 className={cn('max-w-2xl text-balance text-4xl font-bold leading-[1.05] text-foreground sm:text-5xl', DISPLAY)}>
-        Whole screens, ready to copy
-      </h1>
-      <p className="mt-4 max-w-2xl text-lg text-foreground-light">
-        {BLOCKS.length} screens built only from the library. Each one is real code that follows your theme, in light
-        and dark.
-      </p>
-
-      <div role="group" aria-label="Filter by kind" className="mt-6 flex flex-wrap gap-1.5">
-        {(['All', ...BLOCK_CATEGORIES] as const).map((name) => (
-          <button
-            key={name}
-            type="button"
-            aria-pressed={category === name}
-            onClick={() => setCategory(name)}
-            className={cn(
-              'focus-ring inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-full border px-3.5 text-sm transition-colors',
-              category === name
-                ? 'border-foreground bg-foreground text-background'
-                : 'border-default text-foreground-light hover:border-foreground-muted hover:text-foreground'
-            )}
-          >
-            {name}
-            <span className="text-xs tabular-nums opacity-70">{countOf(name)}</span>
-          </button>
-        ))}
+      <PageHeader title="A head start for every screen." eyebrow="The block collection" description={BLOCKS.length + ' ready-to-use screens. Find your starting point, try it on desktop or mobile, and make it your own.'} divider={false} />
+      <div className="mt-8 flex flex-col gap-4 rounded-xl border bg-surface-75 p-4 sm:p-5">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="relative w-full max-w-sm">
+            <Search aria-hidden="true" className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-foreground-lighter" />
+            <input id="blocks-search" type="search" aria-label="Search blocks" placeholder="Find a screen…" value={query} onChange={(event) => updateQuery({ q: event.target.value }, true)} className="focus-ring h-10 w-full rounded-lg border border-control bg-field pl-9 pr-9 text-sm placeholder:text-foreground-muted [&::-webkit-search-cancel-button]:hidden" />
+            {query && <button type="button" aria-label="Clear search" onClick={() => updateQuery({ q: null }, true)} className="focus-ring absolute right-1 top-1/2 flex h-8 w-8 -translate-y-1/2 cursor-pointer items-center justify-center rounded-md text-foreground-light"><X className="h-3.5 w-3.5" /></button>}
+          </div>
+          <p aria-live="polite" className="text-xs text-foreground-lighter">{shown.length} of {BLOCKS.length} screens</p>
+        </div>
+        <div role="group" aria-label="Filter by kind" className="flex flex-wrap gap-1.5">
+          {(['All', ...BLOCK_CATEGORIES] as const).map((name) => (
+            <button key={name} type="button" aria-pressed={category === name} onClick={() => updateQuery({ category: name === 'All' ? null : name }, true)} className={cn(FILTER_CHIP, category === name ? FILTER_ACTIVE : FILTER_IDLE)}>
+              {name}<span className="text-[10px] tabular-nums text-foreground-lighter">{name === 'All' ? BLOCKS.length : BLOCKS.filter((block) => block.category === name).length}</span>
+            </button>
+          ))}
+        </div>
       </div>
 
-      <nav aria-label="Blocks" className="mt-4 flex flex-wrap gap-1.5">
-        {shown.map((block) => (
-          <a
-            key={block.id}
-            href={`#${block.id}`}
-            className="focus-ring inline-flex h-7 items-center rounded-full border border-default px-3 text-xs text-foreground-light transition-colors hover:border-foreground-muted hover:text-foreground"
-          >
-            {block.title}
-          </a>
-        ))}
-      </nav>
-      <div className="mt-4 divide-y">
-        {shown.map((block) => (
-          <BlockSection key={block.id} block={block} />
-        ))}
-      </div>
+      {shown.length ? <div className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {shown.map((block, index) => {
+          return (
+            <article key={block.id} className={cn(PANEL, 'group relative flex min-w-0 flex-col overflow-hidden transition-colors hover:border-brand-500 has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-ring')}>
+              <BlockThumbnail block={block} eager={index < 3} />
+              <div className="flex flex-1 flex-col p-5">
+                <span className="mb-2 text-[10px] font-medium uppercase tracking-widest text-foreground-lighter">{block.category}</span>
+                <h2 className="flex items-center justify-between gap-2 text-base font-semibold">
+                  <Link id={'block-' + block.id} to={'/blocks/' + block.id} aria-label={`${block.title} — open preview`} className="outline-hidden after:absolute after:inset-0">
+                    {block.title}
+                  </Link>
+                  <ArrowUpRight aria-hidden="true" className="h-4 w-4 text-foreground-lighter transition-colors group-hover:text-brand-600" />
+                </h2>
+                <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-foreground-light">{block.description}</p>
+                <span className="mt-4 text-xs text-foreground-lighter">{block.uses.length} components</span>
+              </div>
+            </article>
+          )
+        })}
+      </div> : <div className="mt-7 rounded-xl border border-dashed px-6 py-16 text-center">
+        <p className="text-base font-medium">No screens found</p>
+        <p className="mt-2 text-sm text-foreground-light">Try another name or browse all categories.</p>
+        <button type="button" onClick={() => updateQuery({ q: null, category: null }, true)} className="focus-ring mt-4 cursor-pointer rounded-md px-3 py-2 text-sm text-brand-600 underline underline-offset-4">Clear filters</button>
+      </div>}
+
     </div>
   )
 }

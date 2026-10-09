@@ -29,9 +29,9 @@ npm i @habibmustafa/ui
 - **Hybrid API**: selected components work either with plain `props` or with a Radix-style
   `Component.Root` / `Component.Part` compound composition. Which components are hybrid, and
   why: [docs/hybrid-api-migration.md](docs/hybrid-api-migration.md).
-- **Your own theme**: pick colours, contrast, radius and fonts live in the
+- **Your own theme**: pick colors, contrast, radius and fonts live in the
   [theme builder](https://ui.habibmustafa.me/theme) and take the result as CSS or code. The same
-  generator ships as `createTheme()`: one brand colour produces the full scale for light and
+  generator ships as `createTheme()`: one brand color produces the full scale for light and
   dark themes.
 - **Light / dark / system themes**: `ThemeProvider` stores the choice in `localStorage` and
   follows `prefers-color-scheme` live.
@@ -113,7 +113,7 @@ import { ThemeProvider, createTheme } from '@habibmustafa/ui'
 
 const theme = createTheme({
   brand: '#6366f1',         // buttons, links, focus; the whole brand scale comes from this
-  accent: '#ec4899',        // info colour, second chart series
+  accent: '#ec4899',        // info color, second chart series
   neutral: { tint: 0.2 },   // a brand-hued tint on surfaces (0 = gray)
   contrast: 0.6,            // 0–1, default 0.5
   status: { warningHue: 70, destructiveHue: 20 },
@@ -128,7 +128,7 @@ const theme = createTheme({
 
 - `createTheme` only changes the keys you pass; an empty config is the default theme.
 - Every scale step keeps the light/dark structure of the original palette (lightness and
-  relative chroma), so button text and hover steps stay readable in any colour.
+  relative chroma), so button text and hover steps stay readable in any color.
 - For static CSS (SSR, a separate file), use `themeToCss(config)` and load the result after
   `styles.css`. The selectors are `:root`-qualified, so load order doesn't matter.
 - `<ThemeStyle tokens={…} />` applies a theme without a provider (for a preview, say).

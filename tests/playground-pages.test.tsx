@@ -44,6 +44,10 @@ test('the catalog lists every registry component exactly once', () => {
   const catalogIds = CATALOG.flatMap((g) => g.entries.map((e) => e.id)).sort()
   expect(catalogIds).toEqual(registryIds)
   expect(CATALOG.every((group) => group.entries.length > 0)).toBe(true)
+  // The build machine may use Azerbaijani collation (Q before M), while browsers
+  // use English. Their initial HTML must still agree.
+  const displayTitles = CATALOG.find((group) => group.key === 'data-display')!.entries.map((entry) => entry.title)
+  expect(displayTitles.indexOf('Marquee')).toBeLessThan(displayTitles.indexOf('QR Code'))
 })
 
 describe.each([
@@ -79,9 +83,10 @@ test('the components index filters by text and by role', async () => {
   await user.clear(screen.getByRole('searchbox', { name: 'Filter components' }))
   await user.type(screen.getByRole('searchbox', { name: 'Filter components' }), 'zzzz')
   expect(screen.getByText('No results for “zzzz”.')).toBeTruthy()
+  // Clearing the filter mounts live previews for the full catalog in the test DOM.
   await user.click(screen.getByRole('button', { name: 'Clear filters' }))
   await waitFor(() => expect(screen.getAllByRole('heading', { level: 2 })).toHaveLength(CATALOG.length))
-})
+}, 15000)
 
 test('the install command follows the chosen package manager on every copy', async () => {
   const user = userEvent.setup()

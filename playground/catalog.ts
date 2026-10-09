@@ -33,7 +33,9 @@ const ROLES: { key: string; title: string }[] = [
 ]
 
 const allEntries = COMPONENT_GROUPS.flatMap((group) => group.entries)
-const byTitle = (a: ComponentEntry, b: ComponentEntry) => a.title.localeCompare(b.title)
+// The English catalog must have the same order on the build machine and in every
+// browser. In Azerbaijani collation, for example, Q sorts before M.
+const byTitle = (a: ComponentEntry, b: ComponentEntry) => a.title.localeCompare(b.title, 'en')
 
 export const CATALOG: CatalogGroup[] = [
   ...ROLES.map((role) => ({

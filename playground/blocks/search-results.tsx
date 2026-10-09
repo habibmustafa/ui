@@ -14,7 +14,7 @@ interface Result {
 const RESULTS: Result[] = [
   { title: 'Validate a form with react-hook-form', kind: 'Guides', excerpt: 'Connect any form field to a schema and show the error under the right control.' },
   { title: 'Form fields', kind: 'Docs', excerpt: 'One line per field: label, control, description and message wired together.' },
-  { title: 'Theme a form to your brand', kind: 'Guides', excerpt: 'Pick one colour and every form control, focus ring and error state follows it.' },
+  { title: 'Theme a form to your brand', kind: 'Guides', excerpt: 'Pick one color and every form control, focus ring and error state follows it.' },
   { title: 'Date range picker', kind: 'Docs', excerpt: 'Choose a start and an end date in one field, with presets and limits.' },
   { title: '0.4.0: sixteen new components', kind: 'Changelog', excerpt: 'Carousel, rating, gauge, mentions, QR code and more, plus translatable labels.' },
   { title: 'Make a form accessible', kind: 'Guides', excerpt: 'Labels, descriptions and focus after a failed submit, without extra code.' },

@@ -3,25 +3,26 @@ import { useEffect, useState } from 'react'
 
 import { cn } from '../src'
 import { highlight, highlightedSync } from './highlight'
+import { useNearViewport } from './near-viewport'
 
 export type SnippetLang = 'tsx' | 'css' | 'shellscript'
 
 /** Highlighted HTML once the worker returns it (immediately if cached); plain text until then. */
-function useHighlighted(code: string, lang: SnippetLang) {
+function useHighlighted(code: string, lang: SnippetLang, active: boolean) {
   const [state, setState] = useState(() => ({ key: `${lang}:${code}`, html: highlightedSync(code, lang) ?? null }))
   const key = `${lang}:${code}`
   if (state.key !== key) setState({ key, html: highlightedSync(code, lang) ?? null })
 
   useEffect(() => {
-    if (!code) return
-    let active = true
+    if (!code || !active) return
+    let mounted = true
     highlight(code, lang).then((html) => {
-      if (active) setState({ key: `${lang}:${code}`, html })
+      if (mounted) setState({ key: `${lang}:${code}`, html })
     })
     return () => {
-      active = false
+      mounted = false
     }
-  }, [code, lang])
+  }, [code, lang, active])
 
   return state.key === key ? state.html : null
 }
@@ -64,10 +65,11 @@ export function CodeSnippet({
   className?: string
   maxHeight?: number
 }) {
-  const html = useHighlighted(code, lang)
+  const [ref, near] = useNearViewport({ margin: '300px 0px' })
+  const html = useHighlighted(code, lang, near)
 
   return (
-    <div className={cn('relative w-full overflow-hidden rounded-md border bg-surface-75/75', className)}>
+    <div ref={ref} className={cn('relative w-full overflow-hidden rounded-md border bg-surface-75/75', className)}>
       <SnippetCopyButton value={code} />
       {html ? (
         <div

@@ -1,7 +1,7 @@
 import { Suspense, type ComponentType } from 'react'
 
-import { Skeleton } from '../src'
-import { getDemo, useNearViewport } from './component-preview'
+import { getDemo } from './demo-loaders'
+import { useNearViewport } from './near-viewport'
 
 /*
  * A live, miniature copy of a component's first example, for the gallery. It is the real
@@ -48,15 +48,15 @@ function Stage({ Demo, scale }: { Demo: ComponentType; scale: number }) {
         transformOrigin: '0 0',
       }}
     >
-      <Suspense fallback={<Skeleton className="h-10 w-40" />}>
+      <Suspense fallback={null}>
         <Demo />
       </Suspense>
     </div>
   )
 }
 
-export function ComponentThumbnail({ id, name }: { id: string; name: string }) {
-  const [ref, near] = useNearViewport()
+export function ComponentThumbnail({ id, name, eager = false }: { id: string; name: string; eager?: boolean }) {
+  const [ref, near] = useNearViewport({ initial: eager, once: false, margin: '500px 0px' })
   const Demo = getDemo(name)
 
   return (

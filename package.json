@@ -59,6 +59,7 @@
     "check:tokens": "node scripts/check-tokens.mjs",
     "api:generate": "node scripts/generate-api.mjs",
     "check:api": "node scripts/generate-api.mjs --check",
+    "check:performance": "node scripts/check-playground-performance.mjs",
     "test": "vitest run",
     "prepublishOnly": "npm run build:lib",
     "verify": "npm run build:lib && npm run lint && npm run check:classes && npm run check:tokens && npm run check:api && npm run test",

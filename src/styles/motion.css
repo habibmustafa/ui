@@ -21,7 +21,7 @@
   --duration-enter: 220ms;
   --duration-exit: 150ms;
 
-  /* Every transition-* utility without its own duration/ease (hover colours, switch
+  /* Every transition-* utility without its own duration/ease (hover colors, switch
      thumb, tab indicator, …) uses these instead of Tailwind's 150ms ease-in-out. */
   --default-transition-duration: 200ms;
   --default-transition-timing-function: var(--ease-soft-out);
@@ -41,7 +41,7 @@
   to {
     opacity: 0;
   }
-}
+}
 /* Marquee: the track slides by exactly its own length plus the gap, so the next copy
    lands where this one started and the loop is seamless. */
 @keyframes marquee-x {

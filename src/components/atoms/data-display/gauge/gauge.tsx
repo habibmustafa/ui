@@ -7,7 +7,7 @@ import { cn } from '../../../../lib/utils'
 /*
  * A dial for a value inside a known range (CPU load, a score, a quota). It is a
  * `role="meter"`, not a progressbar: the value is a measurement, not task progress.
- * `angle` sets the sweep (180 = half circle, 270 = open ring); `thresholds` colour the
+ * `angle` sets the sweep (180 = half circle, 270 = open ring); `thresholds` color the
  * arc by value, e.g. green until 60, amber until 85, red above.
  */
 
@@ -41,7 +41,7 @@ export interface GaugeProps extends Omit<React.HTMLAttributes<HTMLDivElement>, '
   thickness?: number
   /** @default "brand" */
   tone?: Tone
-  /** Colours by value; overrides `tone`. Order doesn't matter. */
+  /** Colors by value; overrides `tone`. Order doesn't matter. */
   thresholds?: readonly GaugeThreshold[]
   /** Prints the value in the centre. @default true */
   showValue?: boolean

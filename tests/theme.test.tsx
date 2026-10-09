@@ -1,4 +1,4 @@
-// Theme generator: colour maths, the default config reproducing the shipped palette,
+// Theme generator: color maths, the default config reproducing the shipped palette,
 // CSS output, and ThemeProvider's `tokens` prop.
 import { render } from '@testing-library/react'
 import { readFileSync } from 'node:fs'
@@ -35,14 +35,14 @@ const fromTriplet = (triplet: string) => {
   return parseColor(`hsl(${h} ${s}% ${l}%)`)!
 }
 
-describe('colour maths', () => {
+describe('color maths', () => {
   test('hex round-trips through OKLCH', () => {
     for (const hex of ['#000000', '#ffffff', '#3ecf8e', '#6366f1', '#e11d48', '#71717a']) {
       expect(toHex(parseColor(hex)!)).toBe(hex)
     }
   })
 
-  test('parses rgb(), hsl() and oklch() as the same colour', () => {
+  test('parses rgb(), hsl() and oklch() as the same color', () => {
     const fromHex = parseColor('#6366f1')!
     for (const input of ['rgb(99 102 241)', 'rgb(99, 102, 241)', 'hsl(238.7 83.5% 66.7%)']) {
       const color = parseColor(input)!
@@ -51,7 +51,7 @@ describe('colour maths', () => {
     }
     expect(parseColor('oklch(0.6 0.2 270)')).toEqual({ l: 0.6, c: 0.2, h: 270 })
     expect(parseColor('oklch(60% 0.2 270)')).toEqual({ l: 0.6, c: 0.2, h: 270 })
-    expect(parseColor('not a colour')).toBeNull()
+    expect(parseColor('not a color')).toBeNull()
     expect(parseColor('#12')).toBeNull()
   })
 
@@ -87,7 +87,7 @@ describe('createTheme', () => {
         const where = `${mode} ${name}: shipped ${triplet}, generated ${generated}`
         expect(Math.abs(a.l - b.l), where).toBeLessThan(0.015)
         expect(Math.abs(a.c - b.c), where).toBeLessThan(0.015)
-        // Hue only means something once there is colour to see.
+        // Hue only means something once there is color to see.
         if (Math.min(a.c, b.c) > 0.04) {
           const dh = Math.abs(((a.h - b.h + 540) % 360) - 180)
           expect(dh, where).toBeLessThan(8)
@@ -109,8 +109,8 @@ describe('createTheme', () => {
     expect(tokens.dark).toMatchObject({ '--chroma': '0.005', '--contrast': '0.5' })
   })
 
-  test('brand text colour keeps AA contrast for every preset', () => {
-    // --primary is the text/link colour; check it against near-white and near-black
+  test('brand text color keeps AA contrast for every preset', () => {
+    // --primary is the text/link color; check it against near-white and near-black
     // canvases (the shipped light / dark backgrounds).
     const lightBg = parseColor('oklch(0.995 0 0)')!
     const darkBg = parseColor('oklch(0.19 0.005 157)')!
@@ -121,7 +121,7 @@ describe('createTheme', () => {
     }
   })
 
-  test('every generated colour is inside sRGB', () => {
+  test('every generated color is inside sRGB', () => {
     const tokens = createTheme({ brand: 'oklch(0.7 0.4 145)', accent: '#ff00ff', status: { warningHue: 100, destructiveHue: 0 } })
     for (const vars of [tokens.light, tokens.dark]) {
       for (const [name, value] of Object.entries(vars)) {
@@ -132,8 +132,8 @@ describe('createTheme', () => {
     }
   })
 
-  test('rejects an unreadable colour with a clear message', () => {
-    expect(() => createTheme({ brand: 'blurple' })).toThrow(/"blurple" is not a colour/)
+  test('rejects an unreadable color with a clear message', () => {
+    expect(() => createTheme({ brand: 'blurple' })).toThrow(/"blurple" is not a color/)
   })
 
   test('themeToCss qualifies selectors with :root so load order does not matter', () => {
@@ -153,4 +153,25 @@ test('ThemeProvider renders tokens as a <style>', () => {
   )
   const style = container.querySelector('style[data-ui-theme]')
   expect(style?.textContent).toBe(themeToCss({ brand: '#6366f1' }))
+})
+
+test('a theme change lands without transitions and leaves nothing behind', () => {
+  const added: string[] = []
+  const append = document.head.appendChild.bind(document.head)
+  document.head.appendChild = <T extends Node>(node: T) => {
+    added.push((node as unknown as HTMLElement).textContent ?? '')
+    return append(node)
+  }
+  // As the app's inline script does before first paint.
+  document.documentElement.setAttribute('data-theme', 'light')
+  try {
+    const { rerender } = render(<ThemeProvider defaultTheme="light" tokens={{ brand: '#6366f1' }}><p>content</p></ThemeProvider>)
+    // The first theme has nothing to animate from, so no restyle is forced while mounting.
+    expect(added.filter((css) => css.includes('transition:none'))).toHaveLength(0)
+    rerender(<ThemeProvider defaultTheme="light" tokens={{ brand: '#22aa66' }}><p>content</p></ThemeProvider>)
+    expect(added.filter((css) => css.includes('transition:none'))).toHaveLength(1)
+    expect(document.head.innerHTML).not.toContain('transition:none')
+  } finally {
+    document.head.appendChild = append
+  }
 })

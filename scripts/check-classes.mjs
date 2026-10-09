@@ -12,7 +12,7 @@ import { readFileSync } from 'node:fs'
 import { globSync } from 'node:fs'
 
 const CSS = 'dist/styles.css'
-const SOURCES = ['src/**/*.tsx', 'playground/**/*.tsx', 'src/components/atoms/layout/layout-classes.ts']
+const SOURCES = ['src/**/*.tsx', 'playground/**/*.tsx', 'playground/design.ts', 'src/components/atoms/layout/layout-classes.ts']
 
 // Files whose class names live in lookup tables rather than next to a `className`, so the
 // `className`-proximity heuristic below would miss every one of them. Full-scanned instead.
@@ -51,6 +51,9 @@ const NOT_CLASSES = new Set([
   // Dashboard block: CSS variables passed to the chart, not classes.
   'var(--chart-1)',
   'var(--chart-2)',
+  // Route progress bar: inline transition values, not classes.
+  'cubic-bezier(0.1,',
+  'ease-out,',
   // Blocks: ids that name a region or field (aria-labelledby / htmlFor), not classes.
   'account-email',
   'contact-message',
@@ -78,6 +81,9 @@ const NOT_CLASSES = new Set([
   'checkout-summary',
   'billing-plan',
   'billing-usage',
+  // Gallery search element and iframe theme message type, not CSS utilities.
+  'blocks-search',
+  'ui:block-theme',
   'dash-activity',
   'dash-revenue',
   'onboarding-size',

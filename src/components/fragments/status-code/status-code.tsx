@@ -52,7 +52,7 @@ export function getStatusColor(
     case 'redirect':
       return {
         // Warning-tinted text can't reach 4.5:1 on the light warning background;
-        // the background and border carry the colour, the text stays readable.
+        // the background and border carry the color, the text stays readable.
         text: 'text-foreground-light',
         bg: 'bg-warning-300',
         border: 'border-warning-500/50',

@@ -1,5 +1,5 @@
 // Theme builder (/theme): store ↔ config ↔ URL round trips, and the page itself —
-// accessible, presets apply, a typed colour updates the theme and the link, export
+// accessible, presets apply, a typed color updates the theme and the link, export
 // shows the generated CSS, import accepts JSON and builder links.
 import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -103,7 +103,7 @@ describe('theme builder page', () => {
     expect(violations.map((v) => `${v.id}: ${v.nodes[0]?.target.join(' ')}`)).toEqual([])
   }, 20000)
 
-  test('a preset applies its colours and marks itself active', async () => {
+  test('a preset applies its colors and marks itself active', async () => {
     const user = userEvent.setup()
     renderPage()
     expect(themeCss()).toBe('')
@@ -112,14 +112,14 @@ describe('theme builder page', () => {
     expect(themeCss()).toBe(themeToCss(THEME_PRESETS.find((p) => p.id === 'indigo')!.config))
   })
 
-  test('typing a colour updates the theme and the shareable URL', async () => {
+  test('typing a color updates the theme and the shareable URL', async () => {
     renderPage()
-    const input = screen.getByRole('textbox', { name: 'Brand colour' })
+    const input = screen.getByRole('textbox', { name: 'Brand color' })
     fireEvent.change(input, { target: { value: '#e11d48' } })
     expect(themeCss()).toContain('--brand-500')
     await waitFor(() => expect(window.location.search).toBe('?brand=e11d48'))
 
-    // An unreadable colour is flagged and leaves the theme alone.
+    // An unreadable color is flagged and leaves the theme alone.
     fireEvent.change(input, { target: { value: 'blurple' } })
     expect(input.getAttribute('aria-invalid')).toBe('true')
     expect(themeCss()).toBe(themeToCss({ brand: '#e11d48' }))
@@ -128,7 +128,7 @@ describe('theme builder page', () => {
   test('a shared link restores the theme', () => {
     renderPage('/theme?brand=6366f1&radius=10')
     expect(themeCss()).toBe(themeToCss({ brand: '#6366f1', radius: 10 }))
-    expect(screen.getByRole('textbox', { name: 'Brand colour' })).toHaveProperty('value', '#6366f1')
+    expect(screen.getByRole('textbox', { name: 'Brand color' })).toHaveProperty('value', '#6366f1')
   })
 
   test('export shows the generated CSS; import applies JSON and rejects junk', async () => {
@@ -143,7 +143,7 @@ describe('theme builder page', () => {
     await user.click(textarea)
     await user.paste('{ "brand": "nope" }')
     await user.click(within(dialog).getByRole('button', { name: 'Apply' }))
-    expect(within(dialog).getByText('"brand" is not a readable colour.')).toBeTruthy()
+    expect(within(dialog).getByText('"brand" is not a readable color.')).toBeTruthy()
 
     await user.clear(textarea)
     await user.paste('{ "brand": "#0ea5e9", "radius": 4 }')

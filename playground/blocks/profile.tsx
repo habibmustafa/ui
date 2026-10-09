@@ -11,7 +11,7 @@ const activity = [
 
 const projects = [
   { name: 'Billing API', note: 'Invoices, retries and tax', status: 'Live' },
-  { name: 'Design tokens', note: 'Colour and spacing for every app', status: 'Live' },
+  { name: 'Design tokens', note: 'Color and spacing for every app', status: 'Live' },
   { name: 'Mobile app', note: 'Rewrite in progress', status: 'In review' },
 ]
 

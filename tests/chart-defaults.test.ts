@@ -8,7 +8,7 @@ import { DEFAULT_THEME, createTheme } from '../src/theme'
 
 const css = readFileSync(join(__dirname, '../src/styles/vendor/theme/charts.css'), 'utf8')
 
-test('charts.css has the generated series-2 colours for the default accent', () => {
+test('charts.css has the generated series-2 colors for the default accent', () => {
   const theme = createTheme({ accent: DEFAULT_THEME.accent })
   for (const [mode, vars] of [
     ['light', theme.light],

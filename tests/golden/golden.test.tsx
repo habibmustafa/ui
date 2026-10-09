@@ -27,7 +27,7 @@
 // - checkbox-*, form-*, data-table-demo: Checkbox gained `relative after:absolute
 //   after:-inset-1` (24px hit area around the 16px box).
 // - code-block-demo, error-display-*, status-code-demo: contrast fixes — darker light-theme
-//   syntax colours, neutral text on warning backgrounds, destructive-600 status text.
+//   syntax colors, neutral text on warning backgrounds, destructive-600 status text.
 // - calendar-*: day buttons are named "Monday, September 7, 2026" (the visible number as
 //   a word) instead of react-day-picker's "…September 7th, 2026" (WCAG 2.5.3); outside
 //   days lost `opacity-50` (contrast 2.1:1 -> 5.4:1).
@@ -50,6 +50,9 @@
 //   aria-describedby now sits alongside the remove hint instead of replacing it.
 // - file-upload-*: the id moved from the hidden file input to the Browse button (the
 //   accessible control), whose text sits in a span aria-labelledby can reference.
+// - tabs-demo, tabs-props-demo, toggle-group-segmented: the indicator is measured from
+//   ResizeObserver callbacks only (no forced layout on mount), so jsdom, whose observer
+//   never reports, no longer writes the 0px --active-tab-*/--active-segment-* values.
 // - slider-*: thumbs gained an aria-[invalid=true] border; time-picker-*: the group is
 //   programmatically focusable (tabindex=-1, forwards focus to its first segment).
 import { render, waitFor } from "@testing-library/react";

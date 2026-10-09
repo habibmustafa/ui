@@ -1,7 +1,7 @@
 // Accessibility baseline: runs axe-core over every playground example (and the open state
 // of every overlay example) and fails on any violation that isn't listed in KNOWN below.
 //
-// jsdom has no layout or computed colours, so `color-contrast` can't be judged here;
+// jsdom has no layout or computed colors, so `color-contrast` can't be judged here;
 // `region` only makes sense for a whole page, not an isolated example.
 import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";

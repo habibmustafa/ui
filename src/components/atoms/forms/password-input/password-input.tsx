@@ -9,7 +9,7 @@ import { cn } from '../../../../lib/utils'
 /*
  * Password field on Input's suffix slot: a show/hide toggle (a real, focusable button
  * with aria-pressed) and an optional strength meter. Strength is shown as text as well as
- * colour and announced politely, so it doesn't rely on colour alone.
+ * color and announced politely, so it doesn't rely on color alone.
  */
 
 export type PasswordStrength = 0 | 1 | 2 | 3 | 4

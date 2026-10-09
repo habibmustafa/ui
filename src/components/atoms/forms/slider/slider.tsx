@@ -7,7 +7,7 @@ import * as React from 'react'
 import { cn } from '../../../../lib/utils'
 
 /*
- * Radix Slider styled to match Switch: brand range on a control-coloured track. One thumb
+ * Radix Slider styled to match Switch: brand range on a control-colored track. One thumb
  * is rendered per entry in `value`/`defaultValue`, so a two-value array is a range slider.
  */
 

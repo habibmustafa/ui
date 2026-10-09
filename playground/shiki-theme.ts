@@ -1,7 +1,7 @@
 import type { ThemeRegistrationRaw } from 'shiki'
 
 /**
- * Colours resolve from the --code-token-* variables vendored in
+ * Colors resolve from the --code-token-* variables vendored in
  * src/styles/vendor/theme/code-block-variables.css, so a code block follows
  * the active theme without being re-highlighted.
  *

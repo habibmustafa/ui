@@ -4,6 +4,7 @@ import {
   useContext,
   useEffect,
   useState,
+  useTransition,
   type AnchorHTMLAttributes,
   type ReactNode,
 } from 'react'
@@ -17,6 +18,7 @@ import {
 
 interface RouterContextValue {
   path: string
+  pending: boolean
   navigate: (to: string, options?: { replace?: boolean }) => void
 }
 
@@ -46,6 +48,7 @@ export function RouterProvider({
    */
   initialPath?: string
 }) {
+  const [pending, startTransition] = useTransition()
   const [path, setPath] = useState(() =>
     initialPath === undefined ? currentPath() : normalizePath(initialPath)
   )
@@ -57,13 +60,17 @@ export function RouterProvider({
   }, [])
 
   useEffect(() => {
-    const onPop = () => setPath(currentPath())
+    const onPop = () => {
+      prefetcher?.(currentPath())
+      startTransition(() => setPath(currentPath()))
+    }
     window.addEventListener('popstate', onPop)
     return () => window.removeEventListener('popstate', onPop)
   }, [])
 
   const navigate = useCallback((to: string, options?: { replace?: boolean }) => {
     const next = normalizePath(to)
+    prefetcher?.(next)
     if (next === currentPath()) {
       // Same route: scroll to top so a nav click always re-orients the reader.
       window.scrollTo({ top: 0 })
@@ -74,10 +81,13 @@ export function RouterProvider({
     } else {
       window.history.pushState(null, '', next)
     }
-    setPath(next)
-  }, [])
+    // Keep the current page usable while a new route suspends. Query updates
+    // (search fields, filters and dialogs) must still respond synchronously.
+    if (next.split('?')[0] === path.split('?')[0]) setPath(next)
+    else startTransition(() => setPath(next))
+  }, [path])
 
-  return <RouterContext.Provider value={{ path, navigate }}>{children}</RouterContext.Provider>
+  return <RouterContext.Provider value={{ path, navigate, pending }}>{children}</RouterContext.Provider>
 }
 
 export function useRouter() {

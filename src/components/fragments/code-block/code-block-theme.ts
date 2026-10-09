@@ -1,4 +1,4 @@
-// Light-theme counterparts of the (dark-tuned) Monokai colours: same hues, darkened to
+// Light-theme counterparts of the (dark-tuned) Monokai colors: same hues, darkened to
 // reach at least 4.5:1 on light code backgrounds (WCAG AA). The originals measured
 // 1.5–3.9:1 on white; dark mode keeps them unchanged.
 const LIGHT: Record<string, string> = {

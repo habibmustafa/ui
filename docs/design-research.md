@@ -156,7 +156,7 @@ Mətn solda (**sola hizalı**, mərkəzlənmiş hero yoxdur), sağda canlı nüm
 ```
 ┌ ui   Components   Blocks   Theme            ⌘K   ☾ ┐
 │                                                      │
-│  One brand colour in.            ┌ canlı nümunə ───┐ │
+│  One brand color in.            ┌ canlı nümunə ───┐ │
 │  A complete, accessible          │ real forma      │ │
 │  theme out.                      │ qrafik          │ │
 │                                  │ cədvəl          │ │
@@ -205,8 +205,8 @@ Aktiv səs, sentence case, sistemin yox istifadəçinin dili.
 
 | İndi | Təklif |
 |---|---|
-| Hero: "Accessible, ready-made components for React 19" | "One brand colour in. A complete, accessible theme out." |
-| Alt mətn: "98 components built on Radix and Tailwind CSS v4…" | "Pick a colour and this page, all 98 components and their dark mode are regenerated in OKLCH, with contrast checked." |
+| Hero: "Accessible, ready-made components for React 19" | "One brand color in. A complete, accessible theme out." |
+| Alt mətn: "98 components built on Radix and Tailwind CSS v4…" | "Pick a color and this page, all 98 components and their dark mode are regenerated in OKLCH, with contrast checked." |
 | Düymələr: "Get started →", "Components", "GitHub" | "Install", "Browse components" (GitHub nav-da qalır) |
 | `Input`: "Sunk field surface with the shared size scale…" | "Single-line text field in three sizes, with an invalid state." |
 | `Checkbox`: "Sunk control surface that inverts…" | "Checkbox with an indeterminate state and an optional label." |

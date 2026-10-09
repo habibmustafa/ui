@@ -18,6 +18,7 @@ const SAMPLE = [
   '/getting-started',
   '/components',
   '/blocks',
+  '/blocks/dashboard',
   '/theme',
   '/colors',
   '/typography',

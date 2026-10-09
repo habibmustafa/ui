@@ -3,7 +3,7 @@ import { useId, useState } from 'react'
 import { Input, Label, cn, parseColor, toHex } from '../src'
 
 /*
- * A colour picker plus a text field that accepts HEX, rgb(), hsl() or oklch(). The text
+ * A color picker plus a text field that accepts HEX, rgb(), hsl() or oklch(). The text
  * keeps whatever is being typed until it parses, and snaps back to the last good value on
  * blur. Shared by the theme builder and the landing page's live theme control.
  */
@@ -37,7 +37,7 @@ export function ColorField({
       <div className="flex items-center gap-2">
         <input
           type="color"
-          aria-label={`${label}: colour picker`}
+          aria-label={`${label}: color picker`}
           value={hex}
           onChange={(event) => onChange(event.target.value)}
           className="h-[34px] w-10 shrink-0 cursor-pointer rounded-md border border-control bg-transparent p-0.5 [&::-webkit-color-swatch]:rounded-sm [&::-webkit-color-swatch]:border-none [&::-webkit-color-swatch-wrapper]:p-0"
@@ -58,7 +58,7 @@ export function ColorField({
       </div>
       {(description || invalid) && (
         <p id={`${id}-hint`} className={cn('text-xs', invalid ? 'text-destructive' : 'text-foreground-lighter')}>
-          {invalid ? 'Unrecognised colour. Use HEX, rgb(), hsl() or oklch().' : description}
+          {invalid ? 'Unrecognised color. Use HEX, rgb(), hsl() or oklch().' : description}
         </p>
       )}
     </div>

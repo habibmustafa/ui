@@ -1306,7 +1306,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "thresholds",
             "type": "readonly GaugeThreshold[]",
-            "description": "Colours by value; overrides `tone`. Order doesn't matter."
+            "description": "Colors by value; overrides `tone`. Order doesn't matter."
           },
           {
             "name": "showValue",
@@ -1552,13 +1552,13 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "name": "color",
             "type": "string",
             "default": "#000",
-            "description": "Dark module colour."
+            "description": "Dark module color."
           },
           {
             "name": "background",
             "type": "string",
             "default": "#fff",
-            "description": "Background (and quiet zone) colour."
+            "description": "Background (and quiet zone) color."
           },
           {
             "name": "label",
@@ -4393,7 +4393,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "renderIcon",
             "type": "((props: { filled: boolean; className: string; }) => ReactNode)",
-            "description": "Custom icon; receives the className that sizes and colours it."
+            "description": "Custom icon; receives the className that sizes and colors it."
           },
           {
             "name": "classNames",
@@ -10399,7 +10399,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "renderIcon",
             "type": "((props: { filled: boolean; className: string; }) => ReactNode)",
-            "description": "Custom icon; receives the className that sizes and colours it."
+            "description": "Custom icon; receives the className that sizes and colors it."
           },
           {
             "name": "label",

@@ -31,7 +31,7 @@ import {
 /*
  * What the theme builder previews: real components in the arrangements an app would
  * use them, covering every token the generator writes (brand scale, primary text,
- * accent/charts, neutrals, status colours, radius, both fonts). Elements marked with
+ * accent/charts, neutrals, status colors, radius, both fonts). Elements marked with
  * data-contrast feed the builder's contrast checks.
  */
 
@@ -113,7 +113,7 @@ function AccountCard() {
 
 function RevenueCard() {
   return (
-    <Card title="Revenue" description="Brand and accent colours in a chart.">
+    <Card title="Revenue" description="Brand and accent colors in a chart.">
       <div className="flex flex-col gap-4">
         <div className="flex items-end justify-between gap-4">
           <div>
@@ -146,7 +146,7 @@ function RevenueCard() {
 
 function TypographyCard() {
   return (
-    <Card title="Text" description="Fonts and text colours.">
+    <Card title="Text" description="Fonts and text colors.">
       <div className="flex flex-col gap-2">
         <h3 className="text-xl tracking-tight text-foreground">Your report is ready</h3>
         <p className="text-sm text-foreground" data-contrast="text">
@@ -181,7 +181,7 @@ function TypographyCard() {
 
 function StatusCard() {
   return (
-    <Card title="Notifications" description="Status colours, toast and dialog.">
+    <Card title="Notifications" description="Status colors, toast and dialog.">
       <div className="flex flex-col gap-3">
         <Admonition type="note" title="New version" description="Release 2.4 is ready to use." />
         <Admonition type="warning" title="Approaching your limit" description="You have used 90% of your plan." />

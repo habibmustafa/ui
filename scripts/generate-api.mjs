@@ -69,7 +69,9 @@ function packageOf(fileName) {
 
 function formatType(type) {
   if (type.name === 'enum' && Array.isArray(type.value)) {
-    return type.value.map((v) => v.value).join(' | ')
+    // TypeScript can intern the same union in a different order as new examples use it.
+    // Keep the displayed options stable even when docgen's cached enum is unsorted.
+    return type.value.map((v) => v.value).sort((a, b) => String(a).localeCompare(String(b), 'en')).join(' | ')
   }
   return type.raw && type.raw.length < type.name.length ? type.raw : type.name
 }

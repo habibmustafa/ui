@@ -111,7 +111,7 @@ export default function ApiReference({ id }: { id: string }) {
   if (!entry || entry.components.length === 0) return null
 
   return (
-    <div id="api" className="scroll-mt-20">
+    <div id="api" className="scroll-mt-32">
       <h2 className="mb-1 text-xl tracking-tight">API</h2>
       <p className="mb-6 text-sm text-foreground-light">
         Generated from the TypeScript types in <Code>{entry.source}</Code>.
