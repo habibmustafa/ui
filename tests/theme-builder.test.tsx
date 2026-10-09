@@ -29,7 +29,7 @@ const custom: BuilderState = {
   neutralHue: 250,
   contrast: 0.7,
   warningHue: 60,
-  radius: 10,
+  radius: 14,
   sans: 'manrope',
   mono: 'jetbrains-mono',
 }
@@ -126,8 +126,8 @@ describe('theme builder page', () => {
   })
 
   test('a shared link restores the theme', () => {
-    renderPage('/theme?brand=6366f1&radius=10')
-    expect(themeCss()).toBe(themeToCss({ brand: '#6366f1', radius: 10 }))
+    renderPage('/theme?brand=6366f1&radius=14')
+    expect(themeCss()).toBe(themeToCss({ brand: '#6366f1', radius: 14 }))
     expect(screen.getByRole('textbox', { name: 'Brand color' })).toHaveProperty('value', '#6366f1')
   })
 

@@ -30,14 +30,14 @@ function element(name: string, values: Values, extra = '', children?: string) {
 
 const DEFINITIONS: Record<string, Definition> = {
   button: {
-    name: 'Button', initial: { variant: 'primary', size: 'medium', disabled: false, loading: false },
+    name: 'Button', initial: { variant: 'primary', size: 'small', disabled: false, loading: false },
     choices: [{ prop: 'variant', label: 'Variant', options: ['primary', 'default', 'secondary', 'outline', 'dashed', 'link', 'text', 'warning', 'danger'] }, sizeChoice],
     flags: [disabled, { prop: 'loading', label: 'Loading' }],
     render: (v) => <Button variant={v.variant as ComponentProps<typeof Button>['variant']} size={size(v)} disabled={flag(v, 'disabled')} loading={flag(v, 'loading')}>Continue</Button>,
     code: (v) => element('Button', v, '', 'Continue'),
   },
   input: {
-    name: 'Input', initial: { size: 'medium', disabled: false, 'aria-invalid': false }, choices: [sizeChoice], flags: [disabled, { prop: 'aria-invalid', label: 'Invalid' }],
+    name: 'Input', initial: { size: 'small', disabled: false, 'aria-invalid': false }, choices: [sizeChoice], flags: [disabled, { prop: 'aria-invalid', label: 'Invalid' }],
     render: (v) => <Input size={size(v)} disabled={flag(v, 'disabled')} aria-invalid={flag(v, 'aria-invalid')} aria-label="Email" placeholder="you@example.com" className="max-w-xs" />,
     code: (v) => element('Input', v, 'aria-label="Email" placeholder="you@example.com" className="max-w-xs"'),
   },

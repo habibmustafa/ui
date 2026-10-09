@@ -182,8 +182,7 @@ function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
  * Header search: Ctrl/Cmd+K (from anywhere) or clicking the trigger opens a
  * command palette listing every route, each row carrying the same icon as its
  * Overview card (registry.tsx is the single source for both). The trigger button
- * is lifted verbatim from supabase.com/design-system's own header (checked against
- * its live, rendered DOM); the dialog composes the Command
+ * follows the upstream design system's header search; the dialog composes the Command
  * primitives directly rather than the library's own CommandDialog, which is sized
  * for its "Type a command…" demo, not a dense, whole-library search list.
  */

@@ -136,7 +136,6 @@ npx tsc -b
 npm run lint
 npm run build:lib
 npm run check:classes
-npm run check:tokens
 npx vitest run
 ```
 

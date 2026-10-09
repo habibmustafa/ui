@@ -1,6 +1,6 @@
 /*
  * Upstream's demo illustrates each option with a theme-preview SVG fetched from
- * Supabase's own static asset host (`${BASE_PATH}/img/themes/<value>.svg`, via
+ * the upstream docs' own static asset host (`${BASE_PATH}/img/themes/<value>.svg`, via
  * react-inlinesvg) — not available here, so this uses a lucide icon per option
  * instead. RadioGroupCardItem's `children` slot and markup are unchanged.
  */

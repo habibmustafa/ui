@@ -1,4 +1,4 @@
-// Modified from the Supabase Radio Group Card: the compound root is exported separately.
+// Adapted from upstream Radio Group Card (see THIRD-PARTY-NOTICES.md); modified: the compound root is exported separately.
 'use client'
 
 import { Circle } from 'lucide-react'

@@ -36,7 +36,7 @@ export interface ThemeConfig {
     /** Hue of destructive colors (default ≈ 25, red). */
     destructiveHue?: number
   }
-  /** Corner radius of `rounded-md` in px (default 6); the other sizes scale with it. */
+  /** Corner radius of `rounded-md` in px (default 8); the other sizes scale with it. */
   radius?: number
   font?: {
     /** CSS font-family for body text, e.g. "'IBM Plex Sans'". The font must be loaded. */
@@ -59,12 +59,12 @@ export interface ThemeTokens {
 
 /** The values the library ships with — what an empty config means. */
 export const DEFAULT_THEME = {
-  brand: '#3ecf8e',
-  accent: '#7b66ff',
+  brand: '#8b5cf6',
+  accent: '#14b8a6',
   neutral: { hue: undefined as number | undefined, tint: 0 },
   contrast: 0.5,
   status: { warningHue: 75, destructiveHue: 25 },
-  radius: 6,
+  radius: 8,
   font: { sans: 'Inter', mono: "'Source Code Pro'" },
 } as const
 

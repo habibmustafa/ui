@@ -142,7 +142,7 @@ const NOT_CLASSES = new Set([
   // utility on their site either, kept verbatim for fidelity to the ported markup.
   'font-italic',
   // CodeBlock: `--color-surface` (unsuffixed, distinct from the `surface-75..400` scale we do
-  // have) isn't a token check-tokens.mjs finds on the live site either — a dead class there
+  // have) isn't a defined token either — a dead class there
   // too, kept verbatim. `code-block` is a bare CSS hook with no rule in the public design
   // system bundle (Studio-dashboard-only styling, out of reach for this port).
   'border-surface',

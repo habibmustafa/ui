@@ -5,7 +5,7 @@ const LIGHT: Record<string, string> = {
   '#569cd6': '#1d63a8',
   '#66d9ef': '#0a7086',
   '#bf79db': '#8a3db0',
-  '#3ECF8E': '#0f7553',
+  '#5eead4': '#0f766e',
   gray: '#666666',
   '#75715e': '#625e4c',
 }
@@ -61,49 +61,49 @@ export const monokaiCustomTheme = (isDarkMode: boolean) => {
       color: 'var(--primary)',
     },
     'hljs-bullet': {
-      color: tone('#3ECF8E'),
+      color: tone('#5eead4'),
     },
     'hljs-subst': {
-      color: tone('#3ECF8E'),
+      color: tone('#5eead4'),
     },
     'hljs-title': {
-      color: tone('#3ECF8E'),
+      color: tone('#5eead4'),
       fontWeight: 'normal',
     },
     'hljs-section': {
-      color: tone('#3ECF8E'),
+      color: tone('#5eead4'),
       fontWeight: 'normal',
     },
     'hljs-emphasis': {
-      color: tone('#3ECF8E'),
+      color: tone('#5eead4'),
     },
     'hljs-type': {
-      color: tone('#3ECF8E'),
+      color: tone('#5eead4'),
       fontWeight: 'normal',
     },
     'hljs-built_in': {
-      color: tone('#3ECF8E'),
+      color: tone('#5eead4'),
     },
     'hljs-builtin-name': {
-      color: tone('#3ECF8E'),
+      color: tone('#5eead4'),
     },
     'hljs-selector-attr': {
-      color: tone('#3ECF8E'),
+      color: tone('#5eead4'),
     },
     'hljs-selector-pseudo': {
-      color: tone('#3ECF8E'),
+      color: tone('#5eead4'),
     },
     'hljs-addition': {
-      color: tone('#3ECF8E'),
+      color: tone('#5eead4'),
     },
     'hljs-variable': {
-      color: tone('#3ECF8E'),
+      color: tone('#5eead4'),
     },
     'hljs-template-tag': {
-      color: tone('#3ECF8E'),
+      color: tone('#5eead4'),
     },
     'hljs-template-variable': {
-      color: tone('#3ECF8E'),
+      color: tone('#5eead4'),
     },
     'hljs-comment': {
       color: isDarkMode ? '#999' : '#6a6a6a',

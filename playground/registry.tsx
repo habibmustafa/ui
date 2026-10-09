@@ -112,7 +112,7 @@ export interface ComponentGroup {
   entries: ComponentEntry[]
 }
 
-/* Layout primitives: ours, not part of the upstream Supabase design system. */
+/* Layout primitives: ours, with no upstream counterpart. */
 const layoutPrimitives: ComponentEntry[] = [
   {
     id: 'box',

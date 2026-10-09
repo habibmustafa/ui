@@ -1,4 +1,4 @@
-// Modified from the Supabase Radio Group Stacked to add an options-based API.
+// Adapted from upstream Radio Group Stacked (see THIRD-PARTY-NOTICES.md); modified to add an options-based API.
 import type * as React from 'react'
 
 import { cn } from '../../../../lib/utils'

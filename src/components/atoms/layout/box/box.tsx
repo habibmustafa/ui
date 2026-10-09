@@ -1,7 +1,6 @@
 /*
- * ui-specific layout primitive — there is no counterpart in the upstream Supabase
- * design system (`packages/ui`), which composes layout with Tailwind utility classes
- * directly. This component is therefore an addition, not a port.
+ * ui-specific layout primitive — there is no counterpart upstream, where layout is composed
+ * with Tailwind utility classes directly. This component is therefore an addition, not a port.
  */
 import * as React from 'react'
 

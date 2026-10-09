@@ -65,7 +65,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "size",
             "type": "\"tiny\" | \"small\" | \"medium\" | \"large\" | \"xlarge\" | null",
-            "default": "tiny"
+            "default": "small"
           },
           {
             "name": "overlay",

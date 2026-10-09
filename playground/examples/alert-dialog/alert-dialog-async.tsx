@@ -19,7 +19,7 @@ export default function AlertDialogAsync() {
           <AlertDialog.Description>
             This will create a default publishable key and a default secret key both named{' '}
             <code className="text-code-inline">default</code>. These keys are required to connect
-            your application to your Supabase project.
+            your application to your project.
           </AlertDialog.Description>
         </AlertDialog.Header>
         <AlertDialog.Footer>

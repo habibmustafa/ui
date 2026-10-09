@@ -81,7 +81,7 @@ amma bu tənbəl yükləmədir (scroll-da mount olur).
 
 | Defolt (hər mövzuda çıxan) | Cari saytda |
 |---|---|
-| `near-black + tək parlaq yaşıl vurğu` | Tünd rejim məhz budur (Supabase mirası) |
+| `near-black + tək parlaq yaşıl vurğu` | Tünd rejim məhz budur (kitabxananın ilkin mirası) |
 | SaaS kart dəsti: eyni `rounded-md` + sərhəd hər yerdə | 8 eyni kataloq kartı, 3 eyni "live example" kartı |
 | Hər başlığın üstündə tracked ALL-CAPS etiket | "INVITE A TEAMMATE", "SCHEDULE A MEETING", "SUBSCRIPTION", səhifə bölmə etiketləri |
 | Kiçik data etiketləri üçün monospace | Həmin kart etiketləri |
@@ -232,7 +232,7 @@ presetini dəyişmək olar (qərar 6.1).
 
 ## 6. Sizdən qərar lazım olanlar
 
-1. **Başlanğıc brend rəngi:** kitabxananın defolt yaşılı (`#3ECF8E`, Supabase mirası) qalsın,
+1. **Başlanğıc brend rəngi:** kitabxananın defolt yaşılı (`#3ECF8E`, ilkin miras) qalsın,
    yoxsa saytın başqa kimliyi olsun? Bu həm də kitabxananın defolt presetidir, yəni məhsul qərarıdır.
 2. **Şrift:** Archivo (təklifim) ilə davam edək, yoxsa Inter qalsın? Archivo saytı fərqləndirir,
    amma komponentlərin defolt şrifti yenə Inter qalır (theme builder-də dəyişir).

@@ -178,7 +178,7 @@ export default function SheetConfirmOnClosePropsDemo() {
             <Input
               id="sheet-confirm-props-endpoint-url"
               value={draftValues.endpointUrl}
-              placeholder="https://api.example.com/webhooks/supabase"
+              placeholder="https://api.example.com/webhooks/events"
               onChange={(event) =>
                 setDraftValues((current) => ({
                   ...current,

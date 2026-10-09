@@ -14,10 +14,10 @@
    * theme can run, say, a cool-gray surface against the green brand:
    *   --surface-hue  tints backgrounds, text and borders (the neutral ramp)
    *   --primary-hue  is the brand hue that --primary is built from
-   * Both default to --hue (brand green ≈157.5° in OKLCH), so a theme that only
+   * Both default to --hue (brand violet ≈292.7° in OKLCH), so a theme that only
    * sets --hue keeps surfaces and brand locked together as before; override
    * either one to let them diverge. */
-  --hue: 157.5;
+  --hue: 292.7;
   --surface-hue: var(--hue);
   --primary-hue: var(--hue);
   /* Root defaults mirror the dark theme (the app's default appearance). */
@@ -104,7 +104,7 @@
    * (matching the "no additional charge" badge); like the others it pulls a touch
    * with the brand --primary-hue but clamps so it always reads violet.
    */
-  --brand-hue-reference: 157.5;
+  --brand-hue-reference: 292.7;
   --status-hue-pull: 0.15;
   --warning-hue: clamp(
     65,
