@@ -42,7 +42,7 @@ export interface StepperProps extends Omit<React.HTMLAttributes<HTMLOListElement
 }
 
 const indicatorClasses: Record<StepState, string> = {
-  completed: 'border-brand-default bg-brand-default text-white',
+  completed: 'border-primary-solid bg-primary-solid text-white',
   current: 'border-brand-default bg-background text-foreground ring-2 ring-brand-default/30',
   upcoming: 'border-strong bg-surface-100 text-foreground-lighter',
 }

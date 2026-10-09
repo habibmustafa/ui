@@ -162,6 +162,8 @@
   /* Primary is the accessible functional green (text, controls). Bright
      expressive fills use brand-default. Light theme overrides --primary for AA text. */
   --primary: oklch(0.76 0.15 var(--primary-hue));
+  /* Solid brand fill that holds 4.5:1 against white text in both modes (Stepper, TimePicker, dark Button). */
+  --primary-solid: oklch(0.56 0.17 var(--primary-hue));
   --primary-bright: oklch(from var(--primary) max(l, 0.7) max(c, 0.15) h);
   --primary-foreground: oklch(
     min(var(--surface), var(--foreground-lightness)) calc(var(--chroma) * 0.45) var(--primary-hue)
