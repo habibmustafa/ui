@@ -108,6 +108,14 @@ test('Select (options) opens, picks an option and reports it', async () => {
   expect(trigger.textContent).toContain('MySQL')
 })
 
+test('a tiny Select opens a menu at its own scale', async () => {
+  const user = userEvent.setup()
+  render(<Select size="tiny" options={databases} aria-label="Database" />)
+  await user.click(screen.getByRole('combobox', { name: 'Database' }))
+  expect(screen.getByRole('listbox').className).toContain('min-w-0')
+  expect(screen.getByRole('option', { name: 'MySQL' }).className).toContain('text-xs')
+})
+
 test('Select (options) forwards id and aria-* to the trigger so a <label> names it', () => {
   render(
     <>

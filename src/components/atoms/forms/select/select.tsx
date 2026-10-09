@@ -87,6 +87,10 @@ export function SelectHybrid(props: SelectProps) {
     'aria-invalid': ariaInvalid,
     ...rootProps
   } = props as SelectContentModeProps
+  // A tiny trigger opens a menu at its own scale: its text size, and no 8rem floor
+  // that would stick out past the trigger.
+  const compact = size === 'tiny'
+  const itemClassName = cn(compact && 'py-1 text-xs', classNames?.item)
 
   return (
     <SelectRoot {...rootProps}>
@@ -101,18 +105,18 @@ export function SelectHybrid(props: SelectProps) {
       >
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
-      <SelectContent className={classNames?.content}>
+      <SelectContent className={cn(compact && 'min-w-0', classNames?.content)}>
         {groups
           ? groups.map((group, index) => (
               <Fragment key={index}>
                 {index > 0 && <SelectSeparator />}
                 <SelectGroup>
                   {group.label != null && <SelectLabel>{group.label}</SelectLabel>}
-                  {renderOptions(group.options, classNames?.item)}
+                  {renderOptions(group.options, itemClassName)}
                 </SelectGroup>
               </Fragment>
             ))
-          : renderOptions(options ?? [], classNames?.item)}
+          : renderOptions(options ?? [], itemClassName)}
       </SelectContent>
     </SelectRoot>
   )
