@@ -175,3 +175,23 @@ test('a theme change lands without transitions and leaves nothing behind', () =>
     document.head.appendChild = append
   }
 })
+
+describe('--primary-solid', () => {
+  const chroma = (value: string) => parseColor(value)!.c
+
+  test('is a brand fill for white text: L 0.56, chroma capped at 0.17', () => {
+    const tokens = createTheme({ brand: DEFAULT_THEME.brand })
+    for (const mode of ['light', 'dark'] as const) {
+      const color = parseColor(tokens[mode]['--primary-solid'])!
+      expect(color.l).toBeCloseTo(0.56, 2)
+      expect(color.c).toBeCloseTo(0.17, 2)
+      expect(contrastRatio(color, parseColor('#ffffff')!)).toBeGreaterThanOrEqual(4.5)
+    }
+  })
+
+  test('a muted brand stays muted instead of turning vivid', () => {
+    const tokens = createTheme({ brand: '#71717a' })
+    expect(chroma(tokens.light['--primary-solid'])).toBeLessThan(0.05)
+    expect(chroma(tokens.dark['--primary-solid'])).toBeLessThan(0.05)
+  })
+})

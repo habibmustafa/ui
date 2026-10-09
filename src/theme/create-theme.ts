@@ -190,6 +190,8 @@ export function createTheme(config: ThemeConfig = {}): ThemeTokens {
         vars[`--brand-${name}`] = toHslTriplet(step(profile, brand.h, factor))
       }
       vars['--primary'] = toOklchCss(step(PRIMARY[mode], brand.h, Math.min(factor, 1.4)))
+      // Solid fill that holds white text (about 5:1); a muted brand stays muted.
+      vars['--primary-solid'] = toOklchCss(toGamut({ l: 0.56, c: Math.min(brand.c, 0.17), h: hue(brand.h) }))
       vars['--chart-1'] = toOklchCss(step(CHART[mode].line, brand.h, factor))
       vars['--chart-1-fill'] = toOklchCss(step(CHART[mode].fill, brand.h, factor))
     }

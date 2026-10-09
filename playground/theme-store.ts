@@ -193,6 +193,9 @@ const SERVER_SNAPSHOT: Snapshot = { state: DEFAULT_STATE }
 
 let snapshot: Snapshot = typeof window === 'undefined' ? SERVER_SNAPSHOT : load()
 
+/** The state the store holds right now, which is what the next render will see. */
+export const getBuilderState = () => snapshot.state
+
 function commit(next: Snapshot) {
   snapshot = next
   try {
@@ -229,9 +232,12 @@ export function useThemeBuilder(): Snapshot {
 export const EARLY_CSS_KEY = 'ui-theme-builder-css'
 export const EARLY_STYLE_ID = 'ui-theme-early'
 
+/** The generated CSS only holds custom-property blocks; index.html applies the same check. */
+export const isEarlyCssSafe = (css: string) => !/[<\\@]|url\(/i.test(css)
+
 export function saveEarlyCss(css: string) {
   try {
-    if (css) localStorage.setItem(EARLY_CSS_KEY, css)
+    if (css && isEarlyCssSafe(css)) localStorage.setItem(EARLY_CSS_KEY, css)
     else localStorage.removeItem(EARLY_CSS_KEY)
   } catch {
     // Not cached: the theme then appears at hydration instead of first paint.
