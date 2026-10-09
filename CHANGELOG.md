@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.5.0
+
+### Minor Changes
+
+- 6bcc344: A visual identity of its own: the default theme is violet (teal accent, neutral grays) instead of green, `rounded-md` is 8px instead of 6px, `Button` defaults to `size="small"` like `Input`, and the dark primary Button is a solid fill. Table headers, Card titles, Select and Command group labels and Badges no longer use uppercase monospace. The green theme remains as the "Green" preset.
+
+### Patch Changes
+
+- bf11cd1: Light theme: the primary Button is now a solid brand fill (`bg-primary`) with white text and icons, instead of a pale fill with dark text.
+- 2455fc1: Theme changes are much cheaper. `ThemeStyle` (and `ThemeProvider`'s `tokens`) and the
+  light/dark switch now apply a new theme with CSS transitions briefly off: before, every
+  element's own `transition-colors` animated the swap and the browser restyled the whole page on
+  each frame of it, so changing a brand color blocked the page for most of a second on a
+  mid-range laptop.
+  
+  `ThemeProvider` also no longer writes the server's guess (light) to `<html>` while hydrating.
+  A dark page used to flip to light and straight back on load, which could flash and forced two
+  full restyles.
+- afdc12c: Select: with `size="tiny"` the menu now matches the trigger, the same width and text size, instead of a wider menu with larger text that stuck out past it.
+
 ## 0.4.0
 
 ### Minor Changes
