@@ -101,7 +101,7 @@ const Banner = React.forwardRef<HTMLElement, BannerProps>(
             type="button"
             aria-label={dismissLabel}
             onClick={() => setOpen(false)}
-            className="absolute right-3 top-1/2 flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-sm text-foreground-light transition-colors hover:bg-black/5 hover:text-foreground focus-ring dark:hover:bg-white/10"
+            className="absolute right-3 top-1/2 flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-sm text-foreground-light transition-colors hover:bg-accent hover:text-foreground focus-ring"
           >
             <X aria-hidden="true" className="h-4 w-4" strokeWidth={1.5} />
           </button>

@@ -53,7 +53,7 @@ const SheetOverlay = React.forwardRef<
       // Fade only: open used to have no animate-in, so the backdrop popped in.
       // No backdrop-blur: re-blurring the page under the sliding panel every frame
       // drops the open animation to ~30fps (see lib/modal-backdrop.ts).
-      'fixed inset-0 z-50 bg-alternative/90 data-[state=open]:animate-backdrop-show data-[state=closed]:animate-backdrop-hide',
+      'fixed inset-0 z-50 bg-backdrop data-[state=open]:animate-backdrop-show data-[state=closed]:animate-backdrop-hide',
       className
     )}
     {...props}

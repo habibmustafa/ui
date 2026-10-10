@@ -1,6 +1,7 @@
 [data-theme='dark'],
 .dark {
   --helpers-os-appearance: Dark;
+  --scroll-shadow: oklch(0 0 0 / 0.2);
   --hue: 292.7;
   --chroma: 0.005;
   --surface: 0.19;

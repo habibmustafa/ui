@@ -4,6 +4,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { Toggle as TogglePrimitive } from 'radix-ui'
 import * as React from 'react'
 
+import { SIZE } from '../../../../lib/constants'
 import { cn } from '../../../../lib/utils'
 
 const toggleVariants = cva(
@@ -18,9 +19,9 @@ const toggleVariants = cva(
           'relative z-10 cursor-pointer rounded-sm bg-transparent hover:bg-transparent text-foreground-light hover:text-foreground data-[state=on]:bg-transparent data-[state=on]:text-foreground aria-checked:bg-transparent aria-checked:text-foreground',
       },
       size: {
-        tiny: 'h-[26px] px-2.5 text-xs',
+        tiny: `${SIZE.height.tiny} px-2.5 text-xs`,
         default: 'h-10 px-3',
-        sm: 'h-[34px] px-2.5',
+        sm: `${SIZE.height.small} px-2.5`,
         lg: 'h-11 px-5',
       },
     },

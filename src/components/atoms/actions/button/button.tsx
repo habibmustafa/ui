@@ -30,11 +30,11 @@ const buttonVariants = cva(
       variant: {
         primary: `
           bg-primary dark:bg-primary-solid
-          hover:bg-primary/90 dark:hover:bg-[oklch(from_var(--primary-solid)_0.6_c_h)]
-          text-primary-foreground dark:text-white
-          border-primary dark:border-[oklch(from_var(--primary-solid)_0.62_c_h)]
-          hover:border-primary dark:hover:border-[oklch(from_var(--primary-solid)_0.68_c_h)]
-          data-[state=open]:bg-primary/90 dark:data-[state=open]:bg-[oklch(from_var(--primary-solid)_0.6_c_h)]
+          hover:bg-primary/90 dark:hover:bg-primary-solid-hover
+          text-primary-foreground dark:text-primary-solid-foreground
+          border-primary dark:border-primary-solid-border
+          hover:border-primary dark:hover:border-primary-solid-border-hover
+          data-[state=open]:bg-primary/90 dark:data-[state=open]:bg-primary-solid-hover
           `,
         default: `
           text-foreground
@@ -134,7 +134,7 @@ const IconContainerVariants = cva('inline-flex items-center justify-center shrin
       xxxlarge: '[&_svg]:h-[42px] [&_svg]:w-[42px]',
     },
     variant: {
-      primary: 'text-primary-foreground/80 dark:text-white/80',
+      primary: 'text-primary-foreground/80 dark:text-primary-solid-foreground/80',
       default: 'text-foreground-lighter',
       secondary: 'text-background',
       alternative: 'text-foreground-lighter',
@@ -152,7 +152,7 @@ export type LoadingVariantProps = VariantProps<typeof loadingVariants>
 const loadingVariants = cva('', {
   variants: {
     variant: {
-      primary: 'text-primary-foreground/80 dark:text-white/80',
+      primary: 'text-primary-foreground/80 dark:text-primary-solid-foreground/80',
       default: 'text-foreground-lighter',
       secondary: 'text-background',
       alternative: 'text-foreground-lighter',

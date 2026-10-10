@@ -233,9 +233,9 @@ const SparklineTooltip = ({ active, payload, label }: Partial<RechartsTooltipCon
   }
 
   return (
-    <div className="bg-black/90 text-white p-2 rounded-sm text-xs">
+    <div className="rounded-md border bg-alternative px-3 py-1.5 text-xs text-foreground shadow-md">
       {label && (
-        <div className="dark:text-foreground-light text-white/60">
+        <div className="text-foreground-light">
           {formatTimestamp(payload[0].payload.timestamp)}
         </div>
       )}

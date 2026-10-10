@@ -49,9 +49,6 @@
   --code-block-2: 33.1deg 80% 52.9%;
   --code-block-1: 170.6deg 43.2% 51%;
 
-  --code-token-string: #c46a0a;
-  --code-token-string-expression: #c46a0a;
-
   /* Stepped numeric scales (per-theme literals; mapped in theme.css) */
   --secondary-default: 174deg 100% 30%;
   --secondary-400: 173deg 100% 10.5%;

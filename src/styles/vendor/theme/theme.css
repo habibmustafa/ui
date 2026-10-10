@@ -16,6 +16,12 @@
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary-solid: var(--primary-solid);
+  --color-primary-solid-foreground: var(--primary-solid-foreground);
+  --color-primary-solid-hover: var(--primary-solid-hover);
+  --color-primary-solid-border: var(--primary-solid-border);
+  --color-primary-solid-border-hover: var(--primary-solid-border-hover);
+  --color-backdrop: var(--backdrop);
+  --color-scroll-shadow: var(--scroll-shadow);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-tertiary: var(--tertiary);

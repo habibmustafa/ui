@@ -30,10 +30,9 @@ const SyntaxHighlighter = LightImpl as typeof LightType
 
 import { cn } from '../../../lib/utils'
 import { copyToClipboard } from '../../../lib/copy-to-clipboard'
-import { useTheme } from '../../../providers'
 import { Button } from '../../atoms/actions/button'
 import { FloatingPlate } from '../../atoms/layout/floating-plate'
-import { monokaiCustomTheme } from './code-block-theme'
+import { codeBlockTheme } from './code-block-theme'
 
 const codeBlockLangs = [
   'js',
@@ -129,9 +128,7 @@ export const CodeBlock = ({
   onCopyCallback = () => {},
   handleCopy,
 }: CodeBlockProps) => {
-  const { resolvedTheme } = useTheme()
-  const isDarkTheme = resolvedTheme === 'dark'
-  const monokaiTheme = theme ?? monokaiCustomTheme(isDarkTheme)
+  const highlightTheme = theme ?? codeBlockTheme
 
   const [copied, setCopied] = useState(false)
 
@@ -217,7 +214,7 @@ export const CodeBlock = ({
             language={lang}
             wrapLines={wrapLines}
             wrapLongLines={wrapLongLines}
-            style={monokaiTheme}
+            style={highlightTheme}
             className={cn(
               'code-block border border-surface p-4 w-full my-0! !bg-surface-100 outline-hidden focus:border-foreground-lighter/50',
               `${!title ? 'rounded-md' : 'rounded-t-none rounded-b-md'}`,
@@ -254,7 +251,7 @@ export const CodeBlock = ({
               paddingLeft: '4px',
               paddingRight: '4px',
               marginRight: '12px',
-              color: styleConfig?.lineNumber ?? '#828282',
+              color: styleConfig?.lineNumber ?? 'var(--code-token-comment)',
               textAlign: 'center',
               fontSize: large ? 14 : 12,
               paddingTop: '4px',
@@ -279,8 +276,7 @@ export const CodeBlock = ({
             <FloatingPlate
               className={cn(
                 'absolute right-2 top-2 bg-surface-100 dark:bg-200',
-                'opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition',
-                isDarkTheme && 'dark'
+                'opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition'
               )}
             >
               <Button

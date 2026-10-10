@@ -1,38 +1,38 @@
 <div>
 <div class="text-sm rounded-t-md bg-surface-100 py-2 px-4 border border-b-0 border-default font-sans">schema.sql</div>
 <div class="group relative max-w-[90vw] md:max-w-none overflow-auto">
-<pre class="code-block border border-surface p-4 w-full my-0! !bg-surface-100 outline-hidden focus:border-foreground-lighter/50 rounded-t-none rounded-b-md language-pgsql" contenteditable="true" style="display: block; overflow-x: auto; color: rgb(68, 68, 68); font-size: 13px; line-height: 1.4;">
+<pre class="code-block border border-surface p-4 w-full my-0! !bg-surface-100 outline-hidden focus:border-foreground-lighter/50 rounded-t-none rounded-b-md language-pgsql" contenteditable="true" style="display: block; overflow-x: auto; color: var(--code-foreground); font-size: 13px; line-height: 1.4;">
 <code class="language-pgsql" style="white-space: pre;">
 <span>
-<span class="comment linenumber react-syntax-highlighter-line-number" style="display: inline-block; min-width: 44px; text-align: center; user-select: none; margin-right: 12px; color: rgb(130, 130, 130); font-size: 12px; padding: 4px;">1</span>
-<span style="color: rgb(29, 99, 168); font-weight: normal;">create</span>
+<span class="comment linenumber react-syntax-highlighter-line-number" style="display: inline-block; min-width: 44px; text-align: center; user-select: none; margin-right: 12px; color: var(--code-token-comment); font-size: 12px; padding: 4px;">1</span>
+<span style="color: var(--code-token-keyword); font-weight: normal;">create</span>
 <span> </span>
-<span style="color: rgb(29, 99, 168); font-weight: normal;">table</span>
+<span style="color: var(--code-token-keyword); font-weight: normal;">table</span>
 <span> profiles (
 </span>
 </span>
 <span>
-<span class="comment linenumber react-syntax-highlighter-line-number" style="display: inline-block; min-width: 44px; text-align: center; user-select: none; margin-right: 12px; color: rgb(130, 130, 130); font-size: 12px; padding: 4px;">2</span>
+<span class="comment linenumber react-syntax-highlighter-line-number" style="display: inline-block; min-width: 44px; text-align: center; user-select: none; margin-right: 12px; color: var(--code-token-comment); font-size: 12px; padding: 4px;">2</span>
 <span>  id </span>
-<span style="color: rgb(15, 118, 110); font-weight: normal;">uuid</span>
+<span style="color: var(--code-token-function); font-weight: normal;">uuid</span>
 <span> </span>
-<span style="color: rgb(29, 99, 168); font-weight: normal;">references</span>
+<span style="color: var(--code-token-keyword); font-weight: normal;">references</span>
 <span> auth.users </span>
-<span style="color: rgb(29, 99, 168); font-weight: normal;">primary key</span>
+<span style="color: var(--code-token-keyword); font-weight: normal;">primary key</span>
 <span>,
 </span>
 </span>
 <span>
-<span class="comment linenumber react-syntax-highlighter-line-number" style="display: inline-block; min-width: 44px; text-align: center; user-select: none; margin-right: 12px; color: rgb(130, 130, 130); font-size: 12px; padding: 4px;">3</span>
+<span class="comment linenumber react-syntax-highlighter-line-number" style="display: inline-block; min-width: 44px; text-align: center; user-select: none; margin-right: 12px; color: var(--code-token-comment); font-size: 12px; padding: 4px;">3</span>
 <span>  username </span>
-<span style="color: rgb(15, 118, 110); font-weight: normal;">text</span>
+<span style="color: var(--code-token-function); font-weight: normal;">text</span>
 <span> </span>
-<span style="color: rgb(29, 99, 168); font-weight: normal;">unique</span>
+<span style="color: var(--code-token-keyword); font-weight: normal;">unique</span>
 <span>
 </span>
 </span>
 <span>
-<span class="comment linenumber react-syntax-highlighter-line-number" style="display: inline-block; min-width: 44px; text-align: center; user-select: none; margin-right: 12px; color: rgb(130, 130, 130); font-size: 12px; padding: 4px;">4</span>);</span>
+<span class="comment linenumber react-syntax-highlighter-line-number" style="display: inline-block; min-width: 44px; text-align: center; user-select: none; margin-right: 12px; color: var(--code-token-comment); font-size: 12px; padding: 4px;">4</span>);</span>
 </code>
 </pre>
 <div class="inline-flex rounded-lg absolute right-2 top-2 bg-surface-100 dark:bg-200 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition">

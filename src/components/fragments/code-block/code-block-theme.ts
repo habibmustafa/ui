@@ -1,127 +1,56 @@
-// Light-theme counterparts of the (dark-tuned) Monokai colors: same hues, darkened to
-// reach at least 4.5:1 on light code backgrounds (WCAG AA). The originals measured
-// 1.5–3.9:1 on white; dark mode keeps them unchanged.
-const LIGHT: Record<string, string> = {
-  '#569cd6': '#1d63a8',
-  '#66d9ef': '#0a7086',
-  '#bf79db': '#8a3db0',
-  '#5eead4': '#0f766e',
-  gray: '#666666',
-  '#75715e': '#625e4c',
+// Colors resolve from the --code-token-* variables (src/styles/vendor/theme/code-block-variables.css),
+// the same palette the playground's Shiki theme uses, so a code block follows the
+// active theme through CSS alone — no ThemeProvider or re-render needed.
+const KEYWORD = { color: 'var(--code-token-keyword)', fontWeight: 'normal' }
+const keyword = { color: 'var(--code-token-keyword)' }
+const constant = { color: 'var(--code-token-constant)' }
+const fn = { color: 'var(--code-token-function)', fontWeight: 'normal' }
+const property = { color: 'var(--code-token-property)' }
+const comment = { color: 'var(--code-token-comment)' }
+
+export const codeBlockTheme = {
+  hljs: {
+    display: 'block',
+    overflowX: 'auto',
+    color: 'var(--code-foreground)',
+  },
+  'hljs-tag': keyword,
+  'hljs-keyword': KEYWORD,
+  'hljs-selector-tag': KEYWORD,
+  'hljs-literal': KEYWORD,
+  'hljs-strong': keyword,
+  'hljs-name': keyword,
+  'hljs-code': constant,
+  'hljs-class .hljs-title': { color: 'var(--code-foreground)' },
+  'hljs-attribute': property,
+  'hljs-symbol': constant,
+  'hljs-regexp': { color: 'var(--code-token-string-expression)' },
+  'hljs-link': { color: 'var(--code-token-link)' },
+  'hljs-string': { color: 'var(--code-token-string)' },
+  'hljs-number': { color: 'var(--code-token-number)' },
+  'hljs-params': { color: 'var(--code-token-parameter)' },
+  'hljs-punctuation': { color: 'var(--code-token-punctuation)' },
+  'hljs-bullet': constant,
+  'hljs-subst': constant,
+  'hljs-title': fn,
+  'hljs-section': fn,
+  'hljs-emphasis': constant,
+  'hljs-type': fn,
+  'hljs-built_in': constant,
+  'hljs-builtin-name': constant,
+  'hljs-selector-attr': property,
+  'hljs-selector-pseudo': property,
+  'hljs-addition': constant,
+  'hljs-variable': property,
+  'hljs-template-tag': constant,
+  'hljs-template-variable': property,
+  'hljs-comment': comment,
+  'hljs-quote': comment,
+  'hljs-deletion': comment,
+  'hljs-meta': comment,
+  'hljs-doctag': { fontWeight: 'normal' },
+  'hljs-selector-id': { fontWeight: 'normal' },
 }
 
-export const monokaiCustomTheme = (isDarkMode: boolean) => {
-  const tone = (color: string) => (isDarkMode ? color : (LIGHT[color] ?? color))
-  return {
-    hljs: {
-      display: 'block',
-      overflowX: 'auto',
-      color: isDarkMode ? '#ddd' : '#444',
-    },
-    'hljs-tag': {
-      color: tone('#569cd6'),
-    },
-    'hljs-keyword': {
-      color: tone('#569cd6'),
-      fontWeight: 'normal',
-    },
-    'hljs-selector-tag': {
-      color: tone('#569cd6'),
-      fontWeight: 'normal',
-    },
-    'hljs-literal': {
-      color: tone('#569cd6'),
-      fontWeight: 'normal',
-    },
-    'hljs-strong': {
-      color: tone('#569cd6'),
-    },
-    'hljs-name': {
-      color: tone('#569cd6'),
-    },
-    'hljs-code': {
-      color: tone('#66d9ef'),
-    },
-    'hljs-class .hljs-title': {
-      color: tone('gray'),
-    },
-    'hljs-attribute': {
-      color: tone('#bf79db'),
-    },
-    'hljs-symbol': {
-      color: tone('#bf79db'),
-    },
-    'hljs-regexp': {
-      color: tone('#bf79db'),
-    },
-    'hljs-link': {
-      color: tone('#bf79db'),
-    },
-    'hljs-string': {
-      color: 'var(--primary)',
-    },
-    'hljs-bullet': {
-      color: tone('#5eead4'),
-    },
-    'hljs-subst': {
-      color: tone('#5eead4'),
-    },
-    'hljs-title': {
-      color: tone('#5eead4'),
-      fontWeight: 'normal',
-    },
-    'hljs-section': {
-      color: tone('#5eead4'),
-      fontWeight: 'normal',
-    },
-    'hljs-emphasis': {
-      color: tone('#5eead4'),
-    },
-    'hljs-type': {
-      color: tone('#5eead4'),
-      fontWeight: 'normal',
-    },
-    'hljs-built_in': {
-      color: tone('#5eead4'),
-    },
-    'hljs-builtin-name': {
-      color: tone('#5eead4'),
-    },
-    'hljs-selector-attr': {
-      color: tone('#5eead4'),
-    },
-    'hljs-selector-pseudo': {
-      color: tone('#5eead4'),
-    },
-    'hljs-addition': {
-      color: tone('#5eead4'),
-    },
-    'hljs-variable': {
-      color: tone('#5eead4'),
-    },
-    'hljs-template-tag': {
-      color: tone('#5eead4'),
-    },
-    'hljs-template-variable': {
-      color: tone('#5eead4'),
-    },
-    'hljs-comment': {
-      color: isDarkMode ? '#999' : '#6a6a6a',
-    },
-    'hljs-quote': {
-      color: tone('#75715e'),
-    },
-    'hljs-deletion': {
-      color: tone('#75715e'),
-    },
-    'hljs-meta': {
-      color: tone('#75715e'),
-    },
-    'hljs-doctag': {
-      fontWeight: 'normal',
-    },
-    'hljs-selector-id': {
-      fontWeight: 'normal',
-    },
-  }
-}
+/** @deprecated Use `codeBlockTheme`; colors now follow the theme through CSS, so the flag is ignored. */
+export const monokaiCustomTheme = (_isDarkMode?: boolean) => codeBlockTheme

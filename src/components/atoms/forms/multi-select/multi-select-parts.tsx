@@ -278,7 +278,7 @@ const MultiSelectorBadgesVariants = cva('flex overflow-hidden flex-1 min-w-0', {
 })
 
 const MultiSelectorBadgeVariants = cva(
-  'rounded-sm shrink-0 px-1.5 bg-surface-75 dark:bg-white/5 normal-case tracking-normal text-xs/none',
+  'rounded-sm shrink-0 px-1.5 bg-surface-75 dark:bg-muted normal-case tracking-normal text-xs/none',
   {
     variants: {
       size: {

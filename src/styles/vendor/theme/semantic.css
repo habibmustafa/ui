@@ -164,6 +164,15 @@
   --primary: oklch(0.76 0.15 var(--primary-hue));
   /* Solid brand fill that holds 4.5:1 against white text in both modes (Stepper, TimePicker, dark Button). */
   --primary-solid: oklch(0.56 0.17 var(--primary-hue));
+  /* --primary-solid is pinned at L 0.56, so white holds ~5:1 for every brand hue. */
+  --primary-solid-foreground: oklch(1 0 0);
+  --primary-solid-hover: oklch(from var(--primary-solid) 0.6 c h);
+  --primary-solid-border: oklch(from var(--primary-solid) 0.62 c h);
+  --primary-solid-border-hover: oklch(from var(--primary-solid) 0.68 c h);
+  /* Dim behind modal overlays (Dialog, AlertDialog, Drawer, Sheet). */
+  --backdrop: oklch(0 0 0 / 0.5);
+  /* Edge shadow on horizontally scrollable areas; deeper in dark mode (themes/dark.css). */
+  --scroll-shadow: oklch(0 0 0 / 0.05);
   --primary-bright: oklch(from var(--primary) max(l, 0.7) max(c, 0.15) h);
   --primary-foreground: oklch(
     min(var(--surface), var(--foreground-lightness)) calc(var(--chroma) * 0.45) var(--primary-hue)
