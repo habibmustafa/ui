@@ -85,14 +85,14 @@ const FormItemContext = React.createContext<FormItemContextValue>({} as FormItem
 const FormItem = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & { asChild?: boolean }
->(({ asChild, ...props }, ref) => {
+>(({ asChild, className, ...props }, ref) => {
   const id = React.useId()
 
   const Comp = asChild ? SlotPrimitive.Slot : 'div'
 
   return (
     <FormItemContext.Provider value={{ id }}>
-      <Comp ref={ref} {...props} />
+      <Comp ref={ref} className={cn('space-y-2', className)} {...props} />
     </FormItemContext.Provider>
   )
 })
@@ -152,7 +152,7 @@ const FormDescription = React.forwardRef<
     <div
       ref={ref}
       id={formDescriptionId}
-      className={cn('text-sm text-foreground-light', className)}
+      className={cn('text-sm text-foreground-lighter', className)}
       {...props}
     />
   )
