@@ -39,7 +39,8 @@ export const DatePickerButton = ({
     <Button
       variant={variant}
       className={cn(
-        'justify-start text-left font-normal px-3 py-4',
+        // A field, not an action: same surface and border as Input.
+        'justify-start text-left font-normal px-3 py-4 bg-field dark:bg-field border-control hover:border-control-hover',
         {
           'bg-destructive-200! border-destructive-400 focus:border-destructive focus-visible:border-destructive focus-visible:outline-destructive':
             isInvalid,

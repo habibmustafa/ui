@@ -419,9 +419,7 @@ const MultiSelectorTrigger = React.forwardRef<HTMLButtonElement, MultiSelectorTr
             aria-controls={open ? getContentId(id) : undefined}
             className={cn(
               'flex w-full min-w-50 justify-between rounded-md border',
-              'border-strong',
-              // Empty: raised plate. Filled: sunk well for chips.
-              values.length > 0 ? 'bg-field' : 'bg-control-raised',
+              'border-control bg-field',
               'placeholder:text-muted-foreground',
               'ring-border-control focus-ring',
               'disabled:cursor-not-allowed disabled:opacity-50',
