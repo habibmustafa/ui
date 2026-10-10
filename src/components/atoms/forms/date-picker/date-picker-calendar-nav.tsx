@@ -3,7 +3,7 @@ import { AnimatePresence, domAnimation, LazyMotion, m, useReducedMotion } from '
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useLayoutEffect, useRef, useState, type ComponentProps, type ReactNode } from 'react'
 
-import { EASE_SOFT_IN, EASE_SOFT_OUT } from '../../../../lib/motion'
+import { DURATION_ENTER, DURATION_EXIT, EASE_SOFT_IN, EASE_SOFT_OUT } from '../../../../lib/motion'
 import { cn } from '../../../../lib/utils'
 import { buttonVariants } from '../../actions/button/button'
 import { Calendar } from '../calendar'
@@ -53,7 +53,7 @@ function GridView({ viewKey, children }: { viewKey: string; children: ReactNode 
   return (
     <div
       style={{ height }}
-      className="overflow-hidden transition-[height] duration-[260ms] ease-soft-in-out"
+      className="overflow-hidden transition-[height] duration-(--duration-calendar) ease-soft-in-out"
     >
       <div ref={innerRef} className="relative">
         <LazyMotion features={domAnimation}>
@@ -61,11 +61,11 @@ function GridView({ viewKey, children }: { viewKey: string; children: ReactNode 
             <m.div
               key={viewKey}
               initial={{ opacity: 0, scale: reduceMotion ? 1 : 0.98 }}
-              animate={{ opacity: 1, scale: 1, transition: { duration: 0.24, ease: EASE_SOFT_OUT } }}
+              animate={{ opacity: 1, scale: 1, transition: { duration: DURATION_ENTER, ease: EASE_SOFT_OUT } }}
               exit={{
                 opacity: 0,
                 scale: reduceMotion ? 1 : 1.01,
-                transition: { duration: 0.16, ease: EASE_SOFT_IN },
+                transition: { duration: DURATION_EXIT, ease: EASE_SOFT_IN },
               }}
             >
               {children}

@@ -84,7 +84,7 @@ const ContainerVariants = cva('relative grid gap-10', {
   },
 })
 
-const LabelContainerVariants = cva('transition-all duration-500 ease-in-out', {
+const LabelContainerVariants = cva('transition-all duration-500 ease-soft-in-out', {
   variants: {
     flex: {
       true: '',
@@ -131,7 +131,7 @@ const LabelContainerVariants = cva('transition-all duration-500 ease-in-out', {
   defaultVariants: {},
 })
 
-const DataContainerVariants = cva('transition-all duration-500 ease-in-out', {
+const DataContainerVariants = cva('transition-all duration-500 ease-soft-in-out', {
   variants: {
     flex: {
       true: '',
@@ -321,7 +321,7 @@ export const FormLayout = React.forwardRef<
       isReactForm && !hideMessage ? (
         <FormMessage
           className={cn(
-            'mt-2 transition-all duration-300 ease-in-out',
+            'mt-2 transition-all duration-300 ease-soft-in-out',
             layout === 'flex-row-reverse' && 'mt-0'
           )}
           data-formlayout-id="message"

@@ -110,7 +110,7 @@ const ResizableHandle = ({
         <div
           className={cn(
             'z-10 flex h-4 w-3 items-center justify-center rounded-xs border bg-border focus:bg-surface-400',
-            'opacity-0 transition-opacity duration-200',
+            'opacity-0 transition-opacity',
             'group-data-[separator=hover]:opacity-100',
             'hover:bg-surface-400',
             'group-data-[separator=active]:opacity-100',

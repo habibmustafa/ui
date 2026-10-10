@@ -178,7 +178,7 @@ export const Row = forwardRef<HTMLDivElement, RowProps>(function Row(
           className={cn(
             'flex items-stretch min-w-full',
             // `scrollBehavior="auto"` jumps; the default glides.
-            scrollBehavior === 'smooth' && 'transition-transform duration-300 ease-out'
+            scrollBehavior === 'smooth' && 'transition-transform duration-300 ease-soft-out'
           )}
           style={
             {

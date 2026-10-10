@@ -21,7 +21,7 @@ const Checkbox = React.forwardRef<
         // 16px box, 24px hit area (WCAG 2.5.8): an invisible ::after extends the clickable
         // target 4px on each side without changing the box or the layout.
         'relative after:absolute after:-inset-1',
-        'transition-colors duration-150 ease-in-out',
+        'transition-colors',
         'hover:border-strong',
         'focus-ring',
         'disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-foreground data-[state=checked]:text-background',

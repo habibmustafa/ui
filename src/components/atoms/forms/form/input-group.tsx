@@ -47,7 +47,7 @@ function InputGroup({
       role="group"
       className={cn(
         'group/input-group relative items-center outline-hidden transition-[color,box-shadow]',
-        'flex rounded-md border border-control hover:border-control-hover bg-field text-sm transition-colors duration-200',
+        'flex rounded-md border border-control hover:border-control-hover bg-field text-sm transition-colors',
         'has-[>textarea]:h-auto',
 
         // Variants based on alignment.

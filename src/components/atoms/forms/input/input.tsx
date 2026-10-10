@@ -16,7 +16,7 @@ export interface InputProps
 export const InputVariants = cva(
   cn(
     'flex h-10 w-full rounded-md border border-control hover:border-control-hover read-only:border-button bg-field px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-foreground-muted read-only:text-foreground-light',
-    'focus:border-control-hover focus-ring disabled:cursor-not-allowed disabled:text-foreground-muted transition-colors duration-200',
+    'focus:border-control-hover focus-ring disabled:cursor-not-allowed disabled:text-foreground-muted transition-colors',
     'aria-[invalid=true]:bg-destructive-200 aria-[invalid=true]:border-destructive-400 aria-[invalid=true]:hover:border-destructive aria-[invalid=true]:focus:border-destructive aria-[invalid=true]:focus-visible:border-destructive'
   ),
   {

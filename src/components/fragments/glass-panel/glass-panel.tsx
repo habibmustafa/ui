@@ -113,7 +113,7 @@ export const GlassPanel = ({
         <img
           src={`${header}`}
           className="transition-all left-0 -top-64 w-full
-            duration-700 ease-out
+            duration-700 ease-soft-out
             "
         />
       )}

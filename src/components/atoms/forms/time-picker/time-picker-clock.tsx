@@ -210,7 +210,7 @@ export function ClockFace({ view, value, ampm, step, onChange, disabled }: Clock
             key={v}
             aria-hidden="true"
             className={cn(
-              'absolute flex items-center justify-center rounded-full tabular-nums transition-colors duration-200',
+              'absolute flex items-center justify-center rounded-full tabular-nums transition-colors',
               inner ? 'text-[11px] text-foreground-light' : 'text-[13px] text-foreground',
               selected && 'bg-primary-solid font-medium text-primary-solid-foreground'
             )}

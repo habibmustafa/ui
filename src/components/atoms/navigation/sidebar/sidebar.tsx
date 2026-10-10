@@ -209,7 +209,7 @@ const Sidebar = React.forwardRef<
         <div
           className={cn(
             overflowing ? 'absolute top-0' : 'relative',
-            'duration-100 h-full w-(--sidebar-width) bg-transparent transition-[width] ease-linear',
+            'duration-100 h-full w-(--sidebar-width) bg-transparent transition-[width] ease-soft-in-out',
             'group-data-[collapsible=offcanvas]:w-0',
             'group-data-[side=right]:rotate-180',
             variant === 'floating' || variant === 'inset'
@@ -221,7 +221,7 @@ const Sidebar = React.forwardRef<
           className={cn(
             'absolute top-0 h-full', // sidebar custom changes - We have also removed 'fixed', and 'h-svh'
             //
-            'duration-100 inset-y-0 z-10 hidden w-(--sidebar-width) transition-[left,right,width] ease-linear md:flex',
+            'duration-100 inset-y-0 z-10 hidden w-(--sidebar-width) transition-[left,right,width] ease-soft-in-out md:flex',
             side === 'left'
               ? 'left-0 group-data-[collapsible=offcanvas]:-left-(--sidebar-width)'
               : 'right-0 group-data-[collapsible=offcanvas]:-right-(--sidebar-width)',
@@ -285,7 +285,7 @@ const SidebarRail = React.forwardRef<HTMLButtonElement, React.ComponentProps<'bu
         onClick={toggleSidebar}
         title="Toggle Sidebar"
         className={cn(
-          'absolute inset-y-0 z-20 hidden w-4 -translate-x-1/2 transition-all ease-linear after:absolute after:inset-y-0 after:left-1/2 after:w-[2px] hover:after:bg-sidebar-border group-data-[side=left]:-right-4 group-data-[side=right]:left-0 sm:flex',
+          'absolute inset-y-0 z-20 hidden w-4 -translate-x-1/2 transition-all ease-soft-in-out after:absolute after:inset-y-0 after:left-1/2 after:w-[2px] hover:after:bg-sidebar-border group-data-[side=left]:-right-4 group-data-[side=right]:left-0 sm:flex',
           'in-data-[side=left]:cursor-w-resize in-data-[side=right]:cursor-e-resize',
           '[[data-side=left][data-state=collapsed]_&]:cursor-e-resize [[data-side=right][data-state=collapsed]_&]:cursor-w-resize',
           'group-data-[collapsible=offcanvas]:translate-x-0 group-data-[collapsible=offcanvas]:after:left-full group-data-[collapsible=offcanvas]:hover:bg-sidebar',
@@ -420,7 +420,7 @@ const SidebarGroupLabel = React.forwardRef<
       ref={ref}
       data-sidebar="group-label"
       className={cn(
-        'duration-100 flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium text-sidebar-foreground/70 outline-hidden ring-sidebar-ring transition-[margin,opa] ease-linear focus-visible:ring-2 [&>svg]:size-5 [&>svg]:shrink-0',
+        'duration-100 flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium text-sidebar-foreground/70 outline-hidden ring-sidebar-ring transition-[margin,opa] ease-soft-in-out focus-visible:ring-2 [&>svg]:size-5 [&>svg]:shrink-0',
         'group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0',
         className
       )}

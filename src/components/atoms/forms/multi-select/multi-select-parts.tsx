@@ -424,7 +424,7 @@ const MultiSelectorTrigger = React.forwardRef<HTMLButtonElement, MultiSelectorTr
               'placeholder:text-muted-foreground',
               'ring-border-control focus-ring',
               'disabled:cursor-not-allowed disabled:opacity-50',
-              'hover:border-control-hover transition-colors duration-200',
+              'hover:border-control-hover transition-colors',
               open && 'border-control-hover',
               'aria-[invalid=true]:border-destructive-400 aria-[invalid=true]:bg-destructive-200 aria-[invalid=true]:hover:border-destructive',
               MultiSelectorTriggerVariants({ size }),
@@ -769,7 +769,7 @@ const MultiSelectorItem = React.forwardRef<
         className={cn(
           'flex items-center justify-center',
           'peer h-4 w-4 shrink-0 rounded-sm border border-control bg-control/25 ring-offset-background',
-          'transition-colors duration-150 ease-in-out',
+          'transition-colors',
           'hover:border-strong',
           'focus-ring',
           'disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-foreground data-[state=checked]:text-background-overlay',

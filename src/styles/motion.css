@@ -20,6 +20,8 @@
 
   --duration-enter: 220ms;
   --duration-exit: 150ms;
+  /* Calendar view/month changes: a touch longer than enter, the grid travels further. */
+  --duration-calendar: 260ms;
 
   /* Every transition-* utility without its own duration/ease (hover colors, switch
      thumb, tab indicator, …) uses these instead of Tailwind's 150ms ease-in-out. */
@@ -111,10 +113,10 @@
 }
 
 .calendar-weeks-before-enter {
-  animation: calendar-weeks-in-from-left 260ms var(--ease-soft-out) both;
+  animation: calendar-weeks-in-from-left var(--duration-calendar) var(--ease-soft-out) both;
 }
 .calendar-weeks-after-enter {
-  animation: calendar-weeks-in-from-right 260ms var(--ease-soft-out) both;
+  animation: calendar-weeks-in-from-right var(--duration-calendar) var(--ease-soft-out) both;
 }
 .calendar-weeks-before-exit {
   animation: calendar-weeks-out-to-left 200ms var(--ease-soft-in) both;
@@ -123,7 +125,7 @@
   animation: calendar-weeks-out-to-right 200ms var(--ease-soft-in) both;
 }
 .calendar-caption-enter {
-  animation: calendar-caption-in 260ms var(--ease-soft-out) both;
+  animation: calendar-caption-in var(--duration-calendar) var(--ease-soft-out) both;
 }
 .calendar-caption-exit {
   animation: calendar-caption-out 200ms var(--ease-soft-in) both;
