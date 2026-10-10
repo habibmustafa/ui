@@ -1690,7 +1690,7 @@ const fragments: ComponentEntry[] = [
     title: 'Code Block',
     icon: Code,
     description:
-      'Syntax-highlighted code (react-syntax-highlighter, Monokai theme) with a hover-reveal copy button.',
+      'Syntax-highlighted code (react-syntax-highlighter, colors from the --code-token-* theme variables) with a hover-reveal copy button.',
     previews: [
       { name: 'code-block-demo' },
     ],
