@@ -1,4 +1,4 @@
-// LocaleProvider: the built-in words of the newer components can be reworded or translated.
+// LocaleProvider: the built-in words of the components can be reworded or translated.
 import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, test } from 'vitest'
@@ -8,6 +8,9 @@ import { Countdown } from '../src/components/atoms/data-display/countdown'
 import { Image } from '../src/components/atoms/data-display/image'
 import { Mentions } from '../src/components/atoms/forms/mentions'
 import { Rating } from '../src/components/atoms/forms/rating'
+import { Spinner } from '../src/components/atoms/feedback/spinner'
+import { PaginationPrevious } from '../src/components/atoms/navigation/pagination'
+import { Dialog } from '../src/components/atoms/overlay/dialog'
 import { TableOfContents } from '../src/components/atoms/navigation/table-of-contents'
 import { LocaleProvider, defaultLabels } from '../src/providers'
 
@@ -84,6 +87,35 @@ describe('LocaleProvider', () => {
     expect(screen.getByRole('button', { name: 'Previous slide' })).toBeTruthy()
     // The component's own aria-label wins over the (default) label.
     expect(screen.getByRole('navigation', { name: 'Contents' })).toBeTruthy()
+  })
+
+  test('translates shared labels: dialog close, confirm/cancel, pagination, spinner', () => {
+    const labels = {
+      close: 'Bağla',
+      confirm: 'Təsdiqlə',
+      cancel: 'Ləğv et',
+      previousPage: 'Əvvəlki səhifə',
+      loading: 'Yüklənir',
+    }
+    render(
+      <LocaleProvider labels={labels}>
+        <PaginationPrevious href="#" />
+        <Spinner />
+      </LocaleProvider>
+    )
+    expect(screen.getByRole('link', { name: 'Əvvəlki səhifə' })).toBeTruthy()
+    expect(screen.getByRole('status').textContent).toBe('Yüklənir')
+
+    render(
+      <LocaleProvider labels={labels}>
+        <Dialog open title="Sil" onConfirm={() => {}}>
+          Əminsiniz?
+        </Dialog>
+      </LocaleProvider>
+    )
+    expect(screen.getByRole('button', { name: 'Bağla' })).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Təsdiqlə' })).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Ləğv et' })).toBeTruthy()
   })
 
   test('nested providers merge: the inner one only overrides what it sets', () => {

@@ -8,6 +8,7 @@ import * as React from 'react'
 import { modalBackdropClass } from '../../../../lib/modal-backdrop'
 import { cn } from '../../../../lib/utils'
 import { getExplicitTabIndex } from '../../../../lib/get-explicit-tab-index'
+import { useLabels } from '../../../../providers/locale-provider'
 
 export const DIALOG_PADDING_Y_SMALL = 'py-4'
 export const DIALOG_PADDING_X_SMALL = 'px-4 md:px-5'
@@ -103,7 +104,9 @@ const DialogContent = React.forwardRef<
   (
     { className, children, size, hideClose, dialogOverlayProps, centered = true, ...props },
     ref
-  ) => (
+  ) => {
+    const labels = useLabels()
+    return (
     <DialogPortal>
       <DialogOverlay centered={centered} {...dialogOverlayProps}>
         <DialogPrimitive.Content
@@ -120,13 +123,14 @@ const DialogContent = React.forwardRef<
               )}
             >
               <X size={16} />
-              <span className="sr-only">Close</span>
+              <span className="sr-only">{labels.close}</span>
             </DialogPrimitive.Close>
           )}
         </DialogPrimitive.Content>
       </DialogOverlay>
     </DialogPortal>
-  )
+    )
+  }
 )
 DialogContent.displayName = DialogPrimitive.Content.displayName
 

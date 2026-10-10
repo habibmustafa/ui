@@ -6,6 +6,7 @@ import { Button } from '../../actions/button'
 import { PopoverContent, PopoverRoot, PopoverTrigger } from '../popover'
 import { useControllableState } from '../../../../lib/use-controllable-state'
 import { cn } from '../../../../lib/utils'
+import { useLabels } from '../../../../providers/locale-provider'
 
 /*
  * A lightweight "Are you sure?" anchored to the control that triggered it — for actions
@@ -22,9 +23,9 @@ export interface ConfirmPopoverProps {
   description?: React.ReactNode
   onConfirm: () => void | Promise<void>
   onCancel?: () => void
-  /** @default "Confirm" */
+  /** @default "Confirm", from LocaleProvider */
   confirmText?: React.ReactNode
-  /** @default "Cancel" */
+  /** @default "Cancel", from LocaleProvider */
   cancelText?: React.ReactNode
   /** Style the confirm button as destructive. */
   destructive?: boolean
@@ -42,8 +43,8 @@ export function ConfirmPopover({
   description,
   onConfirm,
   onCancel,
-  confirmText = 'Confirm',
-  cancelText = 'Cancel',
+  confirmText,
+  cancelText,
   destructive = false,
   open: openProp,
   defaultOpen = false,
@@ -52,6 +53,7 @@ export function ConfirmPopover({
   align = 'start',
   className,
 }: ConfirmPopoverProps) {
+  const labels = useLabels()
   const [open, setOpen] = useControllableState({
     value: openProp,
     defaultValue: defaultOpen,
@@ -114,7 +116,7 @@ export function ConfirmPopover({
               setOpen(false)
             }}
           >
-            {cancelText}
+            {cancelText ?? labels.cancel}
           </Button>
           <Button
             variant={destructive ? 'danger' : 'primary'}
@@ -127,7 +129,7 @@ export function ConfirmPopover({
               })
             }}
           >
-            {confirmText}
+            {confirmText ?? labels.confirm}
           </Button>
         </div>
       </PopoverContent>

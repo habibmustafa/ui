@@ -12,6 +12,7 @@ import {
   type FileRejection,
   type FileRejectionReason,
 } from './file-upload-utils'
+import { useLabels } from '../../../../providers/locale-provider'
 
 /*
  * Drop zone + file list. The real <input type="file"> stays in the DOM (visually hidden)
@@ -48,11 +49,11 @@ export interface FileUploadProps {
   name?: string
   /** Goes on the Browse button — the accessible control — so `<label for>` names it. */
   id?: string
-  /** Heading inside the drop zone. @default "Drag and drop files here" */
+  /** Heading inside the drop zone. @default "Drag and drop files here", from LocaleProvider */
   label?: React.ReactNode
   /** Smaller text under the label, e.g. accepted types and limits. */
   description?: React.ReactNode
-  /** @default "Browse files" */
+  /** @default "Browse files", from LocaleProvider */
   browseText?: React.ReactNode
   /** Render the list of selected files below the zone. @default true */
   showFileList?: boolean
@@ -88,9 +89,9 @@ const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
       disabled = false,
       name,
       id,
-      label = 'Drag and drop files here',
+      label: labelProp,
       description,
-      browseText = 'Browse files',
+      browseText: browseTextProp,
       showFileList = true,
       rejectionMessages,
       'aria-labelledby': ariaLabelledby,
@@ -102,6 +103,9 @@ const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
     },
     ref
   ) => {
+    const labels = useLabels()
+    const label = labelProp ?? labels.dropFiles
+    const browseText = browseTextProp ?? labels.browseFiles
     const [files, setFiles] = useControllableState<File[]>({
       value,
       defaultValue,
@@ -265,7 +269,7 @@ const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
         </div>
 
         {showFileList && files.length > 0 && (
-          <ul aria-label="Selected files" className={cn('flex flex-col gap-1.5', classNames?.list)}>
+          <ul aria-label={labels.selectedFiles} className={cn('flex flex-col gap-1.5', classNames?.list)}>
             {files.map((file, index) => (
               <li
                 key={`${file.name}-${file.size}-${file.lastModified}-${index}`}

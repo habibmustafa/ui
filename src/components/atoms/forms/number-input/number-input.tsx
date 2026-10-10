@@ -6,6 +6,7 @@ import * as React from 'react'
 import { Input, type InputProps } from '../input'
 import { useControllableState } from '../../../../lib/use-controllable-state'
 import { cn } from '../../../../lib/utils'
+import { useLabels } from '../../../../providers/locale-provider'
 
 /*
  * A numeric field built on Input's suffix slot: only number characters can be typed or
@@ -73,8 +74,8 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
       format,
       hideControls = false,
       prefix,
-      decrementLabel = 'Decrease',
-      incrementLabel = 'Increase',
+      decrementLabel: decrementLabelProp,
+      incrementLabel: incrementLabelProp,
       disabled,
       readOnly,
       className,
@@ -85,6 +86,9 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
     },
     ref
   ) => {
+    const labels = useLabels()
+    const decrementLabel = decrementLabelProp ?? labels.decrease
+    const incrementLabel = incrementLabelProp ?? labels.increase
     const [value, setValue] = useControllableState<number | null>({
       value: valueProp,
       defaultValue,

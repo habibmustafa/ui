@@ -5,6 +5,7 @@ import * as React from 'react'
 
 import { Input, type InputProps } from '../input'
 import { cn } from '../../../../lib/utils'
+import { useLabels } from '../../../../providers/locale-provider'
 
 /*
  * Password field on Input's suffix slot: a show/hide toggle (a real, focusable button
@@ -52,7 +53,7 @@ export interface PasswordInputProps extends Omit<InputProps, 'type' | 'suffix'> 
   getStrength?: (password: string) => PasswordStrength
   /** Override the meter's labels ("Weak", "Fair", …). */
   strengthLabels?: Partial<Record<PasswordStrength, string>>
-  /** Accessible name of the toggle. @default "Show password" */
+  /** Accessible name of the toggle. @default "Show password", from LocaleProvider */
   showLabel?: string
   /** Whether the password starts visible. @default false */
   defaultVisible?: boolean
@@ -64,7 +65,7 @@ const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
       showStrength = false,
       getStrength = estimatePasswordStrength,
       strengthLabels,
-      showLabel = 'Show password',
+      showLabel: showLabelProp,
       defaultVisible = false,
       value,
       defaultValue,
@@ -75,6 +76,8 @@ const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
     },
     ref
   ) => {
+    const text = useLabels()
+    const showLabel = showLabelProp ?? text.showPassword
     const [visible, setVisible] = React.useState(defaultVisible)
     // Tracked only for the meter; the input itself stays controlled/uncontrolled as given.
     const [typed, setTyped] = React.useState(String(defaultValue ?? ''))

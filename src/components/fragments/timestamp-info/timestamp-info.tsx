@@ -15,6 +15,7 @@ import {
   TooltipTrigger,
 } from '../../atoms/overlay/tooltip'
 import { useTimestampInfoContext } from './timestamp-info-provider'
+import { useLabels } from '../../../providers/locale-provider'
 
 export { TimestampInfoProvider } from './timestamp-info-provider'
 
@@ -135,6 +136,7 @@ export const TimestampInfo = ({
   timezone?: string
 }) => {
   const { timezone: timezoneFromContext } = useTimestampInfoContext()
+  const labels = useLabels()
   const effectiveTimezone = timezoneProp ?? timezoneFromContext
   const browserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
   const local = timestampLocalFormatter({ utcTimestamp, format, timezone: effectiveTimezone })
@@ -191,11 +193,11 @@ export const TimestampInfo = ({
           </span>
         </TooltipTrigger>
         <TooltipContent align={align} side="right" className="font-mono p-0 py-1 min-w-80">
-          <TooltipRow label="UTC" value={utc} />
+          <TooltipRow label={labels.timestampUtc} value={utc} />
           <TooltipRow label={localTimezone} value={local} />
           {showBrowserRow && <TooltipRow label={browserTimezone} value={browserLocal} />}
-          <TooltipRow label="Relative" value={relative} />
-          <TooltipRow label="Timestamp" value={String(utcTimestamp)} />
+          <TooltipRow label={labels.timestampRelative} value={relative} />
+          <TooltipRow label={labels.timestamp} value={String(utcTimestamp)} />
         </TooltipContent>
       </TooltipRoot>
     </TooltipProvider>

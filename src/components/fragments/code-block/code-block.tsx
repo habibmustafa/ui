@@ -33,6 +33,7 @@ import { copyToClipboard } from '../../../lib/copy-to-clipboard'
 import { Button } from '../../atoms/actions/button'
 import { FloatingPlate } from '../../atoms/layout/floating-plate'
 import { codeBlockTheme } from './code-block-theme'
+import { useLabels } from '../../../providers/locale-provider'
 
 const codeBlockLangs = [
   'js',
@@ -130,6 +131,7 @@ export const CodeBlock = ({
 }: CodeBlockProps) => {
   const highlightTheme = theme ?? codeBlockTheme
 
+  const labels = useLabels()
   const [copied, setCopied] = useState(false)
 
   // Same 1500ms as CopyButton; cleared on unmount. (CopyButton itself can't be used:
@@ -283,9 +285,9 @@ export const CodeBlock = ({
                 className="px-1.5 dark:bg-200! dark:hover:bg-button! hover:bg-alternative!"
                 icon={copied ? <Check /> : <Copy />}
                 onClick={() => onSelectCopy(value || children)}
-                aria-label={copied ? 'Copied' : 'Copy'}
+                aria-label={copied ? labels.copied : labels.copy}
               >
-                {copied ? 'Copied' : ''}
+                {copied ? labels.copied : ''}
               </Button>
             </FloatingPlate>
           ) : null}

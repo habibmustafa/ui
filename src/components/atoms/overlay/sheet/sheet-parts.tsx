@@ -7,6 +7,7 @@ import * as React from 'react'
 
 import { cn } from '../../../../lib/utils'
 import { getExplicitTabIndex } from '../../../../lib/get-explicit-tab-index'
+import { useLabels } from '../../../../providers/locale-provider'
 
 const SheetRoot = SheetPrimitive.Root
 
@@ -171,7 +172,9 @@ export interface DialogContentProps
 const SheetContent = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Content>,
   DialogContentProps
->(({ side, size, className, children, showClose = true, hasOverlay = true, ...props }, ref) => (
+>(({ side, size, className, children, showClose = true, hasOverlay = true, ...props }, ref) => {
+  const labels = useLabels()
+  return (
   <SheetPortal side={side}>
     {hasOverlay && <SheetOverlay />}
     <SheetPrimitive.Content
@@ -189,12 +192,13 @@ const SheetContent = React.forwardRef<
           )}
         >
           <X className="h-4 w-4" />
-          <span className="sr-only">Close</span>
+          <span className="sr-only">{labels.close}</span>
         </SheetPrimitive.Close>
       ) : null}
     </SheetPrimitive.Content>
   </SheetPortal>
-))
+  )
+})
 SheetContent.displayName = SheetPrimitive.Content.displayName
 
 const SheetHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (

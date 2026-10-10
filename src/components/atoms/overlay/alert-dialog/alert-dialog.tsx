@@ -2,6 +2,7 @@
 import * as React from 'react'
 
 import { cn } from '../../../../lib/utils'
+import { useLabels } from '../../../../providers/locale-provider'
 import {
   AlertDialogAction,
   AlertDialogBody,
@@ -35,9 +36,9 @@ export interface AlertDialogProps {
   children?: React.ReactNode
   /** Called by AlertDialogAction; async loading and close behavior come from the part. */
   onConfirm?: () => void | Promise<void>
-  /** @default "Cancel" (or "Close" when onConfirm is absent) */
+  /** @default "Cancel" (or "Close" when onConfirm is absent), from LocaleProvider */
   cancelText?: React.ReactNode
-  /** @default "Confirm" */
+  /** @default "Confirm", from LocaleProvider */
   confirmText?: React.ReactNode
   confirmVariant?: React.ComponentProps<typeof AlertDialogAction>['variant']
   className?: string
@@ -59,12 +60,13 @@ export function AlertDialogHybrid({
   children,
   onConfirm,
   cancelText,
-  confirmText = 'Confirm',
+  confirmText,
   confirmVariant,
   className,
   classNames,
   slotProps,
 }: AlertDialogProps) {
+  const labels = useLabels()
   const { className: contentClassName, ...contentProps } = slotProps?.content ?? {}
   return (
     <AlertDialogRoot open={open} defaultOpen={defaultOpen} onOpenChange={onOpenChange}>
@@ -85,11 +87,11 @@ export function AlertDialogHybrid({
         {children != null && <AlertDialogBody className={classNames?.body}>{children}</AlertDialogBody>}
         <AlertDialogFooter className={classNames?.footer}>
           <AlertDialogCancel {...slotProps?.cancel}>
-            {cancelText ?? (onConfirm ? 'Cancel' : 'Close')}
+            {cancelText ?? (onConfirm ? labels.cancel : labels.close)}
           </AlertDialogCancel>
           {onConfirm && (
             <AlertDialogAction {...slotProps?.action} variant={confirmVariant} onClick={onConfirm}>
-              {confirmText}
+              {confirmText ?? labels.confirm}
             </AlertDialogAction>
           )}
         </AlertDialogFooter>

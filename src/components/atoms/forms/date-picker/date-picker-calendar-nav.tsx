@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useLayoutEffect, useRef, useState, type ComponentProps, type ReactNode } from 'react'
 
 import { DURATION_ENTER, DURATION_EXIT, EASE_SOFT_IN, EASE_SOFT_OUT } from '../../../../lib/motion'
+import { useLabels } from '../../../../providers/locale-provider'
 import { cn } from '../../../../lib/utils'
 import { buttonVariants } from '../../actions/button/button'
 import { Calendar } from '../calendar'
@@ -186,9 +187,10 @@ function GridHeader({
   onPrev: () => void
   onNext: () => void
 }) {
+  const labels = useLabels()
   return (
     <div className="flex items-center justify-between px-2 pt-2">
-      <button type="button" onClick={onPrev} aria-label="Previous" className={pagerButton}>
+      <button type="button" onClick={onPrev} aria-label={labels.previous} className={pagerButton}>
         <ChevronLeft className="h-4 w-4 pointer-events-none" />
       </button>
       {onLabelClick ? (
@@ -198,7 +200,7 @@ function GridHeader({
       ) : (
         <span className="text-sm font-medium">{label}</span>
       )}
-      <button type="button" onClick={onNext} aria-label="Next" className={pagerButton}>
+      <button type="button" onClick={onNext} aria-label={labels.next} className={pagerButton}>
         <ChevronRight className="h-4 w-4 pointer-events-none" />
       </button>
     </div>
@@ -291,6 +293,7 @@ function MonthGrid({
   onPrevYear: () => void
   onNextYear: () => void
 }) {
+  const labels = useLabels()
   return (
     <div className="w-[238px] p-2 pt-0">
       <GridHeader
@@ -300,7 +303,7 @@ function MonthGrid({
         onNext={onNextYear}
       />
       <PickerGrid
-        label="Select month"
+        label={labels.selectMonth}
         activeIndex={displayMonth.getMonth()}
         onPick={onPick}
         options={Array.from({ length: 12 }, (_, i) => ({
@@ -319,6 +322,7 @@ function YearGrid({
   displayMonth: Date
   onPick: (year: number) => void
 }) {
+  const labels = useLabels()
   const activeYear = displayMonth.getFullYear()
   const [pageStart, setPageStart] = useState(
     () => Math.floor(activeYear / YEAR_PAGE_SIZE) * YEAR_PAGE_SIZE
@@ -333,7 +337,7 @@ function YearGrid({
         onNext={() => setPageStart((p) => p + YEAR_PAGE_SIZE)}
       />
       <PickerGrid
-        label="Select year"
+        label={labels.selectYear}
         activeIndex={years.indexOf(activeYear)}
         onPick={(index) => onPick(years[index])}
         options={years.map((year) => ({ key: year, text: String(year) }))}

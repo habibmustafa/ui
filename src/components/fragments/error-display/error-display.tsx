@@ -7,6 +7,7 @@ import { CardHeader, CardRoot } from '../../atoms/layout/card'
 import { cn } from '../../../lib/utils'
 import { WarningIcon } from '../admonition'
 import type { ErrorDisplayProps, SupportFormParams } from './error-display-types'
+import { useLabels } from '../../../providers/locale-provider'
 
 export type { SupportFormParams } from './error-display-types'
 
@@ -23,7 +24,7 @@ export const ErrorDisplay = forwardRef<HTMLDivElement, ErrorDisplayProps>(
       title,
       errorMessage,
       supportFormParams,
-      supportLabel = 'Contact support',
+      supportLabel: supportLabelProp,
       children,
       className,
       icon,
@@ -33,6 +34,8 @@ export const ErrorDisplay = forwardRef<HTMLDivElement, ErrorDisplayProps>(
     },
     ref
   ) => {
+    const labels = useLabels()
+    const supportLabel = supportLabelProp ?? labels.contactSupport
     const hasFired = useRef(false)
     useEffect(() => {
       if (hasFired.current) return

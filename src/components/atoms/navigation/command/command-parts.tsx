@@ -5,6 +5,7 @@ import { X as RemoveIcon, Search } from 'lucide-react'
 import * as React from 'react'
 
 import { cn } from '../../../../lib/utils'
+import { useLabels } from '../../../../providers/locale-provider'
 
 const CommandRoot = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive>,
@@ -43,7 +44,9 @@ const CommandInput = React.forwardRef<
       ...props
     },
     ref
-  ) => (
+  ) => {
+    const labels = useLabels()
+    return (
     <div className={cn('flex items-center border-b px-4', wrapperClassName)} cmdk-input-wrapper="">
       {showSearchIcon && <Search className="h-4 w-4 shrink-0 opacity-50" aria-hidden />}
       <CommandPrimitive.Input
@@ -60,7 +63,7 @@ const CommandInput = React.forwardRef<
           tabIndex={props.disabled || !props.value?.length ? -1 : 0}
           disabled={props.disabled || !props.value?.length}
           onClick={handleReset}
-          aria-label="Clear search"
+          aria-label={labels.clearSearch}
           className={cn(
             'text-foreground-lighter hover:text-foreground-light hover:cursor-pointer transition-all opacity-0 duration-100',
             !!props.value?.length && 'opacity-100'
@@ -70,7 +73,8 @@ const CommandInput = React.forwardRef<
         </button>
       )}
     </div>
-  )
+    )
+  }
 )
 
 CommandInput.displayName = CommandPrimitive.Input.displayName

@@ -16,6 +16,7 @@ import { PopoverContent, PopoverRoot, PopoverTrigger } from '../../overlay/popov
 import { selectTriggerVariants, type SelectTriggerSize } from '../select'
 import { useControllableState } from '../../../../lib/use-controllable-state'
 import { cn } from '../../../../lib/utils'
+import { useLabels } from '../../../../providers/locale-provider'
 
 /*
  * Single-value, searchable select: a Select-styled trigger opening a Popover with a
@@ -59,7 +60,7 @@ export interface ComboboxProps {
   placeholder?: React.ReactNode
   /** @default "Search…" */
   searchPlaceholder?: string
-  /** Shown when the search matches nothing. @default "No results found." */
+  /** Shown when the search matches nothing. @default "No results found.", from LocaleProvider */
   emptyText?: React.ReactNode
   /** Picking the selected option again clears it. @default false */
   clearable?: boolean
@@ -90,7 +91,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
       onOpenChange,
       placeholder = 'Select…',
       searchPlaceholder = 'Search…',
-      emptyText = 'No results found.',
+      emptyText: emptyTextProp,
       clearable = false,
       disabled,
       size,
@@ -102,6 +103,8 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
     },
     ref
   ) => {
+    const labels = useLabels()
+    const emptyText = emptyTextProp ?? labels.noResults
     const [value, setValue] = useControllableState<string | null>({
       value: valueProp,
       defaultValue,

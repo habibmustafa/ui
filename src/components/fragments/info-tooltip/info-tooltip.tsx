@@ -6,6 +6,7 @@ import {
   TooltipRoot,
   TooltipTrigger,
 } from '../../atoms/overlay/tooltip'
+import { useLabels } from '../../../providers/locale-provider'
 
 const SVG = forwardRef<SVGSVGElement, React.SVGProps<SVGSVGElement>>((props, ref) => (
   <svg
@@ -27,6 +28,7 @@ const InfoTooltip = forwardRef<
   ElementRef<typeof TooltipContent>,
   React.ComponentPropsWithoutRef<typeof TooltipContent> & { label?: string }
 >(({ label, ...props }, _ref) => {
+  const labels = useLabels()
   return (
     <TooltipProvider>
       <TooltipRoot>
@@ -35,7 +37,7 @@ const InfoTooltip = forwardRef<
           className="flex [&_svg]:data-[state=delayed-open]:fill-foreground-lighter [&_svg]:data-[state=instant-open]:fill-foreground-lighter"
         >
           <SVG strokeWidth={2} className="transition-colors fill-foreground-muted w-4 h-4" />
-          <span className="sr-only">{label ?? 'More information'}</span>
+          <span className="sr-only">{label ?? labels.moreInformation}</span>
         </TooltipTrigger>
         <TooltipContent {...props} />
       </TooltipRoot>

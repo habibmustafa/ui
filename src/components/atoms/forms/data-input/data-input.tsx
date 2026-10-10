@@ -10,6 +10,7 @@ import React, {
 
 import { cn } from '../../../../lib/utils'
 import { CopyButton } from '../../actions/copy-button'
+import { useLabels } from '../../../../providers/locale-provider'
 // Imported from the file rather than the `form` barrel: the InputGroup family is an
 // internal building block for DataInput/Form, deliberately not part of the public API
 // (consumers get `Input`'s own `prefix`/`suffix` props instead).
@@ -51,6 +52,7 @@ const DataInput = forwardRef<
     }: DataInputProps,
     ref
   ) => {
+    const labels = useLabels()
     const [hidden, setHidden] = useState(true)
     const inputRef = useRef<HTMLInputElement>(null)
 
@@ -97,7 +99,7 @@ const DataInput = forwardRef<
             {copy && !(reveal && hidden) ? (
               <CopyButton
                 size="tiny"
-                label="Copy"
+                label={labels.copy}
                 value={() => inputRef.current?.value ?? ''}
                 onCopied={onCopy}
                 className={cn(
@@ -109,7 +111,7 @@ const DataInput = forwardRef<
             ) : null}
             {reveal && hidden ? (
               <InputGroupButton size="tiny" variant="default" onClick={onReveal}>
-                Reveal
+                {labels.reveal}
               </InputGroupButton>
             ) : null}
             {actions}

@@ -105,13 +105,13 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "copiedLabel",
             "type": "ReactNode",
-            "default": "Copied",
+            "default": "\"Copied\", from LocaleProvider",
             "description": "Label while in the copied state."
           },
           {
             "name": "aria-label",
             "type": "string",
-            "default": "Copy",
+            "default": "\"Copy\", from LocaleProvider",
             "description": "Accessible name when icon-only."
           },
           {
@@ -2067,7 +2067,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "dismissLabel",
             "type": "string",
-            "default": "Dismiss",
+            "default": "\"Dismiss\", from LocaleProvider",
             "description": "Accessible name of the close button."
           },
           {
@@ -2385,7 +2385,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "label",
             "type": "string",
-            "default": "Loading",
+            "default": "\"Loading\", from LocaleProvider",
             "description": "Screen-reader text."
           },
           {
@@ -2522,7 +2522,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "emptyText",
             "type": "ReactNode",
-            "default": "No results found.",
+            "default": "\"No results found.\", from LocaleProvider",
             "description": "Shown when the search matches nothing."
           },
           {
@@ -3181,7 +3181,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "label",
             "type": "ReactNode",
-            "default": "Drag and drop files here",
+            "default": "\"Drag and drop files here\", from LocaleProvider",
             "description": "Heading inside the drop zone."
           },
           {
@@ -3192,7 +3192,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "browseText",
             "type": "ReactNode",
-            "default": "Browse files"
+            "default": "\"Browse files\", from LocaleProvider"
           },
           {
             "name": "showFileList",
@@ -3803,8 +3803,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           },
           {
             "name": "emptyLabel",
-            "type": "string",
-            "default": "No results found"
+            "type": "string"
           },
           {
             "name": "error",
@@ -3996,13 +3995,11 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "decrementLabel",
             "type": "string",
-            "default": "Decrease",
             "description": "Accessible names of the buttons."
           },
           {
             "name": "incrementLabel",
-            "type": "string",
-            "default": "Increase"
+            "type": "string"
           },
           {
             "name": "size",
@@ -4043,7 +4040,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "showLabel",
             "type": "string",
-            "default": "Show password",
+            "default": "\"Show password\", from LocaleProvider",
             "description": "Accessible name of the toggle."
           },
           {
@@ -4746,8 +4743,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           },
           {
             "name": "aria-label",
-            "type": "string",
-            "default": "Time"
+            "type": "string"
           },
           {
             "name": "aria-labelledby",
@@ -5918,7 +5914,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "emptyText",
             "type": "ReactNode",
-            "default": "\"No results found.\""
+            "default": "\"No results found.\", from LocaleProvider"
           },
           {
             "name": "classNames",
@@ -6055,7 +6051,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "emptyText",
             "type": "ReactNode",
-            "default": "\"No results found.\""
+            "default": "\"No results found.\", from LocaleProvider"
           },
           {
             "name": "classNames",
@@ -6645,8 +6641,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           },
           {
             "name": "label",
-            "type": "ReactNode",
-            "default": "Next"
+            "type": "ReactNode"
           }
         ],
         "extends": [
@@ -6687,8 +6682,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           },
           {
             "name": "label",
-            "type": "ReactNode",
-            "default": "Next"
+            "type": "ReactNode"
           }
         ],
         "extends": [
@@ -7454,12 +7448,12 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "cancelText",
             "type": "ReactNode",
-            "default": "\"Cancel\" (or \"Close\" when onConfirm is absent)"
+            "default": "\"Cancel\" (or \"Close\" when onConfirm is absent), from LocaleProvider"
           },
           {
             "name": "confirmText",
             "type": "ReactNode",
-            "default": "\"Confirm\""
+            "default": "\"Confirm\", from LocaleProvider"
           },
           {
             "name": "confirmVariant",
@@ -7666,12 +7660,12 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "confirmText",
             "type": "ReactNode",
-            "default": "Confirm"
+            "default": "\"Confirm\", from LocaleProvider"
           },
           {
             "name": "cancelText",
             "type": "ReactNode",
-            "default": "Cancel"
+            "default": "\"Cancel\", from LocaleProvider"
           },
           {
             "name": "destructive",
@@ -8022,12 +8016,12 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "confirmText",
             "type": "ReactNode",
-            "default": "\"Confirm\""
+            "default": "\"Confirm\", from LocaleProvider"
           },
           {
             "name": "cancelText",
             "type": "ReactNode",
-            "default": "\"Cancel\""
+            "default": "\"Cancel\", from LocaleProvider"
           },
           {
             "name": "confirmType",
@@ -8268,12 +8262,12 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "confirmText",
             "type": "ReactNode",
-            "default": "\"Confirm\""
+            "default": "\"Confirm\", from LocaleProvider"
           },
           {
             "name": "cancelText",
             "type": "ReactNode",
-            "default": "\"Cancel\""
+            "default": "\"Cancel\", from LocaleProvider"
           },
           {
             "name": "confirmType",
@@ -8952,12 +8946,12 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "confirmText",
             "type": "ReactNode",
-            "default": "\"Confirm\""
+            "default": "\"Confirm\", from LocaleProvider"
           },
           {
             "name": "cancelText",
             "type": "ReactNode",
-            "default": "\"Cancel\""
+            "default": "\"Cancel\", from LocaleProvider"
           },
           {
             "name": "confirmType",
@@ -9557,7 +9551,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "emptyText",
             "type": "ReactNode",
-            "default": "No results.",
+            "default": "\"No results found.\", from LocaleProvider",
             "description": "Shown in place of rows when there are none."
           },
           {
@@ -9689,7 +9683,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "supportLabel",
             "type": "string",
-            "default": "Contact support",
+            "default": "\"Contact support\", from LocaleProvider",
             "description": "Text for the support link"
           },
           {
@@ -10191,7 +10185,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "showLabel",
             "type": "string",
-            "default": "\"Show password\"",
+            "default": "\"Show password\", from LocaleProvider",
             "description": "Accessible name of the toggle."
           },
           {
@@ -10804,7 +10798,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "emptyText",
             "type": "ReactNode",
-            "default": "\"No results found.\"",
+            "default": "\"No results found.\", from LocaleProvider",
             "description": "Shown when the search matches nothing."
           },
           {
@@ -11036,7 +11030,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "browseText",
             "type": "ReactNode",
-            "default": "\"Browse files\""
+            "default": "\"Browse files\", from LocaleProvider"
           },
           {
             "name": "showFileList",

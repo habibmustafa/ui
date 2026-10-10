@@ -2,6 +2,7 @@ import { forwardRef } from 'react'
 
 import { AlertDescription, AlertRoot as Alert, AlertTitle } from '../../atoms/feedback/alert'
 import { cn } from '../../../lib/utils'
+import { useLabels } from '../../../providers/locale-provider'
 import { TYPE_LABEL, TYPE_TO_VARIANT } from './admonition-constants'
 import type { AdmonitionLayout, AdmonitionProps, AdmonitionType } from './admonition-types'
 import { AdmonitionTypeIcon } from './admonition-icons'
@@ -40,7 +41,7 @@ export const Admonition = forwardRef<
     },
     ref
   ) => {
-    const label = TYPE_LABEL[type]
+    const label = useLabels()[TYPE_LABEL[type]]
 
     return (
       <Alert

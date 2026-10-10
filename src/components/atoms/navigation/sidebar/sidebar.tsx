@@ -15,6 +15,7 @@ import { Separator } from '../../layout/separator'
 import { Sheet, SheetContent } from '../../overlay/sheet'
 import { Skeleton } from '../../feedback/skeleton'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../../overlay/tooltip'
+import { useLabels } from '../../../../providers/locale-provider'
 
 const SIDEBAR_COOKIE_NAME = 'sidebar:state'
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
@@ -251,6 +252,7 @@ const SidebarTrigger = React.forwardRef<
   React.ComponentProps<typeof Button>
 >(({ className, onClick, ...props }, ref) => {
   const { toggleSidebar } = useSidebar()
+  const labels = useLabels()
 
   return (
     <Button
@@ -266,7 +268,7 @@ const SidebarTrigger = React.forwardRef<
       }}
       {...props}
     >
-      <span className="sr-only">Toggle Sidebar</span>
+      <span className="sr-only">{labels.toggleSidebar}</span>
     </Button>
   )
 })
@@ -275,15 +277,16 @@ SidebarTrigger.displayName = 'SidebarTrigger'
 const SidebarRail = React.forwardRef<HTMLButtonElement, React.ComponentProps<'button'>>(
   ({ className, ...props }, ref) => {
     const { toggleSidebar } = useSidebar()
+    const labels = useLabels()
 
     return (
       <button
         ref={ref}
         data-sidebar="rail"
-        aria-label="Toggle Sidebar"
+        aria-label={labels.toggleSidebar}
         tabIndex={-1}
         onClick={toggleSidebar}
-        title="Toggle Sidebar"
+        title={labels.toggleSidebar}
         className={cn(
           'absolute inset-y-0 z-20 hidden w-4 -translate-x-1/2 transition-all ease-soft-in-out after:absolute after:inset-y-0 after:left-1/2 after:w-[2px] hover:after:bg-sidebar-border group-data-[side=left]:-right-4 group-data-[side=right]:left-0 sm:flex',
           'in-data-[side=left]:cursor-w-resize in-data-[side=right]:cursor-e-resize',

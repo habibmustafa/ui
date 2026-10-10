@@ -4,6 +4,7 @@ import * as React from 'react'
 
 import { cn } from '../../../../lib/utils'
 import { buttonVariants } from '../../actions/button'
+import { useLabels } from '../../../../providers/locale-provider'
 
 /*
  * Compound parts follow shadcn/ui's Pagination anatomy (nav > ul > li > a), styled with
@@ -98,33 +99,41 @@ export type PaginationPreviousProps = PaginationLinkProps & { label?: React.Reac
 const PaginationPrevious = React.forwardRef<
   HTMLAnchorElement & HTMLButtonElement,
   PaginationPreviousProps
->(({ className, label = 'Previous', ...props }, ref) => (
-  <PaginationLink
-    ref={ref}
-    aria-label="Go to previous page"
-    className={cn('gap-1 px-2', className)}
-    {...props}
-  >
-    <ChevronLeft aria-hidden="true" className="h-4 w-4" strokeWidth={1.5} />
-    {label != null && <span>{label}</span>}
-  </PaginationLink>
-))
+>(({ className, label, ...props }, ref) => {
+  const labels = useLabels()
+  const text = label === undefined ? labels.previous : label
+  return (
+    <PaginationLink
+      ref={ref}
+      aria-label={labels.previousPage}
+      className={cn('gap-1 px-2', className)}
+      {...props}
+    >
+      <ChevronLeft aria-hidden="true" className="h-4 w-4" strokeWidth={1.5} />
+      {text != null && <span>{text}</span>}
+    </PaginationLink>
+  )
+})
 PaginationPrevious.displayName = 'PaginationPrevious'
 
 export type PaginationNextProps = PaginationLinkProps & { label?: React.ReactNode }
 
 const PaginationNext = React.forwardRef<HTMLAnchorElement & HTMLButtonElement, PaginationNextProps>(
-  ({ className, label = 'Next', ...props }, ref) => (
-    <PaginationLink
-      ref={ref}
-      aria-label="Go to next page"
-      className={cn('gap-1 px-2', className)}
-      {...props}
-    >
-      {label != null && <span>{label}</span>}
-      <ChevronRight aria-hidden="true" className="h-4 w-4" strokeWidth={1.5} />
-    </PaginationLink>
-  )
+  ({ className, label, ...props }, ref) => {
+    const labels = useLabels()
+    const text = label === undefined ? labels.next : label
+    return (
+      <PaginationLink
+        ref={ref}
+        aria-label={labels.nextPage}
+        className={cn('gap-1 px-2', className)}
+        {...props}
+      >
+        {text != null && <span>{text}</span>}
+        <ChevronRight aria-hidden="true" className="h-4 w-4" strokeWidth={1.5} />
+      </PaginationLink>
+    )
+  }
 )
 PaginationNext.displayName = 'PaginationNext'
 

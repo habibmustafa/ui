@@ -5,6 +5,7 @@ import * as React from 'react'
 
 import { Button, type ButtonProps } from '../button'
 import { copyToClipboard } from '../../../../lib/copy-to-clipboard'
+import { useLabels } from '../../../../providers/locale-provider'
 
 /*
  * One-click copy with feedback: the icon turns into a check and the label into "Copied"
@@ -17,9 +18,9 @@ export interface CopyButtonProps extends Omit<ButtonProps, 'value' | 'onCopy' | 
   value: string | (() => string | Promise<string>)
   /** Visible label; omit for an icon-only button. */
   label?: React.ReactNode
-  /** Label while in the copied state. @default "Copied" */
+  /** Label while in the copied state. @default "Copied", from LocaleProvider */
   copiedLabel?: React.ReactNode
-  /** Accessible name when icon-only. @default "Copy" */
+  /** Accessible name when icon-only. @default "Copy", from LocaleProvider */
   'aria-label'?: string
   /** Called after a successful copy. */
   onCopied?: () => void
@@ -32,8 +33,8 @@ const CopyButton = React.forwardRef<HTMLButtonElement, CopyButtonProps>(
     {
       value,
       label,
-      copiedLabel = 'Copied',
-      'aria-label': ariaLabel = 'Copy',
+      copiedLabel: copiedLabelProp,
+      'aria-label': ariaLabelProp,
       onCopied,
       timeout = 1500,
       variant = 'default',
@@ -42,6 +43,9 @@ const CopyButton = React.forwardRef<HTMLButtonElement, CopyButtonProps>(
     },
     ref
   ) => {
+    const labels = useLabels()
+    const copiedLabel = copiedLabelProp ?? labels.copied
+    const ariaLabel = ariaLabelProp ?? labels.copy
     const [copied, setCopied] = React.useState(false)
 
     React.useEffect(() => {
@@ -73,7 +77,7 @@ const CopyButton = React.forwardRef<HTMLButtonElement, CopyButtonProps>(
           {iconOnly ? undefined : copied ? copiedLabel : label}
         </Button>
         <span aria-live="polite" className="sr-only">
-          {copied ? 'Copied to clipboard' : ''}
+          {copied ? labels.copiedToClipboard : ''}
         </span>
       </>
     )

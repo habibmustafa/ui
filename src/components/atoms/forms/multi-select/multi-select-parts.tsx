@@ -21,6 +21,7 @@ import {
   type PopoverContentProps,
 } from '../../overlay/popover'
 import { SelectionListState } from './selection-list-state'
+import { useLabels } from '../../../../providers/locale-provider'
 
 interface MultiSelectContextProps {
   id: string
@@ -676,7 +677,7 @@ const MultiSelectorList = React.forwardRef<
       className,
       children,
       creatable = false,
-      emptyLabel = 'No results found',
+      emptyLabel: emptyLabelProp,
       error = false,
       errorLabel,
       loading = false,
@@ -684,6 +685,8 @@ const MultiSelectorList = React.forwardRef<
     },
     ref
   ) => {
+    const labels = useLabels()
+    const emptyLabel = emptyLabelProp ?? labels.noResults
     const { open, inputValue, setInputValue, toggleValue, dropdownMaxHeight } = useMultiSelect()
 
     const options = Children.toArray(children)

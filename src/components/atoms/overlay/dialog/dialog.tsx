@@ -13,6 +13,7 @@ import {
 } from './dialog-parts'
 import { Button } from '../../actions/button'
 import { cn } from '../../../../lib/utils'
+import { useLabels } from '../../../../providers/locale-provider'
 import { useControllableState } from '../../../../lib/use-controllable-state'
 
 type ButtonVariant = React.ComponentProps<typeof Button>['variant']
@@ -54,9 +55,9 @@ export interface DialogProps {
   footer?: Slot | null
   onConfirm?: () => void | Promise<void>
   onCancel?: () => void
-  /** @default "Confirm" */
+  /** @default "Confirm", from LocaleProvider */
   confirmText?: React.ReactNode
-  /** @default "Cancel" */
+  /** @default "Cancel", from LocaleProvider */
   cancelText?: React.ReactNode
   /** Visual variant of the confirm Button. @default "primary" */
   confirmType?: ButtonVariant
@@ -82,8 +83,8 @@ export function DialogHybrid({
   footer,
   onConfirm,
   onCancel,
-  confirmText = 'Confirm',
-  cancelText = 'Cancel',
+  confirmText,
+  cancelText,
   confirmType = 'primary',
   closeOnConfirm = true,
   dismissible = true,
@@ -91,6 +92,7 @@ export function DialogHybrid({
   classNames,
   slotProps,
 }: DialogProps) {
+  const labels = useLabels()
   const [open, setOpen] = useControllableState({
     value: openProp,
     defaultValue: defaultOpen,
@@ -135,10 +137,10 @@ export function DialogHybrid({
           ? (
               <>
                 <Button variant="text" onClick={handleCancel} disabled={pending}>
-                  {cancelText}
+                  {cancelText ?? labels.cancel}
                 </Button>
                 <Button variant={confirmType} onClick={handleConfirm} loading={pending}>
-                  {confirmText}
+                  {confirmText ?? labels.confirm}
                 </Button>
               </>
             )

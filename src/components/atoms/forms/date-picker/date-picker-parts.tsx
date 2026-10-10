@@ -3,6 +3,7 @@ import type { ComponentProps } from 'react'
 
 import { fieldIconButtonClass, fieldIconClass, fieldIconStrokeWidth } from '../../../../lib/field-icon-button'
 import { cn } from '../../../../lib/utils'
+import { useLabels } from '../../../../providers/locale-provider'
 import { Button } from '../../actions/button'
 import { DateField } from '../date-field'
 import {
@@ -71,6 +72,7 @@ export const DatePickerField = ({
   onChange,
   ...props
 }: DatePickerFieldProps) => {
+  const labels = useLabels()
   return (
     <PopoverAnchor asChild>
       <div className={cn('relative inline-flex', containerClassName)}>
@@ -86,7 +88,7 @@ export const DatePickerField = ({
           <button
             type="button"
             disabled={disabled}
-            aria-label="Clear date"
+            aria-label={labels.clearDate}
             onClick={() => onChange?.(null)}
             className={cn(fieldIconButtonClass, 'absolute right-8 top-1/2 -translate-y-1/2')}
           >
@@ -97,7 +99,7 @@ export const DatePickerField = ({
           <button
             type="button"
             disabled={disabled}
-            aria-label="Open calendar"
+            aria-label={labels.openCalendar}
             className={cn(fieldIconButtonClass, 'absolute right-1 top-1/2 -translate-y-1/2')}
           >
             <CalendarIcon aria-hidden="true" className={fieldIconClass} strokeWidth={fieldIconStrokeWidth} />

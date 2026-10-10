@@ -3,6 +3,7 @@
 import * as React from 'react'
 
 import { cn } from '../../../../lib/utils'
+import { useLabels } from '../../../../providers/locale-provider'
 
 /*
  * Analog clock face in the style of MUI's TimeClock: numbers around a dial, a hand that
@@ -142,6 +143,7 @@ export function ClockFace({ view, value, ampm, step, onChange, disabled }: Clock
   // A minute that isn't on a label gets a small dot at the hand's tip instead.
   const onLabel = value !== null && labels.some((label) => label.v === value)
 
+  const text = useLabels()
   const unit = view === 'hours' ? 'hours' : view === 'minutes' ? 'minutes' : 'seconds'
 
   return (
@@ -149,11 +151,11 @@ export function ClockFace({ view, value, ampm, step, onChange, disabled }: Clock
       ref={faceRef}
       role="slider"
       tabIndex={disabled ? -1 : 0}
-      aria-label={`Select ${unit}`}
+      aria-label={text.selectTimeUnit(unit)}
       aria-valuemin={min}
       aria-valuemax={max}
       aria-valuenow={value ?? undefined}
-      aria-valuetext={value === null ? 'Not set' : `${pad(value)} ${unit}`}
+      aria-valuetext={value === null ? text.notSet : `${pad(value)} ${unit}`}
       aria-disabled={disabled || undefined}
       onKeyDown={onKeyDown}
       onPointerDown={(event) => {

@@ -2,6 +2,7 @@ import { Check } from 'lucide-react'
 import * as React from 'react'
 
 import { cn } from '../../../../lib/utils'
+import { useLabels } from '../../../../providers/locale-provider'
 
 /*
  * Progress through a fixed sequence of steps. Rendered as an ordered list; the current
@@ -57,11 +58,13 @@ const Stepper = React.forwardRef<HTMLOListElement, StepperProps>(
       stateLabels,
       className,
       classNames,
-      'aria-label': ariaLabel = 'Progress',
+      'aria-label': ariaLabelProp,
       ...props
     },
     ref
   ) => {
+    const text = useLabels()
+    const ariaLabel = ariaLabelProp ?? text.progress
     const labels = { completed: 'completed', current: 'current', upcoming: 'not started', ...stateLabels }
     const vertical = orientation === 'vertical'
 

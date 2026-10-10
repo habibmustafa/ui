@@ -33,7 +33,7 @@ export interface ErrorDisplayProps extends ComponentPropsWithoutRef<'div'> {
 
   /**
    * Text for the support link
-   * @default "Contact support"
+   * @default "Contact support", from LocaleProvider
    */
   supportLabel?: string
 

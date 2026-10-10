@@ -95,7 +95,7 @@ test('the search box filters the list and falls back to the empty label', async 
 
   fireEvent.change(search, { target: { value: 'zzz' } })
   expect(screen.queryByRole('option')).toBeNull()
-  expect(screen.getByText('No results found')).toBeTruthy()
+  expect(screen.getByText('No results found.')).toBeTruthy()
 })
 
 test('arrow keys pick a chip and Backspace removes that one (keyboard path for deletion)', async () => {

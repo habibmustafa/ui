@@ -16,6 +16,7 @@ import { cn } from '../../../lib/utils'
 import { Button } from '../../atoms/actions/button'
 import { CardContent, CardRoot, CardTitle } from '../../atoms/layout/card'
 import { Skeleton } from '../../atoms/feedback/skeleton'
+import { useLabels } from '../../../providers/locale-provider'
 import {
   TooltipContent,
   TooltipProvider,
@@ -73,6 +74,7 @@ interface MetricCardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const MetricCardHeader = React.forwardRef<HTMLDivElement, MetricCardHeaderProps>(
   ({ className, href, children, linkTooltip, ...props }, ref) => {
+    const labels = useLabels()
     return (
       <div
         ref={ref}
@@ -96,12 +98,12 @@ const MetricCardHeader = React.forwardRef<HTMLDivElement, MetricCardHeaderProps>
                   {href ? (
                     <a href={href}>
                       <ChevronRight aria-disabled={true} size={14} strokeWidth={1.5} />
-                      <span className="sr-only">More information</span>
+                      <span className="sr-only">{labels.moreInformation}</span>
                     </a>
                   ) : (
                     <span>
                       <ChevronRight aria-disabled={true} size={14} strokeWidth={1.5} />
-                      <span className="sr-only">More information</span>
+                      <span className="sr-only">{labels.moreInformation}</span>
                     </span>
                   )}
                 </Button>
@@ -149,6 +151,7 @@ interface MetricCardLabelProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const MetricCardLabel = React.forwardRef<HTMLDivElement, MetricCardLabelProps>(
   ({ className, tooltip, children, ...props }, ref) => {
+    const labels = useLabels()
     return (
       <CardTitle
         ref={ref}
@@ -159,7 +162,7 @@ const MetricCardLabel = React.forwardRef<HTMLDivElement, MetricCardLabelProps>(
         {tooltip && (
           <TooltipProvider>
             <TooltipRoot>
-              <TooltipTrigger aria-label="More information">
+              <TooltipTrigger aria-label={labels.moreInformation}>
                 <HelpCircle size={14} strokeWidth={1.5} />
               </TooltipTrigger>
               <TooltipContent className="max-w-xs">{tooltip}</TooltipContent>

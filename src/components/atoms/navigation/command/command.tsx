@@ -13,6 +13,7 @@ import {
   CommandShortcut,
 } from './command-parts'
 import { DialogContent, DialogRoot } from '../../overlay/dialog'
+import { useLabels } from '../../../../providers/locale-provider'
 
 export interface CommandItemData {
   key: string
@@ -42,7 +43,7 @@ type RootProps = React.ComponentProps<typeof CommandRoot>
 type CommandGroupsProps = Omit<RootProps, 'children'> & {
   groups: readonly CommandGroupData[]
   placeholder?: string
-  /** @default "No results found." */
+  /** @default "No results found.", from LocaleProvider */
   emptyText?: React.ReactNode
   classNames?: CommandClassNames
   children?: never
@@ -53,6 +54,7 @@ type CommandCompoundProps = RootProps & { groups?: never }
 export type CommandProps = CommandGroupsProps | CommandCompoundProps
 
 export function CommandHybrid(props: CommandProps) {
+  const labels = useLabels()
   if (props.groups === undefined) {
     return <CommandRoot {...props} />
   }
@@ -60,7 +62,7 @@ export function CommandHybrid(props: CommandProps) {
   const {
     groups,
     placeholder,
-    emptyText = 'No results found.',
+    emptyText = labels.noResults,
     classNames,
     ...rootProps
   } = props
@@ -102,7 +104,7 @@ export interface CommandDialogProps extends DialogPrimitive.DialogProps {
   /** Renders groups via the same API as props-driven Command, instead of `children`. */
   groups?: readonly CommandGroupData[]
   placeholder?: string
-  /** @default "No results found." */
+  /** @default "No results found.", from LocaleProvider */
   emptyText?: React.ReactNode
   classNames?: CommandClassNames
 }

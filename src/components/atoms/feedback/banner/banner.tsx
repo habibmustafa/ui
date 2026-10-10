@@ -6,6 +6,7 @@ import * as React from 'react'
 
 import { useControllableState } from '../../../../lib/use-controllable-state'
 import { cn } from '../../../../lib/utils'
+import { useLabels } from '../../../../providers/locale-provider'
 
 /*
  * Full-width announcement strip (maintenance windows, new features, billing notices).
@@ -43,7 +44,7 @@ export interface BannerProps
   /** Accessible name of the region. Defaults to the `title` (or "Announcement" without
    *  one), so several banners on a page stay distinguishable landmarks. */
   'aria-label'?: string
-  /** Accessible name of the close button. @default "Dismiss" */
+  /** Accessible name of the close button. @default "Dismiss", from LocaleProvider */
   dismissLabel?: string
 }
 
@@ -60,12 +61,14 @@ const Banner = React.forwardRef<HTMLElement, BannerProps>(
       defaultOpen = true,
       onOpenChange,
       'aria-label': ariaLabel,
-      dismissLabel = 'Dismiss',
+      dismissLabel: dismissLabelProp,
       children,
       ...props
     },
     ref
   ) => {
+    const labels = useLabels()
+    const dismissLabel = dismissLabelProp ?? labels.dismiss
     const [open, setOpen] = useControllableState({
       value: openProp,
       defaultValue: defaultOpen,
