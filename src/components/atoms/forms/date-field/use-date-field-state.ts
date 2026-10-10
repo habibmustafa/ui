@@ -6,7 +6,7 @@ import { useControllableState } from '../../../../lib/use-controllable-state'
 
 dayjs.extend(customParseFormat)
 
-export type DateFieldSegmentType = 'day' | 'month' | 'year'
+type DateFieldSegmentType = 'day' | 'month' | 'year'
 
 interface NumericFormatSegment {
   type: DateFieldSegmentType

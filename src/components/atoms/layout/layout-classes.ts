@@ -24,7 +24,7 @@ import type {
   Space,
 } from './layout-types'
 
-export type BreakpointMaps<T extends string | number> = Record<Breakpoint, Record<T, string>>
+type BreakpointMaps<T extends string | number> = Record<Breakpoint, Record<T, string>>
 
 const BREAKPOINTS: readonly Breakpoint[] = ['base', 'sm', 'md', 'lg']
 
