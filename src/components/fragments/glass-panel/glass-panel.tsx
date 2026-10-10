@@ -3,7 +3,7 @@
 import * as React from 'react'
 
 import { cn } from '../../../lib/utils'
-import { useTheme } from '../../../providers'
+import { useResolvedThemeOptional } from '../../../providers/theme-provider'
 
 interface Props {
   title: string
@@ -75,7 +75,7 @@ export const GlassPanel = ({
   badge,
   className,
 }: Props) => {
-  const { resolvedTheme } = useTheme()
+  const resolvedTheme = useResolvedThemeOptional()
   const logoAlt = name ?? ''
 
   return (

@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client'
-import { SonnerToaster, ThemeProvider, useTheme } from '../src'
+import { SonnerToaster, ThemeProvider } from '../src'
 import BlockPreviewPage from './block-preview-page'
 import { SiteTheme } from './site-theme'
 import { PageErrorBoundary } from './page-error-boundary'
@@ -8,11 +8,10 @@ import { PageErrorBoundary } from './page-error-boundary'
 // are needed inside a single-screen preview.
 const id = new URLSearchParams(window.location.search).get('preview') ?? ''
 function Frame() {
-  const { resolvedTheme } = useTheme()
   return <>
     <SiteTheme />
     <PageErrorBoundary resetKey={id}><BlockPreviewPage id={id} /></PageErrorBoundary>
-    <SonnerToaster theme={resolvedTheme} />
+    <SonnerToaster />
   </>
 }
 createRoot(document.getElementById('root')!).render(<ThemeProvider><Frame /></ThemeProvider>)

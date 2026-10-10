@@ -41,7 +41,7 @@ export const DatePickerButton = ({
       className={cn(
         'justify-start text-left font-normal px-3 py-4',
         {
-          'bg-destructive-200! border-destructive-400 focus:border-destructive focus-visible:border-destructive focus-visible:outline-amber-700':
+          'bg-destructive-200! border-destructive-400 focus:border-destructive focus-visible:border-destructive focus-visible:outline-destructive':
             isInvalid,
         },
         className

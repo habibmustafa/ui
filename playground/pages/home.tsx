@@ -2,7 +2,7 @@ import { ArrowRight } from 'lucide-react'
 import { lazy, Suspense } from 'react'
 
 import { Button, Dialog, Tabs, THEME_PRESETS, cn } from '../../src'
-import { version } from '../../package.json'
+import { GITHUB_URL, NPM_URL, PKG, VERSION } from '../package-info'
 import { CATALOG } from '../catalog'
 import { CodeSnippet } from '../code-snippet'
 import { DISPLAY, PANEL, SECTION_TITLE } from '../design'
@@ -15,8 +15,6 @@ import { useNearViewport } from '../near-viewport'
 // (~400 kB raw) — none of which the hero needs. Splitting them out lets the hero paint
 // first instead of waiting on that whole graph.
 const Showcase = lazy(() => import('./home-showcase').then((m) => ({ default: m.Showcase })))
-
-const GITHUB_URL = 'https://github.com/habibmustafa/ui'
 
 const PROPS_CODE = `<Dialog
   trigger={<Button variant="danger">Delete project</Button>}
@@ -166,14 +164,14 @@ function Footer() {
   const link = 'focus-ring rounded-xs transition-colors hover:text-foreground'
   return (
     <footer className="mt-6 flex flex-col gap-3 border-t py-8 text-sm text-foreground-lighter sm:flex-row sm:items-center sm:justify-between">
-      <p>MIT license · @habibmustafa/ui v{version}</p>
+      <p>MIT license · {PKG} v{VERSION}</p>
       <nav aria-label="External links" className="flex gap-4">
         <a className={link} href={GITHUB_URL} target="_blank" rel="noreferrer">
           GitHub
         </a>
         <a
           className={link}
-          href="https://www.npmjs.com/package/@habibmustafa/ui"
+          href={NPM_URL}
           target="_blank"
           rel="noreferrer"
         >

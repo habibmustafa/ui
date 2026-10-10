@@ -5,6 +5,7 @@ import { CodeSnippet } from './code-snippet'
 import { useNearViewport } from './near-viewport'
 import { type BlockMeta } from './blocks/registry'
 import { stateToQuery, useThemeBuilder } from './theme-store'
+import { PKG } from './package-info'
 
 const sources = import.meta.glob<string>('./blocks/*.tsx', { query: '?raw', import: 'default' })
 
@@ -14,7 +15,7 @@ export function BlockCode({ id }: { id: string }) {
     let active = true
     setSource('')
     sources[`./blocks/${id}.tsx`]?.().then((raw) => {
-      if (active) setSource(raw.replace(/(['"])(?:\.\.\/)+src\1/g, "'@habibmustafa/ui'").trim())
+      if (active) setSource(raw.replace(/(['"])(?:\.\.\/)+src\1/g, `'${PKG}'`).trim())
     })
     return () => { active = false }
   }, [id])

@@ -14,7 +14,6 @@ import {
   Sheet,
   SonnerToaster,
   ThemeToggle,
-  useTheme,
 } from "../src";
 import { CATALOG, type CatalogGroup } from "./catalog";
 import { PAGES } from "./site-pages";
@@ -32,6 +31,7 @@ import { findComponent } from "./registry";
 import { BLOCKS } from "./blocks/registry";
 import { SiteTheme } from './site-theme';
 import { PageHeader } from "./page-header";
+import { GITHUB_URL } from './package-info';
 
 // Component pages carry the example loaders (and, lazily, the props tables); none
 // of that belongs in the first chunk every page loads.
@@ -86,7 +86,6 @@ function prefetchRoute(to: string) {
 }
 setPrefetcher(prefetchRoute);
 
-const GITHUB_URL = "https://github.com/habibmustafa/ui";
 
 
 /*
@@ -499,7 +498,6 @@ export function documentTitle(pathname: string) {
 
 export function App() {
   const { path } = useRouter();
-  const { resolvedTheme } = useTheme();
 
   // Warm the shared documentation shell without downloading unrelated forms,
   // charts and pickers. Explicit hover/focus/touch still warms each exact target.
@@ -572,7 +570,7 @@ export function App() {
       <PageErrorBoundary resetKey={blockPreview}>
         <Suspense fallback={<div className="min-h-screen bg-background" />}><BlockPreviewPage id={blockPreview} /></Suspense>
       </PageErrorBoundary>
-      <SonnerToaster theme={resolvedTheme} />
+      <SonnerToaster />
     </>;
   }
 
@@ -591,7 +589,7 @@ export function App() {
           </div>
         </main>
       </div>
-      <SonnerToaster theme={resolvedTheme} />
+      <SonnerToaster />
     </div>
   );
 }

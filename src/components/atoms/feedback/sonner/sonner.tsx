@@ -5,14 +5,18 @@ import { Toaster as Sonner } from 'sonner'
 import { cn } from '../../../../lib/utils'
 import { buttonVariants } from '../../actions/button'
 import { StatusIcon } from './status-icon'
+import { useResolvedThemeOptional } from '../../../../providers/theme-provider'
 
 export const SONNER_DEFAULT_DURATION = 4000
 
-type ToasterProps = React.ComponentProps<typeof Sonner> & { theme: 'light' | 'dark' | 'system' }
+type ToasterProps = React.ComponentProps<typeof Sonner>
 
-const SonnerToaster = ({ toastOptions, ...props }: ToasterProps) => {
+// `theme` defaults to the surrounding ThemeProvider's resolved theme ("system" without one).
+const SonnerToaster = ({ toastOptions, theme, ...props }: ToasterProps) => {
+  const resolvedTheme = useResolvedThemeOptional()
   return (
     <Sonner
+      theme={theme ?? resolvedTheme ?? 'system'}
       icons={{
         warning: <StatusIcon variant="warning" />,
         error: <StatusIcon variant="destructive" />,

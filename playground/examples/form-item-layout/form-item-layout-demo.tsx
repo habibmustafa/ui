@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 import { Button, Form, FormControl, FormField, FormItemLayout, Input } from '../../../src'
@@ -19,7 +20,7 @@ export default function FormItemLayoutDemo() {
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+    toast('You submitted the following values:', { description: JSON.stringify(values) })
   }
 
   return (

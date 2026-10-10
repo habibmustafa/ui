@@ -9,6 +9,7 @@ import { gradeContrast, measureContrast } from '../hero-contrast'
 import { InstallCommand } from '../install-command'
 import { Link } from '../router'
 import { DEFAULT_STATE, fromConfig, setBuilderState, stateToQuery, useThemeBuilder } from '../theme-store'
+import { PKG } from '../package-info'
 
 const RAMP = ['bg-brand-200', 'bg-brand-300', 'bg-brand-400', 'bg-brand-500', 'bg-brand-600', 'bg-brand-default']
 const CHECKS = [
@@ -247,7 +248,7 @@ export function Hero() {
           <Button asChild variant="primary" size="medium" iconRight={<ArrowRight />} data-contrast="button"><Link to="/components">Browse components</Link></Button>
           <Button asChild variant="default" size="medium"><Link to="/getting-started">Get started</Link></Button>
         </div>
-        <div className="mt-5 max-w-md"><InstallCommand packages="@habibmustafa/ui" className="w-full" /></div>
+        <div className="mt-5 max-w-md"><InstallCommand packages={PKG} className="w-full" /></div>
         <ThemeInstrument />
       </div>
       <Specimen />

@@ -59,7 +59,6 @@ export const ThemeToggle = ({
     <DropdownMenuRoot open={open} onOpenChange={setOpen} modal={false}>
       <DropdownMenuTrigger asChild disabled={forceDark}>
         <button
-          id="user-settings-dropdown"
           type="button"
           aria-label={labels.themeLabel(currentThemeName)}
           className={cn(

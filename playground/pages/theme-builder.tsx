@@ -47,6 +47,7 @@ import {
   type BuilderState,
 } from '../theme-store'
 import { ThemePreview } from './theme-preview'
+import { PKG } from '../package-info'
 
 /*
  * Theme builder (/theme). Every control writes the builder store; app.tsx renders the
@@ -219,9 +220,9 @@ function cssFile(config: ThemeConfig, state: BuilderState, link: string) {
   const fonts = [sansFont(state), monoFont(state)].filter((font) => font.google)
   const header = [
     '/*',
-    ' * @habibmustafa/ui theme',
+    ` * ${PKG} theme`,
     ` * Edit: ${link}`,
-    ' * Load this file after @habibmustafa/ui/styles.css.',
+    ` * Load this file after ${PKG}/styles.css.`,
     ...fonts.map((font) => ` * Font: load "${font.label}" yourself (e.g. Google Fonts).`),
     ' */',
   ].join('\n')
@@ -229,7 +230,7 @@ function cssFile(config: ThemeConfig, state: BuilderState, link: string) {
 }
 
 function codeFile(config: ThemeConfig) {
-  return `import { ThemeProvider, createTheme } from '@habibmustafa/ui'
+  return `import { ThemeProvider, createTheme } from '${PKG}'
 
 const theme = createTheme(${JSON.stringify(config, null, 2)})
 

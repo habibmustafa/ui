@@ -8,6 +8,7 @@ import { Button, Dialog, Form, FormInput, FormSelect, toast } from '../../src'
 import { CodeSnippet } from '../code-snippet'
 import { InstallCommand } from '../install-command'
 import { PageHeader } from '../page-header'
+import { PKG } from '../package-info'
 import { Link } from '../router'
 
 /*
@@ -65,9 +66,9 @@ const code = (text: string) => (
 )
 
 const STYLES_CODE = `// main.tsx — once, in your app's entry file
-import '@habibmustafa/ui/styles.css'`
+import '${PKG}/styles.css'`
 
-const THEME_CODE = `import { ThemeProvider } from '@habibmustafa/ui'
+const THEME_CODE = `import { ThemeProvider } from '${PKG}'
 
 createRoot(document.getElementById('root')!).render(
   <ThemeProvider defaultTheme="system">
@@ -78,7 +79,7 @@ createRoot(document.getElementById('root')!).render(
 const THEME_HOOK_CODE = `const { theme, resolvedTheme, setTheme } = useTheme()
 setTheme('dark') // 'light' | 'dark' | 'system'`
 
-const FIRST_COMPONENT_CODE = `import { Button, Dialog } from '@habibmustafa/ui'
+const FIRST_COMPONENT_CODE = `import { Button, Dialog } from '${PKG}'
 
 export function DeleteProject() {
   return (
@@ -95,7 +96,7 @@ export function DeleteProject() {
   )
 }`
 
-const TOAST_CODE = `import { SonnerToaster, toast } from '@habibmustafa/ui'
+const TOAST_CODE = `import { SonnerToaster, toast } from '${PKG}'
 
 // Once, in your app:
 <SonnerToaster />
@@ -108,7 +109,7 @@ toast.success('Changes saved', {
 const FORM_CODE = `import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { Button, Form, FormInput, FormSelect } from '@habibmustafa/ui'
+import { Button, Form, FormInput, FormSelect } from '${PKG}'
 
 const schema = z.object({
   name: z.string().min(2, 'Use at least 2 characters.'),
@@ -129,7 +130,7 @@ export function SignupForm() {
   )
 }`
 
-const THEMING_CODE = `import { ThemeProvider, createTheme } from '@habibmustafa/ui'
+const THEMING_CODE = `import { ThemeProvider, createTheme } from '${PKG}'
 
 // The whole brand scale (light and dark) is generated from one color.
 const theme = createTheme({
@@ -143,7 +144,7 @@ const theme = createTheme({
   <App />
 </ThemeProvider>`
 
-const THEMING_CSS_CODE = `import { themeToCss } from '@habibmustafa/ui'
+const THEMING_CSS_CODE = `import { themeToCss } from '${PKG}'
 
 // At build time or on the server: the same theme as static CSS
 const css = themeToCss({ brand: '#6366f1', radius: 8 })`
@@ -208,7 +209,7 @@ export default function GettingStartedPage() {
           Requires React 19 and React DOM 19. You don't need to install Tailwind: the styles ship as a
           ready-made CSS file.
         </p>
-        <InstallCommand packages="@habibmustafa/ui" />
+        <InstallCommand packages={PKG} />
       </Step>
 
       <Step id="styles">

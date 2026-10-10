@@ -2361,12 +2361,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
     "components": [
       {
         "name": "SonnerToaster",
-        "props": [
-          {
-            "name": "theme",
-            "type": "\"dark\" | \"light\" | \"system\""
-          }
-        ],
+        "props": [],
         "extends": [
           {
             "name": "ToasterProps",

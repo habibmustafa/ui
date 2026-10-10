@@ -28,11 +28,10 @@ export default function RadioGroupStackedFormPropsDemo() {
   })
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(JSON.stringify(data, null, 2))
     toast('You submitted the following values:', {
       description: (
         <pre className="mt-2 w-[340px] rounded-md bg-foreground p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+          <code className="text-background">{JSON.stringify(data, null, 2)}</code>
         </pre>
       ),
     })

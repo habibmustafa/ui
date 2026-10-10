@@ -3,6 +3,7 @@ import { useState, type ComponentProps, type ReactNode } from 'react'
 import { Alert, Avatar, Badge, Button, Checkbox, Input, Progress, Select, Slider, Switch, Tabs, Textarea, Toggle } from '../src'
 import { CodeSnippet } from './code-snippet'
 import { PreviewSurface } from './preview-surface'
+import { PKG } from './package-info'
 
 type Values = Record<string, string | boolean>
 type Choice = { prop: string; label: string; options: string[] }
@@ -25,7 +26,7 @@ const size = (values: Values) => values.size as ComponentProps<typeof Button>['s
 function element(name: string, values: Values, extra = '', children?: string) {
   const props = Object.entries(values).filter(([, value]) => value !== false).map(([key, value]) => value === true ? key : `${key}="${value}"`)
   const attributes = [...props, ...(extra ? [extra] : [])].map((prop) => `  ${prop}`).join('\n')
-  return `import { ${name} } from '@habibmustafa/ui'\n\n<${name}${attributes ? '\n' + attributes + '\n' : ''}${children === undefined ? '/>' : `>\n  ${children}\n</${name}>`}`
+  return `import { ${name} } from '${PKG}'\n\n<${name}${attributes ? '\n' + attributes + '\n' : ''}${children === undefined ? '/>' : `>\n  ${children}\n</${name}>`}`
 }
 
 const DEFINITIONS: Record<string, Definition> = {

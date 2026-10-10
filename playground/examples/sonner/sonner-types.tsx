@@ -45,7 +45,7 @@ export default function SonnerDemo() {
           toast('Event has been created', {
             action: {
               label: 'Action!',
-              onClick: () => console.log('Undo'),
+              onClick: () => toast('Undone'),
             },
           })
         }

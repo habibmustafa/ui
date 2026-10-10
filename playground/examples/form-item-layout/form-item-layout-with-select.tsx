@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 import { Button, Form, FormControl, FormField, FormItemLayout, Select } from '../../../src'
 
@@ -21,8 +22,7 @@ export default function FormItemLayoutDemo() {
   function onSubmit(values: z.infer<typeof FormSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values)
-    // action('form form.handleSubmit(onSubmit)')(values)
+    toast('You submitted the following values:', { description: JSON.stringify(values) })
   }
   return (
     <Form {...form}>
