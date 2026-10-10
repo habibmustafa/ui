@@ -32,23 +32,7 @@ import {
   DrawerTrigger,
 } from '../../overlay/drawer'
 import { Button } from '../../actions/button'
-
-const MOBILE_BREAKPOINT = 768
-
-/** Local, not exported — mirrors Sidebar's own private `useIsMobile` (not a shared hook). */
-function useIsMobile() {
-  const [isMobile, setIsMobile] = React.useState(false)
-
-  React.useEffect(() => {
-    const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`)
-    const onChange = () => setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
-    mql.addEventListener('change', onChange)
-    onChange()
-    return () => mql.removeEventListener('change', onChange)
-  }, [])
-
-  return isMobile
-}
+import { useIsMobile } from '../sidebar/use-mobile'
 
 type RootProps = React.ComponentPropsWithoutRef<typeof BreadcrumbRoot>
 

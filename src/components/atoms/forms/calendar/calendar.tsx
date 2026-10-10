@@ -4,7 +4,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { DayPicker, type DateLib, type Modifiers } from 'react-day-picker'
 
 import { cn } from '../../../../lib/utils'
-import { buttonVariants } from '../../actions/button/shadcn-button'
+import { buttonVariants } from '../../actions/button/button'
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>
 
@@ -117,7 +117,7 @@ function Calendar({
           day
         ),
         day_button: cn(
-          buttonVariants({ variant: 'ghost' }),
+          buttonVariants({ variant: 'text' }),
           'h-9 w-9 p-0 font-normal rounded-md aria-selected:opacity-100',
           // Keep selected days from picking up ghost hover bg/text
           'aria-selected:hover:bg-transparent aria-selected:hover:text-inherit',

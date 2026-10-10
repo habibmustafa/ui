@@ -5,7 +5,7 @@ import * as React from 'react'
 
 import { InputVariants } from '../input'
 import { PopoverAnchor, PopoverContent, PopoverRoot, PopoverTrigger } from '../../overlay/popover'
-import { ClockFace, type ClockView } from './time-picker-clock'
+import { ClockFace, pad, type ClockView } from './time-picker-clock'
 import { useControllableState } from '../../../../lib/use-controllable-state'
 import { fieldIconButtonClass, fieldIconClass, fieldIconStrokeWidth } from '../../../../lib/field-icon-button'
 import { cn } from '../../../../lib/utils'
@@ -34,8 +34,6 @@ function parseTime(value: string | null | undefined): Parts {
     pm: hours >= 12,
   }
 }
-
-const pad = (n: number) => String(n).padStart(2, '0')
 
 export interface TimePickerProps {
   /** "HH:mm" or "HH:mm:ss" (24-hour), or null when empty. */

@@ -9,7 +9,7 @@ import * as React from 'react'
 import { getExplicitTabIndex } from '../../../../lib/get-explicit-tab-index'
 import { cn } from '../../../../lib/utils'
 import { useIsMobile } from './use-mobile'
-import { Button } from '../../actions/button/shadcn-button'
+import { Button } from '../../actions/button/button'
 import { Input } from '../../forms/input'
 import { Separator } from '../../layout/separator'
 import { Sheet, SheetContent } from '../../overlay/sheet'
@@ -256,16 +256,16 @@ const SidebarTrigger = React.forwardRef<
     <Button
       ref={ref}
       data-sidebar="trigger"
-      variant="ghost"
-      size="icon"
-      className={cn('h-7 w-7', className)}
+      variant="text"
+      size="tiny"
+      icon={<PanelLeft />}
+      className={cn('h-7 w-7 p-0', className)}
       onClick={(event) => {
         onClick?.(event)
         toggleSidebar()
       }}
       {...props}
     >
-      <PanelLeft />
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   )

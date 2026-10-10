@@ -25,7 +25,7 @@ const LABEL_SIZE = 28
 // The 24-hour inner ring is tighter (12 labels on a smaller circle).
 const INNER_LABEL_SIZE = 24
 
-const pad = (n: number) => String(n).padStart(2, '0')
+export const pad = (n: number) => String(n).padStart(2, '0')
 
 interface ClockFaceProps {
   view: ClockView

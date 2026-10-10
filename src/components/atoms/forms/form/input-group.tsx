@@ -210,6 +210,7 @@ export {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
+  inputGroupButtonVariants,
   InputGroupText,
   InputGroupInput,
   InputGroupTextarea,

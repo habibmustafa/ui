@@ -1,4 +1,3 @@
-import { Copy } from 'lucide-react'
 import React, {
   forwardRef,
   useCallback,
@@ -10,7 +9,7 @@ import React, {
 } from 'react'
 
 import { cn } from '../../../../lib/utils'
-import { copyToClipboard } from '../../../../lib/copy-to-clipboard'
+import { CopyButton } from '../../actions/copy-button'
 // Imported from the file rather than the `form` barrel: the InputGroup family is an
 // internal building block for DataInput/Form, deliberately not part of the public API
 // (consumers get `Input`'s own `prefix`/`suffix` props instead).
@@ -18,6 +17,7 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
+  inputGroupButtonVariants,
   InputGroupInput as BaseInput,
 } from '../form/input-group'
 
@@ -51,7 +51,6 @@ const DataInput = forwardRef<
     }: DataInputProps,
     ref
   ) => {
-    const [copyLabel, setCopyLabel] = useState('Copy')
     const [hidden, setHidden] = useState(true)
     const inputRef = useRef<HTMLInputElement>(null)
 
@@ -63,17 +62,6 @@ const DataInput = forwardRef<
       },
       [ref]
     )
-
-    function _onCopy() {
-      copyToClipboard(inputRef.current?.value ?? '', () => {
-        /* clipboard successfully set */
-        setCopyLabel('Copied')
-        setTimeout(function () {
-          setCopyLabel('Copy')
-        }, 3000)
-        onCopy?.()
-      })
-    }
 
     function onReveal() {
       setHidden(false)
@@ -107,18 +95,17 @@ const DataInput = forwardRef<
             className="pr-1 has-[>button]:mr-0 has-[>kbd]:mr-0"
           >
             {copy && !(reveal && hidden) ? (
-              <InputGroupButton
+              <CopyButton
                 size="tiny"
-                variant="default"
+                label="Copy"
+                value={() => inputRef.current?.value ?? ''}
+                onCopied={onCopy}
                 className={cn(
+                  inputGroupButtonVariants({ size: 'tiny' }),
                   showCopyOnHover &&
                     'opacity-0 group-hover/input-group:opacity-100 group-focus-within/input-group:opacity-100 transition'
                 )}
-                icon={<Copy size={16} className="text-foreground-muted" />}
-                onClick={_onCopy}
-              >
-                {copyLabel}
-              </InputGroupButton>
+              />
             ) : null}
             {reveal && hidden ? (
               <InputGroupButton size="tiny" variant="default" onClick={onReveal}>

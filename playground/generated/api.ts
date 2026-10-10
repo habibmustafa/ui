@@ -7084,18 +7084,51 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
         "props": [
           {
             "name": "variant",
-            "type": "\"default\" | \"secondary\" | \"outline\" | \"link\" | \"destructive\" | \"ghost\" | null",
+            "type": "\"primary\" | \"default\" | \"secondary\" | \"outline\" | \"dashed\" | \"link\" | \"text\" | \"danger\" | \"warning\" | null",
             "default": "default"
           },
           {
+            "name": "block",
+            "type": "boolean | null"
+          },
+          {
             "name": "size",
-            "type": "\"default\" | \"icon\" | \"sm\" | \"lg\" | null",
+            "type": "\"tiny\" | \"small\" | \"medium\" | \"large\" | \"xlarge\" | null",
             "default": "md"
+          },
+          {
+            "name": "overlay",
+            "type": "\"base\" | \"container\" | null"
+          },
+          {
+            "name": "focusableWhenDisabled",
+            "type": "boolean",
+            "description": "Keeps a disabled button keyboard-focusable by using `aria-disabled`\ninstead of native `disabled`. Use this when the control needs a tooltip\nor other explanation."
+          },
+          {
+            "name": "rounded",
+            "type": "boolean"
+          },
+          {
+            "name": "loading",
+            "type": "boolean | \"default\" | null"
           },
           {
             "name": "asChild",
             "type": "boolean",
             "default": "false"
+          },
+          {
+            "name": "icon",
+            "type": "ReactNode"
+          },
+          {
+            "name": "iconLeft",
+            "type": "ReactNode"
+          },
+          {
+            "name": "iconRight",
+            "type": "ReactNode"
           }
         ],
         "extends": [

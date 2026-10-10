@@ -3,7 +3,7 @@
 // @ts-ignore no upstream type declarations
 import curl from 'highlightjs-curl'
 import { Check, Copy } from 'lucide-react'
-import { Children, useState, type ReactNode } from 'react'
+import { Children, useEffect, useState, type ReactNode } from 'react'
 import type { Light as LightType, SyntaxHighlighterProps } from 'react-syntax-highlighter'
 // @ts-ignore no type declarations for this subpath — typed via `LightType` below instead
 import LightImpl from 'react-syntax-highlighter/dist/esm/light'
@@ -135,6 +135,14 @@ export const CodeBlock = ({
 
   const [copied, setCopied] = useState(false)
 
+  // Same 1500ms as CopyButton; cleared on unmount. (CopyButton itself can't be used:
+  // `handleCopy` replaces the clipboard write, which CopyButton always does.)
+  useEffect(() => {
+    if (!copied) return
+    const timer = setTimeout(() => setCopied(false), 1500)
+    return () => clearTimeout(timer)
+  }, [copied])
+
   const onSelectCopy = (value?: string) => {
     if (value) {
       if (handleCopy) {
@@ -145,7 +153,6 @@ export const CodeBlock = ({
     }
     setCopied(true)
     onCopyCallback()
-    setTimeout(() => setCopied(false), 1000)
   }
 
   // Extract string when `children` has a single string node

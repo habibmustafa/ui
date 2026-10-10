@@ -5,7 +5,7 @@ import { useLayoutEffect, useRef, useState, type ComponentProps, type ReactNode 
 
 import { EASE_SOFT_IN, EASE_SOFT_OUT } from '../../../../lib/motion'
 import { cn } from '../../../../lib/utils'
-import { buttonVariants } from '../../actions/button/shadcn-button'
+import { buttonVariants } from '../../actions/button/button'
 import { Calendar } from '../calendar'
 
 type CalendarProps = ComponentProps<typeof Calendar>
@@ -20,9 +20,9 @@ type SingleOnSelect = (
 type View = 'day' | 'month' | 'year'
 
 const YEAR_PAGE_SIZE = 12
-const gridCell = cn(buttonVariants({ variant: 'ghost' }), 'h-8 w-full rounded-md font-normal')
+const gridCell = cn(buttonVariants({ variant: 'text' }), 'h-8 w-full rounded-md text-sm font-normal')
 const headerButton = cn(
-  buttonVariants({ variant: 'ghost' }),
+  buttonVariants({ variant: 'text' }),
   'h-7 rounded-md px-2 text-sm font-medium'
 )
 const pagerButton = cn(

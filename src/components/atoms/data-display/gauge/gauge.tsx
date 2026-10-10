@@ -3,6 +3,7 @@
 import * as React from 'react'
 
 import { cn } from '../../../../lib/utils'
+import { toneClass } from '../../feedback/circular-progress/circular-progress'
 
 /*
  * A dial for a value inside a known range (CPU load, a score, a quota). It is a
@@ -10,14 +11,6 @@ import { cn } from '../../../../lib/utils'
  * `angle` sets the sweep (180 = half circle, 270 = open ring); `thresholds` color the
  * arc by value, e.g. green until 60, amber until 85, red above.
  */
-
-const toneClass = {
-  brand: 'text-brand-default',
-  neutral: 'text-foreground',
-  success: 'text-success-600',
-  warning: 'text-warning-600',
-  destructive: 'text-destructive-600',
-} as const
 
 type Tone = keyof typeof toneClass
 

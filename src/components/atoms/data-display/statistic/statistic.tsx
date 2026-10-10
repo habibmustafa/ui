@@ -3,6 +3,7 @@
 import { cva, type VariantProps } from 'class-variance-authority'
 import * as React from 'react'
 
+import { prefersReducedMotion } from '../../../../lib/motion'
 import { cn } from '../../../../lib/utils'
 import { Skeleton } from '../../feedback/skeleton'
 
@@ -62,11 +63,6 @@ function decimalsOf(n: number | undefined) {
   const dot = text.indexOf('.')
   return dot < 0 ? 0 : text.length - dot - 1
 }
-
-const prefersReducedMotion = () =>
-  typeof window !== 'undefined' &&
-  typeof window.matchMedia === 'function' &&
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 /** Eases a number toward `target`; returns `target` immediately when disabled. */
 function useAnimatedNumber(target: number | undefined, enabled: boolean, duration: number) {
