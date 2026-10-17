@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
-import { Button, DataInput, Form, FormControl, FormField, FormItemLayout, InfoTooltip } from '../../../src'
+import { Button, DataInput, Form, FormItemLayout, InfoTooltip } from '../../../src'
 
 const FormSchema = z.object({
   functionName: z.string(),
@@ -23,7 +23,7 @@ export default function FormItemLayoutDemo() {
   return (
     <Form {...form}>
       <form className="w-96 flex flex-col gap-3" onSubmit={form.handleSubmit(onSubmit)}>
-        <FormField
+        <Form.Field
           control={form.control}
           name="functionName"
           render={({ field }) => (
@@ -33,9 +33,9 @@ export default function FormItemLayoutDemo() {
               labelOptional="Optional"
               beforeLabel={<InfoTooltip side="top">Added before the label</InfoTooltip>}
             >
-              <FormControl>
+              <Form.Control>
                 <DataInput placeholder="Name of function" {...field} />
-              </FormControl>
+              </Form.Control>
             </FormItemLayout>
           )}
         />

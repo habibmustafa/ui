@@ -2,15 +2,11 @@ import { useId, useState } from 'react'
 import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts'
 
 import {
+  Chart,
   Admonition,
   Badge,
   Button,
   Card,
-  ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
-  ChartTooltip,
-  ChartTooltipContent,
   Checkbox,
   Dialog,
   Input,
@@ -122,16 +118,16 @@ function RevenueCard() {
           </div>
           <Badge variant="success">+12,4%</Badge>
         </div>
-        <ChartContainer config={chartConfig} className="h-44 w-full">
+        <Chart.Container config={chartConfig} className="h-44 w-full">
           <BarChart accessibilityLayer data={chartData}>
             <CartesianGrid vertical={false} />
             <XAxis dataKey="month" tickLine={false} tickMargin={8} axisLine={false} />
-            <ChartTooltip content={<ChartTooltipContent />} />
-            <ChartLegend content={<ChartLegendContent />} />
+            <Chart.Tooltip content={<Chart.TooltipContent />} />
+            <Chart.Legend content={<Chart.LegendContent />} />
             <Bar dataKey="plan" fill="var(--color-plan)" radius={4} />
             <Bar dataKey="actual" fill="var(--color-actual)" radius={4} />
           </BarChart>
-        </ChartContainer>
+        </Chart.Container>
         <div className="flex flex-col gap-1.5">
           <div className="flex justify-between text-xs text-foreground-light">
             <span>Yearly target</span>
@@ -210,41 +206,43 @@ function StatusCard() {
 function InvoicesCard() {
   return (
     <Card title="Invoices" description="Tabs, table and badges.">
-      <Tabs.Root defaultValue="all">
-        <Tabs.List className="gap-5">
-          <Tabs.Trigger value="all">All</Tabs.Trigger>
-          <Tabs.Trigger value="open">Open</Tabs.Trigger>
-          <Tabs.Indicator />
-        </Tabs.List>
-        {(['all', 'open'] as const).map((tab) => (
-          <Tabs.Content key={tab} value={tab}>
-            <Table.Root>
-              <Table.Header>
-                <Table.Row>
-                  <Table.Head>Invoice</Table.Head>
-                  <Table.Head>Customer</Table.Head>
-                  <Table.Head>Status</Table.Head>
-                  <Table.Head className="text-right">Amount</Table.Head>
-                </Table.Row>
-              </Table.Header>
-              <Table.Body>
-                {invoices
-                  .filter((invoice) => tab === 'all' || invoice.status !== 'paid')
-                  .map((invoice) => (
-                    <Table.Row key={invoice.id}>
-                      <Table.Cell className="font-mono text-xs">{invoice.id}</Table.Cell>
-                      <Table.Cell>{invoice.customer}</Table.Cell>
-                      <Table.Cell>
-                        <Badge variant={STATUS[invoice.status].variant}>{STATUS[invoice.status].label}</Badge>
-                      </Table.Cell>
-                      <Table.Cell className="text-right tabular-nums">{invoice.amount}</Table.Cell>
-                    </Table.Row>
-                  ))}
-              </Table.Body>
-            </Table.Root>
-          </Tabs.Content>
-        ))}
-      </Tabs.Root>
+      <Tabs
+        layout="inline"
+        classNames={{ list: 'gap-5' }}
+        items={(
+          [
+            { value: 'all', label: 'All' },
+            { value: 'open', label: 'Open' },
+          ] as const
+        ).map(({ value, label }) => ({
+          value,
+          label,
+          content: (
+            <Table
+              data={invoices.filter((invoice) => value === 'all' || invoice.status !== 'paid')}
+              rowKey={(invoice) => invoice.id}
+              columns={[
+                { key: 'id', header: 'Invoice', cellClassName: 'font-mono text-xs', render: (invoice) => invoice.id },
+                { key: 'customer', header: 'Customer', render: (invoice) => invoice.customer },
+                {
+                  key: 'status',
+                  header: 'Status',
+                  render: (invoice) => (
+                    <Badge variant={STATUS[invoice.status].variant}>{STATUS[invoice.status].label}</Badge>
+                  ),
+                },
+                {
+                  key: 'amount',
+                  header: 'Amount',
+                  align: 'right',
+                  cellClassName: 'tabular-nums',
+                  render: (invoice) => invoice.amount,
+                },
+              ]}
+            />
+          ),
+        }))}
+      />
     </Card>
   )
 }

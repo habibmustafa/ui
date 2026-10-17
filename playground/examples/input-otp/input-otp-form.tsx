@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
-import { Button, Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, InputOTP } from '../../../src'
+import { Button, Form, InputOTP } from '../../../src'
 
 const FormSchema = z.object({
   pin: z.string().min(6, {
@@ -33,13 +33,13 @@ export default function InputOTPForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
-        <FormField
+        <Form.Field
           control={form.control}
           name="pin"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>One-Time Password</FormLabel>
-              <FormControl>
+            <Form.Item>
+              <Form.Label>One-Time Password</Form.Label>
+              <Form.Control>
                 <InputOTP.Root maxLength={6} {...field}>
                   <InputOTP.Group>
                     <InputOTP.Slot index={0} />
@@ -50,12 +50,12 @@ export default function InputOTPForm() {
                     <InputOTP.Slot index={5} />
                   </InputOTP.Group>
                 </InputOTP.Root>
-              </FormControl>
-              <FormDescription>
+              </Form.Control>
+              <Form.Description>
                 Please enter the one-time password sent to your phone.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
+              </Form.Description>
+              <Form.Message />
+            </Form.Item>
           )}
         />
 

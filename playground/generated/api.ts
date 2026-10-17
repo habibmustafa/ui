@@ -899,6 +899,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       },
       {
         "name": "ChartContainer",
+        "alias": "Chart.Container",
         "props": [
           {
             "name": "config",
@@ -915,6 +916,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       },
       {
         "name": "ChartLegend",
+        "alias": "Chart.Legend",
         "props": [],
         "extends": [
           {
@@ -925,6 +927,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       },
       {
         "name": "ChartLegendContent",
+        "alias": "Chart.LegendContent",
         "props": [
           {
             "name": "hideIcon",
@@ -949,6 +952,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       },
       {
         "name": "ChartStyle",
+        "alias": "Chart.Style",
         "props": [
           {
             "name": "id",
@@ -976,6 +980,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       },
       {
         "name": "ChartTooltipContent",
+        "alias": "Chart.TooltipContent",
         "props": [
           {
             "name": "nameKey",
@@ -2469,26 +2474,26 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
         "props": [
           {
             "name": "options",
-            "type": "readonly ComboboxOption[]"
+            "type": "readonly T[]"
           },
           {
             "name": "groups",
-            "type": "readonly ComboboxOptionGroup[]",
+            "type": "readonly ComboboxOptionGroup<T>[]",
             "description": "Grouped options; used instead of `options` when both are given."
           },
           {
             "name": "value",
-            "type": "string | null",
-            "description": "Selected value, controlled; `null` for none."
+            "type": "OptionValue | null",
+            "description": "Selected value (a string or a number), controlled; `null` for none."
           },
           {
             "name": "defaultValue",
-            "type": "string | null",
+            "type": "OptionValue | null",
             "default": "null"
           },
           {
             "name": "onValueChange",
-            "type": "((value: string | null) => void)"
+            "type": "((value: V | null) => void)"
           },
           {
             "name": "open",
@@ -2524,7 +2529,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "name": "clearable",
             "type": "boolean",
             "default": "false",
-            "description": "Picking the selected option again clears it."
+            "description": "Shows a × and clears on Backspace/Delete while a value is selected; picking the selected\noption again clears it too."
           },
           {
             "name": "disabled",
@@ -2570,6 +2575,33 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "classNames",
             "type": "ComboboxClassNames"
+          },
+          {
+            "name": "ref",
+            "type": "Ref<HTMLButtonElement>",
+            "description": "The trigger button."
+          },
+          {
+            "name": "valueExpr",
+            "type": "string",
+            "default": "'value'",
+            "description": "Field of each option that holds its value (a string or a number)."
+          },
+          {
+            "name": "displayExpr",
+            "type": "string",
+            "default": "'label'",
+            "description": "Field of each option that holds what to show."
+          },
+          {
+            "name": "getOptionValue",
+            "type": "((option: T) => OptionValue)",
+            "description": "Reads an option's value; wins over `valueExpr`."
+          },
+          {
+            "name": "getOptionLabel",
+            "type": "((option: T) => string)",
+            "description": "Reads what to show for an option; wins over `displayExpr`."
           }
         ],
         "extends": []
@@ -2784,6 +2816,19 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "maxDate",
             "type": "Date"
+          },
+          {
+            "name": "id",
+            "type": "string",
+            "description": "Set by `FormControl` (and usable directly): reach the typeable field, not the popover root."
+          },
+          {
+            "name": "aria-invalid",
+            "type": "boolean | \"true\" | \"false\""
+          },
+          {
+            "name": "aria-describedby",
+            "type": "string"
           }
         ],
         "extends": [
@@ -2832,7 +2877,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "icon",
             "type": "ReactNode",
-            "default": "<CalendarIcon className=\"h-4 w-4\" />"
+            "default": "(\n  <CalendarIcon className={cn(fieldIconClass, 'h-4! w-4! text-foreground-lighter')} strokeWidth={fieldIconStrokeWidth} />\n)"
           },
           {
             "name": "iconLeft",
@@ -2871,6 +2916,11 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "name": "isInvalid",
             "type": "boolean",
             "default": "false"
+          },
+          {
+            "name": "onClear",
+            "type": "(() => void)",
+            "description": "Shows a × before the calendar icon; omit when there is nothing to clear."
           }
         ],
         "extends": [
@@ -3075,7 +3125,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "name": "clearable",
             "type": "boolean",
             "default": "true",
-            "description": "Shows a Clear button in the popover."
+            "description": "Shows a × on the trigger (one click resets the range) and a Clear button in the popover."
           },
           {
             "name": "closeOnComplete",
@@ -3257,6 +3307,11 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
   "form": {
     "source": "src/components/atoms/forms/form",
     "components": [
+      {
+        "name": "Form",
+        "props": [],
+        "extends": []
+      },
       {
         "name": "FormControl",
         "props": [],
@@ -3575,11 +3630,6 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "description": "Accessible label for this command menu. Not shown visibly."
           },
           {
-            "name": "values",
-            "type": "string[]",
-            "required": true
-          },
-          {
             "name": "onOpenChange",
             "type": "((open: boolean) => void)"
           },
@@ -3588,9 +3638,32 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "type": "\"combobox\" | \"inline-combobox\""
           },
           {
-            "name": "onValuesChange",
-            "type": "(value: string[]) => void",
-            "required": true
+            "name": "valueExpr",
+            "type": "string",
+            "default": "'value'",
+            "description": "Field of each option that holds its value (a string or a number)."
+          },
+          {
+            "name": "displayExpr",
+            "type": "string",
+            "default": "'label'",
+            "description": "Field of each option that holds what to show."
+          },
+          {
+            "name": "getOptionValue",
+            "type": "((option: T) => OptionValue)",
+            "description": "Reads an option's value; wins over `valueExpr`."
+          },
+          {
+            "name": "getOptionLabel",
+            "type": "((option: T) => ReactNode)",
+            "description": "Reads what to show for an option; wins over `displayExpr`."
+          },
+          {
+            "name": "clearable",
+            "type": "boolean",
+            "default": "false",
+            "description": "Shows a × before the chevron that clears every selected value."
           },
           {
             "name": "persistLabel",
@@ -3617,8 +3690,20 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "type": "((value: string) => ReactNode)"
           },
           {
+            "name": "values",
+            "type": "V[]",
+            "required": true,
+            "description": "Selected values (strings or numbers)."
+          },
+          {
+            "name": "onValuesChange",
+            "type": "(values: V[]) => void",
+            "required": true
+          },
+          {
             "name": "options",
-            "type": "readonly MultiSelectorOption[]"
+            "type": "readonly T[]",
+            "description": "Option list; leave it out to compose the parts yourself."
           },
           {
             "name": "creatable",
@@ -3860,6 +3945,12 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "default": "true"
           },
           {
+            "name": "clearable",
+            "type": "boolean",
+            "default": "false",
+            "description": "Shows a × before the chevron that clears every selected value."
+          },
+          {
             "name": "mode",
             "type": "\"combobox\" | \"inline-combobox\"",
             "default": "combobox"
@@ -3875,6 +3966,12 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "package": "react"
           }
         ]
+      },
+      {
+        "name": "MultiSelectorProps",
+        "description": "With `options` the MultiSelector renders the whole control; without it, it is the root\nand takes `children` (the compound parts, whose values are strings).",
+        "props": [],
+        "extends": []
       },
       {
         "name": "SelectionListState",
@@ -4412,14 +4509,57 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
         "name": "Select",
         "props": [
           {
+            "name": "valueExpr",
+            "type": "string",
+            "default": "'value'",
+            "description": "Field of each option that holds its value (a string or a number)."
+          },
+          {
+            "name": "displayExpr",
+            "type": "string",
+            "default": "'label'",
+            "description": "Field of each option that holds what to show."
+          },
+          {
+            "name": "getOptionValue",
+            "type": "((option: T) => OptionValue)",
+            "description": "Reads an option's value; wins over `valueExpr`."
+          },
+          {
+            "name": "getOptionLabel",
+            "type": "((option: T) => ReactNode)",
+            "description": "Reads what to show for an option; wins over `displayExpr`."
+          },
+          {
             "name": "options",
-            "type": "readonly SelectOption[]",
+            "type": "readonly T[]",
             "description": "Flat option list. Mutually exclusive with `groups`."
           },
           {
             "name": "groups",
-            "type": "readonly SelectOptionGroup[]",
+            "type": "readonly SelectOptionGroup<T>[]",
             "description": "Grouped options, separated by a SelectSeparator. Mutually exclusive with `options`."
+          },
+          {
+            "name": "value",
+            "type": "OptionValue | null",
+            "description": "The selected option's value (a string or a number); `null` for none."
+          },
+          {
+            "name": "defaultValue",
+            "type": "OptionValue | null",
+            "default": "null"
+          },
+          {
+            "name": "onValueChange",
+            "type": "((value: V) => void)",
+            "description": "Called with the chosen option's value. With `clearable` it is called with `null` when\ncleared, so include `null` in the value type: `useState<string | null>`."
+          },
+          {
+            "name": "clearable",
+            "type": "boolean",
+            "default": "false",
+            "description": "Shows a × (and clears on Backspace/Delete) while a value is selected."
           },
           {
             "name": "placeholder",
@@ -4590,6 +4730,11 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "size",
             "type": "\"large\" | \"medium\" | \"small\" | \"tiny\" | \"xlarge\""
+          },
+          {
+            "name": "onClear",
+            "type": "(() => void)",
+            "description": "Shows a × before the chevron and clears on Backspace/Delete; omit when nothing to clear."
           }
         ],
         "extends": [
@@ -4613,6 +4758,12 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "package": "react"
           }
         ]
+      },
+      {
+        "name": "SelectProps",
+        "description": "With `options` or `groups` the Select renders the whole control; without them it is the\nRadix root and takes `children` (the compound parts).",
+        "props": [],
+        "extends": []
       }
     ]
   },
@@ -6051,6 +6202,12 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "classNames",
             "type": "CommandClassNames"
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "default": "Command palette",
+            "description": "Visually hidden dialog name for assistive tech."
           }
         ],
         "extends": [
@@ -6718,23 +6875,19 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
         "props": [
           {
             "name": "variant",
-            "type": "\"floating\" | \"inset\" | \"sidebar\"",
-            "default": "default"
+            "type": "\"floating\" | \"inset\" | \"sidebar\""
           },
           {
             "name": "collapsible",
-            "type": "\"icon\" | \"none\" | \"offcanvas\"",
-            "default": "offcanvas"
+            "type": "\"icon\" | \"none\" | \"offcanvas\""
           },
           {
             "name": "side",
-            "type": "\"left\" | \"right\"",
-            "default": "left"
+            "type": "\"left\" | \"right\""
           },
           {
             "name": "overflowing",
-            "type": "boolean",
-            "default": "false"
+            "type": "boolean"
           }
         ],
         "extends": [
@@ -6746,6 +6899,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       },
       {
         "name": "SidebarContent",
+        "alias": "Sidebar.Content",
         "props": [],
         "extends": [
           {
@@ -6756,6 +6910,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       },
       {
         "name": "SidebarFooter",
+        "alias": "Sidebar.Footer",
         "props": [],
         "extends": [
           {
@@ -6766,6 +6921,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       },
       {
         "name": "SidebarGroup",
+        "alias": "Sidebar.Group",
         "props": [],
         "extends": [
           {
@@ -6776,6 +6932,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       },
       {
         "name": "SidebarGroupAction",
+        "alias": "Sidebar.GroupAction",
         "props": [
           {
             "name": "asChild",
@@ -6792,6 +6949,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       },
       {
         "name": "SidebarGroupContent",
+        "alias": "Sidebar.GroupContent",
         "props": [],
         "extends": [
           {
@@ -6802,6 +6960,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       },
       {
         "name": "SidebarGroupLabel",
+        "alias": "Sidebar.GroupLabel",
         "props": [
           {
             "name": "asChild",
@@ -6818,6 +6977,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       },
       {
         "name": "SidebarHeader",
+        "alias": "Sidebar.Header",
         "props": [],
         "extends": [
           {
@@ -6828,6 +6988,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       },
       {
         "name": "SidebarInput",
+        "alias": "Sidebar.Input",
         "props": [
           {
             "name": "size",
@@ -6854,6 +7015,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       },
       {
         "name": "SidebarInset",
+        "alias": "Sidebar.Inset",
         "props": [],
         "extends": [
           {
@@ -6864,6 +7026,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       },
       {
         "name": "SidebarMenu",
+        "alias": "Sidebar.Menu",
         "props": [],
         "extends": [
           {
@@ -6874,6 +7037,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       },
       {
         "name": "SidebarMenuAction",
+        "alias": "Sidebar.MenuAction",
         "props": [
           {
             "name": "asChild",
@@ -6895,6 +7059,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       },
       {
         "name": "SidebarMenuBadge",
+        "alias": "Sidebar.MenuBadge",
         "props": [],
         "extends": [
           {
@@ -6905,6 +7070,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       },
       {
         "name": "SidebarMenuButton",
+        "alias": "Sidebar.MenuButton",
         "props": [
           {
             "name": "variant",
@@ -6950,6 +7116,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       },
       {
         "name": "SidebarMenuItem",
+        "alias": "Sidebar.MenuItem",
         "props": [],
         "extends": [
           {
@@ -6960,6 +7127,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       },
       {
         "name": "SidebarMenuSkeleton",
+        "alias": "Sidebar.MenuSkeleton",
         "props": [
           {
             "name": "showIcon",
@@ -6976,6 +7144,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       },
       {
         "name": "SidebarMenuSub",
+        "alias": "Sidebar.MenuSub",
         "props": [],
         "extends": [
           {
@@ -6986,6 +7155,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       },
       {
         "name": "SidebarMenuSubButton",
+        "alias": "Sidebar.MenuSubButton",
         "props": [
           {
             "name": "size",
@@ -7012,6 +7182,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       },
       {
         "name": "SidebarMenuSubItem",
+        "alias": "Sidebar.MenuSubItem",
         "props": [],
         "extends": [
           {
@@ -7022,6 +7193,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       },
       {
         "name": "SidebarProvider",
+        "alias": "Sidebar.Provider",
         "props": [
           {
             "name": "defaultOpen",
@@ -7046,6 +7218,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       },
       {
         "name": "SidebarRail",
+        "alias": "Sidebar.Rail",
         "props": [],
         "extends": [
           {
@@ -7056,6 +7229,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       },
       {
         "name": "SidebarSeparator",
+        "alias": "Sidebar.Separator",
         "props": [],
         "extends": [
           {
@@ -7070,6 +7244,7 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
       },
       {
         "name": "SidebarTrigger",
+        "alias": "Sidebar.Trigger",
         "props": [
           {
             "name": "variant",
@@ -7269,6 +7444,22 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "classNames",
             "type": "TabsClassNames"
+          },
+          {
+            "name": "layout",
+            "type": "\"fill\" | \"inline\"",
+            "default": "'fill'",
+            "description": "`fill` spreads the triggers across the full width in equal columns; `inline` keeps them\nat their natural width, left-aligned (set the gap with `classNames.list`)."
+          },
+          {
+            "name": "toolbar",
+            "type": "ReactNode",
+            "description": "Extra controls beside the tab list (a device switcher, an action), in one row with it."
+          },
+          {
+            "name": "listLabel",
+            "type": "string",
+            "description": "Accessible name of the tab list."
           }
         ],
         "extends": [
@@ -8035,6 +8226,11 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "type": "boolean",
             "default": "true",
             "description": "Allow closing via overlay click / Escape."
+          },
+          {
+            "name": "bare",
+            "type": "boolean",
+            "description": "Drops the header, separator, body padding and footer: only `children` render, with\n`title` kept as a visually hidden name for assistive tech. For content that brings its\nown layout (a command palette, a navigation list)."
           },
           {
             "name": "className",
@@ -8984,6 +9180,11 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "description": "Sheet width/height."
           },
           {
+            "name": "bare",
+            "type": "boolean",
+            "description": "Drops the header, separator, body padding and footer: only `children` render, with\n`title` kept as a visually hidden name for assistive tech. For content that brings its\nown layout (a command palette, a navigation list)."
+          },
+          {
             "name": "className",
             "type": "string"
           },
@@ -9835,15 +10036,20 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           },
           {
             "name": "options",
-            "type": "readonly SelectOption[]"
+            "type": "readonly T[]"
           },
           {
             "name": "groups",
-            "type": "readonly SelectOptionGroup[]"
+            "type": "readonly SelectOptionGroup<T>[]"
           },
           {
             "name": "disabled",
             "type": "boolean"
+          },
+          {
+            "name": "clearable",
+            "type": "boolean",
+            "description": "Shows a × that clears the value; the field then holds `undefined`."
           },
           {
             "name": "label",
@@ -9872,6 +10078,28 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
           {
             "name": "labelLayout",
             "type": "\"horizontal\" | \"vertical\""
+          },
+          {
+            "name": "valueExpr",
+            "type": "string",
+            "default": "'value'",
+            "description": "Field of each option that holds its value (a string or a number)."
+          },
+          {
+            "name": "displayExpr",
+            "type": "string",
+            "default": "'label'",
+            "description": "Field of each option that holds what to show."
+          },
+          {
+            "name": "getOptionValue",
+            "type": "((option: T) => OptionValue)",
+            "description": "Reads an option's value; wins over `valueExpr`."
+          },
+          {
+            "name": "getOptionLabel",
+            "type": "((option: T) => ReactNode)",
+            "description": "Reads what to show for an option; wins over `displayExpr`."
           }
         ],
         "extends": []
@@ -10482,12 +10710,6 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "description": "Shown while nothing is selected."
           },
           {
-            "name": "clearable",
-            "type": "boolean",
-            "default": "true",
-            "description": "Shows a Clear button in the popover."
-          },
-          {
             "name": "minDate",
             "type": "Date",
             "description": "Dates before this can't be picked."
@@ -10510,6 +10732,12 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "name": "presets",
             "type": "readonly DateRangePreset[]",
             "description": "Quick ranges listed above the calendar."
+          },
+          {
+            "name": "clearable",
+            "type": "boolean",
+            "default": "true",
+            "description": "Shows a × on the trigger (one click resets the range) and a Clear button in the popover."
           },
           {
             "name": "closeOnComplete",
@@ -10723,6 +10951,11 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "required": true
           },
           {
+            "name": "ref",
+            "type": "Ref<HTMLButtonElement>",
+            "description": "The trigger button."
+          },
+          {
             "name": "className",
             "type": "string"
           },
@@ -10771,19 +11004,42 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "type": "ComboboxClassNames"
           },
           {
-            "name": "options",
-            "type": "readonly ComboboxOption[]"
-          },
-          {
-            "name": "groups",
-            "type": "readonly ComboboxOptionGroup[]",
-            "description": "Grouped options; used instead of `options` when both are given."
-          },
-          {
             "name": "placeholder",
             "type": "ReactNode",
             "default": "\"Select…\"",
             "description": "Trigger text when nothing is selected."
+          },
+          {
+            "name": "clearable",
+            "type": "boolean",
+            "default": "false",
+            "description": "Shows a × and clears on Backspace/Delete while a value is selected; picking the selected\noption again clears it too."
+          },
+          {
+            "name": "options",
+            "type": "readonly T[]"
+          },
+          {
+            "name": "valueExpr",
+            "type": "string",
+            "default": "'value'",
+            "description": "Field of each option that holds its value (a string or a number)."
+          },
+          {
+            "name": "displayExpr",
+            "type": "string",
+            "default": "'label'",
+            "description": "Field of each option that holds what to show."
+          },
+          {
+            "name": "getOptionValue",
+            "type": "((option: T) => OptionValue)",
+            "description": "Reads an option's value; wins over `valueExpr`."
+          },
+          {
+            "name": "getOptionLabel",
+            "type": "((option: T) => string)",
+            "description": "Reads what to show for an option; wins over `displayExpr`."
           },
           {
             "name": "searchPlaceholder",
@@ -10791,16 +11047,15 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "default": "\"Search…\""
           },
           {
+            "name": "groups",
+            "type": "readonly ComboboxOptionGroup<T>[]",
+            "description": "Grouped options; used instead of `options` when both are given."
+          },
+          {
             "name": "emptyText",
             "type": "ReactNode",
             "default": "\"No results found.\", from LocaleProvider",
             "description": "Shown when the search matches nothing."
-          },
-          {
-            "name": "clearable",
-            "type": "boolean",
-            "default": "false",
-            "description": "Picking the selected option again clears it."
           },
           {
             "name": "label",
@@ -10858,13 +11113,15 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "type": "\"combobox\" | \"inline-combobox\""
           },
           {
-            "name": "options",
-            "type": "readonly MultiSelectorOption[]",
-            "required": true
+            "name": "clearable",
+            "type": "boolean",
+            "default": "false",
+            "description": "Shows a × before the chevron that clears every selected value."
           },
           {
-            "name": "searchPlaceholder",
-            "type": "string"
+            "name": "options",
+            "type": "readonly T[]",
+            "description": "Option list; leave it out to compose the parts yourself."
           },
           {
             "name": "persistLabel",
@@ -10904,6 +11161,28 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "type": "string"
           },
           {
+            "name": "valueExpr",
+            "type": "string",
+            "default": "'value'",
+            "description": "Field of each option that holds its value (a string or a number)."
+          },
+          {
+            "name": "displayExpr",
+            "type": "string",
+            "default": "'label'",
+            "description": "Field of each option that holds what to show."
+          },
+          {
+            "name": "getOptionValue",
+            "type": "((option: T) => OptionValue)",
+            "description": "Reads an option's value; wins over `valueExpr`."
+          },
+          {
+            "name": "getOptionLabel",
+            "type": "((option: T) => ReactNode)",
+            "description": "Reads what to show for an option; wins over `displayExpr`."
+          },
+          {
             "name": "triggerClassName",
             "type": "string"
           },
@@ -10911,6 +11190,10 @@ export const api: Record<string, { source: string; components: ApiComponent[] }>
             "name": "searchable",
             "type": "boolean",
             "description": "Renders a MultiSelectorInput search field above the list (`mode=\"combobox\"`'s own\nfilter box) — not used with `mode: \"inline-combobox\"`, which searches inline in the\ntrigger instead."
+          },
+          {
+            "name": "searchPlaceholder",
+            "type": "string"
           },
           {
             "name": "label",

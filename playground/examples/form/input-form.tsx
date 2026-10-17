@@ -8,12 +8,6 @@ import { z } from 'zod'
 import {
   Button,
   Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
   Input,
 } from '../../../src'
 
@@ -44,18 +38,18 @@ export default function InputForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
-        <FormField
+        <Form.Field
           control={form.control}
           name="username"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
+            <Form.Item>
+              <Form.Label>Username</Form.Label>
+              <Form.Control>
                 <Input placeholder="shadcn" {...field} />
-              </FormControl>
-              <FormDescription>This is your public display name.</FormDescription>
-              <FormMessage />
-            </FormItem>
+              </Form.Control>
+              <Form.Description>This is your public display name.</Form.Description>
+              <Form.Message />
+            </Form.Item>
           )}
         />
         <Button type="submit" variant="secondary">

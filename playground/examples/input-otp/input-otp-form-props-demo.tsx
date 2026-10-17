@@ -8,12 +8,6 @@ import { z } from 'zod'
 import {
   Button,
   Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
   InputOTP,
 } from '../../../src'
 
@@ -44,20 +38,20 @@ export default function InputOTPFormPropsDemo() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
-        <FormField
+        <Form.Field
           control={form.control}
           name="pin"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>One-Time Password</FormLabel>
-              <FormControl>
+            <Form.Item>
+              <Form.Label>One-Time Password</Form.Label>
+              <Form.Control>
                 <InputOTP slots={6} {...field} />
-              </FormControl>
-              <FormDescription>
+              </Form.Control>
+              <Form.Description>
                 Please enter the one-time password sent to your phone.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
+              </Form.Description>
+              <Form.Message />
+            </Form.Item>
           )}
         />
 

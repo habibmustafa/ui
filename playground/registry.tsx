@@ -1591,7 +1591,7 @@ const fragments: ComponentEntry[] = [
     icon: FileText,
     description:
       'Short react-hook-form fields: one line per field (FormInput, FormSelect, FormCheckbox, FormDatePicker, FormDateRangePicker, FormRating and more) instead of the whole label, control and message tree. Every field is labelled, marked invalid, focused on a failed submit and touched on blur.',
-    previews: [{ name: 'form-fields-demo' }, { name: 'form-fields-advanced-demo' }],
+    previews: [{ name: 'form-fields-demo' }],
   },
   {
     id: 'info-tooltip',

@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
-import { Button, Checkbox, Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from '../../../src'
+import { Button, Checkbox, Form } from '../../../src'
 
 const FormSchema = z.object({
   mobile: z.boolean().default(false).optional(),
@@ -31,22 +31,22 @@ export default function CheckboxReactHookFormSingle() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <FormField
+        <Form.Field
           control={form.control}
           name="mobile"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-              <FormControl>
+            <Form.Item className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+              <Form.Control>
                 <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-              </FormControl>
+              </Form.Control>
               <div className="space-y-1 leading-none">
-                <FormLabel>Use different settings for my mobile devices</FormLabel>
-                <FormDescription>
+                <Form.Label>Use different settings for my mobile devices</Form.Label>
+                <Form.Description>
                   You can manage your mobile notifications in the{' '}
                   <a href="/examples/forms">mobile settings</a> page.
-                </FormDescription>
+                </Form.Description>
               </div>
-            </FormItem>
+            </Form.Item>
           )}
         />
         <Button variant="primary" type="submit">

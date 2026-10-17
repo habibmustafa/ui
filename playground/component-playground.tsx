@@ -108,13 +108,15 @@ export function ComponentPlayground({ id }: { id: string }) {
         <h2 className="text-lg font-semibold tracking-tight">Make it yours</h2>
         <p className="text-xs text-foreground-lighter">Change a setting. Take the code.</p>
       </div>
-      <Tabs.Root defaultValue="preview">
-        <Tabs.List className="gap-5" aria-label="Interactive playground">
-          <Tabs.Trigger value="preview">Playground</Tabs.Trigger>
-          <Tabs.Trigger value="code">Your code</Tabs.Trigger>
-          <Tabs.Indicator />
-        </Tabs.List>
-        <Tabs.Content value="preview">
+      <Tabs
+        layout="inline"
+        classNames={{ list: 'gap-5' }}
+        listLabel="Interactive playground"
+        items={[
+          {
+            value: 'preview',
+            label: 'Playground',
+            content: (
           <PreviewSurface onReset={() => { setValues(definition.initial); setRevision((value) => value + 1) }} controls={<>
             {definition.choices?.map((choice) => <label key={choice.prop} className="flex items-center gap-2 text-xs text-foreground-light">
               {choice.label}
@@ -124,9 +126,11 @@ export function ComponentPlayground({ id }: { id: string }) {
           </>}>
             <div key={JSON.stringify(values) + revision} className="flex w-full items-center justify-center">{definition.render(values)}</div>
           </PreviewSurface>
-        </Tabs.Content>
-        <Tabs.Content value="code"><CodeSnippet code={definition.code(values)} /></Tabs.Content>
-      </Tabs.Root>
+            ),
+          },
+          { value: 'code', label: 'Your code', content: <CodeSnippet code={definition.code(values)} /> },
+        ]}
+      />
     </section>
   )
 }

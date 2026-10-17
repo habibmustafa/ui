@@ -50,18 +50,17 @@ function ComponentApi({ component }: { component: ApiComponent }) {
 
       {component.props.length > 0 ? (
         <div className="mt-3 overflow-x-auto rounded-md border">
-          <Table.Root>
-            <Table.Header>
-              <Table.Row>
-                <Table.Head className="w-1/4">Prop</Table.Head>
-                <Table.Head>Type</Table.Head>
-                <Table.Head className="w-1/6">Default</Table.Head>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {component.props.map((prop) => (
-                <Table.Row key={prop.name}>
-                  <Table.Cell className="align-top">
+          <Table
+            data={component.props}
+            rowKey={(prop) => prop.name}
+            columns={[
+              {
+                key: 'prop',
+                header: 'Prop',
+                headerClassName: 'w-1/4',
+                cellClassName: 'align-top',
+                render: (prop) => (
+                  <>
                     <span className="font-mono text-xs text-foreground">
                       {prop.name}
                       {prop.required ? <span className="text-destructive">*</span> : null}
@@ -69,33 +68,42 @@ function ComponentApi({ component }: { component: ApiComponent }) {
                     {prop.description ? (
                       <p className="mt-1 text-xs text-foreground-light">{prop.description}</p>
                     ) : null}
-                  </Table.Cell>
-                  <Table.Cell className="align-top">
-                    {prop.type.length > LONG_TYPE ? (
-                      // Expanded generic soup (slotProps etc.) — collapsed until asked for.
-                      <details>
-                        <summary className="cursor-pointer text-xs text-foreground-light">
-                          <Code>{`${prop.type.slice(0, LONG_TYPE)}…`}</Code>
-                        </summary>
-                        <div className="mt-1">
-                          <Code>{prop.type}</Code>
-                        </div>
-                      </details>
-                    ) : (
-                      <Code>{prop.type}</Code>
-                    )}
-                  </Table.Cell>
-                  <Table.Cell className="align-top">
-                    {prop.default !== undefined ? (
-                      <Code>{prop.default}</Code>
-                    ) : (
-                      <span className="text-foreground-muted">—</span>
-                    )}
-                  </Table.Cell>
-                </Table.Row>
-              ))}
-            </Table.Body>
-          </Table.Root>
+                  </>
+                ),
+              },
+              {
+                key: 'type',
+                header: 'Type',
+                cellClassName: 'align-top',
+                render: (prop) =>
+                  prop.type.length > LONG_TYPE ? (
+                    // Expanded generic soup (slotProps etc.) — collapsed until asked for.
+                    <details>
+                      <summary className="cursor-pointer text-xs text-foreground-light">
+                        <Code>{`${prop.type.slice(0, LONG_TYPE)}…`}</Code>
+                      </summary>
+                      <div className="mt-1">
+                        <Code>{prop.type}</Code>
+                      </div>
+                    </details>
+                  ) : (
+                    <Code>{prop.type}</Code>
+                  ),
+              },
+              {
+                key: 'default',
+                header: 'Default',
+                headerClassName: 'w-1/6',
+                cellClassName: 'align-top',
+                render: (prop) =>
+                  prop.default !== undefined ? (
+                    <Code>{prop.default}</Code>
+                  ) : (
+                    <span className="text-foreground-muted">—</span>
+                  ),
+              },
+            ]}
+          />
         </div>
       ) : (
         <p className="mt-2 text-sm text-foreground-light">No props of its own.</p>

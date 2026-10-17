@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
-import { Button, Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, Textarea } from '../../../src'
+import { Button, Form, Textarea } from '../../../src'
 
 const FormSchema = z.object({
   bio: z
@@ -35,24 +35,24 @@ export default function TextareaForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
-        <FormField
+        <Form.Field
           control={form.control}
           name="bio"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Bio</FormLabel>
-              <FormControl>
+            <Form.Item>
+              <Form.Label>Bio</Form.Label>
+              <Form.Control>
                 <Textarea
                   placeholder="Tell us a little bit about yourself"
                   className="resize-none"
                   {...field}
                 />
-              </FormControl>
-              <FormDescription>
+              </Form.Control>
+              <Form.Description>
                 You can <span>@mention</span> other users and organizations.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
+              </Form.Description>
+              <Form.Message />
+            </Form.Item>
           )}
         />
         <Button type="submit" variant="primary">

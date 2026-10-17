@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
-import { Button, Form, FormControl, FormDescription, FormField, FormItem, FormLabel, Switch } from '../../../src'
+import { Button, Form, Switch } from '../../../src'
 
 const FormSchema = z.object({
   marketing_emails: z.boolean().default(false).optional(),
@@ -35,41 +35,41 @@ export default function SwitchForm() {
         <div>
           <h3 className="mb-4 text-lg font-medium">Email Notifications</h3>
           <div className="space-y-4">
-            <FormField
+            <Form.Field
               control={form.control}
               name="marketing_emails"
               render={({ field }) => (
-                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                <Form.Item className="flex flex-row items-center justify-between rounded-lg border p-4">
                   <div className="space-y-0.5">
-                    <FormLabel className="text-base">Marketing emails</FormLabel>
-                    <FormDescription>
+                    <Form.Label className="text-base">Marketing emails</Form.Label>
+                    <Form.Description>
                       Receive emails about new products, features, and more.
-                    </FormDescription>
+                    </Form.Description>
                   </div>
-                  <FormControl>
+                  <Form.Control>
                     <Switch checked={field.value} onCheckedChange={field.onChange} />
-                  </FormControl>
-                </FormItem>
+                  </Form.Control>
+                </Form.Item>
               )}
             />
-            <FormField
+            <Form.Field
               control={form.control}
               name="security_emails"
               render={({ field }) => (
-                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                <Form.Item className="flex flex-row items-center justify-between rounded-lg border p-4">
                   <div className="space-y-0.5">
-                    <FormLabel className="text-base">Security emails</FormLabel>
-                    <FormDescription>Receive emails about your account security.</FormDescription>
+                    <Form.Label className="text-base">Security emails</Form.Label>
+                    <Form.Description>Receive emails about your account security.</Form.Description>
                   </div>
-                  <FormControl>
+                  <Form.Control>
                     <Switch
                       checked={field.value}
                       onCheckedChange={field.onChange}
                       disabled
                       aria-readonly
                     />
-                  </FormControl>
-                </FormItem>
+                  </Form.Control>
+                </Form.Item>
               )}
             />
           </div>

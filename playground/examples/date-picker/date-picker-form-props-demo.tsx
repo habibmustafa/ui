@@ -15,11 +15,6 @@ import {
   Button,
   DatePicker,
   Form,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
 } from '../../../src'
 
 const FormSchema = z.object({
@@ -46,12 +41,12 @@ export default function DatePickerFormPropsDemo() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
+        <Form.Field
           control={form.control}
           name="dob"
           render={({ field, fieldState }) => (
-            <FormItem className="flex flex-col">
-              <FormLabel>Date of birth</FormLabel>
+            <Form.Item className="flex flex-col">
+              <Form.Label>Date of birth</Form.Label>
               <DatePicker
                 triggerLabel={
                   field.value ? dayjs(field.value).format('MMMM D, YYYY') : 'Pick a date'
@@ -65,9 +60,9 @@ export default function DatePickerFormPropsDemo() {
                   autoFocus: true,
                 }}
               />
-              <FormDescription>Your date of birth is used to calculate your age.</FormDescription>
-              <FormMessage />
-            </FormItem>
+              <Form.Description>Your date of birth is used to calculate your age.</Form.Description>
+              <Form.Message />
+            </Form.Item>
           )}
         />
         <Button variant="primary" type="submit">

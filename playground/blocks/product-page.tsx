@@ -17,22 +17,17 @@ export default function ProductPage() {
 
   return (
     <div className="grid w-full max-w-4xl gap-8 overflow-hidden rounded-xl border bg-surface-100 p-6 shadow-sm md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:p-8">
-      <div className="min-w-0 px-12">
-        <Carousel.Root loop aria-label="Product photos">
-          <Carousel.Content>
-            {views.map((view) => (
-              <Carousel.Item key={view}>
-                <div className="flex aspect-square flex-col items-center justify-center gap-3 rounded-lg border bg-brand-default/5 text-foreground-light">
-                  <Backpack className="h-16 w-16 text-brand-600" strokeWidth={1.25} aria-hidden="true" />
-                  <span className="text-sm">{view}</span>
-                </div>
-              </Carousel.Item>
-            ))}
-          </Carousel.Content>
-          <Carousel.Previous />
-          <Carousel.Next />
-          <Carousel.Dots />
-        </Carousel.Root>
+      <div className="min-w-0">
+        <Carousel
+          loop
+          aria-label="Product photos"
+          items={views.map((view) => (
+            <div key={view} className="flex aspect-square flex-col items-center justify-center gap-3 rounded-lg border bg-brand-default/5 text-foreground-light">
+              <Backpack className="h-16 w-16 text-brand-600" strokeWidth={1.25} aria-hidden="true" />
+              <span className="text-sm">{view}</span>
+            </div>
+          ))}
+        />
       </div>
 
       <div className="flex min-w-0 flex-col gap-5">

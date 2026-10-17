@@ -10,7 +10,7 @@ import dayjs from 'dayjs'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
-import { Button, Calendar, DatePicker, Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../../../src'
+import { Button, Calendar, DatePicker, Form } from '../../../src'
 
 const FormSchema = z.object({
   dob: z.date({
@@ -36,20 +36,20 @@ export default function DatePickerForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
+        <Form.Field
           control={form.control}
           name="dob"
           render={({ field, fieldState }) => (
-            <FormItem className="flex flex-col">
-              <FormLabel>Date of birth</FormLabel>
+            <Form.Item className="flex flex-col">
+              <Form.Label>Date of birth</Form.Label>
               <DatePicker.Root>
-                <FormControl>
+                <Form.Control>
                   <DatePicker.Trigger asChild>
                     <DatePicker.Button isInvalid={fieldState.invalid}>
                       {field.value ? dayjs(field.value).format('MMMM D, YYYY') : 'Pick a date'}
                     </DatePicker.Button>
                   </DatePicker.Trigger>
-                </FormControl>
+                </Form.Control>
                 <DatePicker.Content>
                   <Calendar
                     mode="single"
@@ -60,9 +60,9 @@ export default function DatePickerForm() {
                   />
                 </DatePicker.Content>
               </DatePicker.Root>
-              <FormDescription>Your date of birth is used to calculate your age.</FormDescription>
-              <FormMessage />
-            </FormItem>
+              <Form.Description>Your date of birth is used to calculate your age.</Form.Description>
+              <Form.Message />
+            </Form.Item>
           )}
         />
         <Button variant="primary" type="submit">

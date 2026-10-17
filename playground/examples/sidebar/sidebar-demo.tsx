@@ -2,17 +2,6 @@ import { CalendarDays, Home, Inbox, Search, Settings } from 'lucide-react'
 
 import {
   Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarInset,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarProvider,
-  SidebarRail,
-  SidebarTrigger,
 } from '../../../src'
 
 const items = [
@@ -25,36 +14,36 @@ const items = [
 
 export default function SidebarDemo() {
   return (
-    <SidebarProvider className="h-[360px] min-h-0 overflow-hidden rounded-md border">
+    <Sidebar.Provider className="h-[360px] min-h-0 overflow-hidden rounded-md border">
       <Sidebar collapsible="icon">
-        <SidebarContent>
-          <SidebarGroup>
-            <SidebarGroupLabel>Application</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
+        <Sidebar.Content>
+          <Sidebar.Group>
+            <Sidebar.GroupLabel>Application</Sidebar.GroupLabel>
+            <Sidebar.GroupContent>
+              <Sidebar.Menu>
                 {items.map((item, index) => (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton tooltip={item.title} isActive={index === 0}>
+                  <Sidebar.MenuItem key={item.title}>
+                    <Sidebar.MenuButton tooltip={item.title} isActive={index === 0}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
+                    </Sidebar.MenuButton>
+                  </Sidebar.MenuItem>
                 ))}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        </SidebarContent>
-        <SidebarRail />
+              </Sidebar.Menu>
+            </Sidebar.GroupContent>
+          </Sidebar.Group>
+        </Sidebar.Content>
+        <Sidebar.Rail />
       </Sidebar>
-      <SidebarInset className="min-h-0">
+      <Sidebar.Inset className="min-h-0">
         <header className="flex h-12 items-center gap-2 border-b px-3">
-          <SidebarTrigger />
+          <Sidebar.Trigger />
           <span className="text-sm font-medium">Dashboard</span>
         </header>
         <div className="grid flex-1 place-items-center text-sm text-foreground-light">
           Select a navigation item
         </div>
-      </SidebarInset>
-    </SidebarProvider>
+      </Sidebar.Inset>
+    </Sidebar.Provider>
   )
 }

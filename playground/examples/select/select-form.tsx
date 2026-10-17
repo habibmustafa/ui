@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
-import { Button, Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, Select } from '../../../src'
+import { Button, Form, Select } from '../../../src'
 
 const FormSchema = z.object({
   email: z
@@ -32,30 +32,30 @@ export default function SelectForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
-        <FormField
+        <Form.Field
           control={form.control}
           name="email"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
+            <Form.Item>
+              <Form.Label>Email</Form.Label>
               <Select.Root onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
+                <Form.Control>
                   <Select.Trigger>
                     <Select.Value placeholder="Select a verified email to display" />
                   </Select.Trigger>
-                </FormControl>
+                </Form.Control>
                 <Select.Content>
                   <Select.Item value="m@example.com">m@example.com</Select.Item>
                   <Select.Item value="m@google.com">m@google.com</Select.Item>
                   <Select.Item value="m@support.com">m@support.com</Select.Item>
                 </Select.Content>
               </Select.Root>
-              <FormDescription>
+              <Form.Description>
                 You can manage email addresses in your{' '}
                 <a href="/examples/forms">email settings</a>.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
+              </Form.Description>
+              <Form.Message />
+            </Form.Item>
           )}
         />
         <Button type="submit" variant="secondary">

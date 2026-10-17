@@ -155,14 +155,8 @@ function Specimen() {
           </div>
           <Badge variant="success" className="mt-1">In progress</Badge>
         </div>
-        <Tabs.Root defaultValue="overview">
-          <Tabs.List className="gap-5" aria-label="Project views">
-            <Tabs.Trigger value="overview">Overview</Tabs.Trigger>
-            <Tabs.Trigger value="activity">Activity</Tabs.Trigger>
-            <Tabs.Trigger value="team">Team</Tabs.Trigger>
-            <Tabs.Indicator />
-          </Tabs.List>
-          <Tabs.Content value="overview" className="mt-5">
+        <Tabs layout="inline" classNames={{ list: 'gap-5' }} listLabel="Project views" items={[
+          { value: 'overview', label: 'Overview', contentClassName: 'mt-5', content: (<>
             <div className="grid grid-cols-2 gap-5">
               <div>
                 <p className="text-xs text-foreground-light">Tasks completed</p>
@@ -198,8 +192,8 @@ function Specimen() {
                 </label>
               ))}
             </div>
-          </Tabs.Content>
-          <Tabs.Content value="activity" className="min-h-80 pt-5">
+          </>) },
+          { value: 'activity', label: 'Activity', contentClassName: 'min-h-80 pt-5', content: (<>
             <p className="mb-5 text-sm text-foreground-light">The latest from your project.</p>
             <ul className="flex flex-col gap-6">
               {ACTIVITY.map((item) => (
@@ -210,8 +204,8 @@ function Specimen() {
               ))}
             </ul>
             {completed[2] && <p className="mt-6 flex items-center gap-2 text-sm text-brand-600"><Check aria-hidden="true" className="h-4 w-4" /> You completed the prototype review.</p>}
-          </Tabs.Content>
-          <Tabs.Content value="team" className="min-h-80 pt-5">
+          </>) },
+          { value: 'team', label: 'Team', contentClassName: 'min-h-80 pt-5', content: (<>
             <p className="mb-5 text-sm text-foreground-light">Three people, one shared workspace.</p>
             <ul className="divide-y">
               {TEAM.map((member) => (
@@ -222,8 +216,8 @@ function Specimen() {
                 </li>
               ))}
             </ul>
-          </Tabs.Content>
-        </Tabs.Root>
+          </>) },
+        ]} />
       </div>
       <div className="flex flex-wrap items-center justify-between gap-3 border-t bg-surface-75 px-5 py-3.5">
         <p data-contrast="text" className="text-xs text-foreground">Built with the same components you install.</p>

@@ -316,8 +316,14 @@ function Header() {
       />
       <div className="mx-auto flex h-14 max-w-[1600px] items-center gap-3 px-4 sm:px-6">
         <div className="flex items-center gap-3">
-          <Sheet.Root open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
-            <Sheet.Trigger asChild>
+          <Sheet
+            bare
+            open={mobileNavOpen}
+            onOpenChange={setMobileNavOpen}
+            side="left"
+            title="Navigation"
+            className="w-72 overflow-y-auto px-6"
+            trigger={
               <button
                 type="button"
                 aria-label="Open navigation"
@@ -325,12 +331,10 @@ function Header() {
               >
                 <Menu className="h-4.5 w-4.5" />
               </button>
-            </Sheet.Trigger>
-            <Sheet.Content side="left" className="w-72 overflow-y-auto px-6">
-              <Sheet.Title className="sr-only">Navigation</Sheet.Title>
-              <SidebarNav onNavigate={() => setMobileNavOpen(false)} />
-            </Sheet.Content>
-          </Sheet.Root>
+            }
+          >
+            <SidebarNav onNavigate={() => setMobileNavOpen(false)} />
+          </Sheet>
 
           <Link
             to="/"

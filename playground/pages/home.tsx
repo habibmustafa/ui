@@ -74,19 +74,18 @@ function HybridApi() {
             Focus stays inside the dialog; Esc closes it.
           </p>
         </div>
-        <Tabs.Root defaultValue="props">
-          <Tabs.List className="gap-5">
-            <Tabs.Trigger value="props">Props</Tabs.Trigger>
-            <Tabs.Trigger value="compound">Compound</Tabs.Trigger>
-            <Tabs.Indicator />
-          </Tabs.List>
-          <Tabs.Content value="props">
-            <CodeSnippet code={PROPS_CODE} />
-          </Tabs.Content>
-          <Tabs.Content value="compound">
-            <CodeSnippet code={COMPOUND_CODE} maxHeight={360} />
-          </Tabs.Content>
-        </Tabs.Root>
+        <Tabs
+          layout="inline"
+          classNames={{ list: 'gap-5' }}
+          items={[
+            { value: 'props', label: 'Props', content: <CodeSnippet code={PROPS_CODE} /> },
+            {
+              value: 'compound',
+              label: 'Compound',
+              content: <CodeSnippet code={COMPOUND_CODE} maxHeight={360} />,
+            },
+          ]}
+        />
       </div>
     </section>
   )

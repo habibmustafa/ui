@@ -8,20 +8,6 @@ import {
   Button,
   DropdownMenu,
   Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarHeader,
-  SidebarInset,
-  SidebarMenu,
-  SidebarMenuBadge,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarProvider,
-  SidebarRail,
-  SidebarTrigger,
 } from '../../src'
 
 interface Page {
@@ -84,60 +70,60 @@ export default function AppShell() {
   const page = pages.find((item) => item.id === activeId) ?? pages[0]
 
   return (
-    <SidebarProvider className="h-[34rem] min-h-0 w-full max-w-5xl overflow-hidden rounded-xl border bg-surface-100 shadow-sm">
+    <Sidebar.Provider className="h-[34rem] min-h-0 w-full max-w-5xl overflow-hidden rounded-xl border bg-surface-100 shadow-sm">
       <Sidebar collapsible="icon">
-        <SidebarHeader>
+        <Sidebar.Header>
           <div className="flex h-8 items-center gap-2 px-1.5">
             <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-brand-default text-xs font-semibold text-background">
               A
             </span>
             <span className="truncate text-sm font-semibold text-foreground">Acme Inc.</span>
           </div>
-        </SidebarHeader>
-        <SidebarContent>
-          <SidebarGroup>
-            <SidebarGroupLabel>Workspace</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
+        </Sidebar.Header>
+        <Sidebar.Content>
+          <Sidebar.Group>
+            <Sidebar.GroupLabel>Workspace</Sidebar.GroupLabel>
+            <Sidebar.GroupContent>
+              <Sidebar.Menu>
                 {pages.map((item) => (
-                  <SidebarMenuItem key={item.id}>
-                    <SidebarMenuButton tooltip={item.title} isActive={item.id === activeId} onClick={() => setActiveId(item.id)}>
+                  <Sidebar.MenuItem key={item.id}>
+                    <Sidebar.MenuButton tooltip={item.title} isActive={item.id === activeId} onClick={() => setActiveId(item.id)}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </SidebarMenuButton>
-                    {item.id === 'projects' && <SidebarMenuBadge>3</SidebarMenuBadge>}
-                  </SidebarMenuItem>
+                    </Sidebar.MenuButton>
+                    {item.id === 'projects' && <Sidebar.MenuBadge>3</Sidebar.MenuBadge>}
+                  </Sidebar.MenuItem>
                 ))}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-          <SidebarGroup className="mt-auto">
-            <SidebarGroupContent>
-              <SidebarMenu>
-                <SidebarMenuItem>
-                  <SidebarMenuButton tooltip="Help">
+              </Sidebar.Menu>
+            </Sidebar.GroupContent>
+          </Sidebar.Group>
+          <Sidebar.Group className="mt-auto">
+            <Sidebar.GroupContent>
+              <Sidebar.Menu>
+                <Sidebar.MenuItem>
+                  <Sidebar.MenuButton tooltip="Help">
                     <LifeBuoy />
                     <span>Help</span>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        </SidebarContent>
-        <SidebarFooter>
-          <SidebarMenu>
-            <SidebarMenuItem>
+                  </Sidebar.MenuButton>
+                </Sidebar.MenuItem>
+              </Sidebar.Menu>
+            </Sidebar.GroupContent>
+          </Sidebar.Group>
+        </Sidebar.Content>
+        <Sidebar.Footer>
+          <Sidebar.Menu>
+            <Sidebar.MenuItem>
               <DropdownMenu
                 align="start"
                 trigger={
-                  <SidebarMenuButton size="lg" tooltip="Account">
+                  <Sidebar.MenuButton size="lg" tooltip="Account">
                     <Avatar fallback="AL" className="h-8 w-8 rounded-md text-xs font-medium" />
                     <span className="flex min-w-0 flex-1 flex-col text-left leading-tight">
                       <span className="truncate text-sm font-medium">Ada Lovelace</span>
                       <span className="truncate text-xs text-foreground-lighter">ada@example.com</span>
                     </span>
                     <ChevronsUpDown className="ml-auto" />
-                  </SidebarMenuButton>
+                  </Sidebar.MenuButton>
                 }
                 items={[
                   { key: 'profile', label: 'Profile', icon: <UserRound className="h-4 w-4" /> },
@@ -145,15 +131,15 @@ export default function AppShell() {
                   { key: 'out', label: 'Sign out', icon: <LogOut className="h-4 w-4" /> },
                 ]}
               />
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarFooter>
-        <SidebarRail />
+            </Sidebar.MenuItem>
+          </Sidebar.Menu>
+        </Sidebar.Footer>
+        <Sidebar.Rail />
       </Sidebar>
 
-      <SidebarInset className="min-h-0 min-w-0">
+      <Sidebar.Inset className="min-h-0 min-w-0">
         <header className="flex h-12 shrink-0 items-center gap-2 border-b px-3">
-          <SidebarTrigger />
+          <Sidebar.Trigger />
           <Breadcrumb items={[{ label: 'Acme Inc.', href: '#app-shell' }, { label: page.title }]} />
           <Button size="tiny" variant="text" className="ml-auto" icon={<Bell />} aria-label="Notifications" />
         </header>
@@ -176,7 +162,7 @@ export default function AppShell() {
             ))}
           </ul>
         </div>
-      </SidebarInset>
-    </SidebarProvider>
+      </Sidebar.Inset>
+    </Sidebar.Provider>
   )
 }

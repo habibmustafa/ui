@@ -11,7 +11,7 @@ import { CalendarIcon } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
-import { Button, Calendar, cn, Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, Popover } from '../../../src'
+import { Button, Calendar, cn, Form, Popover } from '../../../src'
 
 const FormSchema = z.object({
   dob: z.date({
@@ -37,15 +37,15 @@ export default function CalendarForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
+        <Form.Field
           control={form.control}
           name="dob"
           render={({ field }) => (
-            <FormItem className="flex flex-col">
-              <FormLabel>Date of birth</FormLabel>
+            <Form.Item className="flex flex-col">
+              <Form.Label>Date of birth</Form.Label>
               <Popover.Root>
                 <Popover.Trigger asChild>
-                  <FormControl>
+                  <Form.Control>
                     <Button
                       size="small"
                       className={cn(
@@ -56,7 +56,7 @@ export default function CalendarForm() {
                     >
                       {field.value ? dayjs(field.value).format('MMMM D, YYYY') : <span>Pick a date</span>}
                     </Button>
-                  </FormControl>
+                  </Form.Control>
                 </Popover.Trigger>
                 <Popover.Content className="w-auto p-0" align="start" side="right">
                   <Calendar
@@ -68,9 +68,9 @@ export default function CalendarForm() {
                   />
                 </Popover.Content>
               </Popover.Root>
-              <FormDescription>Your date of birth is used to calculate your age.</FormDescription>
-              <FormMessage />
-            </FormItem>
+              <Form.Description>Your date of birth is used to calculate your age.</Form.Description>
+              <Form.Message />
+            </Form.Item>
           )}
         />
         <Button variant="primary" type="submit">

@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
-import { Button, Checkbox, Form, FormControl, FormField, FormItemLayout } from '../../../src'
+import { Button, Checkbox, Form, FormItemLayout } from '../../../src'
 
 const FormSchema = z.object({
   consistent_settings: z.boolean().default(false).optional(),
@@ -23,7 +23,7 @@ export default function FormItemLayoutDemo() {
   return (
     <Form {...form}>
       <form className="w-96 flex flex-col gap-3" onSubmit={form.handleSubmit(onSubmit)}>
-        <FormField
+        <Form.Field
           control={form.control}
           name="consistent_settings"
           render={({ field }) => (
@@ -32,9 +32,9 @@ export default function FormItemLayoutDemo() {
               description="This is your public display name."
               layout="flex"
             >
-              <FormControl>
+              <Form.Control>
                 <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-              </FormControl>
+              </Form.Control>
             </FormItemLayout>
           )}
         />

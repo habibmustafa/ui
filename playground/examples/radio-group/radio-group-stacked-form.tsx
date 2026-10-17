@@ -8,11 +8,6 @@ import { z } from 'zod'
 import {
   Button,
   Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
   RadioGroupStacked,
 } from '../../../src'
 
@@ -40,21 +35,21 @@ export default function RadioGroupStackedForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
-        <FormField
+        <Form.Field
           control={form.control}
           name="type"
           render={({ field }) => (
-            <FormItem className="space-y-4">
-              <FormLabel>Notify me about...</FormLabel>
-              <FormControl>
+            <Form.Item className="space-y-4">
+              <Form.Label>Notify me about...</Form.Label>
+              <Form.Control>
                 <RadioGroupStacked.Root onValueChange={field.onChange} defaultValue={field.value}>
                   <RadioGroupStacked.Item value="all" label="All new messages" />
                   <RadioGroupStacked.Item value="mentions" label="Direct messages and mentions" />
                   <RadioGroupStacked.Item value="none" label="Nothing" />
                 </RadioGroupStacked.Root>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+              </Form.Control>
+              <Form.Message />
+            </Form.Item>
           )}
         />
         <Button type="submit" variant="secondary" size="small">

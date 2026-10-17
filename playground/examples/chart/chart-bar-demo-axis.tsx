@@ -1,7 +1,7 @@
 'use client'
 
 import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts'
-import { type ChartConfig, ChartContainer } from '../../../src'
+import { Chart, type ChartConfig } from '../../../src'
 
 const chartData = [
   { month: 'January', desktop: 186, mobile: 80 },
@@ -25,7 +25,7 @@ const chartConfig = {
 
 export default function Component() {
   return (
-    <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
+    <Chart.Container config={chartConfig} className="min-h-[200px] w-full">
       <BarChart accessibilityLayer data={chartData}>
         <CartesianGrid vertical={false} />
         <XAxis
@@ -38,6 +38,6 @@ export default function Component() {
         <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
         <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
       </BarChart>
-    </ChartContainer>
+    </Chart.Container>
   )
 }

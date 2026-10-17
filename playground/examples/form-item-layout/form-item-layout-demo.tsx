@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { Button, Form, FormControl, FormField, FormItemLayout, Input } from '../../../src'
+import { Button, Form, FormItemLayout, Input } from '../../../src'
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -26,7 +26,7 @@ export default function FormItemLayoutDemo() {
   return (
     <Form {...form}>
       <form className="w-96 flex flex-col gap-3" onSubmit={form.handleSubmit(onSubmit)}>
-        <FormField
+        <Form.Field
           name="username"
           control={form.control}
           render={({ field }) => (
@@ -35,9 +35,9 @@ export default function FormItemLayoutDemo() {
               description="This is your public display name"
               labelOptional="optional"
             >
-              <FormControl>
+              <Form.Control>
                 <Input placeholder="mildtomato" {...field} />
-              </FormControl>
+              </Form.Control>
             </FormItemLayout>
           )}
         />

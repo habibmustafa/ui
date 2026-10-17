@@ -316,57 +316,44 @@ function ExportDialog({ state, link }: { state: BuilderState; link: string }) {
   const json = JSON.stringify(config, null, 2)
 
   return (
-    <Dialog.Root open={open} onOpenChange={setOpen}>
-      <Dialog.Trigger asChild>
+    <Dialog
+      open={open}
+      onOpenChange={setOpen}
+      trigger={
         <Button variant="primary" icon={<Download />}>
           Export / Import
         </Button>
-      </Dialog.Trigger>
-      <Dialog.Content size="xlarge">
-        <Dialog.Header>
-          <Dialog.Title>Take the theme to your project</Dialog.Title>
-          <Dialog.Description>
-            The CSS file needs no code changes. The code version lets you change the theme at runtime.
-          </Dialog.Description>
-        </Dialog.Header>
-        <Dialog.Section>
-          <Tabs.Root defaultValue="css">
-            <Tabs.List className="gap-5">
-              <Tabs.Trigger value="css">CSS</Tabs.Trigger>
-              <Tabs.Trigger value="code">Code</Tabs.Trigger>
-              <Tabs.Trigger value="json">JSON</Tabs.Trigger>
-              <Tabs.Trigger value="import">Import</Tabs.Trigger>
-              <Tabs.Indicator />
-            </Tabs.List>
-            <Tabs.Content value="css" className="flex flex-col gap-3">
+      }
+      title="Take the theme to your project"
+      description="The CSS file needs no code changes. The code version lets you change the theme at runtime."
+      slotProps={{ content: { size: 'xlarge' } }}
+    >
+          <Tabs layout="inline" classNames={{ list: 'gap-5' }} items={[
+            { value: 'css', label: 'CSS', contentClassName: 'flex flex-col gap-3', content: (<>
               <CodeSnippet code={css} lang="css" maxHeight={340} />
               <div>
                 <Button variant="default" icon={<Download />} onClick={() => download('theme.css', css, 'text/css')}>
                   Download theme.css
                 </Button>
               </div>
-            </Tabs.Content>
-            <Tabs.Content value="code" className="flex flex-col gap-3">
+            </>) },
+            { value: 'code', label: 'Code', contentClassName: 'flex flex-col gap-3', content: (<>
               <p className="text-sm text-foreground-light">
                 The same generator ships in the library: keep the config in code and change it whenever you need.
               </p>
               <CodeSnippet code={codeFile(config)} maxHeight={340} />
-            </Tabs.Content>
-            <Tabs.Content value="json" className="flex flex-col gap-3">
+            </>) },
+            { value: 'json', label: 'JSON', contentClassName: 'flex flex-col gap-3', content: (<>
               <CodeSnippet code={json} maxHeight={340} />
               <div>
                 <Button variant="default" icon={<Download />} onClick={() => download('theme.json', json, 'application/json')}>
                   Download theme.json
                 </Button>
               </div>
-            </Tabs.Content>
-            <Tabs.Content value="import">
-              <ImportTab onDone={() => setOpen(false)} />
-            </Tabs.Content>
-          </Tabs.Root>
-        </Dialog.Section>
-      </Dialog.Content>
-    </Dialog.Root>
+            </>) },
+            { value: 'import', label: 'Import', content: <ImportTab onDone={() => setOpen(false)} /> },
+          ]} />
+    </Dialog>
   )
 }
 
