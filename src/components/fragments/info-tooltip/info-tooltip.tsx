@@ -1,11 +1,6 @@
 import { forwardRef, type ElementRef } from 'react'
 
-import {
-  TooltipContent,
-  TooltipProvider,
-  TooltipRoot,
-  TooltipTrigger,
-} from '../../atoms/overlay/tooltip'
+import { Tooltip, type TooltipContent } from '../../atoms/overlay/tooltip'
 import { useLabels } from '../../../providers/locale-provider'
 
 const SVG = forwardRef<SVGSVGElement, React.SVGProps<SVGSVGElement>>((props, ref) => (
@@ -27,21 +22,23 @@ const SVG = forwardRef<SVGSVGElement, React.SVGProps<SVGSVGElement>>((props, ref
 const InfoTooltip = forwardRef<
   ElementRef<typeof TooltipContent>,
   React.ComponentPropsWithoutRef<typeof TooltipContent> & { label?: string }
->(({ label, ...props }, _ref) => {
+>(({ label, children, className, ...props }, _ref) => {
   const labels = useLabels()
   return (
-    <TooltipProvider>
-      <TooltipRoot>
-        <TooltipTrigger
+    <Tooltip
+      trigger={
+        <button
           type="button"
           className="flex [&_svg]:data-[state=delayed-open]:fill-foreground-lighter [&_svg]:data-[state=instant-open]:fill-foreground-lighter"
         >
           <SVG strokeWidth={2} className="transition-colors fill-foreground-muted w-4 h-4" />
           <span className="sr-only">{label ?? labels.moreInformation}</span>
-        </TooltipTrigger>
-        <TooltipContent {...props} />
-      </TooltipRoot>
-    </TooltipProvider>
+        </button>
+      }
+      content={children ?? null}
+      className={className}
+      slotProps={{ content: props }}
+    />
   )
 })
 InfoTooltip.displayName = 'InfoTooltip'

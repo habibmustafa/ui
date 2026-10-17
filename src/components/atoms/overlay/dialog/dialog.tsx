@@ -65,6 +65,12 @@ export interface DialogProps {
   closeOnConfirm?: boolean
   /** Allow closing via overlay click / Escape. @default true */
   dismissible?: boolean
+  /**
+   * Drops the header, separator, body padding and footer: only `children` render, with
+   * `title` kept as a visually hidden name for assistive tech. For content that brings its
+   * own layout (a command palette, a navigation list).
+   */
+  bare?: boolean
   className?: string
   classNames?: DialogClassNames
   slotProps?: {
@@ -88,6 +94,7 @@ export function DialogHybrid({
   confirmType = 'primary',
   closeOnConfirm = true,
   dismissible = true,
+  bare = false,
   className,
   classNames,
   slotProps,
@@ -171,24 +178,37 @@ export function DialogHybrid({
         }}
         {...(description == null && { 'aria-describedby': undefined })}
       >
-        <DialogHeader className={classNames?.header}>
-          {/* Radix requires a Title for a11y even when the caller doesn't show one. */}
-          <DialogTitle className={cn(!title && 'sr-only', classNames?.title)}>
-            {title ?? 'Dialog'}
-          </DialogTitle>
-          {description != null && (
-            <DialogDescription className={classNames?.description}>{description}</DialogDescription>
-          )}
-        </DialogHeader>
-
-        {bodyNode != null && (
+        {bare ? (
           <>
-            <DialogSectionSeparator />
-            <DialogSection className={classNames?.body}>{bodyNode}</DialogSection>
+            <DialogTitle className="sr-only">{title ?? 'Dialog'}</DialogTitle>
+            {bodyNode}
+          </>
+        ) : (
+          <>
+            <DialogHeader className={classNames?.header}>
+              {/* Radix requires a Title for a11y even when the caller doesn't show one. */}
+              <DialogTitle className={cn(!title && 'sr-only', classNames?.title)}>
+                {title ?? 'Dialog'}
+              </DialogTitle>
+              {description != null && (
+                <DialogDescription className={classNames?.description}>
+                  {description}
+                </DialogDescription>
+              )}
+            </DialogHeader>
+
+            {bodyNode != null && (
+              <>
+                <DialogSectionSeparator />
+                <DialogSection className={classNames?.body}>{bodyNode}</DialogSection>
+              </>
+            )}
+
+            {footerNode != null && (
+              <DialogFooter className={classNames?.footer}>{footerNode}</DialogFooter>
+            )}
           </>
         )}
-
-        {footerNode != null && <DialogFooter className={classNames?.footer}>{footerNode}</DialogFooter>}
       </DialogContent>
     </DialogRoot>
   )

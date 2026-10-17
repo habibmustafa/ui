@@ -12,7 +12,7 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from './command-parts'
-import { DialogContent, DialogRoot } from '../../overlay/dialog'
+import { Dialog } from '../../overlay/dialog'
 import { useLabels } from '../../../../providers/locale-provider'
 
 export interface CommandItemData {
@@ -32,6 +32,8 @@ export interface CommandGroupData {
 }
 
 export interface CommandClassNames {
+  /** On `Command.Dialog`: replaces the roomy default root classes (e.g. for a compact palette). */
+  root?: string
   input?: string
   list?: string
   group?: string
@@ -107,10 +109,13 @@ export interface CommandDialogProps extends DialogPrimitive.DialogProps {
   /** @default "No results found.", from LocaleProvider */
   emptyText?: React.ReactNode
   classNames?: CommandClassNames
+  /** Visually hidden dialog name for assistive tech. @default "Command palette" */
+  title?: string
 }
 
 export function CommandDialog({
   children,
+  title = 'Command palette',
   groups,
   placeholder,
   emptyText,
@@ -118,20 +123,23 @@ export function CommandDialog({
   ...props
 }: CommandDialogProps) {
   return (
-    <DialogRoot {...props}>
-      <DialogContent className="overflow-hidden p-0 shadow-lg">
+    <Dialog.Root {...props}>
+      <Dialog.Content className="overflow-hidden p-0 shadow-lg">
+        <Dialog.Title className="sr-only">{title}</Dialog.Title>
         {groups === undefined ? (
-          <CommandRoot className={COMMAND_DIALOG_ROOT_CLASSNAME}>{children}</CommandRoot>
+          <CommandRoot className={classNames?.root ?? COMMAND_DIALOG_ROOT_CLASSNAME}>
+            {children}
+          </CommandRoot>
         ) : (
           <CommandHybrid
-            className={COMMAND_DIALOG_ROOT_CLASSNAME}
+            className={classNames?.root ?? COMMAND_DIALOG_ROOT_CLASSNAME}
             groups={groups}
             placeholder={placeholder}
             emptyText={emptyText}
             classNames={classNames}
           />
         )}
-      </DialogContent>
-    </DialogRoot>
+      </Dialog.Content>
+    </Dialog.Root>
   )
 }

@@ -15,6 +15,7 @@ export interface ToggleGroupItemData {
   icon?: ReactNode
   disabled?: boolean
   'aria-label'?: string
+  className?: string
 }
 
 type ToggleGroupItemsProps = Omit<RootProps, 'children'> & {
@@ -45,6 +46,7 @@ export function ToggleGroupHybrid(props: ToggleGroupProps) {
           value={item.value}
           disabled={item.disabled}
           aria-label={item['aria-label']}
+          className={item.className}
         >
           {item.icon}
           {item.label}

@@ -45,7 +45,7 @@ export type MenuItem =
       key: string
       value: string
       onValueChange: (value: string) => void
-      items: { value: string; label: React.ReactNode }[]
+      items: { value: string; label: React.ReactNode; icon?: React.ReactNode }[]
     }
 
 function renderMenuItems(items: readonly MenuItem[]): React.ReactNode {
@@ -91,6 +91,7 @@ function renderMenuItems(items: readonly MenuItem[]): React.ReactNode {
           >
             {item.items.map((radio) => (
               <DropdownMenuRadioItem key={radio.value} value={radio.value}>
+                {radio.icon}
                 {radio.label}
               </DropdownMenuRadioItem>
             ))}

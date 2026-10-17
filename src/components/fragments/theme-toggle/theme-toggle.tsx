@@ -6,15 +6,7 @@ import { useState, useSyncExternalStore } from 'react'
 import { cn } from '../../../lib/utils'
 import { useTheme, type Theme } from '../../../providers'
 import { useLabels } from '../../../providers/locale-provider'
-import {
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuRoot,
-  DropdownMenuTrigger,
-} from '../../atoms/overlay/dropdown-menu'
+import { DropdownMenu } from '../../atoms/overlay/dropdown-menu'
 
 interface ThemeToggleProps {
   forceDark?: boolean
@@ -56,10 +48,16 @@ export const ThemeToggle = ({
   const currentThemeName = labels[THEME_LABEL[currentTheme as Theme] ?? 'themeSystem']
 
   return (
-    <DropdownMenuRoot open={open} onOpenChange={setOpen} modal={false}>
-      <DropdownMenuTrigger asChild disabled={forceDark}>
+    <DropdownMenu
+      open={open}
+      onOpenChange={setOpen}
+      modal={false}
+      align="end"
+      className={cn('w-40', contentClassName)}
+      trigger={
         <button
           type="button"
+          disabled={forceDark}
           aria-label={labels.themeLabel(currentThemeName)}
           className={cn(
             'focus-ring inline-flex h-8 cursor-pointer items-center gap-2 rounded-md border border-strong bg-background px-2.5 text-xs text-foreground-light transition-colors hover:border-control-hover hover:bg-surface-100 hover:text-foreground data-[state=open]:bg-surface-100 disabled:cursor-not-allowed disabled:opacity-50',
@@ -74,28 +72,32 @@ export const ThemeToggle = ({
           <span>{currentThemeName}</span>
           <ChevronDown className="h-3.5 w-3.5 shrink-0 text-foreground-lighter" />
         </button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className={cn('w-40', contentClassName)}>
-        <DropdownMenuLabel>{labels.appearance}</DropdownMenuLabel>
-        <DropdownMenuGroup>
-          <DropdownMenuRadioGroup
-            value={currentTheme}
-            onValueChange={(value) => {
-              setTheme(value as Theme)
-            }}
-          >
-            {(Object.keys(THEME_LABEL) as Theme[]).map((value) => {
-              const Icon = ICONS[value]
-              return (
-                <DropdownMenuRadioItem key={value} value={value}>
-                  <Icon className="mr-2 h-3.5 w-3.5 text-foreground-lighter" />
-                  {labels[THEME_LABEL[value]]}
-                </DropdownMenuRadioItem>
-              )
-            })}
-          </DropdownMenuRadioGroup>
-        </DropdownMenuGroup>
-      </DropdownMenuContent>
-    </DropdownMenuRoot>
+      }
+      items={[
+        { type: 'label', key: 'appearance', label: labels.appearance },
+        {
+          type: 'group',
+          key: 'theme',
+          items: [
+            {
+              type: 'radio-group',
+              key: 'theme',
+              value: currentTheme,
+              onValueChange: (value) => {
+                setTheme(value as Theme)
+              },
+              items: (Object.keys(THEME_LABEL) as Theme[]).map((value) => {
+                const Icon = ICONS[value]
+                return {
+                  value,
+                  icon: <Icon className="mr-2 h-3.5 w-3.5 text-foreground-lighter" />,
+                  label: labels[THEME_LABEL[value]],
+                }
+              }),
+            },
+          ],
+        },
+      ]}
+    />
   )
 }

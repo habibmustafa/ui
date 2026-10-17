@@ -68,6 +68,12 @@ export interface SheetProps {
   side?: SheetContentProps['side']
   /** Sheet width/height. @default "default" */
   size?: SheetContentProps['size']
+  /**
+   * Drops the header, separator, body padding and footer: only `children` render, with
+   * `title` kept as a visually hidden name for assistive tech. For content that brings its
+   * own layout (a command palette, a navigation list).
+   */
+  bare?: boolean
   className?: string
   classNames?: SheetClassNames
   slotProps?: {
@@ -94,6 +100,7 @@ export function SheetHybrid({
   modal,
   side,
   size,
+  bare = false,
   className,
   classNames,
   slotProps,
@@ -179,18 +186,33 @@ export function SheetHybrid({
         }}
         {...(description == null && { 'aria-describedby': undefined })}
       >
-        <SheetHeader className={classNames?.header}>
-          <SheetTitle className={cn(!title && 'sr-only', classNames?.title)}>
-            {title ?? 'Sheet'}
-          </SheetTitle>
-          {description != null && (
-            <SheetDescription className={classNames?.description}>{description}</SheetDescription>
-          )}
-        </SheetHeader>
+        {bare ? (
+          <>
+            <SheetTitle className="sr-only">{title ?? 'Sheet'}</SheetTitle>
+            {bodyNode}
+          </>
+        ) : (
+          <>
+            <SheetHeader className={classNames?.header}>
+              <SheetTitle className={cn(!title && 'sr-only', classNames?.title)}>
+                {title ?? 'Sheet'}
+              </SheetTitle>
+              {description != null && (
+                <SheetDescription className={classNames?.description}>
+                  {description}
+                </SheetDescription>
+              )}
+            </SheetHeader>
 
-        {bodyNode != null && <SheetSection className={classNames?.body}>{bodyNode}</SheetSection>}
+            {bodyNode != null && (
+              <SheetSection className={classNames?.body}>{bodyNode}</SheetSection>
+            )}
 
-        {footerNode != null && <SheetFooter className={classNames?.footer}>{footerNode}</SheetFooter>}
+            {footerNode != null && (
+              <SheetFooter className={classNames?.footer}>{footerNode}</SheetFooter>
+            )}
+          </>
+        )}
       </SheetContent>
     </SheetRoot>
   )
