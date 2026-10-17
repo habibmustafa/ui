@@ -151,7 +151,7 @@ export function DateField({
       aria-invalid={ariaInvalidProp || invalid}
       disabled={disabled}
       readOnly={readOnly}
-      className={cn(InputVariants({ size }), 'font-mono tabular-nums', className)}
+      className={cn(InputVariants({ size }), 'tabular-nums', className)}
       {...props}
     />
   )

@@ -76,4 +76,8 @@
   --destructive-400: 7.1deg 91.3% 91%;
   --destructive-300: 7.1deg 100% 96.7%;
   --destructive-200: 0deg 100% 99.4%;
+
+  /* An invalid field: -200/-400 are near-white on the light canvas, so step up one. */
+  --invalid-bg: hsl(var(--destructive-300));
+  --invalid-border: hsl(var(--destructive-500));
 }

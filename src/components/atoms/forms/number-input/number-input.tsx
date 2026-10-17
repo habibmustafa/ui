@@ -213,7 +213,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
         prefix={prefix}
         suffix={
           hideControls ? undefined : (
-            <span className="-mr-1 flex h-full items-center gap-0.5">
+            <span className="-mr-[9px] flex h-full items-center gap-0.5">
               <button
                 type="button"
                 tabIndex={-1}

@@ -4,7 +4,7 @@ import { Clock } from 'lucide-react'
 import * as React from 'react'
 
 import { InputVariants } from '../input'
-import { PopoverAnchor, PopoverContent, PopoverRoot, PopoverTrigger } from '../../overlay/popover'
+import { Popover } from '../../overlay/popover'
 import { ClockFace, pad, type ClockView } from './time-picker-clock'
 import { useControllableState } from '../../../../lib/use-controllable-state'
 import { fieldIconButtonClass, fieldIconClass, fieldIconStrokeWidth } from '../../../../lib/field-icon-button'
@@ -255,7 +255,7 @@ export function TimePicker({
       aria-disabled={disabled || undefined}
       className={cn(
         InputVariants({ size }),
-        'inline-flex w-auto items-center gap-0.5 font-mono outline-none',
+        'inline-flex w-auto items-center gap-0.5 tabular-nums outline-none',
         'has-[:focus-visible]:border-control-hover',
         disabled && 'cursor-not-allowed opacity-50',
         className
@@ -329,7 +329,7 @@ export function TimePicker({
         </span>
       )}
       {clock ? (
-        <PopoverTrigger asChild>
+        <Popover.Trigger asChild>
           <button
             type="button"
             aria-label={labels.chooseTime}
@@ -340,7 +340,7 @@ export function TimePicker({
           >
             <Clock aria-hidden="true" className={fieldIconClass} strokeWidth={fieldIconStrokeWidth} />
           </button>
-        </PopoverTrigger>
+        </Popover.Trigger>
       ) : (
         <Clock
           aria-hidden="true"
@@ -355,7 +355,7 @@ export function TimePicker({
   if (!clock) return field
 
   return (
-    <PopoverRoot
+    <Popover.Root
       open={clockOpen}
       onOpenChange={(open) => {
         setClockOpen(open)
@@ -365,8 +365,8 @@ export function TimePicker({
       {/* Position the dial against the whole field (its right edge with align="end"),
           not against the small clock button inside it, which sits inset by the
           field's padding. */}
-      <PopoverAnchor asChild>{field}</PopoverAnchor>
-      <PopoverContent
+      <Popover.Anchor asChild>{field}</Popover.Anchor>
+      <Popover.Content
         ref={clockContentRef}
         align="end"
         aria-label={labels.chooseTime}
@@ -434,7 +434,7 @@ export function TimePicker({
             disabled={disabled}
           />
         </div>
-      </PopoverContent>
-    </PopoverRoot>
+      </Popover.Content>
+    </Popover.Root>
   )
 }

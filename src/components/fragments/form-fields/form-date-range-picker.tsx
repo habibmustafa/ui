@@ -1,4 +1,4 @@
-import { FormField } from '../../atoms/forms/form'
+import { Form } from '../../atoms/forms/form'
 import { DateRangePicker, type DateRangePickerProps } from '../../atoms/forms/date-range-picker'
 import { FormItemLayout } from '../form-item-layout'
 import { type FieldLayoutProps, splitLayout, LabelledControl } from './field-shared'
@@ -13,7 +13,7 @@ export interface FormDateRangePickerProps
 export function FormDateRangePicker({ name, ...props }: FormDateRangePickerProps) {
   const [layoutProps, pickerProps] = splitLayout(props)
   return (
-    <FormField
+    <Form.Field
       name={name}
       render={({ field }) => (
         <FormItemLayout {...layoutProps}>

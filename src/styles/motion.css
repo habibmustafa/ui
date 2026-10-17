@@ -31,11 +31,26 @@
   /* Modal backdrops: a plain fade (the dialog panel does its own scale). */
   --animate-backdrop-show: backdrop-show var(--duration-enter) var(--ease-soft-out) both;
   --animate-backdrop-hide: backdrop-hide var(--duration-exit) var(--ease-soft-in) both;
+
+  /* Rating: the stars up to the pick swell and settle, staggered by an inline delay. */
+  --animate-rating-pop: rating-pop 320ms var(--ease-soft-out) both;
 }
 
 @keyframes backdrop-show {
   from {
     opacity: 0;
+  }
+}
+
+@keyframes rating-pop {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.35);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 

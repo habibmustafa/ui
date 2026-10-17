@@ -1,5 +1,5 @@
 import { DateField, type DateFieldProps } from '../../atoms/forms/date-field'
-import { FormControl, FormField } from '../../atoms/forms/form'
+import { Form } from '../../atoms/forms/form'
 import { FormItemLayout } from '../form-item-layout'
 import { type FieldLayoutProps, splitLayout } from './field-shared'
 
@@ -13,11 +13,11 @@ export interface FormDateFieldProps
 export function FormDateField({ name, ...props }: FormDateFieldProps) {
   const [layoutProps, fieldProps] = splitLayout(props)
   return (
-    <FormField
+    <Form.Field
       name={name}
       render={({ field }) => (
         <FormItemLayout {...layoutProps}>
-          <FormControl>
+          <Form.Control>
             <DateField
               {...fieldProps}
               ref={field.ref}
@@ -26,7 +26,7 @@ export function FormDateField({ name, ...props }: FormDateFieldProps) {
               onChange={field.onChange}
               onBlur={field.onBlur}
             />
-          </FormControl>
+          </Form.Control>
         </FormItemLayout>
       )}
     />

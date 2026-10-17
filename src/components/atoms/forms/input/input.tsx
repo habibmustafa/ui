@@ -19,7 +19,7 @@ export const InputVariants = cva(
     // TimePicker/prefix wrappers reuse these classes on a <div>.
     'flex h-10 w-full rounded-md border border-control hover:border-control-hover [&:is(input):read-only]:border-button bg-field px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-foreground-muted [&:is(input):read-only]:text-foreground-light',
     'focus:border-control-hover focus-ring disabled:cursor-not-allowed disabled:text-foreground-muted transition-colors',
-    'aria-[invalid=true]:bg-destructive-200 aria-[invalid=true]:border-destructive-400 aria-[invalid=true]:hover:border-destructive aria-[invalid=true]:focus:border-destructive aria-[invalid=true]:focus-visible:border-destructive'
+    'aria-[invalid=true]:bg-invalid-bg aria-[invalid=true]:border-invalid-border aria-[invalid=true]:hover:border-destructive aria-[invalid=true]:focus:border-destructive aria-[invalid=true]:focus-visible:border-destructive'
   ),
   {
     variants: {
@@ -63,7 +63,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           'has-[:focus-visible]:outline-hidden has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring has-[:focus-visible]:ring-offset-2 has-[:focus-visible]:ring-offset-background has-[:focus-visible]:border-control-hover',
           'has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-50',
           'has-[:read-only]:border-button',
-          'has-[[aria-invalid=true]]:bg-destructive-200 has-[[aria-invalid=true]]:border-destructive-400 has-[[aria-invalid=true]]:hover:border-destructive',
+          'has-[[aria-invalid=true]]:bg-invalid-bg has-[[aria-invalid=true]]:border-invalid-border has-[[aria-invalid=true]]:hover:border-destructive',
           className
         )}
         // The field's padding lives on this wrapper (matching the plain-Input look),

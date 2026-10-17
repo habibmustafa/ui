@@ -1,4 +1,4 @@
-import { FormControl, FormField } from '../../atoms/forms/form'
+import { Form } from '../../atoms/forms/form'
 import { Input, type InputProps } from '../../atoms/forms/input'
 import { FormItemLayout } from '../form-item-layout'
 import { type LayoutProps } from './field-shared'
@@ -14,7 +14,7 @@ export function FormInput({ name, ...props }: FormInputProps) {
   // clash on the name, so this field only exposes Input's.
   const { label, description, labelOptional, align, layout, labelLayout, ...inputProps } = props
   return (
-    <FormField
+    <Form.Field
       name={name}
       render={({ field }) => (
         <FormItemLayout
@@ -25,9 +25,9 @@ export function FormInput({ name, ...props }: FormInputProps) {
           layout={layout}
           labelLayout={labelLayout}
         >
-          <FormControl>
+          <Form.Control>
             <Input {...field} {...inputProps} />
-          </FormControl>
+          </Form.Control>
         </FormItemLayout>
       )}
     />

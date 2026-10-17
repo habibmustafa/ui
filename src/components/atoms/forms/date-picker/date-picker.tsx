@@ -38,6 +38,10 @@ type DatePickerPropsMode = Omit<RootProps, 'children'> & {
   /** Typed-field range check, single-date mode only — marks `aria-invalid`, doesn't block typing. */
   minDate?: Date
   maxDate?: Date
+  /** Set by `FormControl` (and usable directly): reach the typeable field, not the popover root. */
+  id?: string
+  'aria-invalid'?: boolean | 'true' | 'false'
+  'aria-describedby'?: string
   children?: never
 }
 
@@ -69,6 +73,9 @@ export function DatePickerHybrid(props: DatePickerProps) {
     fieldContainerClassName,
     minDate,
     maxDate,
+    id,
+    'aria-invalid': ariaInvalid,
+    'aria-describedby': ariaDescribedby,
     open: _openProp,
     defaultOpen: _defaultOpen,
     onOpenChange: _onOpenChange,
@@ -108,7 +115,9 @@ export function DatePickerHybrid(props: DatePickerProps) {
               ? (candidate: Date) => dateMatchModifiers(candidate, calendarProps.disabled!)
               : undefined
           }
-          isInvalid={buttonProps?.isInvalid}
+          id={id}
+          aria-describedby={ariaDescribedby}
+          isInvalid={buttonProps?.isInvalid || ariaInvalid === true || ariaInvalid === 'true'}
         />
       ) : (
         <DatePickerTrigger asChild>

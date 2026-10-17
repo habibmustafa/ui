@@ -7,6 +7,7 @@ import * as React from 'react'
 
 import { cn } from '../../../../lib/utils'
 import { ComboboxTrigger } from './combobox-trigger'
+import { FieldClear } from './field-clear'
 import { selectTriggerVariants } from './select-trigger'
 
 const SelectRoot = SelectPrimitive.Root
@@ -32,15 +33,25 @@ const SelectTrigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> & {
     size?: SelectTriggerSize
+    /** Shows a × before the chevron and clears on Backspace/Delete; omit when nothing to clear. */
+    onClear?: () => void
   }
->(({ className, children, size, ...props }, ref) => (
+>(({ className, children, size, onClear, onKeyDown, ...props }, ref) => (
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(selectTriggerVariants({ size }), className)}
     tabIndex={0}
+    onKeyDown={(event) => {
+      onKeyDown?.(event)
+      if (onClear && !event.defaultPrevented && (event.key === 'Backspace' || event.key === 'Delete')) {
+        event.preventDefault()
+        onClear()
+      }
+    }}
     {...props}
   >
     {children}
+    {onClear && !props.disabled && <FieldClear onClear={onClear} />}
     <SelectPrimitive.Icon asChild>
       <ChevronDown className="h-4 w-4 text-foreground-lighter shrink-0" strokeWidth={1.5} />
     </SelectPrimitive.Icon>

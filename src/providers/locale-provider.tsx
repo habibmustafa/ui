@@ -41,6 +41,7 @@ export interface Labels {
   copy: string
   copied: string
   copiedToClipboard: string
+  clearSelection: string
   reveal: string
   loading: string
   noResults: string
@@ -146,6 +147,7 @@ export const defaultLabels: Labels = {
   copy: 'Copy',
   copied: 'Copied',
   copiedToClipboard: 'Copied to clipboard',
+  clearSelection: 'Clear selection',
   reveal: 'Reveal',
   loading: 'Loading',
   noResults: 'No results found.',

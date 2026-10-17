@@ -9,7 +9,7 @@
 </div>
 <div class="transition-all duration-500 ease-soft-in-out order-1 col-span-12" data-formlayout-id="dataContainer">
 <div class="" data-formlayout-id="nonBoxInputContainer">
-<input aria-describedby="ID-form-item-description" aria-invalid="false" class="flex w-full rounded-md border border-control hover:border-control-hover [&amp;:is(input):read-only]:border-button bg-field file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-foreground-muted [&amp;:is(input):read-only]:text-foreground-light focus:border-control-hover focus-ring disabled:cursor-not-allowed disabled:text-foreground-muted transition-colors aria-[invalid=true]:bg-destructive-200 aria-[invalid=true]:border-destructive-400 aria-[invalid=true]:hover:border-destructive aria-[invalid=true]:focus:border-destructive aria-[invalid=true]:focus-visible:border-destructive text-base md:text-sm leading-4 px-3 py-2 h-[34px]" id="ID-form-item" name="username" placeholder="shadcn" value="">
+<input aria-describedby="ID-form-item-description" aria-invalid="false" class="flex w-full rounded-md border border-control hover:border-control-hover [&amp;:is(input):read-only]:border-button bg-field file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-foreground-muted [&amp;:is(input):read-only]:text-foreground-light focus:border-control-hover focus-ring disabled:cursor-not-allowed disabled:text-foreground-muted transition-colors aria-[invalid=true]:bg-invalid-bg aria-[invalid=true]:border-invalid-border aria-[invalid=true]:hover:border-destructive aria-[invalid=true]:focus:border-destructive aria-[invalid=true]:focus-visible:border-destructive text-base md:text-sm leading-4 px-3 py-2 h-[34px]" id="ID-form-item" name="username" placeholder="shadcn" value="">
 </div>
 </div>
 </div>
@@ -23,10 +23,86 @@
 </div>
 <div class="transition-all duration-500 ease-soft-in-out order-1 col-span-12" data-formlayout-id="dataContainer">
 <div class="" data-formlayout-id="nonBoxInputContainer">
-<textarea aria-describedby="ID-form-item-description" aria-invalid="false" class="flex min-h-[80px] w-full rounded-md border border-control hover:border-control-hover bg-field px-3 py-2 text-base md:text-sm placeholder:text-foreground-muted focus:border-control-hover focus-visible:border-control-hover focus-ring disabled:cursor-not-allowed disabled:opacity-50 transition-colors aria-[invalid=true]:bg-destructive-200 aria-[invalid=true]:border-destructive-400 aria-[invalid=true]:hover:border-destructive aria-[invalid=true]:focus:border-destructive aria-[invalid=true]:focus-visible:border-destructive" id="ID-form-item" name="bio">
+<textarea aria-describedby="ID-form-item-description" aria-invalid="false" class="flex min-h-[80px] w-full rounded-md border border-control hover:border-control-hover bg-field px-3 py-2 text-base md:text-sm placeholder:text-foreground-muted focus:border-control-hover focus-visible:border-control-hover focus-ring disabled:cursor-not-allowed disabled:opacity-50 transition-colors aria-[invalid=true]:bg-invalid-bg aria-[invalid=true]:border-invalid-border aria-[invalid=true]:hover:border-destructive aria-[invalid=true]:focus:border-destructive aria-[invalid=true]:focus-visible:border-destructive" id="ID-form-item" name="bio">
 </textarea>
 </div>
 <div class="text-foreground-lighter text-base md:text-sm mt-2" data-formlayout-id="description" id="ID-form-item-description">Shown on your public profile.</div>
+</div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="relative text-base md:text-sm flex flex-col gap-2">
+<div class="transition-all duration-500 ease-soft-in-out flex flex-row gap-2 justify-between" data-formlayout-id="labelContainer">
+<label class="text peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm transition-colors text-foreground flex gap-2 items-center wrap-break-word leading-normal" data-formlayout-id="formLabel" for="ID-form-item" id="ID-form-item-label">
+<span>Password</span>
+</label>
+</div>
+<div class="transition-all duration-500 ease-soft-in-out order-1 col-span-12" data-formlayout-id="dataContainer">
+<div class="" data-formlayout-id="nonBoxInputContainer">
+<div class="flex w-full flex-col gap-1.5">
+<div class="w-full rounded-md border border-control hover:border-control-hover [&amp;:is(input):read-only]:border-button bg-field file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-foreground-muted [&amp;:is(input):read-only]:text-foreground-light focus:border-control-hover focus-ring disabled:cursor-not-allowed disabled:text-foreground-muted transition-colors aria-[invalid=true]:bg-invalid-bg aria-[invalid=true]:border-invalid-border aria-[invalid=true]:hover:border-destructive aria-[invalid=true]:focus:border-destructive aria-[invalid=true]:focus-visible:border-destructive text-base md:text-sm leading-4 px-3 py-2 h-[34px] flex cursor-text items-center gap-2 has-[:focus-visible]:outline-hidden has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring has-[:focus-visible]:ring-offset-2 has-[:focus-visible]:ring-offset-background has-[:focus-visible]:border-control-hover has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-50 has-[:read-only]:border-button has-[[aria-invalid=true]]:bg-invalid-bg has-[[aria-invalid=true]]:border-invalid-border has-[[aria-invalid=true]]:hover:border-destructive">
+<input aria-describedby="ID-form-item-description" aria-invalid="false" autocomplete="current-password" class="h-full min-w-0 flex-1 appearance-none border-0 bg-transparent p-0 text-inherit [font-size:inherit] outline-none [box-shadow:none] placeholder:text-foreground-muted disabled:cursor-not-allowed" id="ID-form-item" name="password" type="password" value="">
+<span class="flex shrink-0 items-center text-foreground-lighter [&amp;_svg]:size-4">
+<button aria-label="Show password" aria-pressed="false" class="-mr-[9px] flex h-6 w-6 items-center justify-center rounded-sm text-foreground-lighter transition-colors hover:text-foreground focus-ring disabled:pointer-events-none" type="button">
+<svg aria-hidden="true" class="lucide lucide-eye h-4 w-4" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24">
+<path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0">
+</path>
+<circle cx="12" cy="12" r="3">
+</circle>
+</svg>
+</button>
+</span>
+</div>
+<div aria-hidden="true" class="flex items-center gap-2">
+<div class="grid flex-1 grid-cols-4 gap-1">
+<span class="h-1 rounded-full transition-colors bg-control">
+</span>
+<span class="h-1 rounded-full transition-colors bg-control">
+</span>
+<span class="h-1 rounded-full transition-colors bg-control">
+</span>
+<span class="h-1 rounded-full transition-colors bg-control">
+</span>
+</div>
+<span aria-live="polite" class="min-w-12 text-right text-xs text-foreground-light" id="ID">
+</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="relative text-base md:text-sm flex flex-col gap-2">
+<div class="transition-all duration-500 ease-soft-in-out flex flex-row gap-2 justify-between" data-formlayout-id="labelContainer">
+<label class="text peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm transition-colors text-foreground flex gap-2 items-center wrap-break-word leading-normal" data-formlayout-id="formLabel" for="ID-form-item" id="ID-form-item-label">
+<span>Seats</span>
+</label>
+</div>
+<div class="transition-all duration-500 ease-soft-in-out order-1 col-span-12" data-formlayout-id="dataContainer">
+<div class="" data-formlayout-id="nonBoxInputContainer">
+<div class="w-full rounded-md border border-control hover:border-control-hover [&amp;:is(input):read-only]:border-button bg-field file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-foreground-muted [&amp;:is(input):read-only]:text-foreground-light focus:border-control-hover focus-ring disabled:cursor-not-allowed disabled:text-foreground-muted transition-colors aria-[invalid=true]:bg-invalid-bg aria-[invalid=true]:border-invalid-border aria-[invalid=true]:hover:border-destructive aria-[invalid=true]:focus:border-destructive aria-[invalid=true]:focus-visible:border-destructive text-base md:text-sm leading-4 px-3 py-2 h-[34px] flex cursor-text items-center gap-2 has-[:focus-visible]:outline-hidden has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring has-[:focus-visible]:ring-offset-2 has-[:focus-visible]:ring-offset-background has-[:focus-visible]:border-control-hover has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-50 has-[:read-only]:border-button has-[[aria-invalid=true]]:bg-invalid-bg has-[[aria-invalid=true]]:border-invalid-border has-[[aria-invalid=true]]:hover:border-destructive tabular-nums">
+<input aria-describedby="ID-form-item-description" aria-invalid="false" aria-valuemax="100" aria-valuemin="1" autocomplete="off" class="h-full min-w-0 flex-1 appearance-none border-0 bg-transparent p-0 text-inherit [font-size:inherit] outline-none [box-shadow:none] placeholder:text-foreground-muted disabled:cursor-not-allowed" id="ID-form-item" inputmode="numeric" name="seats" role="spinbutton" type="text" value="">
+<span class="flex shrink-0 items-center text-foreground-lighter [&amp;_svg]:size-4">
+<span class="-mr-[9px] flex h-full items-center gap-0.5">
+<button aria-label="Decrease" class="flex h-full items-center justify-center rounded-sm px-1 text-foreground-lighter transition-colors hover:text-foreground disabled:pointer-events-none disabled:opacity-40" tabindex="-1" type="button">
+<svg aria-hidden="true" class="lucide lucide-minus h-3.5 w-3.5" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24">
+<path d="M5 12h14">
+</path>
+</svg>
+</button>
+<button aria-label="Increase" class="flex h-full items-center justify-center rounded-sm px-1 text-foreground-lighter transition-colors hover:text-foreground disabled:pointer-events-none disabled:opacity-40" tabindex="-1" type="button">
+<svg aria-hidden="true" class="lucide lucide-plus h-3.5 w-3.5" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24">
+<path d="M5 12h14">
+</path>
+<path d="M12 5v14">
+</path>
+</svg>
+</button>
+</span>
+</span>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -39,7 +115,7 @@
 </div>
 <div class="transition-all duration-500 ease-soft-in-out order-1 col-span-12" data-formlayout-id="dataContainer">
 <div class="" data-formlayout-id="nonBoxInputContainer">
-<button aria-autocomplete="none" aria-describedby="ID-form-item-description" aria-expanded="false" aria-invalid="false" class="flex w-full cursor-pointer items-center justify-between rounded-md border border-control hover:border-control-hover bg-field data-[placeholder]:text-foreground-lighter ring-border-control focus-ring disabled:cursor-not-allowed disabled:opacity-50 transition-colors data-[state=open]:border-control-hover aria-[invalid=true]:border-destructive-400 aria-[invalid=true]:bg-destructive-200 aria-[invalid=true]:hover:border-destructive gap-2 [&amp;>span]:truncate text-left text-base md:text-sm leading-4 px-3 py-2 h-[34px]" data-placeholder="" data-state="closed" dir="ltr" id="ID-form-item" role="combobox" tabindex="0" type="button">
+<button aria-autocomplete="none" aria-describedby="ID-form-item-description" aria-expanded="false" aria-invalid="false" class="flex w-full cursor-pointer items-center justify-between rounded-md border border-control hover:border-control-hover bg-field data-[placeholder]:text-foreground-lighter ring-border-control focus-ring disabled:cursor-not-allowed disabled:opacity-50 transition-colors data-[state=open]:border-control-hover aria-[invalid=true]:border-invalid-border aria-[invalid=true]:bg-invalid-bg aria-[invalid=true]:hover:border-destructive gap-2 [&amp;>span]:truncate text-left text-base md:text-sm leading-4 px-3 py-2 h-[34px] pr-[7px]" data-placeholder="" data-state="closed" dir="ltr" id="ID-form-item" role="combobox" tabindex="0" type="button">
 <span style="pointer-events: none;">
 <span>Select a role</span>
 </span>
@@ -55,6 +131,59 @@
 <option value="editor">Editor</option>
 <option value="admin">Admin</option>
 </select>
+</div>
+</div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="relative text-base md:text-sm flex flex-col gap-2">
+<div class="transition-all duration-500 ease-soft-in-out flex flex-row gap-2 justify-between" data-formlayout-id="labelContainer">
+<label class="text peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm transition-colors text-foreground flex gap-2 items-center wrap-break-word leading-normal" data-formlayout-id="formLabel" for="ID-form-item" id="ID-form-item-label">
+<span>Region</span>
+</label>
+</div>
+<div class="transition-all duration-500 ease-soft-in-out order-1 col-span-12" data-formlayout-id="dataContainer">
+<div class="" data-formlayout-id="nonBoxInputContainer">
+<button aria-describedby="ID-form-item-description" aria-expanded="false" aria-haspopup="listbox" aria-invalid="false" class="flex w-full cursor-pointer items-center justify-between rounded-md border border-control hover:border-control-hover bg-field data-[placeholder]:text-foreground-lighter ring-border-control focus-ring disabled:cursor-not-allowed disabled:opacity-50 transition-colors data-[state=open]:border-control-hover aria-[invalid=true]:border-invalid-border aria-[invalid=true]:bg-invalid-bg aria-[invalid=true]:hover:border-destructive gap-2 [&amp;>span]:truncate text-left text-base md:text-sm leading-4 px-3 py-2 h-[34px] pr-[7px]" data-placeholder="" data-state="closed" id="ID-form-item" role="combobox" tabindex="0" type="button">
+<span class="flex min-w-0 items-center gap-2">
+<span class="truncate">Select a region</span>
+</span>
+<svg aria-hidden="true" class="lucide lucide-chevrons-up-down h-4 w-4 shrink-0 text-foreground-lighter" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24">
+<path d="m7 15 5 5 5-5">
+</path>
+<path d="m7 9 5-5 5 5">
+</path>
+</svg>
+</button>
+<input name="region" type="hidden" value="">
+</div>
+</div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="relative text-base md:text-sm flex flex-col gap-2">
+<div class="transition-all duration-500 ease-soft-in-out flex flex-row gap-2 justify-between" data-formlayout-id="labelContainer">
+<label class="text peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm transition-colors text-foreground flex gap-2 items-center wrap-break-word leading-normal" data-formlayout-id="formLabel" for="ID-form-item" id="ID-form-item-label">
+<span>Tags</span>
+</label>
+</div>
+<div class="transition-all duration-500 ease-soft-in-out order-1 col-span-12" data-formlayout-id="dataContainer">
+<div class="" data-formlayout-id="nonBoxInputContainer">
+<div class="h-full rounded-md text-foreground-light relative w-auto overflow-visible bg-transparent flex flex-col" cmdk-root="" id="ID-form-item" tabindex="-1">
+<label cmdk-label="" for="ID" id="ID" style="position: absolute; width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px;">
+</label>
+<button aria-describedby="ID-form-item-description" aria-expanded="false" aria-haspopup="listbox" aria-invalid="false" aria-label="Select tags" aria-labelledby="ID-form-item-label" class="flex w-full min-w-50 justify-between rounded-md border border-control bg-field placeholder:text-muted-foreground ring-border-control focus-ring disabled:cursor-not-allowed disabled:opacity-50 hover:border-control-hover transition-colors aria-[invalid=true]:border-invalid-border aria-[invalid=true]:bg-invalid-bg aria-[invalid=true]:hover:border-destructive text-base md:text-sm leading-4 min-h-[34px] py-1.5 pr-[7px] items-center pl-3" role="combobox" type="button">
+<div class="flex overflow-hidden flex-1 min-w-0 gap-1 overflow-x-auto scrollbar-thin scrollbar-track-transparent transition-colors dark:scrollbar-thumb-muted scrollbar-thumb-rounded-lg">
+<span class="text-foreground-muted whitespace-nowrap transition-opacity leading-5 opacity-100 visible inline">Select tags</span>
+</div>
+<svg aria-hidden="true" class="lucide lucide-chevron-down text-foreground-lighter shrink-0 ml-1.5 self-center" fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="16">
+<path d="m6 9 6 6 6-6">
+</path>
+</svg>
+</button>
+<span aria-live="polite" class="sr-only">
+</span>
+</div>
 </div>
 </div>
 </div>
@@ -102,13 +231,30 @@
 <div class="relative text-base md:text-sm flex flex-col gap-2">
 <div class="transition-all duration-500 ease-soft-in-out flex flex-row gap-2 justify-between" data-formlayout-id="labelContainer">
 <label class="text peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm transition-colors text-foreground flex gap-2 items-center wrap-break-word leading-normal" data-formlayout-id="formLabel" for="ID-form-item" id="ID-form-item-label">
+<span>Billing period</span>
+</label>
+</div>
+<div class="transition-all duration-500 ease-soft-in-out order-1 col-span-12" data-formlayout-id="dataContainer">
+<div class="" data-formlayout-id="nonBoxInputContainer">
+<div aria-describedby="ID-form-item-description" aria-invalid="false" aria-labelledby="ID-form-item-label" class="flex items-center gap-1 justify-start" dir="ltr" id="ID-form-item" role="radiogroup" style="outline: none;" tabindex="0">
+<button aria-checked="false" class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors text-foreground-light data-[state=on]:bg-accent data-[state=on]:text-foreground aria-checked:bg-accent aria-checked:text-foreground focus-ring disabled:pointer-events-none disabled:opacity-50 py-1 bg-transparent border border-control hover:bg-accent hover:text-accent-foreground h-10 px-3" data-radix-collection-item="" data-state="off" role="radio" tabindex="-1" type="button">Monthly</button>
+<button aria-checked="false" class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors text-foreground-light data-[state=on]:bg-accent data-[state=on]:text-foreground aria-checked:bg-accent aria-checked:text-foreground focus-ring disabled:pointer-events-none disabled:opacity-50 py-1 bg-transparent border border-control hover:bg-accent hover:text-accent-foreground h-10 px-3" data-radix-collection-item="" data-state="off" role="radio" tabindex="-1" type="button">Yearly</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="relative text-base md:text-sm flex flex-col gap-2">
+<div class="transition-all duration-500 ease-soft-in-out flex flex-row gap-2 justify-between" data-formlayout-id="labelContainer">
+<label class="text peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm transition-colors text-foreground flex gap-2 items-center wrap-break-word leading-normal" data-formlayout-id="formLabel" for="ID-form-item" id="ID-form-item-label">
 <span>Renewal date</span>
 </label>
 </div>
 <div class="transition-all duration-500 ease-soft-in-out order-1 col-span-12" data-formlayout-id="dataContainer">
 <div class="" data-formlayout-id="nonBoxInputContainer">
 <div class="relative inline-flex w-full">
-<input aria-invalid="false" autocomplete="off" class="flex w-full rounded-md border border-control hover:border-control-hover [&amp;:is(input):read-only]:border-button bg-field file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-foreground-muted [&amp;:is(input):read-only]:text-foreground-light focus:border-control-hover focus-ring disabled:cursor-not-allowed disabled:text-foreground-muted transition-colors aria-[invalid=true]:bg-destructive-200 aria-[invalid=true]:border-destructive-400 aria-[invalid=true]:hover:border-destructive aria-[invalid=true]:focus:border-destructive aria-[invalid=true]:focus-visible:border-destructive text-base md:text-sm leading-4 px-3 py-2 h-[34px] font-mono tabular-nums pr-14" inputmode="numeric" placeholder="DD.MM.YYYY" spellcheck="false" type="text" value="">
+<input aria-describedby="ID-form-item-description" aria-invalid="false" autocomplete="off" class="flex w-full rounded-md border border-control hover:border-control-hover [&amp;:is(input):read-only]:border-button bg-field file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-foreground-muted [&amp;:is(input):read-only]:text-foreground-light focus:border-control-hover focus-ring disabled:cursor-not-allowed disabled:text-foreground-muted transition-colors aria-[invalid=true]:bg-invalid-bg aria-[invalid=true]:border-invalid-border aria-[invalid=true]:hover:border-destructive aria-[invalid=true]:focus:border-destructive aria-[invalid=true]:focus-visible:border-destructive text-base md:text-sm leading-4 px-3 py-2 h-[34px] tabular-nums pr-14" id="ID-form-item" inputmode="numeric" placeholder="DD.MM.YYYY" spellcheck="false" type="text" value="">
 <button aria-expanded="false" aria-haspopup="dialog" aria-label="Open calendar" class="flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded-sm text-foreground-lighter transition-colors hover:bg-accent hover:text-foreground focus-ring disabled:pointer-events-none disabled:opacity-50 absolute right-1 top-1/2 -translate-y-1/2" data-state="closed" tabindex="0" type="button">
 <svg aria-hidden="true" class="lucide lucide-calendar h-4 w-4" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24">
 <path d="M8 2v3">
@@ -123,6 +269,250 @@
 </button>
 </div>
 </div>
+</div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="relative text-base md:text-sm flex flex-col gap-2">
+<div class="transition-all duration-500 ease-soft-in-out flex flex-row gap-2 justify-between" data-formlayout-id="labelContainer">
+<label class="text peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm transition-colors text-foreground flex gap-2 items-center wrap-break-word leading-normal" data-formlayout-id="formLabel" for="ID-form-item" id="ID-form-item-label">
+<span>Birthday</span>
+</label>
+</div>
+<div class="transition-all duration-500 ease-soft-in-out order-1 col-span-12" data-formlayout-id="dataContainer">
+<div class="" data-formlayout-id="nonBoxInputContainer">
+<input aria-describedby="ID-form-item-description" aria-invalid="false" autocomplete="off" class="flex w-full rounded-md border border-control hover:border-control-hover [&amp;:is(input):read-only]:border-button bg-field file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-foreground-muted [&amp;:is(input):read-only]:text-foreground-light focus:border-control-hover focus-ring disabled:cursor-not-allowed disabled:text-foreground-muted transition-colors aria-[invalid=true]:bg-invalid-bg aria-[invalid=true]:border-invalid-border aria-[invalid=true]:hover:border-destructive aria-[invalid=true]:focus:border-destructive aria-[invalid=true]:focus-visible:border-destructive text-base md:text-sm leading-4 px-3 py-2 h-[34px] tabular-nums" id="ID-form-item" inputmode="numeric" name="birthday" placeholder="DD.MM.YYYY" spellcheck="false" type="text" value="">
+</div>
+<div class="text-foreground-lighter text-base md:text-sm mt-2" data-formlayout-id="description" id="ID-form-item-description">Typed date, no calendar.</div>
+</div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="relative text-base md:text-sm flex flex-col gap-2">
+<div class="transition-all duration-500 ease-soft-in-out flex flex-row gap-2 justify-between" data-formlayout-id="labelContainer">
+<label class="text peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm transition-colors text-foreground flex gap-2 items-center wrap-break-word leading-normal" data-formlayout-id="formLabel" for="ID-form-item" id="ID-form-item-label">
+<span>Reporting period</span>
+</label>
+</div>
+<div class="transition-all duration-500 ease-soft-in-out order-1 col-span-12" data-formlayout-id="dataContainer">
+<div class="" data-formlayout-id="nonBoxInputContainer">
+<button aria-describedby="ID-form-item-description" aria-expanded="false" aria-haspopup="dialog" aria-invalid="false" aria-labelledby="ID-form-item-label" class="relative inline-flex items-center cursor-pointer space-x-2 font-regular ease-out duration-200 rounded-md transition-[background-color,border-color,color,scale] [&amp;:not([aria-haspopup])]:motion-safe:active:scale-[0.97] focus-ring border data-[state=open]:border-stronger text-base md:text-sm leading-4 px-3 h-[34px] justify-between text-left font-normal pl-3 pr-[7px] py-4 bg-field dark:bg-field border-control hover:border-control-hover w-full text-foreground-lighter" data-size="small" data-state="closed" id="ID-form-item" tabindex="0" type="button"> <span class="truncate">Pick a date range</span> <div aria-hidden="true" class="inline-flex items-center justify-center shrink-0 [&amp;_svg]:h-[18px] [&amp;_svg]:w-[18px] text-foreground-lighter">
+<svg aria-hidden="true" class="lucide lucide-calendar h-4 w-4 h-4! w-4! text-foreground-lighter" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24">
+<path d="M8 2v3">
+</path>
+<path d="M16 2v3">
+</path>
+<rect height="18" rx="2" width="18" x="3" y="3">
+</rect>
+<path d="M3 9h18">
+</path>
+</svg>
+</div>
+</button>
+</div>
+</div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="relative text-base md:text-sm flex flex-col gap-2">
+<div class="transition-all duration-500 ease-soft-in-out flex flex-row gap-2 justify-between" data-formlayout-id="labelContainer">
+<label class="text peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm transition-colors text-foreground flex gap-2 items-center wrap-break-word leading-normal" data-formlayout-id="formLabel" for="ID-form-item" id="ID-form-item-label">
+<span>Start time</span>
+</label>
+</div>
+<div class="transition-all duration-500 ease-soft-in-out order-1 col-span-12" data-formlayout-id="dataContainer">
+<div class="" data-formlayout-id="nonBoxInputContainer">
+<div aria-describedby="ID-form-item-description" aria-invalid="false" aria-labelledby="ID-form-item-label" class="rounded-md border border-control hover:border-control-hover [&amp;:is(input):read-only]:border-button bg-field file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-foreground-muted [&amp;:is(input):read-only]:text-foreground-light focus:border-control-hover focus-ring disabled:cursor-not-allowed disabled:text-foreground-muted transition-colors aria-[invalid=true]:bg-invalid-bg aria-[invalid=true]:border-invalid-border aria-[invalid=true]:hover:border-destructive aria-[invalid=true]:focus:border-destructive aria-[invalid=true]:focus-visible:border-destructive text-base md:text-sm leading-4 px-3 py-2 h-[34px] inline-flex w-auto items-center gap-0.5 tabular-nums outline-none has-[:focus-visible]:border-control-hover" id="ID-form-item" role="group" tabindex="-1">
+<span aria-label="Hours" aria-valuemax="23" aria-valuemin="0" aria-valuetext="Empty" class="rounded-xs px-0.5 tabular-nums caret-transparent outline-none text-center focus:bg-brand-400 focus:text-foreground dark:focus:bg-brand-500 data-[placeholder]:text-foreground-muted disabled:cursor-not-allowed" data-placeholder="" role="spinbutton" tabindex="0">--</span>
+<span aria-hidden="true" class="text-foreground-lighter">:</span>
+<span aria-label="Minutes" aria-valuemax="59" aria-valuemin="0" aria-valuetext="Empty" class="rounded-xs px-0.5 tabular-nums caret-transparent outline-none text-center focus:bg-brand-400 focus:text-foreground dark:focus:bg-brand-500 data-[placeholder]:text-foreground-muted disabled:cursor-not-allowed" data-placeholder="" role="spinbutton" tabindex="0">--</span>
+<button aria-expanded="false" aria-haspopup="dialog" aria-label="Choose time" class="flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded-sm text-foreground-lighter transition-colors hover:bg-accent hover:text-foreground focus-ring disabled:pointer-events-none disabled:opacity-50 -mr-[9px] ml-1" data-state="closed" tabindex="0" type="button">
+<svg aria-hidden="true" class="lucide lucide-clock h-4 w-4" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24">
+<circle cx="12" cy="12" r="10">
+</circle>
+<path d="M12 6v6l4 2">
+</path>
+</svg>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="relative text-base md:text-sm flex flex-col gap-2">
+<div class="transition-all duration-500 ease-soft-in-out flex flex-row gap-2 justify-between" data-formlayout-id="labelContainer">
+<label class="text peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm transition-colors text-foreground flex gap-2 items-center wrap-break-word leading-normal" data-formlayout-id="formLabel" for="ID-form-item" id="ID-form-item-label">
+<span>Budget</span>
+</label>
+</div>
+<div class="transition-all duration-500 ease-soft-in-out order-1 col-span-12" data-formlayout-id="dataContainer">
+<div class="" data-formlayout-id="nonBoxInputContainer">
+<span aria-disabled="false" class="relative flex w-full touch-none select-none items-center data-disabled:opacity-50 data-[orientation=vertical]:h-full data-[orientation=vertical]:min-h-40 data-[orientation=vertical]:w-auto data-[orientation=vertical]:flex-col" data-orientation="horizontal" dir="ltr" id="ID-form-item" style="--radix-slider-thumb-transform: translateX(-50%);">
+<span class="relative w-full grow overflow-hidden rounded-full bg-control h-1.5 data-[orientation=vertical]:h-full data-[orientation=vertical]:w-1.5" data-orientation="horizontal">
+<span class="absolute h-full bg-brand-default data-[orientation=vertical]:w-full" data-orientation="horizontal" style="left: 0%; right: 100%;">
+</span>
+</span>
+<span style="transform: var(--radix-slider-thumb-transform); position: absolute; left: calc(0% + 0px);">
+<span aria-describedby="ID-form-item-description" aria-invalid="false" aria-labelledby="ID-form-item-label" aria-orientation="horizontal" aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" class="block rounded-full border border-brand-default bg-background shadow-sm transition-colors focus-ring disabled:pointer-events-none aria-[invalid=true]:border-destructive h-4 w-4" data-orientation="horizontal" data-radix-collection-item="" role="slider" style="" tabindex="0">
+</span>
+</span>
+<input style="display: none;" value="0">
+</span>
+</div>
+<div class="text-foreground-lighter text-base md:text-sm mt-2" data-formlayout-id="description" id="ID-form-item-description">In thousands.</div>
+</div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="relative text-base md:text-sm flex flex-col gap-2">
+<div class="transition-all duration-500 ease-soft-in-out flex flex-row gap-2 justify-between" data-formlayout-id="labelContainer">
+<label class="text peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm transition-colors text-foreground flex gap-2 items-center wrap-break-word leading-normal" data-formlayout-id="formLabel" for="ID-form-item" id="ID-form-item-label">
+<span>Satisfaction</span>
+</label>
+</div>
+<div class="transition-all duration-500 ease-soft-in-out order-1 col-span-12" data-formlayout-id="dataContainer">
+<div class="" data-formlayout-id="nonBoxInputContainer">
+<div aria-describedby="ID-form-item-description" aria-invalid="false" aria-labelledby="ID-form-item-label" class="inline-flex items-center gap-0.5" id="ID-form-item" role="radiogroup">
+<span class="relative inline-flex">
+<span aria-hidden="true" class="relative inline-flex">
+<svg aria-hidden="true" class="lucide lucide-star shrink-0 transition-colors h-5 w-5 text-foreground-muted" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24">
+<path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z">
+</path>
+</svg>
+</span>
+<span class="absolute inset-0 flex">
+<button aria-checked="false" aria-label="1 star out of 5" class="h-full flex-1 cursor-pointer rounded-sm focus-ring disabled:cursor-not-allowed" role="radio" tabindex="0" type="button">
+</button>
+</span>
+</span>
+<span class="relative inline-flex">
+<span aria-hidden="true" class="relative inline-flex">
+<svg aria-hidden="true" class="lucide lucide-star shrink-0 transition-colors h-5 w-5 text-foreground-muted" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24">
+<path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z">
+</path>
+</svg>
+</span>
+<span class="absolute inset-0 flex">
+<button aria-checked="false" aria-label="2 stars out of 5" class="h-full flex-1 cursor-pointer rounded-sm focus-ring disabled:cursor-not-allowed" role="radio" tabindex="-1" type="button">
+</button>
+</span>
+</span>
+<span class="relative inline-flex">
+<span aria-hidden="true" class="relative inline-flex">
+<svg aria-hidden="true" class="lucide lucide-star shrink-0 transition-colors h-5 w-5 text-foreground-muted" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24">
+<path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z">
+</path>
+</svg>
+</span>
+<span class="absolute inset-0 flex">
+<button aria-checked="false" aria-label="3 stars out of 5" class="h-full flex-1 cursor-pointer rounded-sm focus-ring disabled:cursor-not-allowed" role="radio" tabindex="-1" type="button">
+</button>
+</span>
+</span>
+<span class="relative inline-flex">
+<span aria-hidden="true" class="relative inline-flex">
+<svg aria-hidden="true" class="lucide lucide-star shrink-0 transition-colors h-5 w-5 text-foreground-muted" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24">
+<path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z">
+</path>
+</svg>
+</span>
+<span class="absolute inset-0 flex">
+<button aria-checked="false" aria-label="4 stars out of 5" class="h-full flex-1 cursor-pointer rounded-sm focus-ring disabled:cursor-not-allowed" role="radio" tabindex="-1" type="button">
+</button>
+</span>
+</span>
+<span class="relative inline-flex">
+<span aria-hidden="true" class="relative inline-flex">
+<svg aria-hidden="true" class="lucide lucide-star shrink-0 transition-colors h-5 w-5 text-foreground-muted" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24">
+<path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z">
+</path>
+</svg>
+</span>
+<span class="absolute inset-0 flex">
+<button aria-checked="false" aria-label="5 stars out of 5" class="h-full flex-1 cursor-pointer rounded-sm focus-ring disabled:cursor-not-allowed" role="radio" tabindex="-1" type="button">
+</button>
+</span>
+</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="relative text-base md:text-sm flex flex-col gap-2">
+<div class="transition-all duration-500 ease-soft-in-out flex flex-row gap-2 justify-between" data-formlayout-id="labelContainer">
+<label class="text peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm transition-colors text-foreground flex gap-2 items-center wrap-break-word leading-normal" data-formlayout-id="formLabel" for="ID-form-item" id="ID-form-item-label">
+<span>Verification code</span>
+</label>
+</div>
+<div class="transition-all duration-500 ease-soft-in-out order-1 col-span-12" data-formlayout-id="dataContainer">
+<div class="" data-formlayout-id="nonBoxInputContainer">
+<noscript>
+</noscript>
+<div class="flex items-center gap-2 has-disabled:opacity-50" data-input-otp-container="true" style="position: relative; cursor: text; user-select: none; -webkit-user-select: none; pointer-events: none; --root-height: 0px;" translate="no">
+<div class="flex items-center">
+<div class="relative flex h-10 w-10 items-center justify-center border-y border-r border-input text-sm transition-all first:rounded-l-md first:border-l last:rounded-r-md">
+</div>
+<div class="relative flex h-10 w-10 items-center justify-center border-y border-r border-input text-sm transition-all first:rounded-l-md first:border-l last:rounded-r-md">
+</div>
+<div class="relative flex h-10 w-10 items-center justify-center border-y border-r border-input text-sm transition-all first:rounded-l-md first:border-l last:rounded-r-md">
+</div>
+</div>
+<div role="separator">
+<svg aria-hidden="true" class="lucide lucide-dot" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24">
+<circle cx="12" cy="12" r="1">
+</circle>
+</svg>
+</div>
+<div class="flex items-center">
+<div class="relative flex h-10 w-10 items-center justify-center border-y border-r border-input text-sm transition-all first:rounded-l-md first:border-l last:rounded-r-md">
+</div>
+<div class="relative flex h-10 w-10 items-center justify-center border-y border-r border-input text-sm transition-all first:rounded-l-md first:border-l last:rounded-r-md">
+</div>
+<div class="relative flex h-10 w-10 items-center justify-center border-y border-r border-input text-sm transition-all first:rounded-l-md first:border-l last:rounded-r-md">
+</div>
+</div>
+<div style="position: absolute; inset: 0px; pointer-events: none;">
+<input aria-describedby="ID-form-item-description" aria-invalid="false" autocomplete="one-time-code" class="disabled:cursor-not-allowed" data-input-otp="true" data-input-otp-placeholder-shown="true" id="ID-form-item" inputmode="numeric" maxlength="6" name="code" spellcheck="false" style="position: absolute; inset: 0px; width: 100%; height: 100%; display: flex; text-align: left; opacity: 1; color: transparent; pointer-events: all; background: transparent; caret-color: transparent; border: 0px solid transparent; outline: 0 solid transparent; box-shadow: none; line-height: 1; letter-spacing: -0.5em; font-size: var(--root-height, 16px); font-family: monospace; font-variant-numeric: tabular-nums;" value="">
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="relative text-base md:text-sm flex flex-col gap-2">
+<div class="transition-all duration-500 ease-soft-in-out flex flex-row gap-2 justify-between" data-formlayout-id="labelContainer">
+<label class="text peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm transition-colors text-foreground flex gap-2 items-center wrap-break-word leading-normal" data-formlayout-id="formLabel" for="ID-form-item" id="ID-form-item-label">
+<span>Attachments</span>
+</label>
+</div>
+<div class="transition-all duration-500 ease-soft-in-out order-1 col-span-12" data-formlayout-id="dataContainer">
+<div class="" data-formlayout-id="nonBoxInputContainer">
+<div class="flex w-full flex-col gap-3">
+<div class="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-md border border-dashed border-strong bg-surface-100 px-6 py-8 text-center transition-colors hover:border-foreground-muted data-dragging:border-brand-default data-dragging:bg-brand-200/40 data-invalid:border-invalid-border data-invalid:bg-invalid-bg data-disabled:cursor-not-allowed data-disabled:opacity-50">
+<span class="flex h-9 w-9 items-center justify-center rounded-full border border-default bg-surface-200 text-foreground-lighter">
+<svg aria-hidden="true" class="lucide lucide-upload h-4 w-4" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24">
+<path d="M12 3v12">
+</path>
+<path d="m17 8-5-5-5 5">
+</path>
+<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4">
+</path>
+</svg>
+</span>
+<p class="text-sm text-foreground">Drag and drop files here</p>
+<button aria-describedby="ID-form-item-description" aria-invalid="false" aria-labelledby="ID-form-item-label ID-form-item-text" class="relative inline-flex items-center justify-center cursor-pointer space-x-2 text-center font-regular ease-out duration-200 rounded-md transition-[background-color,border-color,color,scale] [&amp;:not([aria-haspopup])]:motion-safe:active:scale-[0.97] focus-ring border text-foreground bg-background dark:bg-card hover:bg-popover border-strong hover:border-control-hover data-[state=open]:bg-popover data-[state=open]:border-control-hover text-xs px-2.5 py-1 h-[26px] mt-1" data-size="tiny" id="ID-form-item" tabindex="0" type="button"> <span class="truncate">
+<span id="ID-form-item-text">Browse files</span>
+</span> </button>
+<input aria-hidden="true" class="sr-only" multiple="" tabindex="-1" type="file">
+</div>
+<div aria-live="polite">
+</div>
+</div>
+</div>
+<div class="text-foreground-lighter text-base md:text-sm mt-2" data-formlayout-id="description" id="ID-form-item-description">Any file, up to 5 MB.</div>
 </div>
 </div>
 </div>

@@ -1,19 +1,22 @@
 import * as React from 'react'
-import { FormControl, FormField } from '../../atoms/forms/form'
+import { Form } from '../../atoms/forms/form'
 import { Select, type SelectOption, type SelectOptionGroup } from '../../atoms/forms/select'
+import type { OptionAccessors } from '../../../lib/options'
 import { FormItemLayout } from '../form-item-layout'
 import { type LayoutProps } from './field-shared'
 
-export interface FormSelectProps extends LayoutProps {
+export interface FormSelectProps<T = SelectOption> extends LayoutProps, OptionAccessors<T> {
   name: string
   placeholder?: React.ReactNode
   className?: string
-  options?: readonly SelectOption[]
-  groups?: readonly SelectOptionGroup[]
+  options?: readonly T[]
+  groups?: readonly SelectOptionGroup<T>[]
   disabled?: boolean
+  /** Shows a × that clears the value; the field then holds `undefined`. */
+  clearable?: boolean
 }
 
-export function FormSelect({
+export function FormSelect<T = SelectOption>({
   name,
   label,
   description,
@@ -27,9 +30,14 @@ export function FormSelect({
   options,
   groups,
   disabled,
-}: FormSelectProps) {
+  clearable,
+  valueExpr,
+  displayExpr,
+  getOptionValue,
+  getOptionLabel,
+}: FormSelectProps<T>) {
   return (
-    <FormField
+    <Form.Field
       name={name}
       render={({ field }) => (
         <FormItemLayout
@@ -41,17 +49,23 @@ export function FormSelect({
           size={size}
           labelLayout={labelLayout}
         >
-          <FormControl>
+          <Form.Control>
             <Select
               value={field.value}
-              onValueChange={field.onChange}
+              // Cleared (null) means no value: report undefined so a required schema fails.
+              onValueChange={(next) => field.onChange(next ?? undefined)}
               disabled={disabled}
               placeholder={placeholder}
+              clearable={clearable}
               className={className}
-              options={options as SelectOption[]}
-              groups={groups as SelectOptionGroup[]}
+              options={options}
+              groups={groups}
+              valueExpr={valueExpr}
+              displayExpr={displayExpr}
+              getOptionValue={getOptionValue}
+              getOptionLabel={getOptionLabel}
             />
-          </FormControl>
+          </Form.Control>
         </FormItemLayout>
       )}
     />

@@ -1,4 +1,4 @@
-import { FormControl, FormField } from '../../atoms/forms/form'
+import { Form } from '../../atoms/forms/form'
 import { Textarea, type TextareaProps } from '../../atoms/forms/textarea'
 import { FormItemLayout } from '../form-item-layout'
 import { type LayoutProps } from './field-shared'
@@ -11,7 +11,7 @@ export function FormTextarea({ name, ...props }: FormTextareaProps) {
   const { label, description, labelOptional, align, layout, size, labelLayout, ...textareaProps } =
     props
   return (
-    <FormField
+    <Form.Field
       name={name}
       render={({ field }) => (
         <FormItemLayout
@@ -23,9 +23,9 @@ export function FormTextarea({ name, ...props }: FormTextareaProps) {
           size={size}
           labelLayout={labelLayout}
         >
-          <FormControl>
+          <Form.Control>
             <Textarea {...field} {...textareaProps} />
-          </FormControl>
+          </Form.Control>
         </FormItemLayout>
       )}
     />

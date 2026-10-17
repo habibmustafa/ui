@@ -20,6 +20,7 @@ import {
   PopoverRoot as Popover,
   type PopoverContentProps,
 } from '../../overlay/popover'
+import { FieldClear } from '../select/field-clear'
 import { SelectionListState } from './selection-list-state'
 import { useLabels } from '../../../../providers/locale-provider'
 
@@ -240,6 +241,8 @@ export interface MultiSelectorTriggerProps extends React.HTMLAttributes<HTMLButt
   wrapBadges?: boolean
   deletableBadge?: boolean
   showIcon?: boolean
+  /** Shows a × before the chevron that clears every selected value. @default false */
+  clearable?: boolean
   mode?: MultiSelectorMode
   renderValue?: (value: string) => React.ReactNode
 }
@@ -252,10 +255,10 @@ const MultiSelectorTriggerVariants = cva('', {
   variants: {
     size: {
       tiny: `${SIZE.text.tiny} ${SIZE.height.tiny} p-0.5 items-stretch`,
-      small: `${SIZE.text.small} ${asMinHeight(SIZE.height.small)} p-1.5 items-center`,
-      medium: `${SIZE.text.medium} ${asMinHeight(SIZE.height.medium)} ${SIZE.padding.medium} items-center`,
-      large: `${SIZE.text.large} ${asMinHeight(SIZE.height.large)} ${SIZE.padding.large} items-center`,
-      xlarge: `${SIZE.text.xlarge} ${asMinHeight(SIZE.height.xlarge)} ${SIZE.padding.xlarge} items-center`,
+      small: `${SIZE.text.small} ${asMinHeight(SIZE.height.small)} py-1.5 pl-1.5 pr-[7px] items-center`,
+      medium: `${SIZE.text.medium} ${asMinHeight(SIZE.height.medium)} ${SIZE.padding.medium} pr-[7px] items-center`,
+      large: `${SIZE.text.large} ${asMinHeight(SIZE.height.large)} ${SIZE.padding.large} pr-[7px] items-center`,
+      xlarge: `${SIZE.text.xlarge} ${asMinHeight(SIZE.height.xlarge)} ${SIZE.padding.xlarge} pr-[7px] items-center`,
     },
   },
   defaultVariants: {
@@ -344,6 +347,7 @@ const MultiSelectorTrigger = React.forwardRef<HTMLButtonElement, MultiSelectorTr
       badgeLimit = 9999,
       wrapBadges = false,
       showIcon = true,
+      clearable = false,
       mode = 'combobox',
       renderValue,
       // The trigger renders its own chips/label; children aren't part of its API.
@@ -352,8 +356,18 @@ const MultiSelectorTrigger = React.forwardRef<HTMLButtonElement, MultiSelectorTr
     },
     ref
   ) => {
-    const { id, activeIndex, values, setInputValue, toggleValue, disabled, open, setOpen, size } =
-      useMultiSelect()
+    const {
+      id,
+      activeIndex,
+      values,
+      onValuesChange,
+      setInputValue,
+      toggleValue,
+      disabled,
+      open,
+      setOpen,
+      size,
+    } = useMultiSelect()
 
     const inputRef = React.useRef<HTMLButtonElement>(null)
 
@@ -425,8 +439,10 @@ const MultiSelectorTrigger = React.forwardRef<HTMLButtonElement, MultiSelectorTr
               'disabled:cursor-not-allowed disabled:opacity-50',
               'hover:border-control-hover transition-colors',
               open && 'border-control-hover',
-              'aria-[invalid=true]:border-destructive-400 aria-[invalid=true]:bg-destructive-200 aria-[invalid=true]:hover:border-destructive',
+              'aria-[invalid=true]:border-invalid-border aria-[invalid=true]:bg-invalid-bg aria-[invalid=true]:hover:border-destructive',
               MultiSelectorTriggerVariants({ size }),
+              // Empty: text starts where Input's does (px-3); chips keep the tighter inset.
+              values.length === 0 && (size ?? 'small') === 'small' && 'pl-3',
               className
             )}
             {...props}
@@ -510,6 +526,9 @@ const MultiSelectorTrigger = React.forwardRef<HTMLButtonElement, MultiSelectorTr
               )}
             </div>
 
+            {clearable && values.length > 0 && !disabled && (
+              <FieldClear className="-mr-0.5" onClear={() => onValuesChange([])} />
+            )}
             {showIcon && (
               <ChevronDown
                 aria-hidden="true"

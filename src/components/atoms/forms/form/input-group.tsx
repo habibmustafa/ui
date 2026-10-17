@@ -63,7 +63,7 @@ function InputGroup({
         'has-[[data-slot=input-group-control]:focus]:border-control-hover',
 
         // Error state.
-        'has-[[data-slot][aria-invalid=true]]:bg-destructive-200 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive-400 dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40',
+        'has-[[data-slot][aria-invalid=true]]:bg-invalid-bg has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-invalid-border dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40',
         'has-[[data-slot][aria-invalid=true]]:hover:border-destructive',
         'has-[[data-slot][aria-invalid=true]]:has-[[data-slot=input-group-control]:focus-visible]:border-destructive',
         'has-[[data-slot][aria-invalid=true]]:has-[[data-slot=input-group-control]:focus]:border-destructive',

@@ -1,4 +1,4 @@
-import { FormField } from '../../atoms/forms/form'
+import { Form } from '../../atoms/forms/form'
 import { Slider, type SliderProps } from '../../atoms/forms/slider'
 import { FormItemLayout } from '../form-item-layout'
 import { type FieldLayoutProps, splitLayout, LabelledControl, focusDescendant } from './field-shared'
@@ -13,7 +13,7 @@ export interface FormSliderProps
 export function FormSlider({ name, ...props }: FormSliderProps) {
   const [layoutProps, sliderProps] = splitLayout(props)
   return (
-    <FormField
+    <Form.Field
       name={name}
       render={({ field }) => (
         <FormItemLayout {...layoutProps}>

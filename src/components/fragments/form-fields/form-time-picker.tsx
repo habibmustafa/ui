@@ -1,4 +1,4 @@
-import { FormField } from '../../atoms/forms/form'
+import { Form } from '../../atoms/forms/form'
 import { TimePicker, type TimePickerProps } from '../../atoms/forms/time-picker'
 import { FormItemLayout } from '../form-item-layout'
 import { type FieldLayoutProps, splitLayout, LabelledControl } from './field-shared'
@@ -13,7 +13,7 @@ export interface FormTimePickerProps
 export function FormTimePicker({ name, ...props }: FormTimePickerProps) {
   const [layoutProps, pickerProps] = splitLayout(props)
   return (
-    <FormField
+    <Form.Field
       name={name}
       render={({ field }) => (
         <FormItemLayout {...layoutProps}>

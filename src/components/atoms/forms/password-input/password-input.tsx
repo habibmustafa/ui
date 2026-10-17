@@ -113,7 +113,7 @@ const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
               aria-pressed={visible}
               disabled={disabled}
               onClick={() => setVisible((v) => !v)}
-              className="-mr-1 flex h-6 w-6 items-center justify-center rounded-sm text-foreground-lighter transition-colors hover:text-foreground focus-ring disabled:pointer-events-none"
+              className="-mr-[9px] flex h-6 w-6 items-center justify-center rounded-sm text-foreground-lighter transition-colors hover:text-foreground focus-ring disabled:pointer-events-none"
             >
               {visible ? (
                 <EyeOff aria-hidden="true" className="h-4 w-4" strokeWidth={1.5} />

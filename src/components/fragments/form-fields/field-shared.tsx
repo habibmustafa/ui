@@ -1,7 +1,8 @@
 import * as React from 'react'
 import type { RefCallBack } from 'react-hook-form'
-import { FormControl, useFormField } from '../../atoms/forms/form'
+import { Form, useFormField } from '../../atoms/forms/form'
 import { type MultiSelectorOption, type MultiSelectorProps } from '../../atoms/forms/multi-select'
+import type { OptionValue } from '../../../lib/options'
 
 /**
  * The label/description/layout knobs every field shares, hand-picked from FormItemLayout's
@@ -40,7 +41,7 @@ export function LabelledControl({
   children: (labelId: string | undefined) => React.ReactElement
 }) {
   const { formLabelId } = useFormField()
-  return <FormControl>{children(labelled ? formLabelId : undefined)}</FormControl>
+  return <Form.Control>{children(labelled ? formLabelId : undefined)}</Form.Control>
 }
 
 /**
@@ -52,7 +53,7 @@ export const focusDescendant = (ref: RefCallBack, selector: string) => (el: HTML
   if (el) ref({ focus: () => el.querySelector<HTMLElement>(selector)?.focus() })
 }
 
-export type MultiSelectorOptionsProps = Extract<
-  MultiSelectorProps,
-  { options: readonly MultiSelectorOption[] }
->
+export type MultiSelectorOptionsProps<
+  T = MultiSelectorOption,
+  V extends OptionValue = string,
+> = MultiSelectorProps<T, V> & { options: readonly T[] }

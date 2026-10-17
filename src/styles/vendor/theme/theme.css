@@ -69,6 +69,8 @@
   --color-destructive-200: hsl(var(--destructive-200));
   --color-destructive-300: hsl(var(--destructive-300));
   --color-destructive-400: hsl(var(--destructive-400));
+  --color-invalid-bg: var(--invalid-bg);
+  --color-invalid-border: var(--invalid-border);
   --color-destructive-500: hsl(var(--destructive-500));
   --color-destructive-600: hsl(var(--destructive-600));
   --color-warning-200: hsl(var(--warning-200));

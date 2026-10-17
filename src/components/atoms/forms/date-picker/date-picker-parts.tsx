@@ -6,33 +6,43 @@ import { cn } from '../../../../lib/utils'
 import { useLabels } from '../../../../providers/locale-provider'
 import { Button } from '../../actions/button'
 import { DateField } from '../date-field'
+import { FieldClear } from '../select/field-clear'
 import {
-  PopoverAnchor,
+  Popover,
   PopoverContent as PopoverContentRoot,
   PopoverRoot,
   PopoverTrigger,
 } from '../../overlay/popover'
 
 export const DatePickerRoot = (props: ComponentProps<typeof PopoverRoot>) => {
-  return <PopoverRoot {...props} />
+  return <Popover.Root {...props} />
 }
 
 export const DatePickerTrigger = ({
   asChild = true,
   ...props
 }: ComponentProps<typeof PopoverTrigger>) => {
-  return <PopoverTrigger asChild={asChild} {...props} />
+  return <Popover.Trigger asChild={asChild} {...props} />
 }
 
-const DatePickerIcon = <CalendarIcon className="h-4 w-4" />
+// Trailing, 16px, 1.5 stroke: the same icon as DatePickerField's and every other field's.
+// (`!` beats Button's own [&_svg]:h-[18px] icon sizing.)
+const DatePickerIcon = (
+  <CalendarIcon className={cn(fieldIconClass, 'h-4! w-4! text-foreground-lighter')} strokeWidth={fieldIconStrokeWidth} />
+)
 
-export type DatePickerButtonProps = ComponentProps<typeof Button> & { isInvalid?: boolean }
+export type DatePickerButtonProps = ComponentProps<typeof Button> & {
+  isInvalid?: boolean
+  /** Shows a × before the calendar icon; omit when there is nothing to clear. */
+  onClear?: () => void
+}
 
 export const DatePickerButton = ({
   className,
   variant = 'default',
   icon = DatePickerIcon,
   isInvalid = false,
+  onClear,
   ...props
 }: DatePickerButtonProps) => {
   return (
@@ -40,14 +50,23 @@ export const DatePickerButton = ({
       variant={variant}
       className={cn(
         // A field, not an action: same surface and border as Input.
-        'justify-start text-left font-normal px-3 py-4 bg-field dark:bg-field border-control hover:border-control-hover',
+        'justify-between text-left font-normal pl-3 pr-[7px] py-4 bg-field dark:bg-field border-control hover:border-control-hover',
         {
-          'bg-destructive-200! border-destructive-400 focus:border-destructive focus-visible:border-destructive focus-visible:outline-destructive':
+          'bg-invalid-bg! border-invalid-border focus:border-destructive focus-visible:border-destructive focus-visible:outline-destructive':
             isInvalid,
         },
         className
       )}
-      icon={icon}
+      iconRight={
+        onClear && !props.disabled ? (
+          <span className="flex items-center gap-2">
+            <FieldClear onClear={onClear} />
+            {icon}
+          </span>
+        ) : (
+          icon
+        )
+      }
       {...props}
     />
   )
@@ -75,7 +94,7 @@ export const DatePickerField = ({
 }: DatePickerFieldProps) => {
   const labels = useLabels()
   return (
-    <PopoverAnchor asChild>
+    <Popover.Anchor asChild>
       <div className={cn('relative inline-flex', containerClassName)}>
         <DateField
           disabled={disabled}
@@ -91,12 +110,12 @@ export const DatePickerField = ({
             disabled={disabled}
             aria-label={labels.clearDate}
             onClick={() => onChange?.(null)}
-            className={cn(fieldIconButtonClass, 'absolute right-8 top-1/2 -translate-y-1/2')}
+            className={cn(fieldIconButtonClass, 'absolute right-7 top-1/2 -translate-y-1/2')}
           >
             <X aria-hidden="true" className={fieldIconClass} strokeWidth={fieldIconStrokeWidth} />
           </button>
         )}
-        <PopoverTrigger asChild>
+        <Popover.Trigger asChild>
           <button
             type="button"
             disabled={disabled}
@@ -105,9 +124,9 @@ export const DatePickerField = ({
           >
             <CalendarIcon aria-hidden="true" className={fieldIconClass} strokeWidth={fieldIconStrokeWidth} />
           </button>
-        </PopoverTrigger>
+        </Popover.Trigger>
       </div>
-    </PopoverAnchor>
+    </Popover.Anchor>
   )
 }
 

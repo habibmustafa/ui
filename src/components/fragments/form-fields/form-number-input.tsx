@@ -1,4 +1,4 @@
-import { FormControl, FormField } from '../../atoms/forms/form'
+import { Form } from '../../atoms/forms/form'
 import { NumberInput, type NumberInputProps } from '../../atoms/forms/number-input'
 import { FormItemLayout } from '../form-item-layout'
 import { type FieldLayoutProps, splitLayout } from './field-shared'
@@ -13,11 +13,11 @@ export interface FormNumberInputProps
 export function FormNumberInput({ name, ...props }: FormNumberInputProps) {
   const [layoutProps, inputProps] = splitLayout(props)
   return (
-    <FormField
+    <Form.Field
       name={name}
       render={({ field }) => (
         <FormItemLayout {...layoutProps}>
-          <FormControl>
+          <Form.Control>
             <NumberInput
               {...inputProps}
               ref={field.ref}
@@ -26,7 +26,7 @@ export function FormNumberInput({ name, ...props }: FormNumberInputProps) {
               onValueChange={field.onChange}
               onBlur={field.onBlur}
             />
-          </FormControl>
+          </Form.Control>
         </FormItemLayout>
       )}
     />

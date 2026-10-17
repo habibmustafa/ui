@@ -200,7 +200,7 @@ const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
           className={cn(
             'flex cursor-pointer flex-col items-center justify-center gap-2 rounded-md border border-dashed border-strong bg-surface-100 px-6 py-8 text-center transition-colors',
             'hover:border-foreground-muted data-dragging:border-brand-default data-dragging:bg-brand-200/40',
-            'data-invalid:border-destructive-400 data-invalid:bg-destructive-200',
+            'data-invalid:border-invalid-border data-invalid:bg-invalid-bg',
             'data-disabled:cursor-not-allowed data-disabled:opacity-50',
             classNames?.dropzone
           )}

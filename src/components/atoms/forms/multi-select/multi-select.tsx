@@ -15,14 +15,23 @@ import {
   type MultiSelectorRootProps,
   type MultiSelectorTriggerProps,
 } from './multi-select-parts'
+import { readOptions, type OptionAccessors, type OptionValue } from '../../../../lib/options'
 
-export interface MultiSelectorOption {
-  value: string
+export interface MultiSelectorOption<V extends OptionValue = string> {
+  value: V
   label?: React.ReactNode
   disabled?: boolean
 }
 
-type MultiSelectorOptionsModeProps = Omit<MultiSelectorRootProps, 'children'> &
+/**
+ * With `options` the MultiSelector renders the whole control; without it, it is the root
+ * and takes `children` (the compound parts, whose values are strings).
+ */
+export type MultiSelectorProps<T = MultiSelectorOption, V extends OptionValue = string> = Omit<
+  MultiSelectorRootProps,
+  'values' | 'onValuesChange'
+> &
+  OptionAccessors<T> &
   Pick<
     MultiSelectorTriggerProps,
     | 'label'
@@ -31,10 +40,15 @@ type MultiSelectorOptionsModeProps = Omit<MultiSelectorRootProps, 'children'> &
     | 'wrapBadges'
     | 'deletableBadge'
     | 'showIcon'
+    | 'clearable'
     | 'renderValue'
     | 'mode'
   > & {
-    options: readonly MultiSelectorOption[]
+    /** Selected values (strings or numbers). */
+    values: V[]
+    onValuesChange: (values: V[]) => void
+    /** Option list; leave it out to compose the parts yourself. */
+    options?: readonly T[]
     /** @default 9999 (no wrap) */
     creatable?: boolean
     emptyLabel?: string
@@ -55,26 +69,30 @@ type MultiSelectorOptionsModeProps = Omit<MultiSelectorRootProps, 'children'> &
      * around it marks the control a user actually reaches), while `id` stays on the root.
      */
     ref?: React.Ref<HTMLButtonElement>
-    children?: never
   }
 
-type MultiSelectorCompoundProps = MultiSelectorRootProps & { options?: never }
-
-export type MultiSelectorProps = MultiSelectorOptionsModeProps | MultiSelectorCompoundProps
-
-export function MultiSelectorHybrid(props: MultiSelectorProps) {
+export function MultiSelectorHybrid<T = MultiSelectorOption, V extends OptionValue = string>(
+  props: MultiSelectorProps<T, V>
+) {
   if (props.options === undefined) {
-    return <MultiSelectorRoot {...props} />
+    return <MultiSelectorRoot {...(props as unknown as MultiSelectorRootProps)} />
   }
 
   const {
     options,
+    valueExpr,
+    displayExpr,
+    getOptionValue,
+    getOptionLabel,
+    values,
+    onValuesChange,
     label,
     persistLabel,
     badgeLimit,
     wrapBadges,
     deletableBadge,
     showIcon,
+    clearable,
     renderValue,
     mode,
     creatable,
@@ -93,14 +111,22 @@ export function MultiSelectorHybrid(props: MultiSelectorProps) {
     ...rootProps
   } = props
 
+  const read = readOptions(options, { valueExpr, displayExpr, getOptionValue, getOptionLabel })
+  // The root and the DOM carry string keys; map them back to the original values.
+  const toValue = (key: string) => (read.find((option) => option.key === key)?.value ?? key) as V
+
   // The trigger only knows the selected *values*; in options mode the consumer already
   // told us each one's label, so show that instead of the raw value (compound mode has
   // no option list to look this up in, hence the default living here).
   const renderOptionLabel =
-    renderValue ?? ((value: string) => options.find((o) => o.value === value)?.label ?? value)
+    renderValue ?? ((key: string) => read.find((option) => option.key === key)?.label ?? key)
 
   return (
-    <MultiSelectorRoot {...rootProps}>
+    <MultiSelectorRoot
+      {...rootProps}
+      values={values.map(String)}
+      onValuesChange={(keys) => onValuesChange(keys.map(toValue))}
+    >
       <MultiSelectorTrigger
         ref={ref}
         aria-labelledby={ariaLabelledby}
@@ -114,6 +140,7 @@ export function MultiSelectorHybrid(props: MultiSelectorProps) {
         wrapBadges={wrapBadges}
         deletableBadge={deletableBadge}
         showIcon={showIcon}
+        clearable={clearable}
         renderValue={renderOptionLabel}
         mode={mode}
       />
@@ -126,9 +153,9 @@ export function MultiSelectorHybrid(props: MultiSelectorProps) {
           errorLabel={errorLabel}
           loading={loading}
         >
-          {options.map((option) => (
-            <MultiSelectorItem key={option.value} value={option.value} disabled={option.disabled}>
-              {option.label ?? option.value}
+          {read.map((option) => (
+            <MultiSelectorItem key={option.key} value={option.key} disabled={option.disabled}>
+              {option.label}
             </MultiSelectorItem>
           ))}
         </MultiSelectorList>
