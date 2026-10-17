@@ -3,7 +3,7 @@
 import { HelpCircle } from 'lucide-react'
 import { forwardRef, useEffect, useRef } from 'react'
 
-import { CardHeader, CardRoot } from '../../atoms/layout/card'
+import { Card } from '../../atoms/layout/card'
 import { cn } from '../../../lib/utils'
 import { WarningIcon } from '../admonition'
 import type { ErrorDisplayProps, SupportFormParams } from './error-display-types'
@@ -47,21 +47,21 @@ export const ErrorDisplay = forwardRef<HTMLDivElement, ErrorDisplayProps>(
     const supportUrl = buildSupportUrl(supportFormParams)
 
     return (
-      <CardRoot
+      <Card.Root
         ref={ref}
         className={cn('rounded-lg border border-default', className)}
         role="alert"
         aria-labelledby="error-display-title"
         {...props}
       >
-        <CardHeader className="flex-row items-center gap-2.5 space-y-0 p-3">
+        <Card.Header className="flex-row items-center gap-2.5 space-y-0 p-3">
           <div className="bg-warning p-1 text-background rounded-md">
             {icon ?? <WarningIcon className="w-3 h-3" />}
           </div>
           <h3 id="error-display-title" className="text-sm text-foreground mt-0">
             {title}
           </h3>
-        </CardHeader>
+        </Card.Header>
 
         <div className="px-4 py-3 bg-warning-200 border-y border-warning-500">
           <pre className="text-xs font-mono text-foreground-light whitespace-pre-wrap wrap-break-word overflow-auto max-h-32">
@@ -86,7 +86,7 @@ export const ErrorDisplay = forwardRef<HTMLDivElement, ErrorDisplayProps>(
             {supportLabel}
           </a>
         </div>
-      </CardRoot>
+      </Card.Root>
     )
   }
 )

@@ -12,9 +12,9 @@ import { useIsMobile } from './use-mobile'
 import { Button } from '../../actions/button/button'
 import { Input } from '../../forms/input'
 import { Separator } from '../../layout/separator'
-import { Sheet, SheetContent } from '../../overlay/sheet'
+import { Sheet } from '../../overlay/sheet'
 import { Skeleton } from '../../feedback/skeleton'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../../overlay/tooltip'
+import { Tooltip, TooltipContent } from '../../overlay/tooltip'
 import { useLabels } from '../../../../providers/locale-provider'
 
 const SIDEBAR_COOKIE_NAME = 'sidebar:state'
@@ -110,7 +110,7 @@ const SidebarProvider = React.forwardRef<
 
     return (
       <SidebarContext.Provider value={contextValue}>
-        <TooltipProvider delayDuration={0}>
+        <Tooltip.Provider delayDuration={0}>
           <div
             style={
               {
@@ -128,7 +128,7 @@ const SidebarProvider = React.forwardRef<
           >
             {children}
           </div>
-        </TooltipProvider>
+        </Tooltip.Provider>
       </SidebarContext.Provider>
     )
   }
@@ -176,7 +176,7 @@ const Sidebar = React.forwardRef<
     if (isMobile) {
       return (
         <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
-          <SheetContent
+          <Sheet.Content
             data-sidebar="sidebar"
             data-mobile="true"
             className="w-(--sidebar-width) bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
@@ -188,7 +188,7 @@ const Sidebar = React.forwardRef<
             side={side}
           >
             <div className="flex h-full w-full flex-col">{children}</div>
-          </SheetContent>
+          </Sheet.Content>
         </Sheet>
       )
     }
@@ -587,8 +587,8 @@ const SidebarMenuButton = React.forwardRef<
 
     return (
       <Tooltip>
-        <TooltipTrigger asChild>{button}</TooltipTrigger>
-        <TooltipContent
+        <Tooltip.Trigger asChild>{button}</Tooltip.Trigger>
+        <Tooltip.Content
           side="right"
           align="center"
           hidden={state !== 'collapsed' || isMobile}

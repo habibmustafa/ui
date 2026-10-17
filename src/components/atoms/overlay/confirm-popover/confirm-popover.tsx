@@ -3,7 +3,7 @@
 import * as React from 'react'
 
 import { Button } from '../../actions/button'
-import { PopoverContent, PopoverRoot, PopoverTrigger } from '../popover'
+import { Popover, PopoverContent } from '../popover'
 import { useControllableState } from '../../../../lib/use-controllable-state'
 import { cn } from '../../../../lib/utils'
 import { useLabels } from '../../../../providers/locale-provider'
@@ -75,7 +75,7 @@ export function ConfirmPopover({
   }
 
   return (
-    <PopoverRoot
+    <Popover.Root
       open={open}
       onOpenChange={(next) => {
         // Don't let outside clicks / Escape close it mid-request.
@@ -84,8 +84,8 @@ export function ConfirmPopover({
         setOpen(next)
       }}
     >
-      <PopoverTrigger asChild>{trigger}</PopoverTrigger>
-      <PopoverContent
+      <Popover.Trigger asChild>{trigger}</Popover.Trigger>
+      <Popover.Content
         role="dialog"
         aria-labelledby={titleId}
         aria-describedby={description != null ? descriptionId : undefined}
@@ -132,7 +132,7 @@ export function ConfirmPopover({
             {confirmText ?? labels.confirm}
           </Button>
         </div>
-      </PopoverContent>
-    </PopoverRoot>
+      </Popover.Content>
+    </Popover.Root>
   )
 }

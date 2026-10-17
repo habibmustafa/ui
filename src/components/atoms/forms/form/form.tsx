@@ -12,6 +12,7 @@ import {
   type ControllerProps,
   type FieldPath,
   type FieldValues,
+  type FormProviderProps,
 } from 'react-hook-form'
 
 import { DURATION_ENTER, EASE_SOFT_IN_OUT } from '../../../../lib/motion'
@@ -21,7 +22,13 @@ import { InputGroupInput, InputGroupTextarea } from './input-group'
 import { Label } from '../label'
 import type { TextareaProps } from '../textarea'
 
-const Form = FormProvider
+function FormRoot<
+  TFieldValues extends FieldValues,
+  TContext = unknown,
+  TTransformedValues = TFieldValues,
+>(props: FormProviderProps<TFieldValues, TContext, TTransformedValues>) {
+  return <FormProvider {...props} />
+}
 
 type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
@@ -225,6 +232,17 @@ const FormInputGroupTextArea = React.forwardRef<HTMLTextAreaElement, TextareaPro
   }
 )
 FormInputGroupTextArea.displayName = 'FormInputGroupTextArea'
+
+const Form = Object.assign(FormRoot, {
+  Field: FormField,
+  Item: FormItem,
+  Label: FormLabel,
+  Control: FormControl,
+  Description: FormDescription,
+  Message: FormMessage,
+  InputGroupInput: FormInputGroupInput,
+  InputGroupTextArea: FormInputGroupTextArea,
+})
 
 export {
   Form,

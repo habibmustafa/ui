@@ -22,14 +22,7 @@ import {
   DropdownMenuTrigger,
 } from '../../overlay/dropdown-menu'
 import {
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerRoot,
-  DrawerTitle,
-  DrawerTrigger,
+  Drawer,
 } from '../../overlay/drawer'
 import { Button } from '../../actions/button'
 import { useIsMobile } from '../sidebar/use-mobile'
@@ -116,15 +109,15 @@ function BreadcrumbOverflowTrigger({
 
   if (overflow === 'responsive' && isMobile) {
     return (
-      <DrawerRoot>
-        <DrawerTrigger aria-label={labels.toggleMenu}>
+      <Drawer.Root>
+        <Drawer.Trigger aria-label={labels.toggleMenu}>
           <BreadcrumbEllipsis className="h-4 w-4" />
-        </DrawerTrigger>
-        <DrawerContent>
-          <DrawerHeader className="text-left">
-            <DrawerTitle>{labels.breadcrumbNavigateTitle}</DrawerTitle>
-            <DrawerDescription>{labels.breadcrumbNavigate}</DrawerDescription>
-          </DrawerHeader>
+        </Drawer.Trigger>
+        <Drawer.Content>
+          <Drawer.Header className="text-left">
+            <Drawer.Title>{labels.breadcrumbNavigateTitle}</Drawer.Title>
+            <Drawer.Description>{labels.breadcrumbNavigate}</Drawer.Description>
+          </Drawer.Header>
           <div className="grid gap-1 px-4">
             {items.map((item, index) =>
               item.href ? (
@@ -138,13 +131,13 @@ function BreadcrumbOverflowTrigger({
               )
             )}
           </div>
-          <DrawerFooter className="pt-4">
-            <DrawerClose asChild>
+          <Drawer.Footer className="pt-4">
+            <Drawer.Close asChild>
               <Button variant="outline">{labels.close}</Button>
-            </DrawerClose>
-          </DrawerFooter>
-        </DrawerContent>
-      </DrawerRoot>
+            </Drawer.Close>
+          </Drawer.Footer>
+        </Drawer.Content>
+      </Drawer.Root>
     )
   }
 

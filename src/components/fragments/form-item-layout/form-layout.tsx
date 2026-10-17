@@ -3,7 +3,7 @@ import React from 'react'
 
 import { cn } from '../../../lib/utils'
 import { SIZE } from '../../../lib/constants'
-import { FormDescription, FormLabel, FormMessage } from '../../atoms/forms/form'
+import { Form } from '../../atoms/forms/form'
 import { Label } from '../../atoms/forms/label'
 
 type Props = {
@@ -319,7 +319,7 @@ export const FormLayout = React.forwardRef<
     const hasLabel = Boolean(label || beforeLabel || afterLabel)
     const renderError =
       isReactForm && !hideMessage ? (
-        <FormMessage
+        <Form.Message
           className={cn(
             'mt-2 transition-all duration-300 ease-soft-in-out',
             layout === 'flex-row-reverse' && 'mt-0'
@@ -334,12 +334,12 @@ export const FormLayout = React.forwardRef<
 
     const renderDescription =
       description && isReactForm ? (
-        <FormDescription
+        <Form.Description
           className={cn(DescriptionVariants({ size, layout }))}
           data-formlayout-id={'description'}
         >
           {description}
-        </FormDescription>
+        </Form.Description>
       ) : description ? (
         // Rendered as a div rather than a p as descriptions can be arbitrary JSX
         // which may contain block-level elements (invalid HTML inside a p)
@@ -399,13 +399,13 @@ export const FormLayout = React.forwardRef<
               data-formlayout-id={'labelContainer'}
             >
               {hasLabel && isReactForm ? (
-                <FormLabel
+                <Form.Label
                   className="text-foreground flex gap-2 items-center wrap-break-word"
                   data-formlayout-id="formLabel"
                   htmlFor={id}
                 >
                   {labelContents}
-                </FormLabel>
+                </Form.Label>
               ) : (
                 <Label
                   className="text-foreground flex gap-2 items-center wrap-break-word leading-normal"

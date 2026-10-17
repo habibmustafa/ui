@@ -1,6 +1,6 @@
 import { forwardRef } from 'react'
 
-import { AlertDescription, AlertRoot as Alert, AlertTitle } from '../../atoms/feedback/alert'
+import { Alert } from '../../atoms/feedback/alert'
 import { cn } from '../../../lib/utils'
 import { useLabels } from '../../../providers/locale-provider'
 import { TYPE_LABEL, TYPE_TO_VARIANT } from './admonition-constants'
@@ -18,9 +18,9 @@ const admonitionBodyClassName = [
 ].join(' ')
 
 export const Admonition = forwardRef<
-  React.ComponentRef<typeof Alert>,
+  React.ComponentRef<typeof Alert.Root>,
   Omit<
-    React.ComponentPropsWithoutRef<typeof Alert>,
+    React.ComponentPropsWithoutRef<typeof Alert.Root>,
     keyof AdmonitionProps | 'children' | 'variant'
   > &
     AdmonitionProps
@@ -44,7 +44,7 @@ export const Admonition = forwardRef<
     const label = useLabels()[TYPE_LABEL[type]]
 
     return (
-      <Alert
+      <Alert.Root
         ref={ref}
         {...props}
         aria-label={label}
@@ -82,28 +82,28 @@ export const Admonition = forwardRef<
               )}
             >
               {title && (
-                <AlertTitle
+                <Alert.Title
                   {...childProps?.title}
                   className={cn('!mt-0 text-foreground', childProps?.title?.className)}
                 >
                   {title}
-                </AlertTitle>
+                </Alert.Title>
               )}
               {description && (
-                <AlertDescription
+                <Alert.Description
                   {...childProps?.description}
                   className={cn(admonitionBodyClassName, childProps?.description?.className)}
                 >
                   {description}
-                </AlertDescription>
+                </Alert.Description>
               )}
               {children && (
-                <AlertDescription
+                <Alert.Description
                   {...childProps?.description}
                   className={cn(admonitionBodyClassName, childProps?.description?.className)}
                 >
                   {children}
-                </AlertDescription>
+                </Alert.Description>
               )}
             </div>
             {actions && (
@@ -121,7 +121,7 @@ export const Admonition = forwardRef<
             )}
           </div>
         </div>
-      </Alert>
+      </Alert.Root>
     )
   }
 )
