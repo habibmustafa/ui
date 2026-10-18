@@ -3,7 +3,7 @@ import { ContextMenu } from '../../../src'
 export default function ContextMenuDemo() {
   return (
     <ContextMenu.Root>
-      <ContextMenu.Trigger className="flex h-[150px] w-[300px] items-center justify-center rounded-md border border-dashed text-sm">
+      <ContextMenu.Trigger className="flex h-37.5 w-75 items-center justify-center rounded-md border border-dashed text-sm">
         Right click here
       </ContextMenu.Trigger>
       <ContextMenu.Content className="w-64">

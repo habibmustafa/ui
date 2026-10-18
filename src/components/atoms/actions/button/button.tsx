@@ -125,13 +125,13 @@ const buttonVariants = cva(
 const IconContainerVariants = cva('inline-flex items-center justify-center shrink-0', {
   variants: {
     size: {
-      tiny: '[&_svg]:h-[14px] [&_svg]:w-[14px]',
-      small: '[&_svg]:h-[18px] [&_svg]:w-[18px]',
-      medium: '[&_svg]:h-[20px] [&_svg]:w-[20px]',
-      large: '[&_svg]:h-[20px] [&_svg]:w-[20px]',
-      xlarge: '[&_svg]:h-[24px] [&_svg]:w-[24px]',
-      xxlarge: '[&_svg]:h-[30px] [&_svg]:w-[30px]',
-      xxxlarge: '[&_svg]:h-[42px] [&_svg]:w-[42px]',
+      tiny: '[&_svg]:h-3.5 [&_svg]:w-3.5',
+      small: '[&_svg]:h-4.5 [&_svg]:w-4.5',
+      medium: '[&_svg]:h-5 [&_svg]:w-5',
+      large: '[&_svg]:h-5 [&_svg]:w-5',
+      xlarge: '[&_svg]:h-6 [&_svg]:w-6',
+      xxlarge: '[&_svg]:h-7.5 [&_svg]:w-7.5',
+      xxxlarge: '[&_svg]:h-10.5 [&_svg]:w-10.5',
     },
     variant: {
       primary: 'text-primary-foreground/80 dark:text-primary-solid-foreground/80',

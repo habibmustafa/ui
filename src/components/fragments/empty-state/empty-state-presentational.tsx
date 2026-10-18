@@ -67,7 +67,7 @@ export const EmptyStatePresentational = ({
   const textContent = (
     <div className={cn('flex flex-col items-center text-center text-balance', contentClassName)}>
       <h3>{title}</h3>
-      {description && <p className="text-foreground-light text-sm max-w-[640px]">{description}</p>}
+      {description && <p className="text-foreground-light text-sm max-w-160">{description}</p>}
     </div>
   )
 

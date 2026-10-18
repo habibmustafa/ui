@@ -111,7 +111,7 @@ function Calendar({
         week: cn('flex w-full mt-2', week),
         day: cn(
           'text-center text-sm p-0 relative',
-          'first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md',
+          'first:has-aria-[selected]:rounded-l-md last:has-aria-[selected]:rounded-r-md',
           'focus-within:relative focus-within:z-20',
           'w-9 box-border',
           day
@@ -132,7 +132,7 @@ function Calendar({
         outside: cn(
           // Muted color only (5.4:1+): stacking opacity-50 on top dropped these clickable
           // days to ~2:1. Disabled days keep their opacity; they're exempt from contrast.
-          'text-foreground-muted has-[[aria-selected]]:text-foreground',
+          'text-foreground-muted has-aria-[selected]:text-foreground',
           outside
         ),
         disabled: cn('text-foreground-muted opacity-50', disabled),

@@ -9,12 +9,12 @@ import { useTabIndicator } from '../../../../lib/use-tab-indicator'
 const TabsRoot = TabsPrimitive.Root
 
 const trackClasses = cn(
-  'has-[[data-tab-indicator]]:border-b-0',
-  'has-[[data-tab-indicator]]:after:pointer-events-none has-[[data-tab-indicator]]:after:absolute',
-  'has-[[data-tab-indicator]]:after:bottom-0 has-[[data-tab-indicator]]:after:h-px',
-  'has-[[data-tab-indicator]]:after:left-[var(--tab-track-inset,0px)]',
-  'has-[[data-tab-indicator]]:after:right-0',
-  'has-[[data-tab-indicator]]:after:bg-[var(--tab-track,var(--border-default))]'
+  'has-data-tab-indicator:border-b-0',
+  'has-data-tab-indicator:after:pointer-events-none has-data-tab-indicator:after:absolute',
+  'has-data-tab-indicator:after:bottom-0 has-data-tab-indicator:after:h-px',
+  'has-data-tab-indicator:after:left-(--tab-track-inset,0px)',
+  'has-data-tab-indicator:after:right-0',
+  'has-data-tab-indicator:after:bg-(--tab-track,var(--border-default))'
 )
 
 const TabsList = ({
@@ -47,11 +47,11 @@ const TabsIndicator = ({ className, ...props }: ComponentPropsWithRef<'span'>) =
     data-tab-indicator
     className={cn(
       'pointer-events-none absolute bottom-0 left-0 h-px bg-foreground',
-      'w-[var(--active-tab-width,0)] translate-x-[var(--active-tab-left,0)]',
+      'w-(--active-tab-width,0) translate-x-(--active-tab-left,0)',
       'transition-none opacity-0',
-      'group-data-[tab-indicator-ready]/list:opacity-100',
-      'group-data-[tab-indicator-ready]/list:transition-[translate,width]',
-      'group-data-[tab-indicator-ready]/list:ease-soft-in-out',
+      'group-data-tab-indicator-ready/list:opacity-100',
+      'group-data-tab-indicator-ready/list:transition-[translate,width]',
+      'group-data-tab-indicator-ready/list:ease-soft-in-out',
       'motion-reduce:transition-none',
       className
     )}
@@ -68,7 +68,7 @@ const TabsTrigger = ({
       'inline-flex cursor-pointer items-center justify-center whitespace-nowrap py-1.5 text-sm transition-colors disabled:pointer-events-none disabled:opacity-50 data-[state=active]:text-foreground data-[state=active]:shadow-xs text-foreground-lighter hover:text-foreground',
       'focus-inset',
       'border-b-2 border-b-transparent data-[state=active]:border-b-foreground',
-      'group-has-[[data-tab-indicator]]/list:border-b-0',
+      'group-has-data-tab-indicator/list:border-b-0',
       'group',
       className
     )}

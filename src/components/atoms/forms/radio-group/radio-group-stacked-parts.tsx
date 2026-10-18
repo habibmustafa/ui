@@ -64,7 +64,7 @@ const RadioGroupStackedItem = React.forwardRef<
         props.className
       )}
     >
-      <div className="flex gap-3 w-full px-[21px] py-3">
+      <div className="flex gap-3 w-full px-content py-3">
         {showIndicator && (
           <div
             className={cn(
@@ -83,7 +83,7 @@ const RadioGroupStackedItem = React.forwardRef<
             </RadioGroupPrimitive.Indicator>
           </div>
         )}
-        <div className="flex flex-col gap-0.25 items-start">
+        <div className="flex flex-col gap-px items-start">
           <div
             id={`${id}-label`}
             className={cn(

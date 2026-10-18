@@ -23,7 +23,7 @@ export default function MultiSelectInDialogPropsDemo() {
       trigger={<Button>Open</Button>}
       title="Choose your fruits"
       description="Select the fruits you like."
-      slotProps={{ content: { className: 'sm:max-w-[425px]' } }}
+      slotProps={{ content: { className: 'sm:max-w-106.25' } }}
       footer={<Button variant="primary">Save changes</Button>}
     >
       <div>

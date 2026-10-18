@@ -4,7 +4,7 @@ export default function TabsPropsDemo() {
   return (
     <Tabs
       defaultValue="table"
-      className="w-[400px]"
+      className="w-100"
       classNames={{ content: 'text-sm text-foreground-light' }}
       items={[
         { value: 'table', label: 'Table', content: 'The table editor lives here.' },

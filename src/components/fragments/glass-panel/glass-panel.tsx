@@ -51,7 +51,7 @@ const LogoComponent = ({
   alt: string
 }) => (
   <div className={cn('relative box-content p-4 pb-0 md:p-6 md:pb-0', wrapperClassName)}>
-    <div className="relative h-[33px] w-auto max-w-[145px]">
+    <div className="relative h-8.25 w-auto max-w-36.25">
       <img
         src={logoImage}
         alt={alt}

@@ -14,7 +14,7 @@ const items = [
 
 export default function SidebarDemo() {
   return (
-    <Sidebar.Provider className="h-[360px] min-h-0 overflow-hidden rounded-md border">
+    <Sidebar.Provider className="h-90 min-h-0 overflow-hidden rounded-md border">
       <Sidebar collapsible="icon">
         <Sidebar.Content>
           <Sidebar.Group>

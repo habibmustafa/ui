@@ -102,10 +102,10 @@ const Marquee = React.forwardRef<HTMLDivElement, MarqueeProps>(
             ref={i === 0 ? trackRef : undefined}
             aria-hidden={i > 0 || undefined}
             className={cn(
-              'flex shrink-0 items-center justify-around motion-reduce:[animation-play-state:paused]',
+              'flex shrink-0 items-center justify-around motion-reduce:paused',
               vertical ? 'flex-col' : 'flex-row',
               pauseOnHover &&
-                'group-hover:[animation-play-state:paused] group-focus-within:[animation-play-state:paused]',
+                'group-hover:paused group-focus-within:paused',
               classNames?.track
             )}
             style={{

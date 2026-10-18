@@ -295,7 +295,7 @@ function MonthGrid({
 }) {
   const labels = useLabels()
   return (
-    <div className="w-[238px] p-2 pt-0">
+    <div className="w-59.5 p-2 pt-0">
       <GridHeader
         label={dayjs(displayMonth).format('YYYY')}
         onLabelClick={onHeaderClick}
@@ -330,7 +330,7 @@ function YearGrid({
   const years = Array.from({ length: YEAR_PAGE_SIZE }, (_, i) => pageStart + i)
 
   return (
-    <div className="w-[238px] p-2 pt-0">
+    <div className="w-59.5 p-2 pt-0">
       <GridHeader
         label={`${years[0]}–${years[years.length - 1]}`}
         onPrev={() => setPageStart((p) => p - YEAR_PAGE_SIZE)}

@@ -26,7 +26,7 @@ export const DatePickerTrigger = ({
 }
 
 // Trailing, 16px, 1.5 stroke: the same icon as DatePickerField's and every other field's.
-// (`!` beats Button's own [&_svg]:h-[18px] icon sizing.)
+// (`!` beats Button's own [&_svg]:h-4.5 icon sizing.)
 const DatePickerIcon = (
   <CalendarIcon className={cn(fieldIconClass, 'h-4! w-4! text-foreground-lighter')} strokeWidth={fieldIconStrokeWidth} />
 )
@@ -50,7 +50,7 @@ export const DatePickerButton = ({
       variant={variant}
       className={cn(
         // A field, not an action: same surface and border as Input.
-        'justify-between text-left font-normal pl-3 pr-[7px] py-4 bg-field dark:bg-field border-control hover:border-control-hover',
+        'justify-between text-left font-normal pl-3 pr-1.75 py-4 bg-field dark:bg-field border-control hover:border-control-hover',
         {
           'bg-invalid-bg! border-invalid-border focus:border-destructive focus-visible:border-destructive focus-visible:outline-destructive':
             isInvalid,

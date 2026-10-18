@@ -282,7 +282,7 @@ export function RouteProgress({ active }: { active: boolean }) {
     <div
       role="progressbar"
       aria-label="Loading page"
-      className="pointer-events-none fixed inset-x-0 top-0 z-[100] h-[3px] origin-left bg-brand-default shadow-[0_0_8px] shadow-brand-default/60"
+      className="pointer-events-none fixed inset-x-0 top-0 z-100 h-0.75 origin-left bg-brand-default shadow-[0_0_8px] shadow-brand-default/60"
       style={{
         transform: `scaleX(${phase === "start" ? 0 : phase === "loading" ? 0.9 : 1})`,
         opacity: phase === "done" ? 0 : 1,

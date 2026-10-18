@@ -208,7 +208,7 @@ const AlertDialogBody = ({ className, ...props }: React.HTMLAttributes<HTMLDivEl
   <div
     data-slot="alert-dialog-body"
     className={cn(
-      '[&>[role=alert]]:mb-0 [&>[role=alert]]:rounded-none [&>[role=alert]]:border-x-0',
+      '*:[[role=alert]]:mb-0 *:[[role=alert]]:rounded-none *:[[role=alert]]:border-x-0',
       className
     )}
     {...props}

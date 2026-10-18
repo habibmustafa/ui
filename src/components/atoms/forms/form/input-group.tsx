@@ -174,8 +174,8 @@ const InputGroupInput = React.forwardRef<HTMLInputElement, InputProps>(
         'hover:border-transparent focus:border-transparent focus-visible:border-transparent',
         'focus-visible:ring-0 focus-visible:ring-offset-0',
         'read-only:border-transparent',
-        'aria-[invalid=true]:border-transparent aria-[invalid=true]:bg-transparent',
-        'aria-[invalid=true]:hover:border-transparent aria-[invalid=true]:focus:border-transparent aria-[invalid=true]:focus-visible:border-transparent',
+        'aria-invalid:border-transparent aria-invalid:bg-transparent',
+        'aria-invalid:hover:border-transparent aria-invalid:focus:border-transparent aria-invalid:focus-visible:border-transparent',
         className
       )}
       {...props}
@@ -196,8 +196,8 @@ const InputGroupTextarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         'flex-1 resize-none rounded-none border border-transparent bg-transparent py-0 shadow-none',
         'hover:border-transparent focus:border-transparent focus-visible:border-transparent',
         'focus-visible:ring-0 focus-visible:ring-offset-0',
-        'aria-[invalid=true]:border-transparent aria-[invalid=true]:bg-transparent',
-        'aria-[invalid=true]:hover:border-transparent aria-[invalid=true]:focus:border-transparent aria-[invalid=true]:focus-visible:border-transparent',
+        'aria-invalid:border-transparent aria-invalid:bg-transparent',
+        'aria-invalid:hover:border-transparent aria-invalid:focus:border-transparent aria-invalid:focus-visible:border-transparent',
         className
       )}
       {...props}

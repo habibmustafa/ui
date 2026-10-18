@@ -355,7 +355,7 @@ const CarouselPrevious = React.forwardRef<HTMLButtonElement, CarouselPreviousPro
         disabled={!canPrev}
         onClick={scrollPrev}
         className={cn(
-          'absolute z-10 w-[34px] rounded-full p-0',
+          'absolute z-10 w-8.5 rounded-full p-0',
           orientation === 'vertical'
             ? '-top-12 left-1/2 -translate-x-1/2 rotate-90'
             : '-left-12 top-1/2 -translate-y-1/2',
@@ -383,7 +383,7 @@ const CarouselNext = React.forwardRef<HTMLButtonElement, CarouselNextProps>(
         disabled={!canNext}
         onClick={scrollNext}
         className={cn(
-          'absolute z-10 w-[34px] rounded-full p-0',
+          'absolute z-10 w-8.5 rounded-full p-0',
           orientation === 'vertical'
             ? '-bottom-12 left-1/2 -translate-x-1/2 rotate-90'
             : '-right-12 top-1/2 -translate-y-1/2',

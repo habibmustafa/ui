@@ -10,7 +10,7 @@ const commandItemIcon = "mr-2 h-4 w-4 shrink-0 text-foreground-muted";
 // "Type a command…" demo — this header search wants the same compact rows upstream's
 // own site-wide search uses, so it swaps the root classes through `classNames.root`.
 const commandRootClassName =
-  "overflow-hidden rounded-md bg-overlay text-foreground-light [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:font-mono [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:text-foreground-muted [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-4 [&_[cmdk-input-wrapper]_svg]:w-4 [&_[cmdk-input]]:h-10 [&_[cmdk-item]]:rounded-xs [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-1.5 [&_[cmdk-item]]:text-sm [&_[cmdk-item]_svg]:h-4 [&_[cmdk-item]_svg]:w-4";
+  "overflow-hidden rounded-md bg-overlay text-foreground-light **:[[cmdk-group-heading]]:px-2 **:[[cmdk-group-heading]]:py-1.5 **:[[cmdk-group-heading]]:font-mono **:[[cmdk-group-heading]]:text-xs **:[[cmdk-group-heading]]:uppercase **:[[cmdk-group-heading]]:text-foreground-muted [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 **:[[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-4 [&_[cmdk-input-wrapper]_svg]:w-4 **:[[cmdk-input]]:h-10 **:[[cmdk-item]]:rounded-xs **:[[cmdk-item]]:px-2 **:[[cmdk-item]]:py-1.5 **:[[cmdk-item]]:text-sm [&_[cmdk-item]_svg]:h-4 [&_[cmdk-item]_svg]:w-4";
 
 /**
  * Header search: every page and component, grouped like the sidebar. Loaded lazily
@@ -77,7 +77,7 @@ export default function CommandPalette({
        * shared CommandList defaults to max-h-full, i.e. uncapped) — upstream's own
        * search dialog caps its list the same way (max-h-[300px] in its live DOM).
        */
-      classNames={{ root: commandRootClassName, list: "max-h-[300px]" }}
+      classNames={{ root: commandRootClassName, list: "max-h-75" }}
     />
   );
 }

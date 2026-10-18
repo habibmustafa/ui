@@ -23,7 +23,7 @@ const sliderTrackVariants = cva('relative w-full grow overflow-hidden rounded-fu
 })
 
 const sliderThumbVariants = cva(
-  'block rounded-full border border-brand-default bg-background shadow-sm transition-colors focus-ring disabled:pointer-events-none aria-[invalid=true]:border-destructive',
+  'block rounded-full border border-brand-default bg-background shadow-sm transition-colors focus-ring disabled:pointer-events-none aria-invalid:border-destructive',
   {
     variants: {
       size: {

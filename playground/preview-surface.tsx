@@ -29,7 +29,7 @@ export function PreviewSurface({ children, controls, onReset }: { children: Reac
         </div>
       </div>
       <div data-preview-background={background} className={cn('relative', background === 'muted' ? 'bg-surface-200' : 'bg-background')}>
-        {background === 'grid' && <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(oklch(from_var(--foreground-default)_l_c_h_/_0.08)_1px,transparent_1px)] bg-size-[16px_16px]" />}
+        {background === 'grid' && <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(oklch(from_var(--foreground-default)_l_c_h/0.08)_1px,transparent_1px)] bg-size-[16px_16px]" />}
         <div className="preview relative flex min-h-64 w-full flex-wrap items-center justify-center gap-3 p-5 sm:p-10">
           <Fragment key={revision}>{children}</Fragment>
         </div>

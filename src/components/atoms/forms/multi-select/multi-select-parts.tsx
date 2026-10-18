@@ -48,7 +48,7 @@ const DROPDOWN_BORDER_HEIGHT = 2
 
 const commandItemClass = cn(
   'relative text-foreground-light text-left px-2 py-1.5 rounded-xs',
-  'hover:text-foreground hover:!bg-overlay-hover w-full flex items-center space-x-2',
+  'hover:text-foreground hover:bg-overlay-hover! w-full flex items-center space-x-2',
   'peer-data-[value=true]:bg-overlay-hover'
 )
 
@@ -255,10 +255,10 @@ const MultiSelectorTriggerVariants = cva('', {
   variants: {
     size: {
       tiny: `${SIZE.text.tiny} ${SIZE.height.tiny} p-0.5 items-stretch`,
-      small: `${SIZE.text.small} ${asMinHeight(SIZE.height.small)} py-1.5 pl-1.5 pr-[7px] items-center`,
-      medium: `${SIZE.text.medium} ${asMinHeight(SIZE.height.medium)} ${SIZE.padding.medium} pr-[7px] items-center`,
-      large: `${SIZE.text.large} ${asMinHeight(SIZE.height.large)} ${SIZE.padding.large} pr-[7px] items-center`,
-      xlarge: `${SIZE.text.xlarge} ${asMinHeight(SIZE.height.xlarge)} ${SIZE.padding.xlarge} pr-[7px] items-center`,
+      small: `${SIZE.text.small} ${asMinHeight(SIZE.height.small)} py-1.5 pl-1.5 pr-1.75 items-center`,
+      medium: `${SIZE.text.medium} ${asMinHeight(SIZE.height.medium)} ${SIZE.padding.medium} pr-1.75 items-center`,
+      large: `${SIZE.text.large} ${asMinHeight(SIZE.height.large)} ${SIZE.padding.large} pr-1.75 items-center`,
+      xlarge: `${SIZE.text.xlarge} ${asMinHeight(SIZE.height.xlarge)} ${SIZE.padding.xlarge} pr-1.75 items-center`,
     },
   },
   defaultVariants: {
@@ -439,7 +439,7 @@ const MultiSelectorTrigger = React.forwardRef<HTMLButtonElement, MultiSelectorTr
               'disabled:cursor-not-allowed disabled:opacity-50',
               'hover:border-control-hover transition-colors',
               open && 'border-control-hover',
-              'aria-[invalid=true]:border-invalid-border aria-[invalid=true]:bg-invalid-bg aria-[invalid=true]:hover:border-destructive',
+              'aria-invalid:border-invalid-border aria-invalid:bg-invalid-bg aria-invalid:hover:border-destructive',
               MultiSelectorTriggerVariants({ size }),
               // Empty: text starts where Input's does (px-3); chips keep the tighter inset.
               values.length === 0 && (size ?? 'small') === 'small' && 'pl-3',

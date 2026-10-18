@@ -12,7 +12,7 @@ const switchRootVariants = cva(
     variants: {
       size: {
         small: 'h-4 w-7',
-        medium: 'h-5 w-[34px]',
+        medium: 'h-5 w-8.5',
         large: 'h-6 w-11',
       },
     },
@@ -28,11 +28,11 @@ const switchThumbVariants = cva(
     variants: {
       size: {
         small:
-          'size-3 data-[state=checked]:translate-x-[13px] data-[state=unchecked]:translate-x-px',
+          'size-3 data-[state=checked]:translate-x-3.25 data-[state=unchecked]:translate-x-px',
         medium:
-          'size-4 data-[state=checked]:translate-x-[15px] data-[state=unchecked]:translate-x-px',
+          'size-4 data-[state=checked]:translate-x-3.75 data-[state=unchecked]:translate-x-px',
         large:
-          'h-[18px] w-[18px] data-[state=checked]:translate-x-[22px] data-[state=unchecked]:translate-x-[3px]',
+          'h-4.5 w-4.5 data-[state=checked]:translate-x-5.5 data-[state=unchecked]:translate-x-0.75',
       },
     },
     defaultVariants: {

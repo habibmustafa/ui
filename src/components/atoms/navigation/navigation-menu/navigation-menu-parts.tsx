@@ -13,7 +13,7 @@ import { cn } from '../../../../lib/utils'
  */
 
 export const navigationMenuTriggerClasses =
-  'group inline-flex h-8 w-max items-center justify-center gap-1 rounded-md px-3 text-sm text-foreground-light outline-hidden transition-colors hover:bg-surface-200 hover:text-foreground focus-visible:bg-surface-200 focus-visible:text-foreground focus-ring disabled:pointer-events-none disabled:opacity-50 data-[state=open]:bg-surface-200 data-[state=open]:text-foreground data-[active]:text-foreground'
+  'group inline-flex h-8 w-max items-center justify-center gap-1 rounded-md px-3 text-sm text-foreground-light outline-hidden transition-colors hover:bg-surface-200 hover:text-foreground focus-visible:bg-surface-200 focus-visible:text-foreground focus-ring disabled:pointer-events-none disabled:opacity-50 data-[state=open]:bg-surface-200 data-[state=open]:text-foreground data-active:text-foreground'
 
 const NavigationMenuViewport = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Viewport>,
@@ -118,7 +118,7 @@ const NavigationMenuLink = React.forwardRef<
   <NavigationMenuPrimitive.Link
     ref={ref}
     className={cn(
-      'flex flex-col gap-1 rounded-sm p-2 text-sm outline-hidden transition-colors hover:bg-overlay-hover hover:text-foreground focus:bg-overlay-hover focus:text-foreground focus-ring data-[active]:text-foreground',
+      'flex flex-col gap-1 rounded-sm p-2 text-sm outline-hidden transition-colors hover:bg-overlay-hover hover:text-foreground focus:bg-overlay-hover focus:text-foreground focus-ring data-active:text-foreground',
       className
     )}
     {...props}

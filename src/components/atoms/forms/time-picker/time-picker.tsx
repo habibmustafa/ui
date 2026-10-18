@@ -228,7 +228,7 @@ export function TimePicker({
   }
 
   const segmentClass =
-    'rounded-xs px-0.5 tabular-nums caret-transparent outline-none text-center focus:bg-brand-400 focus:text-foreground dark:focus:bg-brand-500 data-[placeholder]:text-foreground-muted disabled:cursor-not-allowed'
+    'rounded-xs px-0.5 tabular-nums caret-transparent outline-none text-center focus:bg-brand-400 focus:text-foreground dark:focus:bg-brand-500 data-placeholder:text-foreground-muted disabled:cursor-not-allowed'
 
   const field = (
     <div
@@ -256,7 +256,7 @@ export function TimePicker({
       className={cn(
         InputVariants({ size }),
         'inline-flex w-auto items-center gap-0.5 tabular-nums outline-none',
-        'has-[:focus-visible]:border-control-hover',
+        'has-focus-visible:border-control-hover',
         disabled && 'cursor-not-allowed opacity-50',
         className
       )}
@@ -336,7 +336,7 @@ export function TimePicker({
             disabled={disabled}
             // The field has 1px border + 12px padding, so -9px puts the button 4px from the
             // edge, where the date field's calendar button sits.
-            className={cn(fieldIconButtonClass, '-mr-[9px] ml-1')}
+            className={cn(fieldIconButtonClass, '-mr-2.25 ml-1')}
           >
             <Clock aria-hidden="true" className={fieldIconClass} strokeWidth={fieldIconStrokeWidth} />
           </button>

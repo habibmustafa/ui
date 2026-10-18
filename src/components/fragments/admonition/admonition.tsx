@@ -14,7 +14,7 @@ const admonitionBodyClassName = [
   'mb-0 [&_p]:mt-0 [&_p]:mb-1.5 [&_p:last-child]:mb-0',
   '[&_ul]:my-1.5 [&_ol]:my-1.5 [&_li]:my-0.5',
   '[&_ul]:list-none [&_ol]:list-decimal [&_ul]:pl-4 [&_ol]:pl-4',
-  '[&_ul>li]:relative [&_ul>li]:before:absolute [&_ul>li]:before:left-[-1rem] [&_ul>li]:before:top-2.5 [&_ul>li]:before:h-0.5 [&_ul>li]:before:w-2 [&_ul>li]:before:rounded [&_ul>li]:before:bg-border-strong [&_ul>li]:before:content-[""]',
+  '[&_ul>li]:relative [&_ul>li]:before:absolute [&_ul>li]:before:-left-4 [&_ul>li]:before:top-2.5 [&_ul>li]:before:h-0.5 [&_ul>li]:before:w-2 [&_ul>li]:before:rounded [&_ul>li]:before:bg-border-strong [&_ul>li]:before:content-[""]',
 ].join(' ')
 
 export const Admonition = forwardRef<
@@ -84,7 +84,7 @@ export const Admonition = forwardRef<
               {title && (
                 <Alert.Title
                   {...childProps?.title}
-                  className={cn('!mt-0 text-foreground', childProps?.title?.className)}
+                  className={cn('mt-0! text-foreground', childProps?.title?.className)}
                 >
                   {title}
                 </Alert.Title>

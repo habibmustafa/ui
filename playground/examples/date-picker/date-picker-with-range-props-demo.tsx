@@ -22,7 +22,7 @@ export default function DatePickerWithRangePropsDemo({
   return (
     <div className={cn('grid gap-2', className)}>
       <DatePicker
-        buttonProps={{ variant: 'outline', className: 'w-[300px]' }}
+        buttonProps={{ variant: 'outline', className: 'w-75' }}
         triggerLabel={
           date?.from ? (
             date.to ? (

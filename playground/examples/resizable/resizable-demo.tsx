@@ -4,7 +4,7 @@ export default function ResizableDemo() {
   return (
     <Resizable.Root orientation="horizontal" className="max-w-md rounded-lg border">
       <Resizable.Panel defaultSize="50">
-        <div className="flex h-[200px] items-center justify-center p-6">
+        <div className="flex h-50 items-center justify-center p-6">
           <span className="font-semibold">One</span>
         </div>
       </Resizable.Panel>

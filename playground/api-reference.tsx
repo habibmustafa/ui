@@ -11,7 +11,7 @@ const LONG_TYPE = 100
 
 function Code({ children }: { children: string }) {
   return (
-    <code className="rounded-sm bg-surface-200 px-1 py-0.5 font-mono text-xs text-foreground break-words">
+    <code className="rounded-sm bg-surface-200 px-1 py-0.5 font-mono text-xs text-foreground wrap-break-word">
       {children}
     </code>
   )

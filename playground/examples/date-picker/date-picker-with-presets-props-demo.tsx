@@ -15,7 +15,7 @@ export default function DatePickerWithPresetsPropsDemo() {
 
   return (
     <DatePicker
-      buttonProps={{ variant: 'outline', className: 'w-[280px]' }}
+      buttonProps={{ variant: 'outline', className: 'w-70' }}
       triggerLabel={date ? dayjs(date).format('MMMM D, YYYY') : <span>Pick a date</span>}
       contentClassName="flex w-auto flex-col space-y-2 p-2"
       beforeCalendar={

@@ -4,7 +4,7 @@ export default function ResizableVerticalPropsDemo() {
   return (
     <Resizable
       orientation="vertical"
-      className="min-h-[200px] max-w-md rounded-lg border"
+      className="min-h-50 max-w-md rounded-lg border"
       withHandle={false}
       panels={[
         {

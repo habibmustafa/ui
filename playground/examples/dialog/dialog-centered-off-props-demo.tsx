@@ -6,7 +6,7 @@ export default function DialogCenteredOffPropsDemo() {
       trigger={<Button>This dialog is not centered.</Button>}
       title="This dialog is not centered."
       description="This dialog is not centered."
-      slotProps={{ content: { centered: false, className: 'sm:max-w-[425px]' } }}
+      slotProps={{ content: { centered: false, className: 'sm:max-w-106.25' } }}
       footer={
         <Button variant="primary" type="submit">
           Save changes

@@ -70,7 +70,7 @@ export default function AppShell() {
   const page = pages.find((item) => item.id === activeId) ?? pages[0]
 
   return (
-    <Sidebar.Provider className="h-[34rem] min-h-0 w-full max-w-5xl overflow-hidden rounded-xl border bg-surface-100 shadow-sm">
+    <Sidebar.Provider className="h-136 min-h-0 w-full max-w-5xl overflow-hidden rounded-xl border bg-surface-100 shadow-sm">
       <Sidebar collapsible="icon">
         <Sidebar.Header>
           <div className="flex h-8 items-center gap-2 px-1.5">

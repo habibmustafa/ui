@@ -20,7 +20,7 @@ export default function MultiSelectDemo() {
   return (
     <Dialog.Root>
       <Dialog.Trigger>Open</Dialog.Trigger>
-      <Dialog.Content className="sm:max-w-[425px]">
+      <Dialog.Content className="sm:max-w-106.25">
         <Dialog.Header>
           <Dialog.Title>Choose your fruits</Dialog.Title>
           <Dialog.Description>Select the fruits you like.</Dialog.Description>

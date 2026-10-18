@@ -62,7 +62,7 @@ export default function RequestLog() {
         <p className="text-sm text-foreground-light">The latest calls to your API. Drag the divider to resize.</p>
       </div>
 
-      <Resizable orientation="horizontal" className="h-[24rem]" panels={[
+      <Resizable orientation="horizontal" className="h-96" panels={[
         { defaultSize: '46', minSize: '30', content: (<>
           <ul aria-label="Requests" className="h-full divide-y overflow-auto">
             {requests.map((request) => (
@@ -71,7 +71,7 @@ export default function RequestLog() {
                   type="button"
                   aria-current={request.id === selected.id}
                   onClick={() => setSelectedId(request.id)}
-                  className="focus-ring flex w-full cursor-pointer flex-col gap-1.5 px-5 py-3.5 text-left transition-colors hover:bg-surface-200 aria-[current=true]:bg-surface-200"
+                  className="focus-ring flex w-full cursor-pointer flex-col gap-1.5 px-5 py-3.5 text-left transition-colors hover:bg-surface-200 aria-current:bg-surface-200"
                 >
                   <span className="flex items-center justify-between gap-3">
                     <StatusCode method={request.method} statusCode={request.status} />

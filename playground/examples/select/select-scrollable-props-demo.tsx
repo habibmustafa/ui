@@ -3,7 +3,7 @@ import { Select } from '../../../src'
 export default function SelectScrollablePropsDemo() {
   return (
     <Select
-      className="w-[280px]"
+      className="w-70"
       aria-label="Timezone"
       placeholder="Select a timezone"
       groups={[

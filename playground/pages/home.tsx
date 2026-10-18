@@ -194,8 +194,8 @@ export default function HomePage() {
           title="Live examples"
           description="These cards are built only from the library's own components. Fill them in and submit them."
         />
-        <Suspense fallback={<div aria-hidden="true" className="min-h-[1380px] md:min-h-[900px] xl:min-h-[470px]" />}>
-          {showcaseNear ? <Showcase /> : <div aria-hidden="true" className="min-h-[1380px] md:min-h-[900px] xl:min-h-[470px]" />}
+        <Suspense fallback={<div aria-hidden="true" className="min-h-345 md:min-h-225 xl:min-h-117.5" />}>
+          {showcaseNear ? <Showcase /> : <div aria-hidden="true" className="min-h-345 md:min-h-225 xl:min-h-117.5" />}
         </Suspense>
       </section>
       <HybridApi />

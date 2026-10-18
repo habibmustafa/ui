@@ -27,7 +27,7 @@ export default function FormItemLayoutDemo() {
   }
   return (
     <Form {...form}>
-      <form className="w-[520px] flex flex-col gap-8" onSubmit={form.handleSubmit(onSubmit)}>
+      <form className="w-130 flex flex-col gap-8" onSubmit={form.handleSubmit(onSubmit)}>
         <Form.Field
           name="username"
           control={form.control}

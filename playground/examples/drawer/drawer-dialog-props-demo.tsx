@@ -47,7 +47,7 @@ export default function DrawerDialogPropsDemo() {
         trigger={<Button variant="outline">Edit profile</Button>}
         title="Edit profile"
         description="Make changes to your profile here. Click save when you are done."
-        slotProps={{ content: { className: 'sm:max-w-[425px]' } }}
+        slotProps={{ content: { className: 'sm:max-w-106.25' } }}
         footer={<Button variant="primary">Save changes</Button>}
       >
         <ProfileForm />

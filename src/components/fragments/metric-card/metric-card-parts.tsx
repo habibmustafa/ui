@@ -253,7 +253,7 @@ const MetricCardSparkline = React.forwardRef<HTMLDivElement, MetricCardSparkline
   ({ className, data, dataKey, ...props }, ref) => {
     const { isLoading } = useMetricCard()
     if (isLoading) {
-      return <Skeleton className="w-full h-[56px] rounded-none" />
+      return <Skeleton className="w-full h-14 rounded-none" />
     }
 
     if (!data || data.length === 0) {

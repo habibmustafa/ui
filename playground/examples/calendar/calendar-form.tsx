@@ -27,7 +27,7 @@ export default function CalendarForm() {
   function onSubmit(data: z.infer<typeof FormSchema>) {
     toast('You submitted the following values:', {
       description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-foreground p-4">
+        <pre className="mt-2 w-85 rounded-md bg-foreground p-4">
           <code className="text-background">{JSON.stringify(data, null, 2)}</code>
         </pre>
       ),
@@ -49,7 +49,7 @@ export default function CalendarForm() {
                     <Button
                       size="small"
                       className={cn(
-                        'w-[240px] justify-start',
+                        'w-60 justify-start',
                         !field.value && 'text-muted-foreground'
                       )}
                       icon={<CalendarIcon className="ml-auto opacity-50" />}

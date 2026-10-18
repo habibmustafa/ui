@@ -25,7 +25,7 @@ const chartConfig = {
 
 export default function Component() {
   return (
-    <Chart.Container config={chartConfig} className="min-h-[200px] w-full">
+    <Chart.Container config={chartConfig} className="min-h-50 w-full">
       <BarChart accessibilityLayer data={chartData}>
         <CartesianGrid vertical={false} />
         <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />

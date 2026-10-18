@@ -145,7 +145,7 @@ export const Row = forwardRef<HTMLDivElement, RowProps>(function Row(
         <FloatingPlate rounded="full" className="absolute left-0 top-1/2 z-10 -translate-y-1/2">
           <Button
             onClick={scrollLeft}
-            className="w-[34px] rounded-full p-2"
+            className="w-8.5 rounded-full p-2"
             aria-label={labels.scrollLeft}
           >
             <ChevronLeft className="w-4 h-4" />
@@ -157,7 +157,7 @@ export const Row = forwardRef<HTMLDivElement, RowProps>(function Row(
         <FloatingPlate rounded="full" className="absolute right-0 top-1/2 z-10 -translate-y-1/2">
           <Button
             onClick={scrollRight}
-            className="w-[34px] rounded-full p-2"
+            className="w-8.5 rounded-full p-2"
             aria-label={labels.scrollRight}
           >
             <ChevronRight className="w-4 h-4" />
