@@ -2,10 +2,11 @@ import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import axe from 'axe-core'
 import type { ReactNode } from 'react'
-import { afterEach, beforeEach, expect, test, vi } from 'vitest'
+import { afterEach, beforeAll, beforeEach, expect, test, vi } from 'vitest'
 
 import { App } from '../playground/app'
 import { ComponentPlayground } from '../playground/component-playground'
+import { loadPlayground } from '../playground/playground-config/registry'
 import BlockDetailPage from '../playground/pages/block-detail'
 import BlocksPage from '../playground/pages/blocks'
 import { Hero } from '../playground/pages/home-hero'
@@ -13,14 +14,27 @@ import { RouterProvider } from '../playground/router'
 import { DEFAULT_STATE, setBuilderState } from '../playground/theme-store'
 import { ThemeProvider } from '../src'
 
+beforeAll(() => Promise.all(['button', 'input'].map(loadPlayground)))
+
 function renderPage(children: ReactNode, path = '/') {
   window.history.replaceState(null, '', path)
-  return render(<ThemeProvider><RouterProvider>{children}</RouterProvider></ThemeProvider>)
+  return render(
+    <ThemeProvider>
+      <RouterProvider>{children}</RouterProvider>
+    </ThemeProvider>
+  )
 }
 
 beforeEach(() => {
   // Gallery cards stay offscreen; these tests exercise the gallery's controls.
-  vi.stubGlobal('IntersectionObserver', class { observe() {} disconnect() {} unobserve() {} })
+  vi.stubGlobal(
+    'IntersectionObserver',
+    class {
+      observe() {}
+      disconnect() {}
+      unobserve() {}
+    }
+  )
   vi.spyOn(window, 'scrollTo').mockImplementation(() => {})
 })
 afterEach(() => vi.unstubAllGlobals())
@@ -37,7 +51,9 @@ test('the hero keeps advanced theme controls collapsed and project views are int
   expect(screen.getByText('32.0')).toBeTruthy()
   await choose(user, 'Activity period', 'This week')
   await user.click(screen.getByRole('checkbox', { name: 'Review the first prototype' }))
-  expect(screen.getByRole('progressbar', { name: 'Project completion' }).getAttribute('aria-valuenow')).toBe('78.125')
+  expect(
+    screen.getByRole('progressbar', { name: 'Project completion' }).getAttribute('aria-valuenow')
+  ).toBe('78.125')
   await user.click(screen.getByRole('tab', { name: 'Activity' }))
   expect(screen.getByText('You completed the prototype review.')).toBeTruthy()
   await user.click(screen.getByRole('tab', { name: 'Team' }))
@@ -53,19 +69,22 @@ test('playground settings change the component, its code and reset together', as
   const user = userEvent.setup()
   renderPage(<ComponentPlayground id="button" />)
   await choose(user, 'Variant', 'danger')
-  await choose(user, 'Size', 'large')
+  await user.click(
+    within(screen.getByRole('radiogroup', { name: 'Size' })).getByRole('radio', { name: 'large' })
+  )
+  await user.click(screen.getByRole('tab', { name: 'Behavior' }))
   await user.click(screen.getByRole('checkbox', { name: 'Loading' }))
   expect(screen.getByRole('button', { name: 'Continue' })).toHaveProperty('disabled', true)
-  await user.click(screen.getByRole('tab', { name: 'Your code' }))
-  const code = screen.getByRole('tabpanel').textContent
+  await user.click(screen.getByRole('button', { name: 'Your code' }))
+  const code = screen.getByRole('region', { name: 'Your code' }).textContent
   expect(code).toContain('variant="danger"')
   expect(code).toContain('size="large"')
   expect(code).toContain('loading')
 
-  await user.click(screen.getByRole('tab', { name: 'Playground' }))
   await choose(user, 'Preview background', 'Muted')
   await user.click(screen.getByRole('button', { name: 'Reset preview' }))
   expect(screen.getByRole('combobox', { name: 'Preview background' }).textContent).toBe('Grid')
+  await user.click(screen.getByRole('tab', { name: 'Appearance' }))
   expect(screen.getByRole('combobox', { name: 'Variant' }).textContent).toBe('primary')
   expect(screen.getByRole('button', { name: 'Continue' })).toHaveProperty('disabled', false)
 })
@@ -73,6 +92,7 @@ test('playground settings change the component, its code and reset together', as
 test('input playground uses real disabled and invalid states', async () => {
   const user = userEvent.setup()
   renderPage(<ComponentPlayground id="input" />)
+  await user.click(screen.getByRole('tab', { name: 'Behavior' }))
   await user.click(screen.getByRole('checkbox', { name: 'Invalid' }))
   expect(screen.getByRole('textbox', { name: 'Email' }).getAttribute('aria-invalid')).toBe('true')
   await user.click(screen.getByRole('checkbox', { name: 'Disabled' }))
@@ -96,14 +116,22 @@ test('sidebar opens the active group and retains clear navigation after collapsi
   const navigation = screen.getByRole('navigation', { name: 'Documentation' })
   const forms = within(navigation).getByRole('button', { name: /^Forms/ })
   expect(forms.getAttribute('aria-expanded')).toBe('true')
-  expect(within(navigation).getByRole('button', { name: /^Actions/ }).getAttribute('aria-expanded')).toBe('false')
-  expect(within(navigation).getByRole('link', { name: 'Input' }).getAttribute('aria-current')).toBe('page')
+  expect(
+    within(navigation)
+      .getByRole('button', { name: /^Actions/ })
+      .getAttribute('aria-expanded')
+  ).toBe('false')
+  expect(within(navigation).getByRole('link', { name: 'Input' }).getAttribute('aria-current')).toBe(
+    'page'
+  )
   await user.click(forms)
   expect(within(navigation).queryByRole('link', { name: 'Input' })).toBeNull()
   await user.click(forms)
   await user.click(within(navigation).getByRole('link', { name: 'Textarea' }))
   await waitFor(() => expect(window.location.pathname).toBe('/components/textarea'))
-  expect(within(navigation).getByRole('link', { name: 'Textarea' }).getAttribute('aria-current')).toBe('page')
+  expect(
+    within(navigation).getByRole('link', { name: 'Textarea' }).getAttribute('aria-current')
+  ).toBe('page')
 })
 
 test('blocks filter down to a card that opens the block on its own page', async () => {
@@ -128,17 +156,25 @@ test('a block page previews the screen at two widths, shows its code and links o
   await user.click(screen.getByRole('button', { name: 'Mobile' }))
   expect(iframe.style.width).toBe('390px')
   await user.click(screen.getByRole('tab', { name: 'Code' }))
-  await waitFor(() => expect(screen.getByRole('tabpanel').textContent).toContain("'@habibmustafa/ui'"))
+  await waitFor(() =>
+    expect(screen.getByRole('tabpanel').textContent).toContain("'@habibmustafa/ui'")
+  )
   const more = within(screen.getByRole('navigation', { name: 'More blocks' }))
-  expect(more.getByRole('link', { name: /Billing and plan/ }).getAttribute('href')).toBe('/blocks/billing')
-  expect(more.getByRole('link', { name: /Invite members/ }).getAttribute('href')).toBe('/blocks/invite-members')
+  expect(more.getByRole('link', { name: /Billing and plan/ }).getAttribute('href')).toBe(
+    '/blocks/billing'
+  )
+  expect(more.getByRole('link', { name: /Invite members/ }).getAttribute('href')).toBe(
+    '/blocks/invite-members'
+  )
   expect(screen.getByRole('link', { name: 'All blocks' }).getAttribute('href')).toBe('/blocks')
 }, 15000)
 
 test('an unknown block page points back to the gallery', () => {
   renderPage(<BlockDetailPage id="nope" />, '/blocks/nope')
   expect(screen.getByRole('heading', { name: 'Block not found' })).toBeTruthy()
-  expect(screen.getByRole('link', { name: 'Browse all blocks' }).getAttribute('href')).toBe('/blocks')
+  expect(screen.getByRole('link', { name: 'Browse all blocks' }).getAttribute('href')).toBe(
+    '/blocks'
+  )
 })
 
 test('legacy block links move to the block page, and empty filters can be cleared', async () => {
@@ -156,8 +192,21 @@ test('legacy block links move to the block page, and empty filters can be cleare
 })
 
 test('the gallery and interactive controls have no axe violations', async () => {
-  const { container } = renderPage(<main><BlocksPage /><BlockDetailPage id="sign-in" /><ComponentPlayground id="button" /></main>, '/blocks')
+  const { container } = renderPage(
+    <main>
+      <BlocksPage />
+      <BlockDetailPage id="sign-in" />
+      <ComponentPlayground id="button" />
+    </main>,
+    '/blocks'
+  )
   // The block page's iframe content is checked per block in blocks.test.tsx.
-  const { violations } = await axe.run(container, { iframes: false, rules: { 'color-contrast': { enabled: false }, region: { enabled: false } }, resultTypes: ['violations'] })
-  expect(violations.map((violation) => `${violation.id}: ${violation.nodes[0]?.target}`)).toEqual([])
+  const { violations } = await axe.run(container, {
+    iframes: false,
+    rules: { 'color-contrast': { enabled: false }, region: { enabled: false } },
+    resultTypes: ['violations']
+  })
+  expect(violations.map((violation) => `${violation.id}: ${violation.nodes[0]?.target}`)).toEqual(
+    []
+  )
 }, 15000)

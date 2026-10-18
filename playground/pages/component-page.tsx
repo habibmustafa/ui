@@ -1,7 +1,7 @@
 import { Suspense, lazy } from 'react'
 
 import { ComponentPreview, previewAnchor } from '../component-preview'
-import { ComponentPlayground, hasPlayground } from '../component-playground'
+import { hasPlayground } from '../playground-config/registry'
 import { PageHeader } from '../page-header'
 import { findComponent, type ComponentPreviewSpec } from '../registry'
 import { Navigate } from '../router'
@@ -9,6 +9,10 @@ import { Navigate } from '../router'
 // The generated props data is ~140KB; keep it out of this chunk until the API
 // section is actually rendered.
 const ApiReference = lazy(() => import('../api-reference'))
+// The playground, its controls and the definitions it loads stay out of this chunk too.
+const ComponentPlayground = lazy(() =>
+  import('../component-playground').then((module) => ({ default: module.ComponentPlayground }))
+)
 
 const contentsLink =
   'focus-ring shrink-0 rounded-md px-2.5 py-2 text-foreground-light transition-colors hover:bg-surface-100 hover:text-foreground'
@@ -53,7 +57,11 @@ export default function ComponentPage({ id }: { id: string }) {
     <div>
       <PageHeader title={entry.title} description={entry.description} eyebrow="Components" />
       <PageContents previews={entry.previews} playground={hasPlayground(id)} />
-      {hasPlayground(id) && <ComponentPlayground key={id} id={id} />}
+      {hasPlayground(id) && (
+        <Suspense fallback={<div aria-hidden="true" className="mb-12 min-h-[34rem]" />}>
+          <ComponentPlayground key={id} id={id} />
+        </Suspense>
+      )}
       {entry.previews.map((preview, index) => (
         <ComponentPreview key={preview.name} {...preview} eager={index === 0} />
       ))}
