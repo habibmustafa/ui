@@ -3,6 +3,7 @@
 import * as React from 'react'
 
 import { cn } from '../../../../lib/utils'
+import { useLabels } from '../../../../providers/locale-provider'
 
 /*
  * Analog clock face in the style of MUI's TimeClock: numbers around a dial, a hand that
@@ -25,7 +26,7 @@ const LABEL_SIZE = 28
 // The 24-hour inner ring is tighter (12 labels on a smaller circle).
 const INNER_LABEL_SIZE = 24
 
-const pad = (n: number) => String(n).padStart(2, '0')
+export const pad = (n: number) => String(n).padStart(2, '0')
 
 interface ClockFaceProps {
   view: ClockView
@@ -142,6 +143,7 @@ export function ClockFace({ view, value, ampm, step, onChange, disabled }: Clock
   // A minute that isn't on a label gets a small dot at the hand's tip instead.
   const onLabel = value !== null && labels.some((label) => label.v === value)
 
+  const text = useLabels()
   const unit = view === 'hours' ? 'hours' : view === 'minutes' ? 'minutes' : 'seconds'
 
   return (
@@ -149,11 +151,11 @@ export function ClockFace({ view, value, ampm, step, onChange, disabled }: Clock
       ref={faceRef}
       role="slider"
       tabIndex={disabled ? -1 : 0}
-      aria-label={`Select ${unit}`}
+      aria-label={text.selectTimeUnit(unit)}
       aria-valuemin={min}
       aria-valuemax={max}
       aria-valuenow={value ?? undefined}
-      aria-valuetext={value === null ? 'Not set' : `${pad(value)} ${unit}`}
+      aria-valuetext={value === null ? text.notSet : `${pad(value)} ${unit}`}
       aria-disabled={disabled || undefined}
       onKeyDown={onKeyDown}
       onPointerDown={(event) => {
@@ -210,9 +212,9 @@ export function ClockFace({ view, value, ampm, step, onChange, disabled }: Clock
             key={v}
             aria-hidden="true"
             className={cn(
-              'absolute flex items-center justify-center rounded-full tabular-nums transition-colors duration-200',
+              'absolute flex items-center justify-center rounded-full tabular-nums transition-colors',
               inner ? 'text-[11px] text-foreground-light' : 'text-[13px] text-foreground',
-              selected && 'bg-primary-solid font-medium text-white'
+              selected && 'bg-primary-solid font-medium text-primary-solid-foreground'
             )}
             style={{
               width: size,

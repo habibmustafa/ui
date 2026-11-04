@@ -114,7 +114,7 @@ const Descriptions = React.forwardRef<HTMLDivElement, DescriptionsProps>(
                 >
                   {item.label}
                 </dt>
-                <dd className={cn('min-w-0 break-words text-foreground', classNames?.value)}>
+                <dd className={cn('min-w-0 wrap-break-word text-foreground', classNames?.value)}>
                   {isEmpty(item.value) ? (
                     <span className="text-foreground-muted">{emptyValue}</span>
                   ) : (

@@ -9,6 +9,7 @@ import { cn } from '../../../lib/utils'
 import { Button } from '../../atoms/actions/button'
 import { FloatingPlate } from '../../atoms/layout/floating-plate'
 import { useMeasuredWidth } from './row-utils'
+import { useLabels } from '../../../providers/locale-provider'
 
 interface RowProps extends React.HTMLAttributes<HTMLDivElement> {
   // Maximum number of columns visible in the row at once
@@ -56,6 +57,7 @@ export const Row = forwardRef<HTMLDivElement, RowProps>(function Row(
   },
   ref
 ) {
+  const labels = useLabels()
   const containerRef = useRef<HTMLDivElement>(null)
 
   const childrenArray = useMemo(() => (Array.isArray(children) ? children : [children]), [children])
@@ -143,8 +145,8 @@ export const Row = forwardRef<HTMLDivElement, RowProps>(function Row(
         <FloatingPlate rounded="full" className="absolute left-0 top-1/2 z-10 -translate-y-1/2">
           <Button
             onClick={scrollLeft}
-            className="w-8 h-8 rounded-full p-2"
-            aria-label="Scroll left"
+            className="w-8.5 rounded-full p-2"
+            aria-label={labels.scrollLeft}
           >
             <ChevronLeft className="w-4 h-4" />
           </Button>
@@ -155,8 +157,8 @@ export const Row = forwardRef<HTMLDivElement, RowProps>(function Row(
         <FloatingPlate rounded="full" className="absolute right-0 top-1/2 z-10 -translate-y-1/2">
           <Button
             onClick={scrollRight}
-            className="w-8 h-8 rounded-full p-2"
-            aria-label="Scroll right"
+            className="w-8.5 rounded-full p-2"
+            aria-label={labels.scrollRight}
           >
             <ChevronRight className="w-4 h-4" />
           </Button>
@@ -169,7 +171,7 @@ export const Row = forwardRef<HTMLDivElement, RowProps>(function Row(
         tabIndex={0}
         role="region"
         aria-roledescription="carousel"
-        aria-label="Horizontally scrollable content"
+        aria-label={labels.scrollableContent}
         style={{ overscrollBehaviorX: 'contain' }}
         onWheel={handleWheel}
         onKeyDown={handleKeyDown}
@@ -178,7 +180,7 @@ export const Row = forwardRef<HTMLDivElement, RowProps>(function Row(
           className={cn(
             'flex items-stretch min-w-full',
             // `scrollBehavior="auto"` jumps; the default glides.
-            scrollBehavior === 'smooth' && 'transition-transform duration-300 ease-out'
+            scrollBehavior === 'smooth' && 'transition-transform duration-300 ease-soft-out'
           )}
           style={
             {

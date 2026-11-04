@@ -14,7 +14,7 @@
  */
 export const modalBackdropClass = [
   'before:pointer-events-none before:fixed before:inset-0 before:-z-10',
-  'before:bg-black/50 before:will-change-[opacity]',
+  'before:bg-backdrop before:will-change-[opacity]',
   'data-[state=open]:before:animate-backdrop-show',
   'data-[state=closed]:animate-backdrop-hide',
 ].join(' ')

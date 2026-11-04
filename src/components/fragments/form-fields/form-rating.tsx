@@ -1,4 +1,4 @@
-import { FormField } from '../../atoms/forms/form'
+import { Form } from '../../atoms/forms/form'
 import { Rating, type RatingProps } from '../../atoms/forms/rating'
 import { FormItemLayout } from '../form-item-layout'
 import { type FieldLayoutProps, splitLayout, LabelledControl, focusDescendant } from './field-shared'
@@ -13,7 +13,7 @@ export interface FormRatingProps
 export function FormRating({ name, ...props }: FormRatingProps) {
   const [layoutProps, ratingProps] = splitLayout(props)
   return (
-    <FormField
+    <Form.Field
       name={name}
       render={({ field }) => (
         <FormItemLayout {...layoutProps}>

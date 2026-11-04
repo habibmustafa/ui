@@ -8,12 +8,6 @@ import { z } from 'zod'
 import {
   Button,
   Form,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
   Select,
 } from '../../../src'
 
@@ -33,8 +27,8 @@ export default function SelectFormPropsDemo() {
   function onSubmit(data: z.infer<typeof FormSchema>) {
     toast('You submitted the following values:', {
       description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-foreground p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+        <pre className="mt-2 w-85 rounded-md bg-foreground p-4">
+          <code className="text-background">{JSON.stringify(data, null, 2)}</code>
         </pre>
       ),
     })
@@ -43,13 +37,13 @@ export default function SelectFormPropsDemo() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
-        <FormField
+        <Form.Field
           control={form.control}
           name="email"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
+            <Form.Item>
+              <Form.Label>Email</Form.Label>
+              <Form.Control>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -60,13 +54,13 @@ export default function SelectFormPropsDemo() {
                     { value: 'm@support.com', label: 'm@support.com' },
                   ]}
                 />
-              </FormControl>
-              <FormDescription>
+              </Form.Control>
+              <Form.Description>
                 You can manage email addresses in your{' '}
                 <a href="/examples/forms">email settings</a>.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
+              </Form.Description>
+              <Form.Message />
+            </Form.Item>
           )}
         />
         <Button type="submit" variant="secondary">

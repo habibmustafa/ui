@@ -8,11 +8,6 @@ import { z } from 'zod'
 import {
   Button,
   Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
   RadioGroup,
 } from '../../../src'
 
@@ -30,8 +25,8 @@ export default function RadioGroupFormPropsDemo() {
   function onSubmit(data: z.infer<typeof FormSchema>) {
     toast('You submitted the following values:', {
       description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-foreground p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+        <pre className="mt-2 w-85 rounded-md bg-foreground p-4">
+          <code className="text-background">{JSON.stringify(data, null, 2)}</code>
         </pre>
       ),
     })
@@ -40,13 +35,13 @@ export default function RadioGroupFormPropsDemo() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
-        <FormField
+        <Form.Field
           control={form.control}
           name="type"
           render={({ field }) => (
-            <FormItem className="space-y-3">
-              <FormLabel>Notify me about...</FormLabel>
-              <FormControl>
+            <Form.Item className="space-y-3">
+              <Form.Label>Notify me about...</Form.Label>
+              <Form.Control>
                 <RadioGroup
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -61,9 +56,9 @@ export default function RadioGroupFormPropsDemo() {
                     { value: 'none', id: 'radio-group-form-props-none', label: 'Nothing' },
                   ]}
                 />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+              </Form.Control>
+              <Form.Message />
+            </Form.Item>
           )}
         />
         <Button variant="primary" type="submit">

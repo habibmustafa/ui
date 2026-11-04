@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Checkbox } from '../../atoms/forms/checkbox'
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../atoms/forms/form'
+import { Form } from '../../atoms/forms/form'
 
 export interface FormCheckboxProps {
   name: string
@@ -17,14 +17,14 @@ export interface FormCheckboxProps {
  */
 export function FormCheckbox({ name, label, description, disabled, className }: FormCheckboxProps) {
   return (
-    <FormField
+    <Form.Field
       name={name}
       render={({ field }) => (
         // FormItem gives the control/label/message a shared id (without it every
         // FormCheckbox shared one "undefined-…" id); FormMessage shows the error.
-        <FormItem>
+        <Form.Item>
           <div className="items-top flex space-x-2">
-            <FormControl>
+            <Form.Control>
               <Checkbox
                 checked={field.value}
                 onCheckedChange={field.onChange}
@@ -32,16 +32,16 @@ export function FormCheckbox({ name, label, description, disabled, className }: 
                 disabled={disabled}
                 className={className}
               />
-            </FormControl>
+            </Form.Control>
             {(label || description) && (
               <div className="grid gap-1.5 leading-none">
-                {label && <FormLabel className="font-normal">{label}</FormLabel>}
+                {label && <Form.Label className="font-normal">{label}</Form.Label>}
                 {description && <p className="text-sm text-foreground-lighter">{description}</p>}
               </div>
             )}
           </div>
-          <FormMessage />
-        </FormItem>
+          <Form.Message />
+        </Form.Item>
       )}
     />
   )

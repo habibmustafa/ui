@@ -10,7 +10,7 @@ export default function ContextMenuPropsDemo() {
   return (
     <ContextMenu
       trigger="Right click here"
-      triggerClassName="flex h-[150px] w-[300px] items-center justify-center rounded-md border border-dashed text-sm"
+      triggerClassName="flex h-37.5 w-75 items-center justify-center rounded-md border border-dashed text-sm"
       className="w-64"
       items={[
         { key: 'back', label: 'Back', shortcut: '⌘[' },

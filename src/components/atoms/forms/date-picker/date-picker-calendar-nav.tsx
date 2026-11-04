@@ -3,9 +3,10 @@ import { AnimatePresence, domAnimation, LazyMotion, m, useReducedMotion } from '
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useLayoutEffect, useRef, useState, type ComponentProps, type ReactNode } from 'react'
 
-import { EASE_SOFT_IN, EASE_SOFT_OUT } from '../../../../lib/motion'
+import { DURATION_ENTER, DURATION_EXIT, EASE_SOFT_IN, EASE_SOFT_OUT } from '../../../../lib/motion'
+import { useLabels } from '../../../../providers/locale-provider'
 import { cn } from '../../../../lib/utils'
-import { buttonVariants } from '../../actions/button/shadcn-button'
+import { buttonVariants } from '../../actions/button/button'
 import { Calendar } from '../calendar'
 
 type CalendarProps = ComponentProps<typeof Calendar>
@@ -20,9 +21,9 @@ type SingleOnSelect = (
 type View = 'day' | 'month' | 'year'
 
 const YEAR_PAGE_SIZE = 12
-const gridCell = cn(buttonVariants({ variant: 'ghost' }), 'h-8 w-full rounded-md font-normal')
+const gridCell = cn(buttonVariants({ variant: 'text' }), 'h-8 w-full rounded-md text-sm font-normal')
 const headerButton = cn(
-  buttonVariants({ variant: 'ghost' }),
+  buttonVariants({ variant: 'text' }),
   'h-7 rounded-md px-2 text-sm font-medium'
 )
 const pagerButton = cn(
@@ -53,7 +54,7 @@ function GridView({ viewKey, children }: { viewKey: string; children: ReactNode 
   return (
     <div
       style={{ height }}
-      className="overflow-hidden transition-[height] duration-[260ms] ease-soft-in-out"
+      className="overflow-hidden transition-[height] duration-(--duration-calendar) ease-soft-in-out"
     >
       <div ref={innerRef} className="relative">
         <LazyMotion features={domAnimation}>
@@ -61,11 +62,11 @@ function GridView({ viewKey, children }: { viewKey: string; children: ReactNode 
             <m.div
               key={viewKey}
               initial={{ opacity: 0, scale: reduceMotion ? 1 : 0.98 }}
-              animate={{ opacity: 1, scale: 1, transition: { duration: 0.24, ease: EASE_SOFT_OUT } }}
+              animate={{ opacity: 1, scale: 1, transition: { duration: DURATION_ENTER, ease: EASE_SOFT_OUT } }}
               exit={{
                 opacity: 0,
                 scale: reduceMotion ? 1 : 1.01,
-                transition: { duration: 0.16, ease: EASE_SOFT_IN },
+                transition: { duration: DURATION_EXIT, ease: EASE_SOFT_IN },
               }}
             >
               {children}
@@ -186,9 +187,10 @@ function GridHeader({
   onPrev: () => void
   onNext: () => void
 }) {
+  const labels = useLabels()
   return (
     <div className="flex items-center justify-between px-2 pt-2">
-      <button type="button" onClick={onPrev} aria-label="Previous" className={pagerButton}>
+      <button type="button" onClick={onPrev} aria-label={labels.previous} className={pagerButton}>
         <ChevronLeft className="h-4 w-4 pointer-events-none" />
       </button>
       {onLabelClick ? (
@@ -198,7 +200,7 @@ function GridHeader({
       ) : (
         <span className="text-sm font-medium">{label}</span>
       )}
-      <button type="button" onClick={onNext} aria-label="Next" className={pagerButton}>
+      <button type="button" onClick={onNext} aria-label={labels.next} className={pagerButton}>
         <ChevronRight className="h-4 w-4 pointer-events-none" />
       </button>
     </div>
@@ -291,8 +293,9 @@ function MonthGrid({
   onPrevYear: () => void
   onNextYear: () => void
 }) {
+  const labels = useLabels()
   return (
-    <div className="w-[238px] p-2 pt-0">
+    <div className="w-59.5 p-2 pt-0">
       <GridHeader
         label={dayjs(displayMonth).format('YYYY')}
         onLabelClick={onHeaderClick}
@@ -300,7 +303,7 @@ function MonthGrid({
         onNext={onNextYear}
       />
       <PickerGrid
-        label="Select month"
+        label={labels.selectMonth}
         activeIndex={displayMonth.getMonth()}
         onPick={onPick}
         options={Array.from({ length: 12 }, (_, i) => ({
@@ -319,6 +322,7 @@ function YearGrid({
   displayMonth: Date
   onPick: (year: number) => void
 }) {
+  const labels = useLabels()
   const activeYear = displayMonth.getFullYear()
   const [pageStart, setPageStart] = useState(
     () => Math.floor(activeYear / YEAR_PAGE_SIZE) * YEAR_PAGE_SIZE
@@ -326,14 +330,14 @@ function YearGrid({
   const years = Array.from({ length: YEAR_PAGE_SIZE }, (_, i) => pageStart + i)
 
   return (
-    <div className="w-[238px] p-2 pt-0">
+    <div className="w-59.5 p-2 pt-0">
       <GridHeader
         label={`${years[0]}–${years[years.length - 1]}`}
         onPrev={() => setPageStart((p) => p - YEAR_PAGE_SIZE)}
         onNext={() => setPageStart((p) => p + YEAR_PAGE_SIZE)}
       />
       <PickerGrid
-        label="Select year"
+        label={labels.selectYear}
         activeIndex={years.indexOf(activeYear)}
         onPick={(index) => onPick(years[index])}
         options={years.map((year) => ({ key: year, text: String(year) }))}

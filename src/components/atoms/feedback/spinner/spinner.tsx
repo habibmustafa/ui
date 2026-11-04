@@ -3,6 +3,7 @@ import { Loader2 } from 'lucide-react'
 import * as React from 'react'
 
 import { cn } from '../../../../lib/utils'
+import { useLabels } from '../../../../providers/locale-provider'
 
 /*
  * Standalone loading indicator — the same Loader2 icon Button shows while `loading`.
@@ -24,14 +25,16 @@ const spinnerVariants = cva('animate-spin text-foreground-lighter', {
 export interface SpinnerProps
   extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'children'>,
     VariantProps<typeof spinnerVariants> {
-  /** Screen-reader text. @default "Loading" */
+  /** Screen-reader text. @default "Loading", from LocaleProvider */
   label?: string
   /** Hide from assistive tech (when the busy state is announced elsewhere). */
   decorative?: boolean
 }
 
 const Spinner = React.forwardRef<HTMLSpanElement, SpinnerProps>(
-  ({ className, size, label = 'Loading', decorative = false, ...props }, ref) => (
+  ({ className, size, label, decorative = false, ...props }, ref) => {
+    const labels = useLabels()
+    return (
     <span
       ref={ref}
       role={decorative ? undefined : 'status'}
@@ -40,9 +43,10 @@ const Spinner = React.forwardRef<HTMLSpanElement, SpinnerProps>(
       {...props}
     >
       <Loader2 aria-hidden="true" className={spinnerVariants({ size })} strokeWidth={2} />
-      {!decorative && <span className="sr-only">{label}</span>}
+      {!decorative && <span className="sr-only">{label ?? labels.loading}</span>}
     </span>
-  )
+    )
+  }
 )
 Spinner.displayName = 'Spinner'
 

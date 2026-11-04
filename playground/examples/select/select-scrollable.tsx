@@ -3,7 +3,7 @@ import { Select } from '../../../src'
 export default function SelectScrollable() {
   return (
     <Select.Root>
-      <Select.Trigger className="w-[280px]" aria-label="Timezone">
+      <Select.Trigger className="w-70" aria-label="Timezone">
         <Select.Value placeholder="Select a timezone" />
       </Select.Trigger>
       <Select.Content>

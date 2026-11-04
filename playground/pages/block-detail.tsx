@@ -47,13 +47,12 @@ export default function BlockDetailPage({ id }: { id: string }) {
         <p className="mt-3 max-w-2xl text-base leading-relaxed text-foreground-light">{block.description}</p>
       </header>
 
-      <Tabs.Root defaultValue="preview" className="mt-8">
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <Tabs.List className="gap-5" aria-label="Block view">
-            <Tabs.Trigger value="preview">Preview</Tabs.Trigger>
-            <Tabs.Trigger value="code">Code</Tabs.Trigger>
-            <Tabs.Indicator />
-          </Tabs.List>
+      <Tabs
+        className="mt-8"
+        layout="inline"
+        classNames={{ list: 'gap-5' }}
+        listLabel="Block view"
+        toolbar={
           <div className="flex items-center gap-2">
             <div role="group" aria-label="Preview width" className="flex items-center gap-1 rounded-lg border bg-surface-75 p-1">
               {DEVICES.map((device) => (
@@ -83,16 +82,20 @@ export default function BlockDetailPage({ id }: { id: string }) {
               <ArrowUpRight aria-hidden="true" className="h-4 w-4" />
             </a>
           </div>
-        </div>
-        <Tabs.Content value="preview">
+        }
+        items={[
+          {
+            value: 'preview',
+            label: 'Preview',
+            content: (<>
           {/* Keyed so switching blocks starts a fresh browsing context. */}
           <BlockFrame key={block.id} block={block} width={width} />
           <p className="mt-3 text-center text-xs tabular-nums text-foreground-lighter">{width} px · Live, interactive preview</p>
-        </Tabs.Content>
-        <Tabs.Content value="code">
-          <BlockCode id={block.id} />
-        </Tabs.Content>
-      </Tabs.Root>
+</>),
+          },
+          { value: 'code', label: 'Code', content: <BlockCode id={block.id} /> },
+        ]}
+      />
 
       <div className="mt-6 flex flex-wrap items-center gap-2 border-t pt-5 text-xs">
         <span className="mr-1 text-foreground-lighter">Built with</span>

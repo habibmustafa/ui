@@ -1,7 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
-import { Button, Checkbox, Form, FormControl, FormField, FormItemLayout } from '../../../src'
+import { Button, Checkbox, Form, FormItemLayout } from '../../../src'
 
 const FormSchema = z.object({
   items: z.array(z.string()).refine((value) => value.some((item) => item), {
@@ -46,13 +47,12 @@ export default function FormItemLayoutDemo() {
   function onSubmit(values: z.infer<typeof FormSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values)
-    // action('form form.handleSubmit(onSubmit)')(values)
+    toast('You submitted the following values:', { description: JSON.stringify(values) })
   }
   return (
     <Form {...form}>
       <form className="w-96 flex flex-col gap-3" onSubmit={form.handleSubmit(onSubmit)}>
-        <FormField
+        <Form.Field
           control={form.control}
           name="items"
           render={() => (
@@ -62,7 +62,7 @@ export default function FormItemLayoutDemo() {
               layout="horizontal"
             >
               {items.map((item) => (
-                <FormField
+                <Form.Field
                   key={item.id}
                   control={form.control}
                   name="items"
@@ -75,7 +75,7 @@ export default function FormItemLayoutDemo() {
                         layout="flex"
                         hideMessage
                       >
-                        <FormControl>
+                        <Form.Control>
                           <Checkbox
                             checked={field.value?.includes(item.id)}
                             onCheckedChange={(checked) => {
@@ -84,13 +84,12 @@ export default function FormItemLayoutDemo() {
                                 : field.onChange(field.value?.filter((value) => value !== item.id))
                             }}
                           />
-                        </FormControl>
+                        </Form.Control>
                       </FormItemLayout>
                     )
                   }}
                 />
               ))}
-              {/* <FormMessage /> */}
             </FormItemLayout>
           )}
         />

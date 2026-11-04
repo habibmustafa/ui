@@ -16,7 +16,7 @@ export default function NavigationMenuDemo() {
           <NavigationMenu.Item>
             <NavigationMenu.Trigger>Product</NavigationMenu.Trigger>
             <NavigationMenu.Content>
-              <ul className="grid w-[30rem] grid-cols-2 gap-1">
+              <ul className="grid w-120 grid-cols-2 gap-1">
                 {product.map((link) => (
                   <li key={link.href}>
                     <NavigationMenu.Link href={link.href}>

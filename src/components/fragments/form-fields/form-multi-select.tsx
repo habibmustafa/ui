@@ -1,10 +1,11 @@
-import { FormField } from '../../atoms/forms/form'
+import { Form } from '../../atoms/forms/form'
 import { FormItemLayout } from '../form-item-layout'
-import { MultiSelector } from '../../atoms/forms/multi-select'
+import { MultiSelector, type MultiSelectorOption } from '../../atoms/forms/multi-select'
+import type { OptionValue } from '../../../lib/options'
 import { type FieldLayoutProps, splitLayout, LabelledControl, type MultiSelectorOptionsProps } from './field-shared'
 
-export type FormMultiSelectProps = Omit<
-  MultiSelectorOptionsProps,
+export type FormMultiSelectProps<T = MultiSelectorOption, V extends OptionValue = string> = Omit<
+  MultiSelectorOptionsProps<T, V>,
   'values' | 'onValuesChange' | 'onBlur' | 'ref' | 'label' | 'id'
 > &
   FieldLayoutProps & {
@@ -14,10 +15,14 @@ export type FormMultiSelectProps = Omit<
   }
 
 /** Value is a `string[]` of selected option values. */
-export function FormMultiSelect({ name, placeholder, ...props }: FormMultiSelectProps) {
+export function FormMultiSelect<T = MultiSelectorOption, V extends OptionValue = string>({
+  name,
+  placeholder,
+  ...props
+}: FormMultiSelectProps<T, V>) {
   const [layoutProps, selectorProps] = splitLayout(props)
   return (
-    <FormField
+    <Form.Field
       name={name}
       render={({ field }) => (
         <FormItemLayout {...layoutProps}>

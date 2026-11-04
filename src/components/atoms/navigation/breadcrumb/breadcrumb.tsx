@@ -22,33 +22,11 @@ import {
   DropdownMenuTrigger,
 } from '../../overlay/dropdown-menu'
 import {
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerRoot,
-  DrawerTitle,
-  DrawerTrigger,
+  Drawer,
 } from '../../overlay/drawer'
 import { Button } from '../../actions/button'
-
-const MOBILE_BREAKPOINT = 768
-
-/** Local, not exported — mirrors Sidebar's own private `useIsMobile` (not a shared hook). */
-function useIsMobile() {
-  const [isMobile, setIsMobile] = React.useState(false)
-
-  React.useEffect(() => {
-    const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`)
-    const onChange = () => setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
-    mql.addEventListener('change', onChange)
-    onChange()
-    return () => mql.removeEventListener('change', onChange)
-  }, [])
-
-  return isMobile
-}
+import { useIsMobile } from '../sidebar/use-mobile'
+import { useLabels } from '../../../../providers/locale-provider'
 
 type RootProps = React.ComponentPropsWithoutRef<typeof BreadcrumbRoot>
 
@@ -127,18 +105,19 @@ function BreadcrumbOverflowTrigger({
   overflow: 'dropdown' | 'responsive'
 }) {
   const isMobile = useIsMobile()
+  const labels = useLabels()
 
   if (overflow === 'responsive' && isMobile) {
     return (
-      <DrawerRoot>
-        <DrawerTrigger aria-label="Toggle Menu">
+      <Drawer.Root>
+        <Drawer.Trigger aria-label={labels.toggleMenu}>
           <BreadcrumbEllipsis className="h-4 w-4" />
-        </DrawerTrigger>
-        <DrawerContent>
-          <DrawerHeader className="text-left">
-            <DrawerTitle>Navigate to</DrawerTitle>
-            <DrawerDescription>Select a page to navigate to.</DrawerDescription>
-          </DrawerHeader>
+        </Drawer.Trigger>
+        <Drawer.Content>
+          <Drawer.Header className="text-left">
+            <Drawer.Title>{labels.breadcrumbNavigateTitle}</Drawer.Title>
+            <Drawer.Description>{labels.breadcrumbNavigate}</Drawer.Description>
+          </Drawer.Header>
           <div className="grid gap-1 px-4">
             {items.map((item, index) =>
               item.href ? (
@@ -152,19 +131,19 @@ function BreadcrumbOverflowTrigger({
               )
             )}
           </div>
-          <DrawerFooter className="pt-4">
-            <DrawerClose asChild>
-              <Button variant="outline">Close</Button>
-            </DrawerClose>
-          </DrawerFooter>
-        </DrawerContent>
-      </DrawerRoot>
+          <Drawer.Footer className="pt-4">
+            <Drawer.Close asChild>
+              <Button variant="outline">{labels.close}</Button>
+            </Drawer.Close>
+          </Drawer.Footer>
+        </Drawer.Content>
+      </Drawer.Root>
     )
   }
 
   return (
     <DropdownMenuRoot>
-      <DropdownMenuTrigger className="flex items-center gap-1" aria-label="Toggle menu">
+      <DropdownMenuTrigger className="flex items-center gap-1" aria-label={labels.toggleMenu}>
         <BreadcrumbEllipsis className="size-4" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">

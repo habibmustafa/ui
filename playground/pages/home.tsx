@@ -2,7 +2,7 @@ import { ArrowRight } from 'lucide-react'
 import { lazy, Suspense } from 'react'
 
 import { Button, Dialog, Tabs, THEME_PRESETS, cn } from '../../src'
-import { version } from '../../package.json'
+import { GITHUB_URL, NPM_URL, PKG, VERSION } from '../package-info'
 import { CATALOG } from '../catalog'
 import { CodeSnippet } from '../code-snippet'
 import { DISPLAY, PANEL, SECTION_TITLE } from '../design'
@@ -15,8 +15,6 @@ import { useNearViewport } from '../near-viewport'
 // (~400 kB raw) — none of which the hero needs. Splitting them out lets the hero paint
 // first instead of waiting on that whole graph.
 const Showcase = lazy(() => import('./home-showcase').then((m) => ({ default: m.Showcase })))
-
-const GITHUB_URL = 'https://github.com/habibmustafa/ui'
 
 const PROPS_CODE = `<Dialog
   trigger={<Button variant="danger">Delete project</Button>}
@@ -76,19 +74,18 @@ function HybridApi() {
             Focus stays inside the dialog; Esc closes it.
           </p>
         </div>
-        <Tabs.Root defaultValue="props">
-          <Tabs.List className="gap-5">
-            <Tabs.Trigger value="props">Props</Tabs.Trigger>
-            <Tabs.Trigger value="compound">Compound</Tabs.Trigger>
-            <Tabs.Indicator />
-          </Tabs.List>
-          <Tabs.Content value="props">
-            <CodeSnippet code={PROPS_CODE} />
-          </Tabs.Content>
-          <Tabs.Content value="compound">
-            <CodeSnippet code={COMPOUND_CODE} maxHeight={360} />
-          </Tabs.Content>
-        </Tabs.Root>
+        <Tabs
+          layout="inline"
+          classNames={{ list: 'gap-5' }}
+          items={[
+            { value: 'props', label: 'Props', content: <CodeSnippet code={PROPS_CODE} /> },
+            {
+              value: 'compound',
+              label: 'Compound',
+              content: <CodeSnippet code={COMPOUND_CODE} maxHeight={360} />,
+            },
+          ]}
+        />
       </div>
     </section>
   )
@@ -122,7 +119,7 @@ function ThemeTeaser() {
             )
           })}
         </ul>
-        <Button asChild variant="default" iconRight={<ArrowRight />} className="shrink-0">
+        <Button asChild variant="default" size="small" iconRight={<ArrowRight />} className="shrink-0">
           <Link to="/theme">Open the theme builder</Link>
         </Button>
       </div>
@@ -166,14 +163,14 @@ function Footer() {
   const link = 'focus-ring rounded-xs transition-colors hover:text-foreground'
   return (
     <footer className="mt-6 flex flex-col gap-3 border-t py-8 text-sm text-foreground-lighter sm:flex-row sm:items-center sm:justify-between">
-      <p>MIT license · @habibmustafa/ui v{version}</p>
+      <p>MIT license · {PKG} v{VERSION}</p>
       <nav aria-label="External links" className="flex gap-4">
         <a className={link} href={GITHUB_URL} target="_blank" rel="noreferrer">
           GitHub
         </a>
         <a
           className={link}
-          href="https://www.npmjs.com/package/@habibmustafa/ui"
+          href={NPM_URL}
           target="_blank"
           rel="noreferrer"
         >
@@ -197,8 +194,8 @@ export default function HomePage() {
           title="Live examples"
           description="These cards are built only from the library's own components. Fill them in and submit them."
         />
-        <Suspense fallback={<div aria-hidden="true" className="min-h-[1380px] md:min-h-[900px] xl:min-h-[470px]" />}>
-          {showcaseNear ? <Showcase /> : <div aria-hidden="true" className="min-h-[1380px] md:min-h-[900px] xl:min-h-[470px]" />}
+        <Suspense fallback={<div aria-hidden="true" className="min-h-345 md:min-h-225 xl:min-h-117.5" />}>
+          {showcaseNear ? <Showcase /> : <div aria-hidden="true" className="min-h-345 md:min-h-225 xl:min-h-117.5" />}
         </Suspense>
       </section>
       <HybridApi />

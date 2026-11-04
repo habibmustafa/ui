@@ -6,7 +6,7 @@ export default function DialogDemo() {
       <Dialog.Trigger asChild>
         <Button>Edit profile</Button>
       </Dialog.Trigger>
-      <Dialog.Content className="sm:max-w-[425px]" centered={false}>
+      <Dialog.Content className="sm:max-w-106.25" centered={false}>
         <Dialog.Header>
           <Dialog.Title>This dialog is not centered.</Dialog.Title>
           <Dialog.Description>This dialog is not centered.</Dialog.Description>

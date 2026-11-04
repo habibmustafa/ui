@@ -17,7 +17,7 @@ export default function DatePickerDemo() {
   return (
     <DatePicker.Root>
       <DatePicker.Trigger asChild>
-        <DatePicker.Button variant="outline" className="w-[280px]">
+        <DatePicker.Button variant="outline" className="w-70">
           {date ? dayjs(date).format('MMMM D, YYYY') : <span>Pick a date</span>}
         </DatePicker.Button>
       </DatePicker.Trigger>

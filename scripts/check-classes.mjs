@@ -30,6 +30,22 @@ function escapeClass(name) {
 // not classes. Keeping this list short is the point: a clean report means a real miss
 // stands out instead of being buried.
 const NOT_CLASSES = new Set([
+  // Interactive playground code generator: the Slider's React state type, not a utility.
+  'number[]',
+  // Playground registry: hyphenated component ids used as keys.
+  'circular-progress',
+  'data-input',
+  'data-table',
+  'date-field',
+  'date-picker',
+  'floating-plate',
+  'glass-panel',
+  'info-tooltip',
+  'input-otp',
+  'metric-card',
+  'qr-code',
+  'scroll-area',
+  'status-code',
   'after:easing-[0.24,',
   'alert-description',
   'alert-title',

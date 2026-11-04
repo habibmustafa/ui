@@ -7,6 +7,7 @@ import * as React from 'react'
 
 import { cn } from '../../../../lib/utils'
 import { getExplicitTabIndex } from '../../../../lib/get-explicit-tab-index'
+import { useLabels } from '../../../../providers/locale-provider'
 
 const SheetRoot = SheetPrimitive.Root
 
@@ -53,7 +54,7 @@ const SheetOverlay = React.forwardRef<
       // Fade only: open used to have no animate-in, so the backdrop popped in.
       // No backdrop-blur: re-blurring the page under the sliding panel every frame
       // drops the open animation to ~30fps (see lib/modal-backdrop.ts).
-      'fixed inset-0 z-50 bg-alternative/90 data-[state=open]:animate-backdrop-show data-[state=closed]:animate-backdrop-hide',
+      'fixed inset-0 z-50 bg-backdrop data-[state=open]:animate-backdrop-show data-[state=closed]:animate-backdrop-hide',
       className
     )}
     {...props}
@@ -64,7 +65,7 @@ SheetOverlay.displayName = SheetPrimitive.Overlay.displayName
 
 const classes = cn([
   'fixed z-50 scale-100 gap-4 bg-popover opacity-100 shadow-lg',
-  'data-[state=open]:animate-in data-[state=open]:duration-300 data-[state=closed]:animate-out data-[state=closed]:duration-200',
+  'data-[state=open]:animate-in data-[state=closed]:animate-out',
 ])
 
 const sheetVariants = cva(classes, {
@@ -171,7 +172,9 @@ export interface DialogContentProps
 const SheetContent = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Content>,
   DialogContentProps
->(({ side, size, className, children, showClose = true, hasOverlay = true, ...props }, ref) => (
+>(({ side, size, className, children, showClose = true, hasOverlay = true, ...props }, ref) => {
+  const labels = useLabels()
+  return (
   <SheetPortal side={side}>
     {hasOverlay && <SheetOverlay />}
     <SheetPrimitive.Content
@@ -189,12 +192,13 @@ const SheetContent = React.forwardRef<
           )}
         >
           <X className="h-4 w-4" />
-          <span className="sr-only">Close</span>
+          <span className="sr-only">{labels.close}</span>
         </SheetPrimitive.Close>
       ) : null}
     </SheetPrimitive.Content>
   </SheetPortal>
-))
+  )
+})
 SheetContent.displayName = SheetPrimitive.Content.displayName
 
 const SheetHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (

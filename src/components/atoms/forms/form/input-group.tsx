@@ -47,7 +47,7 @@ function InputGroup({
       role="group"
       className={cn(
         'group/input-group relative items-center outline-hidden transition-[color,box-shadow]',
-        'flex rounded-md border border-control hover:border-control-hover bg-field text-sm transition-colors duration-200',
+        'flex rounded-md border border-control hover:border-control-hover bg-field text-sm transition-colors',
         'has-[>textarea]:h-auto',
 
         // Variants based on alignment.
@@ -63,7 +63,7 @@ function InputGroup({
         'has-[[data-slot=input-group-control]:focus]:border-control-hover',
 
         // Error state.
-        'has-[[data-slot][aria-invalid=true]]:bg-destructive-200 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive-400 dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40',
+        'has-[[data-slot][aria-invalid=true]]:bg-invalid-bg has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-invalid-border dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40',
         'has-[[data-slot][aria-invalid=true]]:hover:border-destructive',
         'has-[[data-slot][aria-invalid=true]]:has-[[data-slot=input-group-control]:focus-visible]:border-destructive',
         'has-[[data-slot][aria-invalid=true]]:has-[[data-slot=input-group-control]:focus]:border-destructive',
@@ -174,8 +174,8 @@ const InputGroupInput = React.forwardRef<HTMLInputElement, InputProps>(
         'hover:border-transparent focus:border-transparent focus-visible:border-transparent',
         'focus-visible:ring-0 focus-visible:ring-offset-0',
         'read-only:border-transparent',
-        'aria-[invalid=true]:border-transparent aria-[invalid=true]:bg-transparent',
-        'aria-[invalid=true]:hover:border-transparent aria-[invalid=true]:focus:border-transparent aria-[invalid=true]:focus-visible:border-transparent',
+        'aria-invalid:border-transparent aria-invalid:bg-transparent',
+        'aria-invalid:hover:border-transparent aria-invalid:focus:border-transparent aria-invalid:focus-visible:border-transparent',
         className
       )}
       {...props}
@@ -196,8 +196,8 @@ const InputGroupTextarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         'flex-1 resize-none rounded-none border border-transparent bg-transparent py-0 shadow-none',
         'hover:border-transparent focus:border-transparent focus-visible:border-transparent',
         'focus-visible:ring-0 focus-visible:ring-offset-0',
-        'aria-[invalid=true]:border-transparent aria-[invalid=true]:bg-transparent',
-        'aria-[invalid=true]:hover:border-transparent aria-[invalid=true]:focus:border-transparent aria-[invalid=true]:focus-visible:border-transparent',
+        'aria-invalid:border-transparent aria-invalid:bg-transparent',
+        'aria-invalid:hover:border-transparent aria-invalid:focus:border-transparent aria-invalid:focus-visible:border-transparent',
         className
       )}
       {...props}
@@ -210,6 +210,7 @@ export {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
+  inputGroupButtonVariants,
   InputGroupText,
   InputGroupInput,
   InputGroupTextarea,

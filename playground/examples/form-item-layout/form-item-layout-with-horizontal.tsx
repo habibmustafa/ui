@@ -1,7 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
-import { Button, DataInput, Form, FormControl, FormField, FormItemLayout, Separator } from '../../../src'
+import { Button, DataInput, Form, FormItemLayout, Separator } from '../../../src'
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -22,13 +23,12 @@ export default function FormItemLayoutDemo() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values)
-    // action('form form.handleSubmit(onSubmit)')(values)
+    toast('You submitted the following values:', { description: JSON.stringify(values) })
   }
   return (
     <Form {...form}>
-      <form className="w-[520px] flex flex-col gap-8" onSubmit={form.handleSubmit(onSubmit)}>
-        <FormField
+      <form className="w-130 flex flex-col gap-8" onSubmit={form.handleSubmit(onSubmit)}>
+        <Form.Field
           name="username"
           control={form.control}
           render={({ field }) => (
@@ -38,9 +38,9 @@ export default function FormItemLayoutDemo() {
               description="This is your public display name"
               labelOptional="optional"
             >
-              <FormControl>
+              <Form.Control>
                 <DataInput placeholder="mildtomato" {...field} />
-              </FormControl>
+              </Form.Control>
             </FormItemLayout>
           )}
         />

@@ -1,8 +1,9 @@
 import * as React from 'react'
 import { ToggleGroup, type ToggleGroupItemData } from '../../atoms/actions/toggle-group'
-import { FormField } from '../../atoms/forms/form'
+import { Form } from '../../atoms/forms/form'
 import { FormItemLayout } from '../form-item-layout'
 import { type FieldLayoutProps, splitLayout, LabelledControl } from './field-shared'
+import { cn } from '../../../lib/utils'
 
 export interface FormToggleGroupProps extends FieldLayoutProps {
   name: string
@@ -18,7 +19,7 @@ export interface FormToggleGroupProps extends FieldLayoutProps {
 export function FormToggleGroup({ name, type = 'single', ...props }: FormToggleGroupProps) {
   const [layoutProps, groupProps] = splitLayout(props)
   return (
-    <FormField
+    <Form.Field
       name={name}
       render={({ field }) => (
         <FormItemLayout {...layoutProps}>
@@ -27,6 +28,7 @@ export function FormToggleGroup({ name, type = 'single', ...props }: FormToggleG
               type === 'multiple' ? (
                 <ToggleGroup
                   {...groupProps}
+                  className={cn('justify-start', groupProps.className)}
                   type="multiple"
                   // Focusing the group moves focus to its active (or first) item.
                   ref={field.ref}
@@ -38,6 +40,7 @@ export function FormToggleGroup({ name, type = 'single', ...props }: FormToggleG
               ) : (
                 <ToggleGroup
                   {...groupProps}
+                  className={cn('justify-start', groupProps.className)}
                   type="single"
                   ref={field.ref}
                   aria-labelledby={labelId}

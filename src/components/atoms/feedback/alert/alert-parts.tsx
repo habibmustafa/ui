@@ -8,7 +8,7 @@ export const alertVariants = cva(
     // Container
     'relative w-full text-sm rounded-lg border p-4',
     // Icon SVG
-    '[&>svg~*]:pl-10 [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground [&>svg]:w-[23px] [&>svg]:h-[23px] [&>svg]:p-1 [&>svg]:flex [&>svg]:rounded-sm'
+    '[&>svg~*]:pl-10 [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground [&>svg]:w-5.75 [&>svg]:h-5.75 [&>svg]:p-1 [&>svg]:flex [&>svg]:rounded-sm'
   ),
   {
     variants: {
@@ -48,7 +48,7 @@ const AlertTitle = React.forwardRef<
   <p
     ref={ref}
     data-slot="alert-title"
-    className={cn('!mt-0 mb-0.5 font-medium', className)}
+    className={cn('mt-0! mb-0.5 font-medium', className)}
     {...props}
   />
 ))

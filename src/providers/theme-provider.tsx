@@ -200,3 +200,8 @@ export function useTheme(): ThemeContextValue {
 
   return context
 }
+
+/** Internal: the resolved theme, or undefined outside a <ThemeProvider> (no throw). */
+export function useResolvedThemeOptional(): ResolvedTheme | undefined {
+  return useContext(ThemeContext)?.resolvedTheme
+}

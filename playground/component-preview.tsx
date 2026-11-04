@@ -72,29 +72,27 @@ export function ComponentPreview({
           <div className="min-h-80 rounded-xl border bg-studio" />
         </div>
       ) : (
-        <Tabs.Root defaultValue="preview">
-          <Tabs.List className="gap-5">
-            <Tabs.Trigger value="preview">Preview</Tabs.Trigger>
-            {variants.map((variant) => (
-              <Tabs.Trigger key={variant.id} value={variant.id} onMouseEnter={() => { void loadCode() }} onFocus={() => { void loadCode() }}>
-                {variant.label}
-              </Tabs.Trigger>
-            ))}
-            <Tabs.Indicator />
-          </Tabs.List>
-
-          <Tabs.Content value="preview">
-            <Suspense fallback={<div className="min-h-64" />}>
-              <PreviewPane Demo={Demo} />
-            </Suspense>
-          </Tabs.Content>
-
-          {variants.map((variant) => (
-            <Tabs.Content key={variant.id} value={variant.id}>
-              <Suspense fallback={<div className="min-h-64" />}><CodeTab name={variant.name} /></Suspense>
-            </Tabs.Content>
-          ))}
-        </Tabs.Root>
+        <Tabs
+          layout="inline"
+          classNames={{ list: 'gap-5' }}
+          items={[
+            {
+              value: 'preview',
+              label: 'Preview',
+              content: (
+                <Suspense fallback={<div className="min-h-64" />}>
+                  <PreviewPane Demo={Demo} />
+                </Suspense>
+              ),
+            },
+            ...variants.map((variant) => ({
+              value: variant.id,
+              label: variant.label,
+              triggerProps: { onMouseEnter: () => { void loadCode() }, onFocus: () => { void loadCode() } },
+              content: <Suspense fallback={<div className="min-h-64" />}><CodeTab name={variant.name} /></Suspense>,
+            })),
+          ]}
+        />
       )}
     </div>
   )

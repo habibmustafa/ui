@@ -69,21 +69,16 @@ export function InstallCommand({
   return (
     <div className={cn('overflow-hidden rounded-md border bg-surface-75/75', className)}>
       <div className="flex items-center border-b px-2 py-1.5">
-        <ToggleGroup.Root
+        <ToggleGroup
           type="single"
           variant="segmented"
           size="tiny"
           value={manager}
-          onValueChange={(value) => value && setManager(value as Manager)}
+          onValueChange={(value: string) => value && setManager(value as Manager)}
           allowDeselect={false}
           aria-label="Package manager"
-        >
-          {MANAGERS.map((name) => (
-            <ToggleGroup.Item key={name} value={name} className="px-2 font-mono text-xs">
-              {name}
-            </ToggleGroup.Item>
-          ))}
-        </ToggleGroup.Root>
+          items={MANAGERS.map((name) => ({ value: name, label: name, className: 'px-2 font-mono text-xs' }))}
+        />
       </div>
       <div className="relative">
         <SnippetCopyButton value={command} className="top-1.5" />

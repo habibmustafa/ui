@@ -17,7 +17,7 @@ export default function DateFieldDemo() {
         onChange={setDate}
         minDate={MIN_DATE}
         maxDate={MAX_DATE}
-        className="w-[180px]"
+        className="w-45"
       />
       <p className="text-sm text-foreground-lighter">
         {date

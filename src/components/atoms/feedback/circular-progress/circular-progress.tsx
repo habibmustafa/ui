@@ -11,7 +11,7 @@ import { cn } from '../../../../lib/utils'
  * is shorthand for printing the percentage there.
  */
 
-const toneClass = {
+export const toneClass = {
   brand: 'text-brand-default',
   neutral: 'text-foreground',
   success: 'text-success-600',

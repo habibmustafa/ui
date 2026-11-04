@@ -79,7 +79,7 @@ const RadioGroupLargeItem = React.forwardRef<
             <RadioGroupPrimitive.Indicator
               className={cn(
                 'absolute',
-                'w-[10px] h-[10px]',
+                'size-2.5',
                 'left-px top-px',
                 'border border-background-surface-300',
                 'rounded-full',

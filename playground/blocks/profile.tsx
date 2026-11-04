@@ -20,7 +20,7 @@ export default function Profile() {
 
   return (
     <div className="w-full max-w-3xl overflow-hidden rounded-xl border bg-surface-100 shadow-sm">
-      <div aria-hidden="true" className="h-28 bg-gradient-to-r from-brand-default/25 via-brand-default/10 to-surface-200" />
+      <div aria-hidden="true" className="h-28 bg-linear-to-r from-brand-default/25 via-brand-default/10 to-surface-200" />
 
       <div className="flex flex-wrap items-end justify-between gap-4 px-6">
         <span className="-mt-10 rounded-full bg-surface-100 p-1">

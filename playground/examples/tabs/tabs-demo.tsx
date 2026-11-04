@@ -2,7 +2,7 @@ import { Tabs } from '../../../src'
 
 export default function TabsDemo() {
   return (
-    <Tabs.Root defaultValue="table" className="w-[400px]">
+    <Tabs.Root defaultValue="table" className="w-100">
       <Tabs.List className="grid w-full grid-cols-3">
         <Tabs.Trigger value="table">Table</Tabs.Trigger>
         <Tabs.Trigger value="sql">SQL</Tabs.Trigger>

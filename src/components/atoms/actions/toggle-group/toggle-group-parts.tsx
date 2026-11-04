@@ -134,12 +134,12 @@ const ToggleGroupIndicator = ({
     className={cn(
       'pointer-events-none absolute z-0 left-0 inset-y-px rounded-sm',
       segmentedIndicatorToneVariants({ tone }),
-      'w-[var(--active-segment-width,0)] translate-x-[var(--active-segment-left,0)]',
+      'w-(--active-segment-width,0) translate-x-(--active-segment-left,0)',
       'transition-none opacity-0',
-      'group-data-[segment-indicator-ready]/segmented:opacity-100',
-      'group-data-[segment-indicator-ready]/segmented:transition-[translate,width]',
-      'group-data-[segment-indicator-ready]/segmented:duration-[250ms]',
-      'group-data-[segment-indicator-ready]/segmented:ease-move',
+      'group-data-segment-indicator-ready/segmented:opacity-100',
+      'group-data-segment-indicator-ready/segmented:transition-[translate,width]',
+      'group-data-segment-indicator-ready/segmented:duration-250',
+      'group-data-segment-indicator-ready/segmented:ease-move',
       'motion-reduce:transition-none',
       className
     )}

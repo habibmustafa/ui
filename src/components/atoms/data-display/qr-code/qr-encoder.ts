@@ -38,7 +38,7 @@ const ALIGNMENT: readonly (readonly number[])[] = [
 
 const FORMAT_BITS: Record<QRLevel, number> = { L: 1, M: 0, Q: 3, H: 2 }
 
-export const MAX_VERSION = 10
+const MAX_VERSION = 10
 
 const dataCodewords = (spec: BlockSpec) => spec[1] * spec[2] + (spec[3] ?? 0) * (spec[4] ?? 0)
 

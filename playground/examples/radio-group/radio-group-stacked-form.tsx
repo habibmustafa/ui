@@ -8,11 +8,6 @@ import { z } from 'zod'
 import {
   Button,
   Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
   RadioGroupStacked,
 } from '../../../src'
 
@@ -28,11 +23,10 @@ export default function RadioGroupStackedForm() {
   })
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(JSON.stringify(data, null, 2))
     toast('You submitted the following values:', {
       description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-foreground p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+        <pre className="mt-2 w-85 rounded-md bg-foreground p-4">
+          <code className="text-background">{JSON.stringify(data, null, 2)}</code>
         </pre>
       ),
     })
@@ -41,21 +35,21 @@ export default function RadioGroupStackedForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
-        <FormField
+        <Form.Field
           control={form.control}
           name="type"
           render={({ field }) => (
-            <FormItem className="space-y-4">
-              <FormLabel>Notify me about...</FormLabel>
-              <FormControl>
+            <Form.Item className="space-y-4">
+              <Form.Label>Notify me about...</Form.Label>
+              <Form.Control>
                 <RadioGroupStacked.Root onValueChange={field.onChange} defaultValue={field.value}>
                   <RadioGroupStacked.Item value="all" label="All new messages" />
                   <RadioGroupStacked.Item value="mentions" label="Direct messages and mentions" />
                   <RadioGroupStacked.Item value="none" label="Nothing" />
                 </RadioGroupStacked.Root>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+              </Form.Control>
+              <Form.Message />
+            </Form.Item>
           )}
         />
         <Button type="submit" variant="secondary" size="small">

@@ -20,7 +20,9 @@ import {
   PopoverRoot as Popover,
   type PopoverContentProps,
 } from '../../overlay/popover'
+import { FieldClear } from '../select/field-clear'
 import { SelectionListState } from './selection-list-state'
+import { useLabels } from '../../../../providers/locale-provider'
 
 interface MultiSelectContextProps {
   id: string
@@ -46,7 +48,7 @@ const DROPDOWN_BORDER_HEIGHT = 2
 
 const commandItemClass = cn(
   'relative text-foreground-light text-left px-2 py-1.5 rounded-xs',
-  'hover:text-foreground hover:!bg-overlay-hover w-full flex items-center space-x-2',
+  'hover:text-foreground hover:bg-overlay-hover! w-full flex items-center space-x-2',
   'peer-data-[value=true]:bg-overlay-hover'
 )
 
@@ -239,6 +241,8 @@ export interface MultiSelectorTriggerProps extends React.HTMLAttributes<HTMLButt
   wrapBadges?: boolean
   deletableBadge?: boolean
   showIcon?: boolean
+  /** Shows a × before the chevron that clears every selected value. @default false */
+  clearable?: boolean
   mode?: MultiSelectorMode
   renderValue?: (value: string) => React.ReactNode
 }
@@ -251,10 +255,10 @@ const MultiSelectorTriggerVariants = cva('', {
   variants: {
     size: {
       tiny: `${SIZE.text.tiny} ${SIZE.height.tiny} p-0.5 items-stretch`,
-      small: `${SIZE.text.small} ${asMinHeight(SIZE.height.small)} p-1.5 items-center`,
-      medium: `${SIZE.text.medium} ${asMinHeight(SIZE.height.medium)} ${SIZE.padding.medium} items-center`,
-      large: `${SIZE.text.large} ${asMinHeight(SIZE.height.large)} ${SIZE.padding.large} items-center`,
-      xlarge: `${SIZE.text.xlarge} ${asMinHeight(SIZE.height.xlarge)} ${SIZE.padding.xlarge} items-center`,
+      small: `${SIZE.text.small} ${asMinHeight(SIZE.height.small)} py-1.5 pl-1.5 pr-1.75 items-center`,
+      medium: `${SIZE.text.medium} ${asMinHeight(SIZE.height.medium)} ${SIZE.padding.medium} pr-1.75 items-center`,
+      large: `${SIZE.text.large} ${asMinHeight(SIZE.height.large)} ${SIZE.padding.large} pr-1.75 items-center`,
+      xlarge: `${SIZE.text.xlarge} ${asMinHeight(SIZE.height.xlarge)} ${SIZE.padding.xlarge} pr-1.75 items-center`,
     },
   },
   defaultVariants: {
@@ -278,7 +282,7 @@ const MultiSelectorBadgesVariants = cva('flex overflow-hidden flex-1 min-w-0', {
 })
 
 const MultiSelectorBadgeVariants = cva(
-  'rounded-sm shrink-0 px-1.5 bg-surface-75 dark:bg-white/5 normal-case tracking-normal text-xs/none',
+  'rounded-sm shrink-0 px-1.5 bg-surface-75 dark:bg-muted normal-case tracking-normal text-xs/none',
   {
     variants: {
       size: {
@@ -343,6 +347,7 @@ const MultiSelectorTrigger = React.forwardRef<HTMLButtonElement, MultiSelectorTr
       badgeLimit = 9999,
       wrapBadges = false,
       showIcon = true,
+      clearable = false,
       mode = 'combobox',
       renderValue,
       // The trigger renders its own chips/label; children aren't part of its API.
@@ -351,8 +356,18 @@ const MultiSelectorTrigger = React.forwardRef<HTMLButtonElement, MultiSelectorTr
     },
     ref
   ) => {
-    const { id, activeIndex, values, setInputValue, toggleValue, disabled, open, setOpen, size } =
-      useMultiSelect()
+    const {
+      id,
+      activeIndex,
+      values,
+      onValuesChange,
+      setInputValue,
+      toggleValue,
+      disabled,
+      open,
+      setOpen,
+      size,
+    } = useMultiSelect()
 
     const inputRef = React.useRef<HTMLButtonElement>(null)
 
@@ -418,16 +433,16 @@ const MultiSelectorTrigger = React.forwardRef<HTMLButtonElement, MultiSelectorTr
             aria-controls={open ? getContentId(id) : undefined}
             className={cn(
               'flex w-full min-w-50 justify-between rounded-md border',
-              'border-strong',
-              // Empty: raised plate. Filled: sunk well for chips.
-              values.length > 0 ? 'bg-field' : 'bg-control-raised',
+              'border-control bg-field',
               'placeholder:text-muted-foreground',
               'ring-border-control focus-ring',
               'disabled:cursor-not-allowed disabled:opacity-50',
-              'hover:border-control-hover transition-colors duration-200',
+              'hover:border-control-hover transition-colors',
               open && 'border-control-hover',
-              'aria-[invalid=true]:border-destructive-400 aria-[invalid=true]:bg-destructive-200 aria-[invalid=true]:hover:border-destructive',
+              'aria-invalid:border-invalid-border aria-invalid:bg-invalid-bg aria-invalid:hover:border-destructive',
               MultiSelectorTriggerVariants({ size }),
+              // Empty: text starts where Input's does (px-3); chips keep the tighter inset.
+              values.length === 0 && (size ?? 'small') === 'small' && 'pl-3',
               className
             )}
             {...props}
@@ -511,6 +526,9 @@ const MultiSelectorTrigger = React.forwardRef<HTMLButtonElement, MultiSelectorTr
               )}
             </div>
 
+            {clearable && values.length > 0 && !disabled && (
+              <FieldClear className="-mr-0.5" onClear={() => onValuesChange([])} />
+            )}
             {showIcon && (
               <ChevronDown
                 aria-hidden="true"
@@ -640,7 +658,7 @@ const MultiSelectorContent = React.forwardRef<HTMLDivElement, PopoverContentProp
         ref={ref}
         sideOffset={DROPDOWN_GAP}
         className={cn(
-          'bg-overlay shadow-md z-50 border rounded-md p-0',
+          'bg-overlay shadow-md z-50 border border-overlay rounded-md p-0',
           'w-(--radix-popper-anchor-width)',
           className
         )}
@@ -676,7 +694,7 @@ const MultiSelectorList = React.forwardRef<
       className,
       children,
       creatable = false,
-      emptyLabel = 'No results found',
+      emptyLabel: emptyLabelProp,
       error = false,
       errorLabel,
       loading = false,
@@ -684,6 +702,8 @@ const MultiSelectorList = React.forwardRef<
     },
     ref
   ) => {
+    const labels = useLabels()
+    const emptyLabel = emptyLabelProp ?? labels.noResults
     const { open, inputValue, setInputValue, toggleValue, dropdownMaxHeight } = useMultiSelect()
 
     const options = Children.toArray(children)
@@ -769,7 +789,7 @@ const MultiSelectorItem = React.forwardRef<
         className={cn(
           'flex items-center justify-center',
           'peer h-4 w-4 shrink-0 rounded-sm border border-control bg-control/25 ring-offset-background',
-          'transition-colors duration-150 ease-in-out',
+          'transition-colors',
           'hover:border-strong',
           'focus-ring',
           'disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-foreground data-[state=checked]:text-background-overlay',

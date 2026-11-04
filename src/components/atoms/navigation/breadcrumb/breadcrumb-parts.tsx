@@ -3,6 +3,7 @@ import { ChevronRightIcon } from 'lucide-react'
 import * as React from 'react'
 
 import { cn } from '../../../../lib/utils'
+import { useLabels } from '../../../../providers/locale-provider'
 
 const BreadcrumbRoot = React.forwardRef<
   HTMLElement,
@@ -84,7 +85,9 @@ const BreadcrumbSeparator = ({ children, className, ...props }: React.ComponentP
 )
 BreadcrumbSeparator.displayName = 'BreadcrumbSeparator'
 
-const BreadcrumbEllipsis = ({ className, ...props }: React.ComponentProps<'span'>) => (
+const BreadcrumbEllipsis = ({ className, ...props }: React.ComponentProps<'span'>) => {
+  const labels = useLabels()
+  return (
   <span className={cn('flex h-4 w-4 items-center justify-center', className)} {...props}>
     <svg
       role="presentation"
@@ -102,9 +105,10 @@ const BreadcrumbEllipsis = ({ className, ...props }: React.ComponentProps<'span'
         clipRule="evenodd"
       />
     </svg>
-    <span className="sr-only">More</span>
+    <span className="sr-only">{labels.breadcrumbMore}</span>
   </span>
-)
+  )
+}
 BreadcrumbEllipsis.displayName = 'BreadcrumbEllipsis'
 
 export {

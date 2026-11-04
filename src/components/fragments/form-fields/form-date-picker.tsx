@@ -1,4 +1,4 @@
-import { FormControl, FormField } from '../../atoms/forms/form'
+import { Form } from '../../atoms/forms/form'
 import { DatePicker } from '../../atoms/forms/date-picker'
 import { FormItemLayout } from '../form-item-layout'
 import { type LayoutProps } from './field-shared'
@@ -30,7 +30,7 @@ export function FormDatePicker({
   disabled,
 }: FormDatePickerProps) {
   return (
-    <FormField
+    <Form.Field
       name={name}
       render={({ field }) => (
         <FormItemLayout
@@ -42,7 +42,7 @@ export function FormDatePicker({
           size={size}
           labelLayout={labelLayout}
         >
-          <FormControl>
+          <Form.Control>
             <DatePicker
               format={format}
               fieldContainerClassName="w-full"
@@ -56,7 +56,7 @@ export function FormDatePicker({
                 autoFocus: true,
               }}
             />
-          </FormControl>
+          </Form.Control>
         </FormItemLayout>
       )}
     />

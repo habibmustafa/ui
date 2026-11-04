@@ -62,8 +62,8 @@ export default function Inbox() {
 
   return (
     <div className="w-full max-w-5xl overflow-hidden rounded-xl border bg-surface-100 shadow-sm">
-      <Resizable.Root orientation="horizontal" className="h-[32rem]">
-        <Resizable.Panel defaultSize="18" minSize="14">
+      <Resizable orientation="horizontal" className="h-128" panels={[
+        { defaultSize: '18', minSize: '14', content: (<>
           <nav aria-label="Folders" className="flex h-full flex-col gap-1 p-3">
             {FOLDERS.map((folder, index) => (
               <a
@@ -78,9 +78,8 @@ export default function Inbox() {
               </a>
             ))}
           </nav>
-        </Resizable.Panel>
-        <Resizable.Handle withHandle />
-        <Resizable.Panel defaultSize="38" minSize="25">
+        </>) },
+        { defaultSize: '38', minSize: '25', content: (<>
           <VirtualList
             items={messages}
             itemHeight={76}
@@ -98,7 +97,7 @@ export default function Inbox() {
                     setRead((current) => new Set(current).add(message.id))
                     setSentTo(null)
                   }}
-                  className="focus-ring flex h-full w-full cursor-pointer flex-col justify-center gap-0.5 border-b px-4 text-left transition-colors hover:bg-surface-200 aria-[current=true]:bg-surface-200"
+                  className="focus-ring flex h-full w-full cursor-pointer flex-col justify-center gap-0.5 border-b px-4 text-left transition-colors hover:bg-surface-200 aria-current:bg-surface-200"
                 >
                   <span className="flex items-center justify-between gap-2 text-sm">
                     <span className={unread ? 'font-semibold text-foreground' : 'text-foreground-light'}>
@@ -113,9 +112,8 @@ export default function Inbox() {
               )
             }}
           />
-        </Resizable.Panel>
-        <Resizable.Handle withHandle />
-        <Resizable.Panel defaultSize="44" minSize="30">
+        </>) },
+        { defaultSize: '44', minSize: '30', content: (<>
           <div className="flex h-full flex-col gap-4 overflow-auto p-5">
             <div className="flex items-start gap-3">
               <Avatar fallback={initials(selected.from)} className="h-9 w-9 text-xs font-medium" />
@@ -158,8 +156,8 @@ export default function Inbox() {
               )}
             </div>
           </div>
-        </Resizable.Panel>
-      </Resizable.Root>
+        </>) },
+      ]} />
     </div>
   )
 }

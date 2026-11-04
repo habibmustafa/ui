@@ -17,6 +17,7 @@ import {
   type SortState,
   type SortValue,
 } from './data-table-utils'
+import { useLabels } from '../../../providers/locale-provider'
 
 /*
  * Table's props mode plus the client-side plumbing most lists need: a search box,
@@ -80,7 +81,7 @@ export interface DataTableProps<TRow> {
 
   /** Extra controls shown next to the search box (filters, actions, …). */
   toolbar?: React.ReactNode
-  /** Shown in place of rows when there are none. @default "No results." */
+  /** Shown in place of rows when there are none. @default "No results found.", from LocaleProvider */
   emptyText?: React.ReactNode
   caption?: React.ReactNode
   onRowClick?: (row: TRow, event: React.MouseEvent | React.KeyboardEvent) => void
@@ -111,12 +112,14 @@ export function DataTable<TRow>({
   onSelectedKeysChange,
   getRowLabel,
   toolbar,
-  emptyText = 'No results.',
+  emptyText: emptyTextProp,
   caption,
   onRowClick,
   className,
   classNames,
 }: DataTableProps<TRow>) {
+  const labels = useLabels()
+  const emptyText = emptyTextProp ?? labels.noResults
   const serverSide = totalRows !== undefined
   const showSearch = searchable ?? columns.some((column) => column.searchValue)
 
@@ -191,7 +194,7 @@ export function DataTable<TRow>({
             key: '__select',
             header: (
               <Checkbox
-                aria-label="Select all rows on this page"
+                aria-label={labels.selectAllRows}
                 checked={headerChecked}
                 disabled={pageKeys.length === 0}
                 onCheckedChange={(value) => togglePage(value === true)}
@@ -203,7 +206,7 @@ export function DataTable<TRow>({
               const key = rowKey(row)
               return (
                 <Checkbox
-                  aria-label={getRowLabel?.(row) ?? 'Select row'}
+                  aria-label={getRowLabel?.(row) ?? labels.selectRow}
                   checked={selectedSet.has(key)}
                   onCheckedChange={(value) => toggleKey(key, value === true)}
                 />

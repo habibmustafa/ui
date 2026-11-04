@@ -8,13 +8,9 @@ import { useEffect, useRef, useState } from 'react'
 
 import { cn } from '../../../lib/utils'
 import { copyToClipboard } from '../../../lib/copy-to-clipboard'
-import {
-  TooltipContent,
-  TooltipProvider,
-  TooltipRoot,
-  TooltipTrigger,
-} from '../../atoms/overlay/tooltip'
+import { Tooltip } from '../../atoms/overlay/tooltip'
 import { useTimestampInfoContext } from './timestamp-info-provider'
+import { useLabels } from '../../../providers/locale-provider'
 
 export { TimestampInfoProvider } from './timestamp-info-provider'
 
@@ -135,6 +131,7 @@ export const TimestampInfo = ({
   timezone?: string
 }) => {
   const { timezone: timezoneFromContext } = useTimestampInfoContext()
+  const labels = useLabels()
   const effectiveTimezone = timezoneProp ?? timezoneFromContext
   const browserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
   const local = timestampLocalFormatter({ utcTimestamp, format, timezone: effectiveTimezone })
@@ -171,33 +168,34 @@ export const TimestampInfo = ({
   }, [])
 
   return (
-    <TooltipProvider>
-      <TooltipRoot>
-        <TooltipTrigger
-          asChild
+    <Tooltip
+      trigger={
+        <span
           ref={triggerRef}
           className={`text-xs ${className} border-b border-transparent hover:border-dashed hover:border-foreground-light`}
         >
-          <span>
-            {label
-              ? label
-              : displayAs === 'local'
-                ? timestampLocalFormatter({
-                    utcTimestamp,
-                    format: labelFormat,
-                    timezone: effectiveTimezone,
-                  })
-                : timestampUtcFormatter({ utcTimestamp, format: labelFormat })}
-          </span>
-        </TooltipTrigger>
-        <TooltipContent align={align} side="right" className="font-mono p-0 py-1 min-w-80">
-          <TooltipRow label="UTC" value={utc} />
+          {label
+            ? label
+            : displayAs === 'local'
+              ? timestampLocalFormatter({
+                  utcTimestamp,
+                  format: labelFormat,
+                  timezone: effectiveTimezone,
+                })
+              : timestampUtcFormatter({ utcTimestamp, format: labelFormat })}
+        </span>
+      }
+      className="font-mono p-0 py-1 min-w-80"
+      slotProps={{ content: { align, side: 'right' } }}
+      content={
+        <>
+          <TooltipRow label={labels.timestampUtc} value={utc} />
           <TooltipRow label={localTimezone} value={local} />
           {showBrowserRow && <TooltipRow label={browserTimezone} value={browserLocal} />}
-          <TooltipRow label="Relative" value={relative} />
-          <TooltipRow label="Timestamp" value={String(utcTimestamp)} />
-        </TooltipContent>
-      </TooltipRoot>
-    </TooltipProvider>
+          <TooltipRow label={labels.timestampRelative} value={relative} />
+          <TooltipRow label={labels.timestamp} value={String(utcTimestamp)} />
+        </>
+      }
+    />
   )
 }

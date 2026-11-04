@@ -53,7 +53,7 @@ type NavigationMenuCompoundProps = RootProps & { items?: never }
 
 export type NavigationMenuProps = NavigationMenuItemsProps | NavigationMenuCompoundProps
 
-const COLUMNS = { 1: 'w-72 grid-cols-1', 2: 'w-[30rem] grid-cols-2' } as const
+const COLUMNS = { 1: 'w-72 grid-cols-1', 2: 'w-120 grid-cols-2' } as const
 
 export function NavigationMenuHybrid(props: NavigationMenuProps) {
   if (props.items === undefined) {

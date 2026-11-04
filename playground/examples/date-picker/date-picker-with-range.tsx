@@ -20,7 +20,7 @@ export default function DatePickerWithRange({ className }: React.HTMLAttributes<
     <div className={cn('grid gap-2', className)}>
       <DatePicker.Root>
         <DatePicker.Trigger asChild>
-          <DatePicker.Button variant="outline" className="w-[300px]">
+          <DatePicker.Button variant="outline" className="w-75">
             {date?.from ? (
               date.to ? (
                 <>

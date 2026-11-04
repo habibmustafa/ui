@@ -83,7 +83,7 @@ test('search filters rows and jumps back to page 1', async () => {
 
   await user.clear(screen.getByRole('searchbox'))
   await user.type(screen.getByRole('searchbox'), 'nobody')
-  expect(screen.getByRole('status').textContent).toBe('No results.')
+  expect(screen.getByRole('status').textContent).toBe('No results found.')
 })
 
 test('clicking a header cycles the sort and updates aria-sort', async () => {

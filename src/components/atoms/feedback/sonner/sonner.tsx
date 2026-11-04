@@ -5,14 +5,18 @@ import { Toaster as Sonner } from 'sonner'
 import { cn } from '../../../../lib/utils'
 import { buttonVariants } from '../../actions/button'
 import { StatusIcon } from './status-icon'
+import { useResolvedThemeOptional } from '../../../../providers/theme-provider'
 
 export const SONNER_DEFAULT_DURATION = 4000
 
-type ToasterProps = React.ComponentProps<typeof Sonner> & { theme: 'light' | 'dark' | 'system' }
+type ToasterProps = React.ComponentProps<typeof Sonner>
 
-const SonnerToaster = ({ toastOptions, ...props }: ToasterProps) => {
+// `theme` defaults to the surrounding ThemeProvider's resolved theme ("system" without one).
+const SonnerToaster = ({ toastOptions, theme, ...props }: ToasterProps) => {
+  const resolvedTheme = useResolvedThemeOptional()
   return (
     <Sonner
+      theme={theme ?? resolvedTheme ?? 'system'}
       icons={{
         warning: <StatusIcon variant="warning" />,
         error: <StatusIcon variant="destructive" />,
@@ -45,13 +49,13 @@ const SonnerToaster = ({ toastOptions, ...props }: ToasterProps) => {
           title: 'font-normal!',
           description:
             'text-xs group-[.toast]:text-foreground-lighter transition-opacity group-data-[expanded=false]:opacity-0 group-data-[front=true]:opacity-100!',
-          actionButton: cn('block', buttonVariants({ variant: 'primary', size: 'small' })),
-          cancelButton: cn('block', buttonVariants({ variant: 'default', size: 'small' })),
-          // success: 'group toast group-[.toaster]:!bg-brand-200 group-[.toaster]:border-brand-500',
+          actionButton: cn('block', buttonVariants({ variant: 'primary', size: 'tiny' })),
+          cancelButton: cn('block', buttonVariants({ variant: 'default', size: 'tiny' })),
+          // success: 'group toast group-[.toaster]:bg-brand-200! group-[.toaster]:border-brand-500',
           warning:
-            'group toast group-[.toaster]:!bg-warning-200 group-[.toaster]:!border-warning-500',
+            'group toast group-[.toaster]:bg-warning-200! group-[.toaster]:border-warning-500!',
           error:
-            'group toast group-[.toaster]:!bg-destructive-200 group-[.toaster]:!border-destructive-500',
+            'group toast group-[.toaster]:bg-destructive-200! group-[.toaster]:border-destructive-500!',
           closeButton: cn(
             // unset all styles set from sonner
             'absolute right-2 top-2 size-6 flex items-center justify-center rounded-md text-foreground-light opacity-0 transition-opacity',

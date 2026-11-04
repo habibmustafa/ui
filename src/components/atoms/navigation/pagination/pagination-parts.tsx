@@ -4,6 +4,7 @@ import * as React from 'react'
 
 import { cn } from '../../../../lib/utils'
 import { buttonVariants } from '../../actions/button'
+import { useLabels } from '../../../../providers/locale-provider'
 
 /*
  * Compound parts follow shadcn/ui's Pagination anatomy (nav > ul > li > a), styled with
@@ -14,9 +15,9 @@ import { buttonVariants } from '../../actions/button'
 
 // Square-ish page buttons at every size: min width = the Button height for that size.
 const MIN_WIDTH = {
-  tiny: 'min-w-[26px] px-2',
-  small: 'min-w-[34px] px-2.5',
-  medium: 'min-w-[38px] px-3',
+  tiny: 'min-w-6.5 px-2',
+  small: 'min-w-8.5 px-2.5',
+  medium: 'min-w-9.5 px-3',
 } as const
 
 export type PaginationRootProps = React.ComponentPropsWithoutRef<'nav'>
@@ -98,33 +99,41 @@ export type PaginationPreviousProps = PaginationLinkProps & { label?: React.Reac
 const PaginationPrevious = React.forwardRef<
   HTMLAnchorElement & HTMLButtonElement,
   PaginationPreviousProps
->(({ className, label = 'Previous', ...props }, ref) => (
-  <PaginationLink
-    ref={ref}
-    aria-label="Go to previous page"
-    className={cn('gap-1 px-2', className)}
-    {...props}
-  >
-    <ChevronLeft aria-hidden="true" className="h-4 w-4" strokeWidth={1.5} />
-    {label != null && <span>{label}</span>}
-  </PaginationLink>
-))
+>(({ className, label, ...props }, ref) => {
+  const labels = useLabels()
+  const text = label === undefined ? labels.previous : label
+  return (
+    <PaginationLink
+      ref={ref}
+      aria-label={labels.previousPage}
+      className={cn('gap-1 px-2', className)}
+      {...props}
+    >
+      <ChevronLeft aria-hidden="true" className="h-4 w-4" strokeWidth={1.5} />
+      {text != null && <span>{text}</span>}
+    </PaginationLink>
+  )
+})
 PaginationPrevious.displayName = 'PaginationPrevious'
 
 export type PaginationNextProps = PaginationLinkProps & { label?: React.ReactNode }
 
 const PaginationNext = React.forwardRef<HTMLAnchorElement & HTMLButtonElement, PaginationNextProps>(
-  ({ className, label = 'Next', ...props }, ref) => (
-    <PaginationLink
-      ref={ref}
-      aria-label="Go to next page"
-      className={cn('gap-1 px-2', className)}
-      {...props}
-    >
-      {label != null && <span>{label}</span>}
-      <ChevronRight aria-hidden="true" className="h-4 w-4" strokeWidth={1.5} />
-    </PaginationLink>
-  )
+  ({ className, label, ...props }, ref) => {
+    const labels = useLabels()
+    const text = label === undefined ? labels.next : label
+    return (
+      <PaginationLink
+        ref={ref}
+        aria-label={labels.nextPage}
+        className={cn('gap-1 px-2', className)}
+        {...props}
+      >
+        {text != null && <span>{text}</span>}
+        <ChevronRight aria-hidden="true" className="h-4 w-4" strokeWidth={1.5} />
+      </PaginationLink>
+    )
+  }
 )
 PaginationNext.displayName = 'PaginationNext'
 
@@ -133,7 +142,7 @@ export type PaginationEllipsisProps = React.ComponentPropsWithoutRef<'span'>
 const PaginationEllipsis = ({ className, ...props }: PaginationEllipsisProps) => (
   <span
     aria-hidden="true"
-    className={cn('flex h-[26px] w-[26px] items-center justify-center text-foreground-lighter', className)}
+    className={cn('flex h-6.5 w-6.5 items-center justify-center text-foreground-lighter', className)}
     {...props}
   >
     <MoreHorizontal className="h-4 w-4" strokeWidth={1.5} />

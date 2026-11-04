@@ -62,8 +62,8 @@ export default function RequestLog() {
         <p className="text-sm text-foreground-light">The latest calls to your API. Drag the divider to resize.</p>
       </div>
 
-      <Resizable.Root orientation="horizontal" className="h-[24rem]">
-        <Resizable.Panel defaultSize="46" minSize="30">
+      <Resizable orientation="horizontal" className="h-96" panels={[
+        { defaultSize: '46', minSize: '30', content: (<>
           <ul aria-label="Requests" className="h-full divide-y overflow-auto">
             {requests.map((request) => (
               <li key={request.id}>
@@ -71,7 +71,7 @@ export default function RequestLog() {
                   type="button"
                   aria-current={request.id === selected.id}
                   onClick={() => setSelectedId(request.id)}
-                  className="focus-ring flex w-full cursor-pointer flex-col gap-1.5 px-5 py-3.5 text-left transition-colors hover:bg-surface-200 aria-[current=true]:bg-surface-200"
+                  className="focus-ring flex w-full cursor-pointer flex-col gap-1.5 px-5 py-3.5 text-left transition-colors hover:bg-surface-200 aria-current:bg-surface-200"
                 >
                   <span className="flex items-center justify-between gap-3">
                     <StatusCode method={request.method} statusCode={request.status} />
@@ -82,9 +82,8 @@ export default function RequestLog() {
               </li>
             ))}
           </ul>
-        </Resizable.Panel>
-        <Resizable.Handle withHandle />
-        <Resizable.Panel defaultSize="54" minSize="30">
+        </>) },
+        { defaultSize: '54', minSize: '30', content: (<>
           <div className="flex h-full flex-col gap-4 overflow-auto p-5">
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
@@ -99,8 +98,8 @@ export default function RequestLog() {
               {selected.body}
             </CodeBlock>
           </div>
-        </Resizable.Panel>
-      </Resizable.Root>
+        </>) },
+      ]} />
     </div>
   )
 }

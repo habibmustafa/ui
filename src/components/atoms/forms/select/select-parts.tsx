@@ -7,6 +7,7 @@ import * as React from 'react'
 
 import { cn } from '../../../../lib/utils'
 import { ComboboxTrigger } from './combobox-trigger'
+import { FieldClear } from './field-clear'
 import { selectTriggerVariants } from './select-trigger'
 
 const SelectRoot = SelectPrimitive.Root
@@ -32,15 +33,25 @@ const SelectTrigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> & {
     size?: SelectTriggerSize
+    /** Shows a × before the chevron and clears on Backspace/Delete; omit when nothing to clear. */
+    onClear?: () => void
   }
->(({ className, children, size, ...props }, ref) => (
+>(({ className, children, size, onClear, onKeyDown, ...props }, ref) => (
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(selectTriggerVariants({ size }), className)}
     tabIndex={0}
+    onKeyDown={(event) => {
+      onKeyDown?.(event)
+      if (onClear && !event.defaultPrevented && (event.key === 'Backspace' || event.key === 'Delete')) {
+        event.preventDefault()
+        onClear()
+      }
+    }}
     {...props}
   >
     {children}
+    {onClear && !props.disabled && <FieldClear onClear={onClear} />}
     <SelectPrimitive.Icon asChild>
       <ChevronDown className="h-4 w-4 text-foreground-lighter shrink-0" strokeWidth={1.5} />
     </SelectPrimitive.Icon>
@@ -90,7 +101,7 @@ const SelectContent = React.forwardRef<
     <SelectPrimitive.Content
       ref={ref}
       className={cn(
-        'relative z-50 max-h-96 min-w-32 overflow-hidden rounded-md border bg-overlay text-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-97 data-[state=open]:zoom-in-97 data-[side=bottom]:slide-in-from-top-1 data-[side=left]:slide-in-from-right-1 data-[side=right]:slide-in-from-left-1 data-[side=top]:slide-in-from-bottom-1',
+        'relative z-50 max-h-96 min-w-32 overflow-hidden rounded-md border border-overlay bg-overlay text-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-97 data-[state=open]:zoom-in-97 data-[side=bottom]:slide-in-from-top-1 data-[side=left]:slide-in-from-right-1 data-[side=right]:slide-in-from-left-1 data-[side=top]:slide-in-from-bottom-1',
         position === 'popper' &&
           'data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1',
         className

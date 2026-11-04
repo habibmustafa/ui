@@ -4,11 +4,12 @@ import { Clock } from 'lucide-react'
 import * as React from 'react'
 
 import { InputVariants } from '../input'
-import { PopoverAnchor, PopoverContent, PopoverRoot, PopoverTrigger } from '../../overlay/popover'
-import { ClockFace, type ClockView } from './time-picker-clock'
+import { Popover } from '../../overlay/popover'
+import { ClockFace, pad, type ClockView } from './time-picker-clock'
 import { useControllableState } from '../../../../lib/use-controllable-state'
 import { fieldIconButtonClass, fieldIconClass, fieldIconStrokeWidth } from '../../../../lib/field-icon-button'
 import { cn } from '../../../../lib/utils'
+import { useLabels } from '../../../../providers/locale-provider'
 
 /*
  * Segmented time field (hours : minutes [: seconds] [AM/PM]) whose value is the same
@@ -34,8 +35,6 @@ function parseTime(value: string | null | undefined): Parts {
     pm: hours >= 12,
   }
 }
-
-const pad = (n: number) => String(n).padStart(2, '0')
 
 export interface TimePickerProps {
   /** "HH:mm" or "HH:mm:ss" (24-hour), or null when empty. */
@@ -81,7 +80,7 @@ export function TimePicker({
   disabled = false,
   name,
   id,
-  'aria-label': ariaLabel = 'Time',
+  'aria-label': ariaLabelProp,
   'aria-labelledby': ariaLabelledby,
   'aria-describedby': ariaDescribedby,
   'aria-invalid': ariaInvalid,
@@ -91,6 +90,8 @@ export function TimePicker({
   clock = true,
   className,
 }: TimePickerProps) {
+  const labels = useLabels()
+  const ariaLabel = ariaLabelProp ?? labels.time
   const [value, setValue] = useControllableState<string | null>({
     value: valueProp,
     defaultValue,
@@ -227,7 +228,7 @@ export function TimePicker({
   }
 
   const segmentClass =
-    'rounded-xs px-0.5 tabular-nums caret-transparent outline-none text-center focus:bg-brand-400 focus:text-foreground dark:focus:bg-brand-500 data-[placeholder]:text-foreground-muted disabled:cursor-not-allowed'
+    'rounded-xs px-0.5 tabular-nums caret-transparent outline-none text-center focus:bg-brand-400 focus:text-foreground dark:focus:bg-brand-500 data-placeholder:text-foreground-muted disabled:cursor-not-allowed'
 
   const field = (
     <div
@@ -254,8 +255,8 @@ export function TimePicker({
       aria-disabled={disabled || undefined}
       className={cn(
         InputVariants({ size }),
-        'inline-flex w-auto items-center gap-0.5 font-mono outline-none',
-        'has-[:focus-visible]:border-control-hover',
+        'inline-flex w-auto items-center gap-0.5 tabular-nums outline-none',
+        'has-focus-visible:border-control-hover',
         disabled && 'cursor-not-allowed opacity-50',
         className
       )}
@@ -282,7 +283,7 @@ export function TimePicker({
                 aria-valuemin={min}
                 aria-valuemax={max}
                 aria-valuenow={shown ?? undefined}
-                aria-valuetext={shown === null ? 'Empty' : pad(shown)}
+                aria-valuetext={shown === null ? labels.empty : pad(shown)}
                 aria-disabled={disabled || undefined}
                 data-placeholder={shown === null ? '' : undefined}
                 onKeyDown={disabled ? undefined : (event) => onSegmentKeyDown(key, event)}
@@ -303,8 +304,8 @@ export function TimePicker({
           }}
           role="spinbutton"
           tabIndex={disabled ? -1 : 0}
-          aria-label="AM/PM"
-          aria-valuetext={parts.pm ? 'PM' : 'AM'}
+          aria-label={labels.timePeriod}
+          aria-valuetext={parts.pm ? labels.pm : labels.am}
           aria-disabled={disabled || undefined}
           onKeyDown={
             disabled
@@ -324,22 +325,22 @@ export function TimePicker({
           }
           className={cn(segmentClass, 'ml-1')}
         >
-          {parts.pm ? 'PM' : 'AM'}
+          {parts.pm ? labels.pm : labels.am}
         </span>
       )}
       {clock ? (
-        <PopoverTrigger asChild>
+        <Popover.Trigger asChild>
           <button
             type="button"
-            aria-label="Choose time"
+            aria-label={labels.chooseTime}
             disabled={disabled}
             // The field has 1px border + 12px padding, so -9px puts the button 4px from the
             // edge, where the date field's calendar button sits.
-            className={cn(fieldIconButtonClass, '-mr-[9px] ml-1')}
+            className={cn(fieldIconButtonClass, '-mr-2.25 ml-1')}
           >
             <Clock aria-hidden="true" className={fieldIconClass} strokeWidth={fieldIconStrokeWidth} />
           </button>
-        </PopoverTrigger>
+        </Popover.Trigger>
       ) : (
         <Clock
           aria-hidden="true"
@@ -354,7 +355,7 @@ export function TimePicker({
   if (!clock) return field
 
   return (
-    <PopoverRoot
+    <Popover.Root
       open={clockOpen}
       onOpenChange={(open) => {
         setClockOpen(open)
@@ -364,11 +365,11 @@ export function TimePicker({
       {/* Position the dial against the whole field (its right edge with align="end"),
           not against the small clock button inside it, which sits inset by the
           field's padding. */}
-      <PopoverAnchor asChild>{field}</PopoverAnchor>
-      <PopoverContent
+      <Popover.Anchor asChild>{field}</Popover.Anchor>
+      <Popover.Content
         ref={clockContentRef}
         align="end"
-        aria-label="Choose time"
+        aria-label={labels.chooseTime}
         className="w-auto p-2.5 font-sans"
         onOpenAutoFocus={(event) => {
           // Land on the dial, not the first header button.
@@ -416,7 +417,7 @@ export function TimePicker({
                         : 'text-foreground-light hover:text-foreground'
                     )}
                   >
-                    {period}
+                    {period === 'PM' ? labels.pm : labels.am}
                   </button>
                 )
               })}
@@ -433,7 +434,7 @@ export function TimePicker({
             disabled={disabled}
           />
         </div>
-      </PopoverContent>
-    </PopoverRoot>
+      </Popover.Content>
+    </Popover.Root>
   )
 }

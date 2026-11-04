@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { FormField } from '../../atoms/forms/form'
+import { Form } from '../../atoms/forms/form'
 import { FileUpload, type FileUploadProps } from '../../atoms/forms/file-upload'
 import { FormItemLayout } from '../form-item-layout'
 import { type FieldLayoutProps, splitLayout, LabelledControl } from './field-shared'
@@ -19,7 +19,7 @@ export interface FormFileUploadProps
 export function FormFileUpload({ name, dropzoneLabel, ...props }: FormFileUploadProps) {
   const [layoutProps, uploadProps] = splitLayout(props)
   return (
-    <FormField
+    <Form.Field
       name={name}
       render={({ field }) => (
         <FormItemLayout {...layoutProps}>

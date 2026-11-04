@@ -5,7 +5,7 @@ import * as React from 'react'
 import { useControllableState } from '../../../../lib/use-controllable-state'
 import { cn } from '../../../../lib/utils'
 import { useLabels } from '../../../../providers/locale-provider'
-import { PopoverAnchor, PopoverContent, PopoverRoot } from '../../overlay/popover'
+import { Popover } from '../../overlay/popover'
 import { Textarea, type TextareaProps } from '../textarea'
 
 /*
@@ -168,8 +168,8 @@ const Mentions = React.forwardRef<HTMLTextAreaElement, MentionsProps>(
     const activeOption = open ? matches[active] : undefined
 
     return (
-      <PopoverRoot open={open}>
-        <PopoverAnchor asChild>
+      <Popover.Root open={open}>
+        <Popover.Anchor asChild>
           <div className={cn('relative w-full', containerClassName)}>
         <Textarea
           {...props}
@@ -219,13 +219,13 @@ const Mentions = React.forwardRef<HTMLTextAreaElement, MentionsProps>(
           }}
         />
           </div>
-        </PopoverAnchor>
+        </Popover.Anchor>
         {/*
           The list lives in a portal (the library's Popover), so a parent with overflow
           hidden, a dialog or a scroll area can't clip it, and it flips above the field when
           there is no room below. It is never given focus: the textarea keeps it.
         */}
-        <PopoverContent
+        <Popover.Content
           align="start"
           sideOffset={4}
           role="presentation"
@@ -270,8 +270,8 @@ const Mentions = React.forwardRef<HTMLTextAreaElement, MentionsProps>(
               ))
             )}
           </ul>
-        </PopoverContent>
-      </PopoverRoot>
+        </Popover.Content>
+      </Popover.Root>
     )
   }
 )

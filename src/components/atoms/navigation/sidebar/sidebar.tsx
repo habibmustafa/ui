@@ -9,12 +9,13 @@ import * as React from 'react'
 import { getExplicitTabIndex } from '../../../../lib/get-explicit-tab-index'
 import { cn } from '../../../../lib/utils'
 import { useIsMobile } from './use-mobile'
-import { Button } from '../../actions/button/shadcn-button'
+import { Button } from '../../actions/button/button'
 import { Input } from '../../forms/input'
 import { Separator } from '../../layout/separator'
-import { Sheet, SheetContent } from '../../overlay/sheet'
+import { Sheet } from '../../overlay/sheet'
 import { Skeleton } from '../../feedback/skeleton'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../../overlay/tooltip'
+import { Tooltip, TooltipContent } from '../../overlay/tooltip'
+import { useLabels } from '../../../../providers/locale-provider'
 
 const SIDEBAR_COOKIE_NAME = 'sidebar:state'
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
@@ -90,19 +91,6 @@ const SidebarProvider = React.forwardRef<
       return isMobile ? setOpenMobile((open) => !open) : setOpen((open) => !open)
     }, [isMobile, setOpen, setOpenMobile])
 
-    // Adds a keyboard shortcut to toggle the sidebar.
-    // React.useEffect(() => {
-    //   const handleKeyDown = (event: KeyboardEvent) => {
-    //     if (event.key === SIDEBAR_KEYBOARD_SHORTCUT && (event.metaKey || event.ctrlKey)) {
-    //       event.preventDefault()
-    //       toggleSidebar()
-    //     }
-    //   }
-
-    //   window.addEventListener('keydown', handleKeyDown)
-    //   return () => window.removeEventListener('keydown', handleKeyDown)
-    // }, [toggleSidebar])
-
     // We add a state so that we can do data-state="expanded" or "collapsed".
     // This makes it easier to style the sidebar with Tailwind classes.
     const state = open ? 'expanded' : 'collapsed'
@@ -122,7 +110,7 @@ const SidebarProvider = React.forwardRef<
 
     return (
       <SidebarContext.Provider value={contextValue}>
-        <TooltipProvider delayDuration={0}>
+        <Tooltip.Provider delayDuration={0}>
           <div
             style={
               {
@@ -132,7 +120,7 @@ const SidebarProvider = React.forwardRef<
               } as React.CSSProperties
             }
             className={cn(
-              'group/sidebar-wrapper flex min-h-svh w-full has-[[data-variant=inset]]:bg-sidebar',
+              'group/sidebar-wrapper flex min-h-svh w-full has-data-[variant=inset]:bg-sidebar',
               className
             )}
             ref={ref}
@@ -140,7 +128,7 @@ const SidebarProvider = React.forwardRef<
           >
             {children}
           </div>
-        </TooltipProvider>
+        </Tooltip.Provider>
       </SidebarContext.Provider>
     )
   }
@@ -188,7 +176,7 @@ const Sidebar = React.forwardRef<
     if (isMobile) {
       return (
         <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
-          <SheetContent
+          <Sheet.Content
             data-sidebar="sidebar"
             data-mobile="true"
             className="w-(--sidebar-width) bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
@@ -200,7 +188,7 @@ const Sidebar = React.forwardRef<
             side={side}
           >
             <div className="flex h-full w-full flex-col">{children}</div>
-          </SheetContent>
+          </Sheet.Content>
         </Sheet>
       )
     }
@@ -222,7 +210,7 @@ const Sidebar = React.forwardRef<
         <div
           className={cn(
             overflowing ? 'absolute top-0' : 'relative',
-            'duration-100 h-full w-(--sidebar-width) bg-transparent transition-[width] ease-linear',
+            'duration-100 h-full w-(--sidebar-width) bg-transparent transition-[width] ease-soft-in-out',
             'group-data-[collapsible=offcanvas]:w-0',
             'group-data-[side=right]:rotate-180',
             variant === 'floating' || variant === 'inset'
@@ -234,7 +222,7 @@ const Sidebar = React.forwardRef<
           className={cn(
             'absolute top-0 h-full', // sidebar custom changes - We have also removed 'fixed', and 'h-svh'
             //
-            'duration-100 inset-y-0 z-10 hidden w-(--sidebar-width) transition-[left,right,width] ease-linear md:flex',
+            'duration-100 inset-y-0 z-10 hidden w-(--sidebar-width) transition-[left,right,width] ease-soft-in-out md:flex',
             side === 'left'
               ? 'left-0 group-data-[collapsible=offcanvas]:-left-(--sidebar-width)'
               : 'right-0 group-data-[collapsible=offcanvas]:-right-(--sidebar-width)',
@@ -264,22 +252,23 @@ const SidebarTrigger = React.forwardRef<
   React.ComponentProps<typeof Button>
 >(({ className, onClick, ...props }, ref) => {
   const { toggleSidebar } = useSidebar()
+  const labels = useLabels()
 
   return (
     <Button
       ref={ref}
       data-sidebar="trigger"
-      variant="ghost"
-      size="icon"
-      className={cn('h-7 w-7', className)}
+      variant="text"
+      size="tiny"
+      icon={<PanelLeft />}
+      className={cn('h-7 w-7 p-0', className)}
       onClick={(event) => {
         onClick?.(event)
         toggleSidebar()
       }}
       {...props}
     >
-      <PanelLeft />
-      <span className="sr-only">Toggle Sidebar</span>
+      <span className="sr-only">{labels.toggleSidebar}</span>
     </Button>
   )
 })
@@ -288,17 +277,18 @@ SidebarTrigger.displayName = 'SidebarTrigger'
 const SidebarRail = React.forwardRef<HTMLButtonElement, React.ComponentProps<'button'>>(
   ({ className, ...props }, ref) => {
     const { toggleSidebar } = useSidebar()
+    const labels = useLabels()
 
     return (
       <button
         ref={ref}
         data-sidebar="rail"
-        aria-label="Toggle Sidebar"
+        aria-label={labels.toggleSidebar}
         tabIndex={-1}
         onClick={toggleSidebar}
-        title="Toggle Sidebar"
+        title={labels.toggleSidebar}
         className={cn(
-          'absolute inset-y-0 z-20 hidden w-4 -translate-x-1/2 transition-all ease-linear after:absolute after:inset-y-0 after:left-1/2 after:w-[2px] hover:after:bg-sidebar-border group-data-[side=left]:-right-4 group-data-[side=right]:left-0 sm:flex',
+          'absolute inset-y-0 z-20 hidden w-4 -translate-x-1/2 transition-all ease-soft-in-out after:absolute after:inset-y-0 after:left-1/2 after:w-0.5 hover:after:bg-sidebar-border group-data-[side=left]:-right-4 group-data-[side=right]:left-0 sm:flex',
           'in-data-[side=left]:cursor-w-resize in-data-[side=right]:cursor-e-resize',
           '[[data-side=left][data-state=collapsed]_&]:cursor-e-resize [[data-side=right][data-state=collapsed]_&]:cursor-w-resize',
           'group-data-[collapsible=offcanvas]:translate-x-0 group-data-[collapsible=offcanvas]:after:left-full group-data-[collapsible=offcanvas]:hover:bg-sidebar',
@@ -433,7 +423,7 @@ const SidebarGroupLabel = React.forwardRef<
       ref={ref}
       data-sidebar="group-label"
       className={cn(
-        'duration-100 flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium text-sidebar-foreground/70 outline-hidden ring-sidebar-ring transition-[margin,opa] ease-linear focus-visible:ring-2 [&>svg]:size-5 [&>svg]:shrink-0',
+        'duration-100 flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium text-sidebar-foreground/70 outline-hidden ring-sidebar-ring transition-[margin,opa] ease-soft-in-out focus-visible:ring-2 [&>svg]:size-5 [&>svg]:shrink-0',
         'group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0',
         className
       )}
@@ -597,8 +587,8 @@ const SidebarMenuButton = React.forwardRef<
 
     return (
       <Tooltip>
-        <TooltipTrigger asChild>{button}</TooltipTrigger>
-        <TooltipContent
+        <Tooltip.Trigger asChild>{button}</Tooltip.Trigger>
+        <Tooltip.Content
           side="right"
           align="center"
           hidden={state !== 'collapsed' || isMobile}

@@ -1,7 +1,8 @@
 import { forwardRef } from 'react'
 
-import { AlertDescription, AlertRoot as Alert, AlertTitle } from '../../atoms/feedback/alert'
+import { Alert } from '../../atoms/feedback/alert'
 import { cn } from '../../../lib/utils'
+import { useLabels } from '../../../providers/locale-provider'
 import { TYPE_LABEL, TYPE_TO_VARIANT } from './admonition-constants'
 import type { AdmonitionLayout, AdmonitionProps, AdmonitionType } from './admonition-types'
 import { AdmonitionTypeIcon } from './admonition-icons'
@@ -13,13 +14,13 @@ const admonitionBodyClassName = [
   'mb-0 [&_p]:mt-0 [&_p]:mb-1.5 [&_p:last-child]:mb-0',
   '[&_ul]:my-1.5 [&_ol]:my-1.5 [&_li]:my-0.5',
   '[&_ul]:list-none [&_ol]:list-decimal [&_ul]:pl-4 [&_ol]:pl-4',
-  '[&_ul>li]:relative [&_ul>li]:before:absolute [&_ul>li]:before:left-[-1rem] [&_ul>li]:before:top-2.5 [&_ul>li]:before:h-0.5 [&_ul>li]:before:w-2 [&_ul>li]:before:rounded [&_ul>li]:before:bg-border-strong [&_ul>li]:before:content-[""]',
+  '[&_ul>li]:relative [&_ul>li]:before:absolute [&_ul>li]:before:-left-4 [&_ul>li]:before:top-2.5 [&_ul>li]:before:h-0.5 [&_ul>li]:before:w-2 [&_ul>li]:before:rounded [&_ul>li]:before:bg-border-strong [&_ul>li]:before:content-[""]',
 ].join(' ')
 
 export const Admonition = forwardRef<
-  React.ComponentRef<typeof Alert>,
+  React.ComponentRef<typeof Alert.Root>,
   Omit<
-    React.ComponentPropsWithoutRef<typeof Alert>,
+    React.ComponentPropsWithoutRef<typeof Alert.Root>,
     keyof AdmonitionProps | 'children' | 'variant'
   > &
     AdmonitionProps
@@ -40,10 +41,10 @@ export const Admonition = forwardRef<
     },
     ref
   ) => {
-    const label = TYPE_LABEL[type]
+    const label = useLabels()[TYPE_LABEL[type]]
 
     return (
-      <Alert
+      <Alert.Root
         ref={ref}
         {...props}
         aria-label={label}
@@ -81,28 +82,28 @@ export const Admonition = forwardRef<
               )}
             >
               {title && (
-                <AlertTitle
+                <Alert.Title
                   {...childProps?.title}
-                  className={cn('!mt-0 text-foreground', childProps?.title?.className)}
+                  className={cn('mt-0! text-foreground', childProps?.title?.className)}
                 >
                   {title}
-                </AlertTitle>
+                </Alert.Title>
               )}
               {description && (
-                <AlertDescription
+                <Alert.Description
                   {...childProps?.description}
                   className={cn(admonitionBodyClassName, childProps?.description?.className)}
                 >
                   {description}
-                </AlertDescription>
+                </Alert.Description>
               )}
               {children && (
-                <AlertDescription
+                <Alert.Description
                   {...childProps?.description}
                   className={cn(admonitionBodyClassName, childProps?.description?.className)}
                 >
                   {children}
-                </AlertDescription>
+                </Alert.Description>
               )}
             </div>
             {actions && (
@@ -120,7 +121,7 @@ export const Admonition = forwardRef<
             )}
           </div>
         </div>
-      </Alert>
+      </Alert.Root>
     )
   }
 )

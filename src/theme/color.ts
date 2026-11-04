@@ -65,7 +65,7 @@ export function toGamut(color: Oklch): Oklch {
   return { l, c: low, h: color.h }
 }
 
-export function oklchToRgb(color: Oklch): Rgb {
+function oklchToRgb(color: Oklch): Rgb {
   return oklchToRgbRaw(toGamut(color)).map((v) => clamp(v, 0, 1)) as Rgb
 }
 

@@ -27,7 +27,7 @@ export default function DrawerDialogDemo() {
         <Dialog.Trigger asChild>
           <Button variant="outline">Edit profile</Button>
         </Dialog.Trigger>
-        <Dialog.Content className="sm:max-w-[425px]">
+        <Dialog.Content className="sm:max-w-106.25">
           <Dialog.Header>
             <Dialog.Title>Edit profile</Dialog.Title>
             <Dialog.Description>

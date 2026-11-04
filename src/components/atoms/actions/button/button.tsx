@@ -30,11 +30,11 @@ const buttonVariants = cva(
       variant: {
         primary: `
           bg-primary dark:bg-primary-solid
-          hover:bg-primary/90 dark:hover:bg-[oklch(from_var(--primary-solid)_0.6_c_h)]
-          text-primary-foreground dark:text-white
-          border-primary dark:border-[oklch(from_var(--primary-solid)_0.62_c_h)]
-          hover:border-primary dark:hover:border-[oklch(from_var(--primary-solid)_0.68_c_h)]
-          data-[state=open]:bg-primary/90 dark:data-[state=open]:bg-[oklch(from_var(--primary-solid)_0.6_c_h)]
+          hover:bg-primary/90 dark:hover:bg-primary-solid-hover
+          text-primary-foreground dark:text-primary-solid-foreground
+          border-primary dark:border-primary-solid-border
+          hover:border-primary dark:hover:border-primary-solid-border-hover
+          data-[state=open]:bg-primary/90 dark:data-[state=open]:bg-primary-solid-hover
           `,
         default: `
           text-foreground
@@ -115,7 +115,7 @@ const buttonVariants = cva(
         true: 'rounded-full',
       },
     },
-    // No cva-level defaults: Button itself defaults `size` to "small" and `variant` to
+    // No cva-level defaults: Button itself defaults `size` to "tiny" and `variant` to
     // "default". (Upstream nested a `defaultVariants` block inside `variants`, which cva
     // read as a variant *named* defaultVariants — it leaked into ButtonProps as a bogus
     // `defaultVariants` prop and set no defaults.)
@@ -125,16 +125,16 @@ const buttonVariants = cva(
 const IconContainerVariants = cva('inline-flex items-center justify-center shrink-0', {
   variants: {
     size: {
-      tiny: '[&_svg]:h-[14px] [&_svg]:w-[14px]',
-      small: '[&_svg]:h-[18px] [&_svg]:w-[18px]',
-      medium: '[&_svg]:h-[20px] [&_svg]:w-[20px]',
-      large: '[&_svg]:h-[20px] [&_svg]:w-[20px]',
-      xlarge: '[&_svg]:h-[24px] [&_svg]:w-[24px]',
-      xxlarge: '[&_svg]:h-[30px] [&_svg]:w-[30px]',
-      xxxlarge: '[&_svg]:h-[42px] [&_svg]:w-[42px]',
+      tiny: '[&_svg]:h-3.5 [&_svg]:w-3.5',
+      small: '[&_svg]:h-4.5 [&_svg]:w-4.5',
+      medium: '[&_svg]:h-5 [&_svg]:w-5',
+      large: '[&_svg]:h-5 [&_svg]:w-5',
+      xlarge: '[&_svg]:h-6 [&_svg]:w-6',
+      xxlarge: '[&_svg]:h-7.5 [&_svg]:w-7.5',
+      xxxlarge: '[&_svg]:h-10.5 [&_svg]:w-10.5',
     },
     variant: {
-      primary: 'text-primary-foreground/80 dark:text-white/80',
+      primary: 'text-primary-foreground/80 dark:text-primary-solid-foreground/80',
       default: 'text-foreground-lighter',
       secondary: 'text-background',
       alternative: 'text-foreground-lighter',
@@ -152,7 +152,7 @@ export type LoadingVariantProps = VariantProps<typeof loadingVariants>
 const loadingVariants = cva('', {
   variants: {
     variant: {
-      primary: 'text-primary-foreground/80 dark:text-white/80',
+      primary: 'text-primary-foreground/80 dark:text-primary-solid-foreground/80',
       default: 'text-foreground-lighter',
       secondary: 'text-background',
       alternative: 'text-foreground-lighter',
@@ -195,7 +195,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
       asChild = false,
-      size = 'small',
+      size = 'tiny',
       variant = 'default',
       children,
       loading,

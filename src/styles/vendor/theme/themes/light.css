@@ -49,9 +49,6 @@
   --code-block-2: 33.1deg 80% 52.9%;
   --code-block-1: 170.6deg 43.2% 51%;
 
-  --code-token-string: #c46a0a;
-  --code-token-string-expression: #c46a0a;
-
   /* Stepped numeric scales (per-theme literals; mapped in theme.css) */
   --secondary-default: 174deg 100% 30%;
   --secondary-400: 173deg 100% 10.5%;
@@ -79,4 +76,8 @@
   --destructive-400: 7.1deg 91.3% 91%;
   --destructive-300: 7.1deg 100% 96.7%;
   --destructive-200: 0deg 100% 99.4%;
+
+  /* An invalid field: -200/-400 are near-white on the light canvas, so step up one. */
+  --invalid-bg: hsl(var(--destructive-300));
+  --invalid-border: hsl(var(--destructive-500));
 }

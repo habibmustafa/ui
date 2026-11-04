@@ -6,3 +6,8 @@ export const EASE_SOFT_IN_OUT = [0.65, 0, 0.35, 1] as const
 
 export const DURATION_ENTER = 0.22
 export const DURATION_EXIT = 0.15
+
+export const prefersReducedMotion = () =>
+  typeof window !== 'undefined' &&
+  typeof window.matchMedia === 'function' &&
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches

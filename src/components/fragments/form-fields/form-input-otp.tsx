@@ -1,4 +1,4 @@
-import { FormControl, FormField } from '../../atoms/forms/form'
+import { Form } from '../../atoms/forms/form'
 import { InputOTP } from '../../atoms/forms/input-otp'
 import { FormItemLayout } from '../form-item-layout'
 import { type FieldLayoutProps, splitLayout } from './field-shared'
@@ -21,11 +21,11 @@ export interface FormInputOTPProps extends FieldLayoutProps {
 export function FormInputOTP({ name, ...props }: FormInputOTPProps) {
   const [layoutProps, otpProps] = splitLayout(props)
   return (
-    <FormField
+    <Form.Field
       name={name}
       render={({ field }) => (
         <FormItemLayout {...layoutProps}>
-          <FormControl>
+          <Form.Control>
             <InputOTP
               {...otpProps}
               ref={field.ref}
@@ -34,7 +34,7 @@ export function FormInputOTP({ name, ...props }: FormInputOTPProps) {
               onChange={field.onChange}
               onBlur={field.onBlur}
             />
-          </FormControl>
+          </Form.Control>
         </FormItemLayout>
       )}
     />

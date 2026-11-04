@@ -8,12 +8,6 @@ import { z } from 'zod'
 import {
   Button,
   Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
   Input,
 } from '../../../src'
 
@@ -34,7 +28,7 @@ export default function InputForm() {
   function onSubmit(data: z.infer<typeof FormSchema>) {
     toast('You submitted the following values:', {
       description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-foreground p-4">
+        <pre className="mt-2 w-85 rounded-md bg-foreground p-4">
           <code className="text-background">{JSON.stringify(data, null, 2)}</code>
         </pre>
       ),
@@ -44,18 +38,18 @@ export default function InputForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
-        <FormField
+        <Form.Field
           control={form.control}
           name="username"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
+            <Form.Item>
+              <Form.Label>Username</Form.Label>
+              <Form.Control>
                 <Input placeholder="shadcn" {...field} />
-              </FormControl>
-              <FormDescription>This is your public display name.</FormDescription>
-              <FormMessage />
-            </FormItem>
+              </Form.Control>
+              <Form.Description>This is your public display name.</Form.Description>
+              <Form.Message />
+            </Form.Item>
           )}
         />
         <Button type="submit" variant="secondary">

@@ -2,7 +2,8 @@
  * The small icon button at the end of a picker field (calendar, clock): one size, one hover
  * and one icon weight for all of them, so a date field and a time field side by side read as
  * the same kind of control. The caller positions it (the date field sets it absolutely,
- * the time field pulls it into the padding) so it sits 4px from the field's edge.
+ * the time field pulls it into the padding) so the 16px glyph sits 8px from the field's edge,
+ * the same inset as every other trailing icon (Select chevron, password eye, …).
  */
 
 export const fieldIconButtonClass =

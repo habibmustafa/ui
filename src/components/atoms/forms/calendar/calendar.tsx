@@ -1,10 +1,10 @@
 'use client'
 
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from 'lucide-react'
 import { DayPicker, type DateLib, type Modifiers } from 'react-day-picker'
 
 import { cn } from '../../../../lib/utils'
-import { buttonVariants } from '../../actions/button/shadcn-button'
+import { buttonVariants } from '../../actions/button/button'
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>
 
@@ -53,6 +53,9 @@ function Calendar({
     month,
     month_caption,
     caption_label,
+    dropdowns,
+    dropdown_root,
+    dropdown,
     button_previous,
     button_next,
     month_grid,
@@ -88,7 +91,15 @@ function Calendar({
         ),
         month: cn('space-y-4', month),
         month_caption: cn('flex justify-center pt-1 relative items-center', month_caption),
-        caption_label: cn('text-sm font-medium', caption_label),
+        caption_label: cn('flex items-center gap-1 text-sm font-medium', caption_label),
+        // `captionLayout="dropdown"`: the native <select> sits invisibly over the label, so
+        // the label and its chevron stay in the calendar's own style.
+        dropdowns: cn('flex items-center justify-center gap-1.5', dropdowns),
+        dropdown_root: cn(
+          'relative inline-flex items-center rounded-md has-focus-visible:ring-2 ring-border-control',
+          dropdown_root
+        ),
+        dropdown: cn('absolute inset-0 z-10 w-full cursor-pointer opacity-0', dropdown),
         button_previous: cn(
           buttonVariants({ variant: 'outline' }),
           'h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100',
@@ -111,13 +122,13 @@ function Calendar({
         week: cn('flex w-full mt-2', week),
         day: cn(
           'text-center text-sm p-0 relative',
-          'first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md',
+          'first:has-aria-[selected]:rounded-l-md last:has-aria-[selected]:rounded-r-md',
           'focus-within:relative focus-within:z-20',
           'w-9 box-border',
           day
         ),
         day_button: cn(
-          buttonVariants({ variant: 'ghost' }),
+          buttonVariants({ variant: 'text' }),
           'h-9 w-9 p-0 font-normal rounded-md aria-selected:opacity-100',
           // Keep selected days from picking up ghost hover bg/text
           'aria-selected:hover:bg-transparent aria-selected:hover:text-inherit',
@@ -132,7 +143,7 @@ function Calendar({
         outside: cn(
           // Muted color only (5.4:1+): stacking opacity-50 on top dropped these clickable
           // days to ~2:1. Disabled days keep their opacity; they're exempt from contrast.
-          'text-foreground-muted has-[[aria-selected]]:text-foreground',
+          'text-foreground-muted has-aria-[selected]:text-foreground',
           outside
         ),
         disabled: cn('text-foreground-muted opacity-50', disabled),
@@ -170,6 +181,12 @@ function Calendar({
             return (
               <ChevronLeft className={cn('h-4 w-4 pointer-events-none', className)} {...rest} />
             )
+          } else if (props.orientation === 'down') {
+            return (
+              <ChevronDown className={cn('h-4 w-4 pointer-events-none', className)} {...rest} />
+            )
+          } else if (props.orientation === 'up') {
+            return <ChevronUp className={cn('h-4 w-4 pointer-events-none', className)} {...rest} />
           } else {
             return (
               <ChevronRight className={cn('h-4 w-4 pointer-events-none', className)} {...rest} />

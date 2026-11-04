@@ -14,7 +14,6 @@ import {
   Sheet,
   SonnerToaster,
   ThemeToggle,
-  useTheme,
 } from "../src";
 import { CATALOG, type CatalogGroup } from "./catalog";
 import { PAGES } from "./site-pages";
@@ -32,6 +31,7 @@ import { findComponent } from "./registry";
 import { BLOCKS } from "./blocks/registry";
 import { SiteTheme } from './site-theme';
 import { PageHeader } from "./page-header";
+import { GITHUB_URL } from './package-info';
 
 // Component pages carry the example loaders (and, lazily, the props tables); none
 // of that belongs in the first chunk every page loads.
@@ -86,7 +86,6 @@ function prefetchRoute(to: string) {
 }
 setPrefetcher(prefetchRoute);
 
-const GITHUB_URL = "https://github.com/habibmustafa/ui";
 
 
 /*
@@ -283,7 +282,7 @@ export function RouteProgress({ active }: { active: boolean }) {
     <div
       role="progressbar"
       aria-label="Loading page"
-      className="pointer-events-none fixed inset-x-0 top-0 z-[100] h-[3px] origin-left bg-brand-default shadow-[0_0_8px] shadow-brand-default/60"
+      className="pointer-events-none fixed inset-x-0 top-0 z-100 h-0.75 origin-left bg-brand-default shadow-[0_0_8px] shadow-brand-default/60"
       style={{
         transform: `scaleX(${phase === "start" ? 0 : phase === "loading" ? 0.9 : 1})`,
         opacity: phase === "done" ? 0 : 1,
@@ -317,8 +316,14 @@ function Header() {
       />
       <div className="mx-auto flex h-14 max-w-[1600px] items-center gap-3 px-4 sm:px-6">
         <div className="flex items-center gap-3">
-          <Sheet.Root open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
-            <Sheet.Trigger asChild>
+          <Sheet
+            bare
+            open={mobileNavOpen}
+            onOpenChange={setMobileNavOpen}
+            side="left"
+            title="Navigation"
+            className="w-72 overflow-y-auto px-6"
+            trigger={
               <button
                 type="button"
                 aria-label="Open navigation"
@@ -326,12 +331,10 @@ function Header() {
               >
                 <Menu className="h-4.5 w-4.5" />
               </button>
-            </Sheet.Trigger>
-            <Sheet.Content side="left" className="w-72 overflow-y-auto px-6">
-              <Sheet.Title className="sr-only">Navigation</Sheet.Title>
-              <SidebarNav onNavigate={() => setMobileNavOpen(false)} />
-            </Sheet.Content>
-          </Sheet.Root>
+            }
+          >
+            <SidebarNav onNavigate={() => setMobileNavOpen(false)} />
+          </Sheet>
 
           <Link
             to="/"
@@ -499,7 +502,6 @@ export function documentTitle(pathname: string) {
 
 export function App() {
   const { path } = useRouter();
-  const { resolvedTheme } = useTheme();
 
   // Warm the shared documentation shell without downloading unrelated forms,
   // charts and pickers. Explicit hover/focus/touch still warms each exact target.
@@ -572,7 +574,7 @@ export function App() {
       <PageErrorBoundary resetKey={blockPreview}>
         <Suspense fallback={<div className="min-h-screen bg-background" />}><BlockPreviewPage id={blockPreview} /></Suspense>
       </PageErrorBoundary>
-      <SonnerToaster theme={resolvedTheme} />
+      <SonnerToaster />
     </>;
   }
 
@@ -591,7 +593,7 @@ export function App() {
           </div>
         </main>
       </div>
-      <SonnerToaster theme={resolvedTheme} />
+      <SonnerToaster />
     </div>
   );
 }

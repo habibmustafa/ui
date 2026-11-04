@@ -42,7 +42,7 @@ export interface DateRangePickerProps
   maxDate?: Date
   /** Quick ranges listed above the calendar. */
   presets?: readonly DateRangePreset[]
-  /** Shows a Clear button in the popover. @default true */
+  /** Shows a × on the trigger (one click resets the range) and a Clear button in the popover. @default true */
   clearable?: boolean
   /** Closes the popover once both ends are chosen. @default true */
   closeOnComplete?: boolean
@@ -128,6 +128,7 @@ const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePickerProps
           variant: 'outline',
           disabled,
           isInvalid: invalid,
+          onClear: clearable && (range?.from || range?.to) ? () => setRange(undefined) : undefined,
           id,
           ...accessibleName,
           'aria-labelledby': accessibleLabelledby,

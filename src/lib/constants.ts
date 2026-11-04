@@ -14,11 +14,11 @@ export const SIZE = {
     xlarge: 'px-6 py-3',
   },
   height: {
-    tiny: 'h-[26px]',
-    small: 'h-[34px]',
-    medium: 'h-[38px]',
-    large: 'h-[42px]',
-    xlarge: 'h-[50px]',
+    tiny: 'h-6.5',
+    small: 'h-8.5',
+    medium: 'h-9.5',
+    large: 'h-10.5',
+    xlarge: 'h-12.5',
   },
 }
 

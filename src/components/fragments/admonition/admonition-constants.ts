@@ -1,4 +1,5 @@
 import type { AdmonitionType } from './admonition-types'
+import type { Labels } from '../../../providers/locale-provider'
 
 export const TYPE_TO_VARIANT = {
   note: 'default',
@@ -12,12 +13,12 @@ export const TYPE_TO_VARIANT = {
 } as const satisfies Record<AdmonitionType, 'default' | 'warning' | 'destructive'>
 
 export const TYPE_LABEL = {
-  note: 'Note',
-  caution: 'Caution',
-  danger: 'Danger',
-  deprecation: 'Deprecated',
-  default: 'Note',
-  warning: 'Warning',
-  destructive: 'Danger',
-  success: 'Success',
-} as const satisfies Record<AdmonitionType, string>
+  note: 'admonitionNote',
+  caution: 'admonitionCaution',
+  danger: 'admonitionDanger',
+  deprecation: 'admonitionDeprecated',
+  default: 'admonitionNote',
+  warning: 'admonitionWarning',
+  destructive: 'admonitionDanger',
+  success: 'admonitionSuccess',
+} as const satisfies Record<AdmonitionType, keyof Labels>

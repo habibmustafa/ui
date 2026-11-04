@@ -84,7 +84,7 @@ export function AdmonitionTypeIcon({ type }: { type: AdmonitionType }) {
   return (
     <span
       className={cn(
-        'inline-flex shrink-0 items-center justify-center size-[23px] p-1 rounded-sm [&>svg]:size-full',
+        'inline-flex shrink-0 items-center justify-center size-5.75 p-1 rounded-sm [&>svg]:size-full',
         ICON_BADGE_CLASS[visual]
       )}
     >

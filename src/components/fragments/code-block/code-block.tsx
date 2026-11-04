@@ -3,7 +3,7 @@
 // @ts-ignore no upstream type declarations
 import curl from 'highlightjs-curl'
 import { Check, Copy } from 'lucide-react'
-import { Children, useState, type ReactNode } from 'react'
+import { Children, useEffect, useState, type ReactNode } from 'react'
 import type { Light as LightType, SyntaxHighlighterProps } from 'react-syntax-highlighter'
 // @ts-ignore no type declarations for this subpath — typed via `LightType` below instead
 import LightImpl from 'react-syntax-highlighter/dist/esm/light'
@@ -30,10 +30,10 @@ const SyntaxHighlighter = LightImpl as typeof LightType
 
 import { cn } from '../../../lib/utils'
 import { copyToClipboard } from '../../../lib/copy-to-clipboard'
-import { useTheme } from '../../../providers'
 import { Button } from '../../atoms/actions/button'
 import { FloatingPlate } from '../../atoms/layout/floating-plate'
-import { monokaiCustomTheme } from './code-block-theme'
+import { codeBlockTheme } from './code-block-theme'
+import { useLabels } from '../../../providers/locale-provider'
 
 const codeBlockLangs = [
   'js',
@@ -129,11 +129,18 @@ export const CodeBlock = ({
   onCopyCallback = () => {},
   handleCopy,
 }: CodeBlockProps) => {
-  const { resolvedTheme } = useTheme()
-  const isDarkTheme = resolvedTheme === 'dark'
-  const monokaiTheme = theme ?? monokaiCustomTheme(isDarkTheme)
+  const highlightTheme = theme ?? codeBlockTheme
 
+  const labels = useLabels()
   const [copied, setCopied] = useState(false)
+
+  // Same 1500ms as CopyButton; cleared on unmount. (CopyButton itself can't be used:
+  // `handleCopy` replaces the clipboard write, which CopyButton always does.)
+  useEffect(() => {
+    if (!copied) return
+    const timer = setTimeout(() => setCopied(false), 1500)
+    return () => clearTimeout(timer)
+  }, [copied])
 
   const onSelectCopy = (value?: string) => {
     if (value) {
@@ -145,7 +152,6 @@ export const CodeBlock = ({
     }
     setCopied(true)
     onCopyCallback()
-    setTimeout(() => setCopied(false), 1000)
   }
 
   // Extract string when `children` has a single string node
@@ -210,9 +216,9 @@ export const CodeBlock = ({
             language={lang}
             wrapLines={wrapLines}
             wrapLongLines={wrapLongLines}
-            style={monokaiTheme}
+            style={highlightTheme}
             className={cn(
-              'code-block border border-surface p-4 w-full my-0! !bg-surface-100 outline-hidden focus:border-foreground-lighter/50',
+              'code-block border border-surface p-4 w-full my-0! bg-surface-100! outline-hidden focus:border-foreground-lighter/50',
               `${!title ? 'rounded-md' : 'rounded-t-none rounded-b-md'}`,
               `${!showLineNumbers ? 'pl-6' : ''}`,
               className
@@ -247,7 +253,7 @@ export const CodeBlock = ({
               paddingLeft: '4px',
               paddingRight: '4px',
               marginRight: '12px',
-              color: styleConfig?.lineNumber ?? '#828282',
+              color: styleConfig?.lineNumber ?? 'var(--code-token-comment)',
               textAlign: 'center',
               fontSize: large ? 14 : 12,
               paddingTop: '4px',
@@ -272,17 +278,16 @@ export const CodeBlock = ({
             <FloatingPlate
               className={cn(
                 'absolute right-2 top-2 bg-surface-100 dark:bg-200',
-                'opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition',
-                isDarkTheme && 'dark'
+                'opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition'
               )}
             >
               <Button
                 className="px-1.5 dark:bg-200! dark:hover:bg-button! hover:bg-alternative!"
                 icon={copied ? <Check /> : <Copy />}
                 onClick={() => onSelectCopy(value || children)}
-                aria-label={copied ? 'Copied' : 'Copy'}
+                aria-label={copied ? labels.copied : labels.copy}
               >
-                {copied ? 'Copied' : ''}
+                {copied ? labels.copied : ''}
               </Button>
             </FloatingPlate>
           ) : null}

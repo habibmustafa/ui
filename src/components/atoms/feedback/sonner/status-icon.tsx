@@ -2,7 +2,7 @@ import { forwardRef, type SVGProps } from 'react'
 
 import { cn } from '../../../../lib/utils'
 
-export interface StatusIconProps {
+interface StatusIconProps {
   hideBackground?: boolean
 }
 

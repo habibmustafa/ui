@@ -4,7 +4,7 @@ export default function ResizableHandlePropsDemo() {
   return (
     <Resizable
       orientation="horizontal"
-      className="min-h-[200px] max-w-md rounded-lg border"
+      className="min-h-50 max-w-md rounded-lg border"
       panels={[
         {
           defaultSize: '25',

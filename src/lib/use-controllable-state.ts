@@ -21,10 +21,12 @@ export function useControllableState<T>({
 
   const setValue = useCallback(
     (next: T) => {
-      if (!isControlled) setInternal(next)
+      // Always track the last value, even while controlled: if the parent later passes
+      // `undefined` (e.g. a form field reset), we fall back to this, not to a stale one.
+      setInternal(next)
       onChangeRef.current?.(next)
     },
-    [isControlled]
+    []
   )
 
   return [current, setValue] as const

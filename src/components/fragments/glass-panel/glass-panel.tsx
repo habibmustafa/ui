@@ -3,7 +3,7 @@
 import * as React from 'react'
 
 import { cn } from '../../../lib/utils'
-import { useTheme } from '../../../providers'
+import { useResolvedThemeOptional } from '../../../providers/theme-provider'
 
 interface Props {
   title: string
@@ -51,7 +51,7 @@ const LogoComponent = ({
   alt: string
 }) => (
   <div className={cn('relative box-content p-4 pb-0 md:p-6 md:pb-0', wrapperClassName)}>
-    <div className="relative h-[33px] w-auto max-w-[145px]">
+    <div className="relative h-8.25 w-auto max-w-36.25">
       <img
         src={logoImage}
         alt={alt}
@@ -75,7 +75,7 @@ export const GlassPanel = ({
   badge,
   className,
 }: Props) => {
-  const { resolvedTheme } = useTheme()
+  const resolvedTheme = useResolvedThemeOptional()
   const logoAlt = name ?? ''
 
   return (
@@ -113,7 +113,7 @@ export const GlassPanel = ({
         <img
           src={`${header}`}
           className="transition-all left-0 -top-64 w-full
-            duration-700 ease-out
+            duration-700 ease-soft-out
             "
         />
       )}

@@ -12,7 +12,7 @@ const chartData = [
 export default function ChartPropsDemo() {
   return (
     <Chart
-      className="min-h-[200px] w-full"
+      className="min-h-50 w-full"
       data={chartData}
       xKey="month"
       series={[

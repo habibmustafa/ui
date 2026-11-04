@@ -13,6 +13,7 @@ import {
 } from './dialog-parts'
 import { Button } from '../../actions/button'
 import { cn } from '../../../../lib/utils'
+import { useLabels } from '../../../../providers/locale-provider'
 import { useControllableState } from '../../../../lib/use-controllable-state'
 
 type ButtonVariant = React.ComponentProps<typeof Button>['variant']
@@ -54,9 +55,9 @@ export interface DialogProps {
   footer?: Slot | null
   onConfirm?: () => void | Promise<void>
   onCancel?: () => void
-  /** @default "Confirm" */
+  /** @default "Confirm", from LocaleProvider */
   confirmText?: React.ReactNode
-  /** @default "Cancel" */
+  /** @default "Cancel", from LocaleProvider */
   cancelText?: React.ReactNode
   /** Visual variant of the confirm Button. @default "primary" */
   confirmType?: ButtonVariant
@@ -64,6 +65,12 @@ export interface DialogProps {
   closeOnConfirm?: boolean
   /** Allow closing via overlay click / Escape. @default true */
   dismissible?: boolean
+  /**
+   * Drops the header, separator, body padding and footer: only `children` render, with
+   * `title` kept as a visually hidden name for assistive tech. For content that brings its
+   * own layout (a command palette, a navigation list).
+   */
+  bare?: boolean
   className?: string
   classNames?: DialogClassNames
   slotProps?: {
@@ -82,15 +89,17 @@ export function DialogHybrid({
   footer,
   onConfirm,
   onCancel,
-  confirmText = 'Confirm',
-  cancelText = 'Cancel',
+  confirmText,
+  cancelText,
   confirmType = 'primary',
   closeOnConfirm = true,
   dismissible = true,
+  bare = false,
   className,
   classNames,
   slotProps,
 }: DialogProps) {
+  const labels = useLabels()
   const [open, setOpen] = useControllableState({
     value: openProp,
     defaultValue: defaultOpen,
@@ -135,10 +144,10 @@ export function DialogHybrid({
           ? (
               <>
                 <Button variant="text" onClick={handleCancel} disabled={pending}>
-                  {cancelText}
+                  {cancelText ?? labels.cancel}
                 </Button>
                 <Button variant={confirmType} onClick={handleConfirm} loading={pending}>
-                  {confirmText}
+                  {confirmText ?? labels.confirm}
                 </Button>
               </>
             )
@@ -169,24 +178,37 @@ export function DialogHybrid({
         }}
         {...(description == null && { 'aria-describedby': undefined })}
       >
-        <DialogHeader className={classNames?.header}>
-          {/* Radix requires a Title for a11y even when the caller doesn't show one. */}
-          <DialogTitle className={cn(!title && 'sr-only', classNames?.title)}>
-            {title ?? 'Dialog'}
-          </DialogTitle>
-          {description != null && (
-            <DialogDescription className={classNames?.description}>{description}</DialogDescription>
-          )}
-        </DialogHeader>
-
-        {bodyNode != null && (
+        {bare ? (
           <>
-            <DialogSectionSeparator />
-            <DialogSection className={classNames?.body}>{bodyNode}</DialogSection>
+            <DialogTitle className="sr-only">{title ?? 'Dialog'}</DialogTitle>
+            {bodyNode}
+          </>
+        ) : (
+          <>
+            <DialogHeader className={classNames?.header}>
+              {/* Radix requires a Title for a11y even when the caller doesn't show one. */}
+              <DialogTitle className={cn(!title && 'sr-only', classNames?.title)}>
+                {title ?? 'Dialog'}
+              </DialogTitle>
+              {description != null && (
+                <DialogDescription className={classNames?.description}>
+                  {description}
+                </DialogDescription>
+              )}
+            </DialogHeader>
+
+            {bodyNode != null && (
+              <>
+                <DialogSectionSeparator />
+                <DialogSection className={classNames?.body}>{bodyNode}</DialogSection>
+              </>
+            )}
+
+            {footerNode != null && (
+              <DialogFooter className={classNames?.footer}>{footerNode}</DialogFooter>
+            )}
           </>
         )}
-
-        {footerNode != null && <DialogFooter className={classNames?.footer}>{footerNode}</DialogFooter>}
       </DialogContent>
     </DialogRoot>
   )

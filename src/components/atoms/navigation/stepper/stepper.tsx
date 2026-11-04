@@ -2,6 +2,7 @@ import { Check } from 'lucide-react'
 import * as React from 'react'
 
 import { cn } from '../../../../lib/utils'
+import { useLabels } from '../../../../providers/locale-provider'
 
 /*
  * Progress through a fixed sequence of steps. Rendered as an ordered list; the current
@@ -42,7 +43,7 @@ export interface StepperProps extends Omit<React.HTMLAttributes<HTMLOListElement
 }
 
 const indicatorClasses: Record<StepState, string> = {
-  completed: 'border-primary-solid bg-primary-solid text-white',
+  completed: 'border-primary-solid bg-primary-solid text-primary-solid-foreground',
   current: 'border-brand-default bg-background text-foreground ring-2 ring-brand-default/30',
   upcoming: 'border-strong bg-surface-100 text-foreground-lighter',
 }
@@ -57,11 +58,13 @@ const Stepper = React.forwardRef<HTMLOListElement, StepperProps>(
       stateLabels,
       className,
       classNames,
-      'aria-label': ariaLabel = 'Progress',
+      'aria-label': ariaLabelProp,
       ...props
     },
     ref
   ) => {
+    const text = useLabels()
+    const ariaLabel = ariaLabelProp ?? text.progress
     const labels = { completed: 'completed', current: 'current', upcoming: 'not started', ...stateLabels }
     const vertical = orientation === 'vertical'
 

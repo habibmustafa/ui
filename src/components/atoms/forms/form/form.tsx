@@ -12,6 +12,7 @@ import {
   type ControllerProps,
   type FieldPath,
   type FieldValues,
+  type FormProviderProps,
 } from 'react-hook-form'
 
 import { DURATION_ENTER, EASE_SOFT_IN_OUT } from '../../../../lib/motion'
@@ -21,7 +22,13 @@ import { InputGroupInput, InputGroupTextarea } from './input-group'
 import { Label } from '../label'
 import type { TextareaProps } from '../textarea'
 
-const Form = FormProvider
+function FormRoot<
+  TFieldValues extends FieldValues,
+  TContext = unknown,
+  TTransformedValues = TFieldValues,
+>(props: FormProviderProps<TFieldValues, TContext, TTransformedValues>) {
+  return <FormProvider {...props} />
+}
 
 type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
@@ -85,14 +92,14 @@ const FormItemContext = React.createContext<FormItemContextValue>({} as FormItem
 const FormItem = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & { asChild?: boolean }
->(({ asChild, ...props }, ref) => {
+>(({ asChild, className, ...props }, ref) => {
   const id = React.useId()
 
   const Comp = asChild ? SlotPrimitive.Slot : 'div'
 
   return (
     <FormItemContext.Provider value={{ id }}>
-      <Comp ref={ref} {...props} />
+      <Comp ref={ref} className={cn('space-y-2', className)} {...props} />
     </FormItemContext.Provider>
   )
 })
@@ -113,7 +120,7 @@ const FormLabel = React.forwardRef<
       className={cn(
         'text-foreground-light text-sm',
         'transition-colors',
-        error && '!text-destructive',
+        error && 'text-destructive!',
         className,
         'leading-normal'
       )}
@@ -152,7 +159,7 @@ const FormDescription = React.forwardRef<
     <div
       ref={ref}
       id={formDescriptionId}
-      className={cn('text-sm text-foreground-light', className)}
+      className={cn('text-sm text-foreground-lighter', className)}
       {...props}
     />
   )
@@ -225,6 +232,17 @@ const FormInputGroupTextArea = React.forwardRef<HTMLTextAreaElement, TextareaPro
   }
 )
 FormInputGroupTextArea.displayName = 'FormInputGroupTextArea'
+
+const Form = Object.assign(FormRoot, {
+  Field: FormField,
+  Item: FormItem,
+  Label: FormLabel,
+  Control: FormControl,
+  Description: FormDescription,
+  Message: FormMessage,
+  InputGroupInput: FormInputGroupInput,
+  InputGroupTextArea: FormInputGroupTextArea,
+})
 
 export {
   Form,

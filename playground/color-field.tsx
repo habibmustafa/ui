@@ -40,7 +40,7 @@ export function ColorField({
           aria-label={`${label}: color picker`}
           value={hex}
           onChange={(event) => onChange(event.target.value)}
-          className="h-[34px] w-10 shrink-0 cursor-pointer rounded-md border border-control bg-transparent p-0.5 [&::-webkit-color-swatch]:rounded-sm [&::-webkit-color-swatch]:border-none [&::-webkit-color-swatch-wrapper]:p-0"
+          className="h-8.5 w-10 shrink-0 cursor-pointer rounded-md border border-control bg-transparent p-0.5 [&::-webkit-color-swatch]:rounded-sm [&::-webkit-color-swatch]:border-none [&::-webkit-color-swatch-wrapper]:p-0"
         />
         <Input
           id={`${id}-text`}

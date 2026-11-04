@@ -88,6 +88,8 @@ const Rating = React.forwardRef<HTMLDivElement, RatingProps>(
       onChange: onValueChange,
     })
     const [hover, setHover] = React.useState<number | null>(null)
+    // The last pick: its stars play a short pop; `id` restarts the animation on every pick.
+    const [pop, setPop] = React.useState<{ upTo: number; id: number } | null>(null)
     const itemRefs = React.useRef(new Map<number, HTMLButtonElement>())
 
     const interactive = !readOnly && !disabled
@@ -100,7 +102,9 @@ const Rating = React.forwardRef<HTMLDivElement, RatingProps>(
 
     const commit = (next: number) => {
       if (!interactive) return
-      setValue(allowClear && next === value ? 0 : next)
+      const result = allowClear && next === value ? 0 : next
+      setValue(result)
+      setPop((prev) => (result > 0 ? { upTo: result, id: (prev?.id ?? 0) + 1 } : null))
     }
 
     const onKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>, stop: number) => {
@@ -117,14 +121,22 @@ const Rating = React.forwardRef<HTMLDivElement, RatingProps>(
       const next = Math.min(max, Math.max(stops[0], target))
       itemRefs.current.get(next)?.focus()
       setValue(next)
+      setPop((prev) => ({ upTo: next, id: (prev?.id ?? 0) + 1 }))
     }
 
     const star = (index: number) => {
       const fill = Math.min(1, Math.max(0, shown - index))
       const base = cn(ratingIconVariants({ size }), 'text-foreground-muted', classNames?.icon)
       const active = cn(ratingIconVariants({ size }), 'text-warning-600', classNames?.icon)
+      const popping = pop !== null && index < Math.ceil(pop.upTo)
       return (
-        <span className="relative inline-flex" aria-hidden="true">
+        <span
+          key={popping ? pop.id : 'idle'}
+          className={cn('relative inline-flex', popping && 'animate-rating-pop motion-reduce:animate-none')}
+          // A wave from the first star up to the one picked.
+          style={popping ? { animationDelay: `${index * 40}ms` } : undefined}
+          aria-hidden="true"
+        >
           {renderIcon ? (
             renderIcon({ filled: false, className: base })
           ) : (
@@ -201,7 +213,11 @@ const Rating = React.forwardRef<HTMLDivElement, RatingProps>(
                   onClick={() => commit(stop)}
                   onKeyDown={(event) => onKeyDown(event, stop)}
                   onMouseEnter={() => setHover(stop)}
-                  onFocus={() => setHover(null)}
+                  // Keyboard focus drops the hover preview; a click's own focus must not,
+                  // or the stars fall back to the old value until the click lands.
+                  onFocus={(event) => {
+                    if (event.currentTarget.matches(':focus-visible')) setHover(null)
+                  }}
                   className="h-full flex-1 cursor-pointer rounded-sm focus-ring disabled:cursor-not-allowed"
                 />
               ))}

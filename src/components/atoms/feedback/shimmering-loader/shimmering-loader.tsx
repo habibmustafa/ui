@@ -1,14 +1,9 @@
 import { forwardRef, type CSSProperties } from 'react'
 
 import { cn } from '../../../../lib/utils'
-import { CardRoot } from '../../layout/card'
+import { Card } from '../../layout/card'
 import {
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRoot,
-  TableRow,
+  Table,
 } from '../../data-display/table'
 
 export interface ShimmeringLoaderProps {
@@ -91,27 +86,27 @@ export const GenericTableLoader = ({
   numRows?: number
 }) => {
   return (
-    <CardRoot>
-      <TableRoot>
-        <TableHeader>
-          <TableRow>
+    <Card.Root>
+      <Table.Root>
+        <Table.Header>
+          <Table.Row>
             {headers.length === 0 ? (
-              <TableHead />
+              <Table.Head />
             ) : (
-              headers.map((h, i) => <TableHead key={`${h}_${i}`}>{h}</TableHead>)
+              headers.map((h, i) => <Table.Head key={`${h}_${i}`}>{h}</Table.Head>)
             )}
-          </TableRow>
-        </TableHeader>
-        <TableBody>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
           {new Array(numRows).fill(0).map((_, i) => (
-            <TableRow key={`row_${i}`}>
-              <TableCell colSpan={headers.length}>
+            <Table.Row key={`row_${i}`}>
+              <Table.Cell colSpan={headers.length}>
                 <ShimmeringLoader />
-              </TableCell>
-            </TableRow>
+              </Table.Cell>
+            </Table.Row>
           ))}
-        </TableBody>
-      </TableRoot>
-    </CardRoot>
+        </Table.Body>
+      </Table.Root>
+    </Card.Root>
   )
 }

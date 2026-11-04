@@ -1,6 +1,6 @@
 /** Shared presentation rules for the documentation site. */
 export const DISPLAY =
-  "[font-family:Archivo,Inter,system-ui,sans-serif] [font-variation-settings:'wdth'_116] tracking-[-0.03em]"
+  "font-[Archivo,Inter,system-ui,sans-serif] [font-variation-settings:'wdth'_116] tracking-[-0.03em]"
 
 export const PAGE_TITLE = `${DISPLAY} text-balance text-3xl font-semibold leading-tight text-foreground sm:text-4xl`
 export const SECTION_TITLE = `${DISPLAY} text-2xl font-semibold text-foreground`

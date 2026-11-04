@@ -3,6 +3,7 @@
 import * as React from 'react'
 
 import { useControllableState } from '../../../../lib/use-controllable-state'
+import { prefersReducedMotion } from '../../../../lib/motion'
 import { cn } from '../../../../lib/utils'
 import { useLabels } from '../../../../providers/locale-provider'
 
@@ -41,11 +42,6 @@ export interface TableOfContentsProps
 }
 
 const indent = { 1: 'pl-3', 2: 'pl-6', 3: 'pl-9', 4: 'pl-12' } as const
-
-const prefersReducedMotion = () =>
-  typeof window !== 'undefined' &&
-  typeof window.matchMedia === 'function' &&
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 /**
  * Scrolls `el` to the top of `root` (or the window), writes the hash, and returns the time

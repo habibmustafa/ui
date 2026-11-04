@@ -1,4 +1,4 @@
-import { FormControl, FormField } from '../../atoms/forms/form'
+import { Form } from '../../atoms/forms/form'
 import { RadioGroup, type RadioOption } from '../../atoms/forms/radio-group'
 import { FormItemLayout } from '../form-item-layout'
 import { type LayoutProps } from './field-shared'
@@ -24,7 +24,7 @@ export function FormRadioGroup({
   disabled,
 }: FormRadioGroupProps) {
   return (
-    <FormField
+    <Form.Field
       name={name}
       render={({ field }) => (
         <FormItemLayout
@@ -36,7 +36,7 @@ export function FormRadioGroup({
           size={size}
           labelLayout={labelLayout}
         >
-          <FormControl>
+          <Form.Control>
             <RadioGroup
               value={field.value}
               onValueChange={field.onChange}
@@ -44,7 +44,7 @@ export function FormRadioGroup({
               className={className}
               disabled={disabled}
             />
-          </FormControl>
+          </Form.Control>
         </FormItemLayout>
       )}
     />

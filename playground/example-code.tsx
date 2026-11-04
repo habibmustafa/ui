@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { CodeSnippet } from './code-snippet'
+import { PKG } from './package-info'
 
 const sources = Object.fromEntries(Object.entries(import.meta.glob<string>('./examples/**/*.tsx', { query: '?raw', import: 'default' })).map(([path, loader]) => [path.split('/').pop()!.replace(/\.tsx$/, ''), loader]))
 const cache = new Map<string, string>()
@@ -10,7 +11,7 @@ export default function ExampleCode({ name }: { name: string }) {
     let active = true
     setSource(cache.get(name) ?? '')
     if (!cache.has(name)) void sources[name]?.().then(raw => {
-      const text = raw.replace(/(['"])(?:\.\.\/)+src\1/g, "'@habibmustafa/ui'").trim()
+      const text = raw.replace(/(['"])(?:\.\.\/)+src\1/g, `'${PKG}'`).trim()
       cache.set(name, text)
       if (active) setSource(text)
     })

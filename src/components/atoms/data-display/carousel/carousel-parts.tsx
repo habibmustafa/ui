@@ -3,6 +3,7 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import * as React from 'react'
 
+import { prefersReducedMotion } from '../../../../lib/motion'
 import { cn } from '../../../../lib/utils'
 import { useLabels } from '../../../../providers/locale-provider'
 import { useControllableState } from '../../../../lib/use-controllable-state'
@@ -48,11 +49,6 @@ function useCarousel() {
 }
 
 const SlideIndexContext = React.createContext(0)
-
-const prefersReducedMotion = () =>
-  typeof window !== 'undefined' &&
-  typeof window.matchMedia === 'function' &&
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 export interface CarouselRootProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'defaultValue' | 'onChange'> {
@@ -359,7 +355,7 @@ const CarouselPrevious = React.forwardRef<HTMLButtonElement, CarouselPreviousPro
         disabled={!canPrev}
         onClick={scrollPrev}
         className={cn(
-          'absolute z-10 h-8 w-8 rounded-full p-0',
+          'absolute z-10 w-8.5 rounded-full p-0',
           orientation === 'vertical'
             ? '-top-12 left-1/2 -translate-x-1/2 rotate-90'
             : '-left-12 top-1/2 -translate-y-1/2',
@@ -387,7 +383,7 @@ const CarouselNext = React.forwardRef<HTMLButtonElement, CarouselNextProps>(
         disabled={!canNext}
         onClick={scrollNext}
         className={cn(
-          'absolute z-10 h-8 w-8 rounded-full p-0',
+          'absolute z-10 w-8.5 rounded-full p-0',
           orientation === 'vertical'
             ? '-bottom-12 left-1/2 -translate-x-1/2 rotate-90'
             : '-right-12 top-1/2 -translate-y-1/2',

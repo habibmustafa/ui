@@ -5,6 +5,7 @@ import { CodeSnippet } from './code-snippet'
 import { useNearViewport } from './near-viewport'
 import { type BlockMeta } from './blocks/registry'
 import { stateToQuery, useThemeBuilder } from './theme-store'
+import { PKG } from './package-info'
 
 const sources = import.meta.glob<string>('./blocks/*.tsx', { query: '?raw', import: 'default' })
 
@@ -14,7 +15,7 @@ export function BlockCode({ id }: { id: string }) {
     let active = true
     setSource('')
     sources[`./blocks/${id}.tsx`]?.().then((raw) => {
-      if (active) setSource(raw.replace(/(['"])(?:\.\.\/)+src\1/g, "'@habibmustafa/ui'").trim())
+      if (active) setSource(raw.replace(/(['"])(?:\.\.\/)+src\1/g, `'${PKG}'`).trim())
     })
     return () => { active = false }
   }, [id])
@@ -38,7 +39,7 @@ export function BlockThumbnail({ block, eager = false }: { block: BlockMeta; eag
   return (
     <div ref={nearRef} aria-hidden="true" inert className="relative h-56 overflow-hidden border-b bg-surface-75">
       <div ref={container} className="h-full w-full">
-        {near && <div className="absolute left-1/2 top-5 flex w-[760px] origin-top items-start justify-center" style={{ transform: `translateX(-50%) scale(${scale})` }}>
+        {near && <div className="absolute left-1/2 top-5 flex w-190 origin-top items-start justify-center" style={{ transform: `translateX(-50%) scale(${scale})` }}>
           <Suspense fallback={null}><Block /></Suspense>
         </div>}
       </div>
@@ -83,7 +84,7 @@ export function BlockFrame({ block, width, onClose }: { block: BlockMeta; width:
           ref={frame}
           title={`${block.title} live preview`}
           src={`/playground/block-frame.html?preview=${block.id}`}
-          className="absolute left-0 top-0 block box-content h-[560px] max-w-none origin-top-left rounded-lg border bg-background shadow-sm"
+          className="absolute left-0 top-0 block box-content h-140 max-w-none origin-top-left rounded-lg border bg-background shadow-sm"
           style={{ width, transform: `scale(${scale})` }}
         />
       </div>

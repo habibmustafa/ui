@@ -10,7 +10,9 @@ Only a component with a Root and several meaningful public parts becomes hybrid.
 (`items`, `options`, `columns`, etc.) must replace assembling parts by hand. Do not add an artificial second API
 to a single-element component or to a system that requires a full schema generator.
 `Chart`'s limited props API is not a general hybrid example; Sonner, Calendar, Form and Sidebar
-are intentionally not made hybrid.
+are intentionally not made hybrid. Form, Sidebar and Chart still get dotted parts (`Form.Item`,
+`Sidebar.Menu`, `Chart.Container`), so compound usage is written the same way everywhere; the long names
+(`FormItem`, …) stay exported for compatibility.
 
 ```tsx
 <Tabs items={items} />

@@ -12,7 +12,8 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from './command-parts'
-import { DialogContent, DialogRoot } from '../../overlay/dialog'
+import { Dialog } from '../../overlay/dialog'
+import { useLabels } from '../../../../providers/locale-provider'
 
 export interface CommandItemData {
   key: string
@@ -31,6 +32,8 @@ export interface CommandGroupData {
 }
 
 export interface CommandClassNames {
+  /** On `Command.Dialog`: replaces the roomy default root classes (e.g. for a compact palette). */
+  root?: string
   input?: string
   list?: string
   group?: string
@@ -42,7 +45,7 @@ type RootProps = React.ComponentProps<typeof CommandRoot>
 type CommandGroupsProps = Omit<RootProps, 'children'> & {
   groups: readonly CommandGroupData[]
   placeholder?: string
-  /** @default "No results found." */
+  /** @default "No results found.", from LocaleProvider */
   emptyText?: React.ReactNode
   classNames?: CommandClassNames
   children?: never
@@ -53,6 +56,7 @@ type CommandCompoundProps = RootProps & { groups?: never }
 export type CommandProps = CommandGroupsProps | CommandCompoundProps
 
 export function CommandHybrid(props: CommandProps) {
+  const labels = useLabels()
   if (props.groups === undefined) {
     return <CommandRoot {...props} />
   }
@@ -60,7 +64,7 @@ export function CommandHybrid(props: CommandProps) {
   const {
     groups,
     placeholder,
-    emptyText = 'No results found.',
+    emptyText = labels.noResults,
     classNames,
     ...rootProps
   } = props
@@ -96,19 +100,22 @@ export function CommandHybrid(props: CommandProps) {
 }
 
 const COMMAND_DIALOG_ROOT_CLASSNAME =
-  '**:[[cmdk-group-heading]]:px-2 **:[[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-foreground-muted [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 **:[[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 **:[[cmdk-input]]:h-12 **:[[cmdk-item]]:px-2 **:[[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5'
+  '**:[[cmdk-group-heading]]:px-2 **:[[cmdk-group-heading]]:font-medium **:[[cmdk-group-heading]]:text-foreground-muted [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 **:[[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 **:[[cmdk-input]]:h-12 **:[[cmdk-item]]:px-2 **:[[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5'
 
 export interface CommandDialogProps extends DialogPrimitive.DialogProps {
   /** Renders groups via the same API as props-driven Command, instead of `children`. */
   groups?: readonly CommandGroupData[]
   placeholder?: string
-  /** @default "No results found." */
+  /** @default "No results found.", from LocaleProvider */
   emptyText?: React.ReactNode
   classNames?: CommandClassNames
+  /** Visually hidden dialog name for assistive tech. @default "Command palette" */
+  title?: string
 }
 
 export function CommandDialog({
   children,
+  title = 'Command palette',
   groups,
   placeholder,
   emptyText,
@@ -116,20 +123,23 @@ export function CommandDialog({
   ...props
 }: CommandDialogProps) {
   return (
-    <DialogRoot {...props}>
-      <DialogContent className="overflow-hidden p-0 shadow-lg">
+    <Dialog.Root {...props}>
+      <Dialog.Content className="overflow-hidden p-0 shadow-lg">
+        <Dialog.Title className="sr-only">{title}</Dialog.Title>
         {groups === undefined ? (
-          <CommandRoot className={COMMAND_DIALOG_ROOT_CLASSNAME}>{children}</CommandRoot>
+          <CommandRoot className={classNames?.root ?? COMMAND_DIALOG_ROOT_CLASSNAME}>
+            {children}
+          </CommandRoot>
         ) : (
           <CommandHybrid
-            className={COMMAND_DIALOG_ROOT_CLASSNAME}
+            className={classNames?.root ?? COMMAND_DIALOG_ROOT_CLASSNAME}
             groups={groups}
             placeholder={placeholder}
             emptyText={emptyText}
             classNames={classNames}
           />
         )}
-      </DialogContent>
-    </DialogRoot>
+      </Dialog.Content>
+    </Dialog.Root>
   )
 }
