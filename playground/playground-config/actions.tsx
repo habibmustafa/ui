@@ -20,7 +20,7 @@ export const actions = {
     initial: {
       label: 'Continue',
       variant: 'primary',
-      size: 'small',
+      size: 'tiny',
       icon: 'none',
       iconRight: 'none',
       disabled: false,
@@ -136,7 +136,7 @@ export const actions = {
       c.text('label', 'Label', 'Copy'),
       c.text('copiedLabel', 'Label after copying', 'Copied', { omit: 'Copied' }),
       c.pick('variant', 'Variant', ['default', 'primary', 'secondary', 'outline', 'dashed', 'link', 'text'], 'default'),
-      c.pick('size', 'Size', ['tiny', 'small', 'medium', 'large', 'xlarge'], 'small'),
+      c.pick('size', 'Size', ['tiny', 'small', 'medium', 'large', 'xlarge'], 'tiny'),
       c.flag('block', 'Full width')
     ]
   }),

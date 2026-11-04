@@ -115,7 +115,7 @@ const buttonVariants = cva(
         true: 'rounded-full',
       },
     },
-    // No cva-level defaults: Button itself defaults `size` to "small" and `variant` to
+    // No cva-level defaults: Button itself defaults `size` to "tiny" and `variant` to
     // "default". (Upstream nested a `defaultVariants` block inside `variants`, which cva
     // read as a variant *named* defaultVariants — it leaked into ButtonProps as a bogus
     // `defaultVariants` prop and set no defaults.)
@@ -195,7 +195,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
       asChild = false,
-      size = 'small',
+      size = 'tiny',
       variant = 'default',
       children,
       loading,

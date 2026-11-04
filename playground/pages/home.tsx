@@ -119,7 +119,7 @@ function ThemeTeaser() {
             )
           })}
         </ul>
-        <Button asChild variant="default" iconRight={<ArrowRight />} className="shrink-0">
+        <Button asChild variant="default" size="small" iconRight={<ArrowRight />} className="shrink-0">
           <Link to="/theme">Open the theme builder</Link>
         </Button>
       </div>

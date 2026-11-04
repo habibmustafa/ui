@@ -308,7 +308,7 @@ export default function GettingStartedPage() {
             Next: find the component you need and copy its example.
           </p>
         </div>
-        <Button asChild variant="primary" iconRight={<ArrowRight />}>
+        <Button asChild variant="primary" size="small" iconRight={<ArrowRight />}>
           <Link to="/components">Browse components</Link>
         </Button>
       </div>

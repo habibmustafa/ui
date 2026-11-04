@@ -239,8 +239,8 @@ export function Hero() {
           {COMPONENT_COUNT} React components and ready-to-use screens. Give them your brand color and start building.
         </p>
         <div className="mt-7 flex flex-wrap gap-3">
-          <Button asChild variant="primary" size="medium" iconRight={<ArrowRight />} data-contrast="button"><Link to="/components">Browse components</Link></Button>
-          <Button asChild variant="default" size="medium"><Link to="/getting-started">Get started</Link></Button>
+          <Button asChild variant="primary" size="small" iconRight={<ArrowRight />} data-contrast="button"><Link to="/components">Browse components</Link></Button>
+          <Button asChild variant="default" size="small"><Link to="/getting-started">Get started</Link></Button>
         </div>
         <div className="mt-5 max-w-md"><InstallCommand packages={PKG} className="w-full" /></div>
         <ThemeInstrument />
