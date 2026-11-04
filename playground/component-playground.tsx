@@ -391,6 +391,10 @@ function PlaygroundSkeleton() {
  * Nothing about a component's playground is bundled with the page until it opens.
  */
 export function ComponentPlayground({ id }: { id: string }) {
+  // The React Compiler would memoize `cachedPlayground(id)` by `id` alone: once the cache
+  // filled, the rerender kept the stale `undefined` and the skeleton never went away
+  // (production builds only). This component reads a mutable cache on purpose.
+  'use no memo'
   const [, loadedOnce] = useState(0)
   const loaded = cachedPlayground(id)
   useEffect(() => {
