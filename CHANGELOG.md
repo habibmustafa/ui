@@ -1,5 +1,52 @@
 # Changelog
 
+## 0.6.0
+
+### Minor Changes
+
+- 4ac083d: `Button` now defaults to `size="tiny"` (26px), matching Supabase UI. Pass `size="small"` for the previous 34px default. The AlertDialog and Sonner action buttons use `tiny` too.
+- e9be129: Select, Combobox and MultiSelect take `clearable` (default `false`): a × next to the trailing icon while there is a value. Select and Combobox clear to `null` and MultiSelect to `[]`. The × is for pointer users and doesn't open the list. On Select and Combobox, Backspace or Delete on the focused trigger clears too. `FormSelect` accepts `clearable`; `FormCombobox` and `FormMultiSelect` pass it through. On Combobox, `clearable` now also shows the × (it still lets picking the selected option again clear it).
+  
+  `DateRangePicker`'s `clearable` (default `true`) now also shows a × on the trigger that resets the range in one click, next to the Clear button in the popover. A form-style reset of it (value back to `undefined`) no longer leaves the previous range showing until you reset twice: `useControllableState` now tracks the last value even while controlled.
+  
+  Also: `Rating` no longer flashes the old value while you click a star, and the stars you pick pop in a short wave (skipped under `prefers-reduced-motion`). `DatePicker` now marks its field invalid inside a `FormControl` (it ignored `aria-invalid`), and its `id` and `aria-describedby` reach the field. Invalid fields get stronger `bg-invalid-bg` and `border-invalid-border` tokens, which are now readable on the light theme.
+- 303ec3e: `Form`, `Sidebar` and `Chart` get dotted parts like the other compound components: `Form.Field`, `Form.Item`, `Form.Label`, `Form.Control`, `Form.Description`, `Form.Message`, `Form.InputGroupInput`, `Form.InputGroupTextArea`; `Sidebar.Provider`, `Sidebar.Header`, `Sidebar.Content`, `Sidebar.Menu`, `Sidebar.MenuItem`, `Sidebar.MenuButton` and the rest; `Chart.Container`, `Chart.Legend`, `Chart.LegendContent`, `Chart.Tooltip`, `Chart.TooltipContent`, `Chart.Style`. The long names (`FormItem`, `SidebarMenu`, `ChartContainer`, …) are still exported. `Form` is now its own component that renders react-hook-form's provider, so the dotted parts are not attached to react-hook-form's export.
+- 0f8e549: `LocaleProvider` now covers every built-in word in the library, not only the newer components. That includes:
+  - Dialog/Sheet close, Confirm/Cancel
+  - Pagination
+  - DatePicker and TimePicker
+  - Breadcrumb and Sidebar toggles
+  - Command, FileUpload, DataTable, Row, MetricCard, TimestampInfo and ThemeToggle
+  - Admonition titles
+  - Copy/Copied, Spinner, Banner, PasswordInput, NumberInput and Stepper
+  
+  Props such as `confirmText` or `emptyText` still win over the provider. The empty-state text is now "No results found." everywhere, which changes DataTable's (was "No results.") and MultiSelect's (no trailing period). "Toggle Sidebar" is now "Toggle sidebar".
+- ca1fc8f: Calendar, DatePicker and `SidebarTrigger` now use the library's own `Button` instead of a second, private shadcn-style button. `SidebarTrigger` takes `Button`'s props, so `variant="ghost"`/`size="icon"` become `variant="text"`/`size="tiny"`. DataInput's copy button is now a `CopyButton` (1.5s copied state, announced to screen readers), and CodeBlock clears its copied timer on unmount.
+- e9be129: Select, Combobox and MultiSelect (and `FormSelect`, `FormCombobox`, `FormMultiSelect`) read options of any shape: `valueExpr` / `displayExpr` name the fields (default `value` / `label`), and `getOptionValue` / `getOptionLabel` take functions that win over them. Values may be numbers as well as strings, and the callbacks return the original value. Types are generic over the option and value (`SelectProps<T, V>`); `SelectProps` is now a single type, and with `clearable` the value may be `null`.
+- 8cc7339: The props forms now cover more layouts, so fewer screens need the compound parts. `Tabs` takes `layout="inline"` (triggers keep their natural width), `listLabel`, `toolbar` (controls beside the list), and per-item `triggerProps` and `contentClassName`. `Dialog` and `Sheet` take `bare`: only `children` render, with `title` kept as a visually hidden name. `ToggleGroup` items take `className`. `DropdownMenu` radio items take `icon`. `Command.Dialog` takes `title` (a visually hidden name, default "Command palette") and `classNames.root` to swap its roomy default root classes. `ThemeToggle`, `InfoTooltip` and `TimestampInfo` are built on the props forms; their output is unchanged.
+- f8fcf07: New theme tokens replace hardcoded colors:
+  - `--primary-solid-foreground`, `--primary-solid-hover`, `--primary-solid-border` and `--primary-solid-border-hover` for the dark primary Button, Stepper and TimePicker.
+  - `--backdrop` for every modal dim. The Sheet backdrop now matches Dialog and Drawer.
+  - `--scroll-shadow` for table scroll edges.
+  
+  CodeBlock now takes its colors from the `--code-token-*` variables, the same palette as the docs' highlighter. It follows the theme through CSS, so it no longer needs a `ThemeProvider`. Light comments and strings are darkened to reach WCAG AA. `codeBlockTheme` is exported; `monokaiCustomTheme` is deprecated.
+
+### Patch Changes
+
+- fe96454: `Calendar` with `captionLayout="dropdown"` no longer shows unstyled native selects: the month and year read as text with a chevron, and the select sits invisibly over them. The down and up chevrons render as chevrons instead of a right arrow.
+- 687198e: Select, Combobox, MultiSelect, DatePicker (button mode) and DateRangePicker triggers now share Input's surface: `bg-field`, `border-control` and the `hover:border-control-hover` hover. Previously they used a raised background (`bg-control-raised`), a transparent background, or a stronger border.
+- 9dc8361: TimePicker text and border now match DateField/DatePicker. The `read-only` input styles (lighter text, button border) were also hitting the `<div>` wrappers of TimePicker and of `Input` with `prefix`/`suffix`, because CSS `:read-only` matches any non-editable element. They now apply only to real read-only inputs.
+- b9c61c4: Fixes:
+  - DatePicker's invalid state has a red (destructive) focus outline instead of an amber one.
+  - ThemeToggle no longer sets a fixed `id`, so two toggles on a page don't clash and Radix pairs the menu with its trigger again.
+  - `SonnerToaster`'s `theme` prop is optional: it follows the surrounding `ThemeProvider`, or `"system"` without one.
+  - GlassPanel no longer throws when there is no `ThemeProvider`.
+- 143f0f5: Visual consistency pass:
+  - Every floating surface now uses `border-overlay` and `shadow-md`: menus, Select, MultiSelect and HoverCard.
+  - The Chart tooltip matches `Tooltip`.
+  - `FormItem` gets `space-y-2` by default, and `FormDescription` uses the muted `text-foreground-lighter`, like FormItemLayout.
+  - The Carousel and Row arrow buttons are 34px, the `small` control height, instead of 32px.
+
 ## 0.5.1
 
 ### Patch Changes
